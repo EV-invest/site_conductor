@@ -10,6 +10,10 @@
  *   provider is mounted (use in app code where the provider is guaranteed).
  * - `useAnalytics()` — lenient: same, but no-ops when no provider is mounted
  *   (use in shared islands that may render without one — e.g. `ExperimentTracker`).
+ * - `PostHogPageView` — App Router page-view tracker; mount once inside the
+ *   provider (wrapped in `<Suspense>`) to capture `$pageview` on every
+ *   client-side navigation. Pair with `<PostHogProvider capturePageview={false}>`
+ *   so the tracker owns all pageviews (no double-count of the initial one).
  *
  * **For A/B exposure + section CTA tracking**, use `ExperimentTracker` and
  * `useExperimentEvent` from `features/ab-variant`; they route through `capture`
@@ -25,3 +29,4 @@ export {
   useCapture,
   useAnalytics,
 } from "@evinvest/analytics/react";
+export { PostHogPageView } from "@evinvest/analytics/next/client";
