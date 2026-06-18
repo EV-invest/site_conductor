@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
+import { getVariant as readVariant } from "@evinvest/experiments/next";
 import {
-  cookieName,
-  resolveVariant,
+  experiments,
   type ExperimentKey,
   type Variant,
 } from "@/shared/config/experiments";
@@ -15,8 +14,8 @@ import {
  * the client. Reading the cookie opts the route into dynamic rendering, which is
  * the inherent cost of cookie-based A/B (see `PATTERNS.md`).
  *
- * Sections call this themselves so the **page** stays agnostic of A/B:
- * `HomeView` just renders `<Hero />`, `<Team />`, etc.
+ * Curried over the app's `experiments` config so sections call `getVariant("hero")`
+ * and the **page** stays agnostic of A/B: `HomeView` just renders `<Hero />` etc.
  *
  * @param key - Experiment key declared in `shared/config/experiments.ts`.
  * @returns The variant string, narrowed to the valid union for that experiment.
@@ -27,9 +26,8 @@ import {
  * const variant = await getVariant("hero");
  * ```
  */
-export async function getVariant<K extends ExperimentKey>(
+export function getVariant<K extends ExperimentKey>(
   key: K,
 ): Promise<Variant<K>> {
-  const jar = await cookies();
-  return resolveVariant(key, jar.get(cookieName(key))?.value);
+  return readVariant(experiments, key);
 }

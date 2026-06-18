@@ -1,7 +1,9 @@
 /**
  * @module features/ab-variant
  *
- * A/B testing utilities — client-safe exports only.
+ * A/B testing — thin app wiring over `@evinvest/experiments` (config-narrowed
+ * helpers, the analytics-wired `ExperimentTracker`, the dev panel). Client-safe
+ * exports only.
  *
  * `getVariant` uses `next/headers` and is **server-only**; import it directly:
  * ```ts

@@ -1,19 +1,17 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
+import { createSentrySink } from "@evinvest/error-monitoring";
 
 /**
- * Reports an unexpected error to the error monitoring service.
+ * Composition root for error reporting: pick the vendor (Sentry) once.
  *
- * The only place in the codebase that calls Sentry directly — all other code
- * goes through this function so the vendor can be swapped without touching
- * call sites.
+ * `createSentrySink` adapts the Sentry SDK to the vendor-neutral `ErrorSink`
+ * port, mapping `reportError(err, ctx)` → `captureException(err, { extra: ctx })`.
+ * All app code reports through this `reportError` so the vendor can be swapped
+ * here without touching call sites.
  *
- * No-op when `NEXT_PUBLIC_SENTRY_DSN` is unset (local dev without config).
+ * No-op when `NEXT_PUBLIC_SENTRY_DSN` is unset (local dev): `Sentry.init` never
+ * ran, so `captureException` has no client to send to.
  */
-export function reportError(
-  error: Error,
-  context?: Record<string, unknown>,
-): void {
-  Sentry.captureException(error, context ? { extra: context } : undefined);
-}
+export const { reportError } = createSentrySink(Sentry);

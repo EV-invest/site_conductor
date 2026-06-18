@@ -102,19 +102,20 @@ All instrumentation goes through `features/analytics` and `features/ab-variant`:
     doSomethingElse();
   })
   ```
-- `capture(event, props)` — raw escape hatch for events unrelated to an experiment.
+- `useCapture()` / `useAnalytics()` — hooks returning `capture(event, props)` for
+  one-off events unrelated to an experiment (`useAnalytics` no-ops without a provider).
 
 Rules:
 
-- **Never import `posthog-js` outside `features/analytics`.** Swap/consent/init
-  live in one place.
+- **Never import `posthog-js` directly.** `@evinvest/analytics` (re-exported by
+  `features/analytics`) owns init/consent in one place.
 - Analytics **records**, it never **decides** what to render (bucketing is owned
   by `proxy.ts` + cookies).
 - Call only from Client Components — never from Server Components / `next/headers`.
 - Event names are `snake_case`, scoped `<surface>_<thing>_<action>`, and stable
   (they're the dashboard contract). Props are primitive and non-PII.
 
-See `features/analytics/client.ts` for the full "how to add an event" guide.
+See `@evinvest/analytics`'s GUIDE (event taxonomy + recipes) for how to add an event.
 
 ---
 

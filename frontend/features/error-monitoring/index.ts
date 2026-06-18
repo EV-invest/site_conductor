@@ -1,17 +1,22 @@
 /**
  * @module features/error-monitoring
  *
- * Client-side error capture — single entry point for error reporting.
+ * Error capture — thin app wiring over `@evinvest/error-monitoring`.
  *
  * **Public API**
- * - `ErrorMonitoringProvider` — mount once in the root layout; boots the SDK.
- * - `ErrorBoundary` — React error boundary that reports caught errors here.
- * - `reportError(error, context?)` — capture an unexpected error from a Client Component.
+ * - `ErrorMonitoringProvider` — mount once in the root layout; boots browser
+ *   Sentry on mount (Turbopack can't inject the classic client config) and adds
+ *   session replay. No-op without `NEXT_PUBLIC_SENTRY_DSN`.
+ * - `ErrorBoundary` — React error boundary with the app's fallback UI; reports
+ *   caught errors to Sentry.
+ * - `reportError(error, context?)` — capture an unexpected error from a Client
+ *   Component (e.g. `app/global-error.tsx`).
  *
  * **Rules**
- * - Never import `@sentry/nextjs` outside this feature — init and capture live here.
- * - Server-side errors are captured automatically via `instrumentation.ts` and
- *   the tracing integration; this feature covers React client errors only.
+ * - Never import `@sentry/*` outside this feature (and `instrumentation.ts` /
+ *   `next.config.ts`, the server/build seams) — init and capture live here.
+ * - Server/edge errors are captured via `instrumentation.ts` (`register` +
+ *   `onRequestError`); this feature covers React client errors only.
  */
 export { ErrorMonitoringProvider } from "./provider";
 export { ErrorBoundary } from "./error-boundary";

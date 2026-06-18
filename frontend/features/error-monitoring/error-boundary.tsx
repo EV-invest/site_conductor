@@ -1,34 +1,24 @@
-import { reportError } from "./client";
+"use client";
+
+import * as Sentry from "@sentry/nextjs";
+import { ErrorBoundary as Boundary } from "@evinvest/error-monitoring/react";
 import { cn } from "@/shared/lib/utils";
 import { AlertTriangle, RotateCcw } from "lucide-react";
-import { Component, ErrorInfo, ReactNode } from "react";
+import type { ReactNode } from "react";
 
-interface Props {
-  children: ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
-
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    reportError(error, { componentStack: info.componentStack });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
+/**
+ * App error boundary — the design-system fallback over `@evinvest/error-monitoring`'s
+ * vendor-neutral `ErrorBoundary`.
+ *
+ * The package boundary catches the error, reports it to Sentry (`sentry={Sentry}`,
+ * with `{ componentStack }` as context), and renders the supplied `fallback`. The
+ * package ships no markup, so the app owns this fallback UI.
+ */
+export function ErrorBoundary({ children }: { children: ReactNode }) {
+  return (
+    <Boundary
+      sentry={Sentry}
+      fallback={(error) => (
         <div className="flex items-center justify-center min-h-screen p-8 bg-background">
           <div className="flex flex-col items-center w-full max-w-2xl p-8">
             <AlertTriangle
@@ -40,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
             <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
               <pre className="text-sm text-muted-foreground whitespace-break-spaces">
-                {this.state.error?.stack}
+                {error.stack}
               </pre>
             </div>
 
@@ -49,7 +39,7 @@ export class ErrorBoundary extends Component<Props, State> {
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg",
                 "bg-primary text-primary-foreground",
-                "hover:opacity-90 cursor-pointer"
+                "hover:opacity-90 cursor-pointer",
               )}
             >
               <RotateCcw size={16} />
@@ -57,9 +47,9 @@ export class ErrorBoundary extends Component<Props, State> {
             </button>
           </div>
         </div>
-      );
-    }
-
-    return this.props.children;
-  }
+      )}
+    >
+      {children}
+    </Boundary>
+  );
 }
