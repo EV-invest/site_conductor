@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import { fontInter, fontPlayfair } from "@/application/styles/fonts";
 import { Providers } from "@/application/providers";
 import { ErrorMonitoringProvider } from "@/features/error-monitoring";
 import { Header, Footer } from "@/application/layout";
-import { PostHogProvider } from "@/features/analytics";
+import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
 import "@/application/styles/globals.css";
 
@@ -28,7 +28,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <ErrorMonitoringProvider>
           <Providers>
-            <PostHogProvider>
+            {/* capturePageview=false: PostHogPageView owns every $pageview
+                (initial + App Router soft navigations), so the provider must not
+                also fire the initial one. Suspense is required by
+                useSearchParams. */}
+            <PostHogProvider capturePageview={false}>
+              <Suspense fallback={null}>
+                <PostHogPageView />
+              </Suspense>
               <Header />
               {children}
               <Footer />
