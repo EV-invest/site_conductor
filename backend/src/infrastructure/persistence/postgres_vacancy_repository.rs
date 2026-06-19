@@ -14,6 +14,18 @@ use crate::domain::port::vacancy_repository::{VacancyFilter, VacancyRepository};
 const COLUMNS: &str = "id, slug, title, category, location, employment_type, summary, about, \
 	 responsibilities, requirements, nice_to_have, offer, screening_question, compensation, published, created_at";
 
+/// Escape `\`, `%`, `_` so user search text matches literally under `ILIKE … ESCAPE '\'`.
+fn escape_like(input: &str) -> String {
+	let mut out = String::with_capacity(input.len());
+	for ch in input.chars() {
+		if matches!(ch, '\\' | '%' | '_') {
+			out.push('\\');
+		}
+		out.push(ch);
+	}
+	out
+}
+
 pub struct PostgresVacancyRepository {
 	pool: PgPool,
 }
@@ -84,12 +96,13 @@ impl Reader for PostgresVacancyRepository {
 impl VacancyRepository for PostgresVacancyRepository {
 	async fn list(&self, filter: VacancyFilter) -> Result<Vec<Vacancy>, DomainError> {
 		let category = filter.category.map(VacancyCategory::as_str);
-		let search = filter.search.filter(|s| !s.trim().is_empty());
+		// Escape LIKE metacharacters so a query like "100%" is matched literally.
+		let search = filter.search.filter(|s| !s.trim().is_empty()).map(|s| escape_like(&s));
 		let sql = format!(
 			"SELECT {COLUMNS} FROM vacancies \
 			 WHERE published = TRUE \
 			 AND ($1::text IS NULL OR category = $1) \
-			 AND ($2::text IS NULL OR title ILIKE '%' || $2 || '%' OR summary ILIKE '%' || $2 || '%') \
+			 AND ($2::text IS NULL OR title ILIKE '%' || $2 || '%' ESCAPE '\\' OR summary ILIKE '%' || $2 || '%' ESCAPE '\\') \
 			 ORDER BY created_at DESC"
 		);
 		// `sql` is static text + the `COLUMNS` constant; values are bound, never interpolated.

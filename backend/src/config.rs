@@ -44,7 +44,9 @@ impl AppConfig {
 		let app_env = env::var("APP_ENV").unwrap_or_else(|_| "development".to_string());
 
 		let smtp = match (env::var("SMTP_HOST").ok(), env::var("SMTP_USERNAME").ok(), env::var("SMTP_PASSWORD").ok()) {
-			(Some(host), Some(username), Some(password)) if !host.is_empty() && !username.is_empty() => {
+			// All three must be non-empty; a partially-set block falls back to the
+			// no-op transport rather than failing per-send at runtime.
+			(Some(host), Some(username), Some(password)) if !host.is_empty() && !username.is_empty() && !password.is_empty() => {
 				let port = env::var("SMTP_PORT")
 					.unwrap_or_else(|_| "587".to_string())
 					.parse()

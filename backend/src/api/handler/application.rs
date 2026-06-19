@@ -26,9 +26,8 @@ pub async fn create_application(State(state): State<AppState>, Json(payload): Js
 	let from_vacancy = slug.is_some();
 	let application = state.applications.submit(slug, new).await?;
 
-	// Best-effort server-side capture; no-ops without a key, and analytics
-	// failures must never affect the submit result.
-	let _ = state.analytics.capture("server", &Event::new("application_submitted").prop("from_vacancy", from_vacancy)).await;
+	// Best-effort, time-bounded server-side capture; no-ops without a key.
+	state.capture(Event::new("application_submitted").prop("from_vacancy", from_vacancy)).await;
 
 	Ok((
 		StatusCode::ACCEPTED,

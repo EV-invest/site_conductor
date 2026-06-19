@@ -22,8 +22,8 @@ pub async fn create_contact(State(state): State<AppState>, Json(payload): Json<C
 	let new = payload.into_domain()?;
 	let message = state.contacts.submit(new).await?;
 
-	// Best-effort server-side capture; no-ops without a key.
-	let _ = state.analytics.capture("server", &Event::new("contact_submitted")).await;
+	// Best-effort, time-bounded server-side capture; no-ops without a key.
+	state.capture(Event::new("contact_submitted")).await;
 
 	Ok((
 		StatusCode::ACCEPTED,
