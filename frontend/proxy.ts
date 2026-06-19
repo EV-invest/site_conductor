@@ -11,6 +11,8 @@ import { experiments } from "@/shared/config/experiments";
 // (so the browser persists it for 30 days).
 export const proxy = createAbMiddleware(experiments);
 
+// `apps` is excluded alongside `api`: page microfrontends (`/apps/*`) are remote
+// app surfaces with no landing experiments, so there is nothing to bucket there.
 export const config = {
   // Exclude the SEO/metadata file-convention routes (robots, sitemap, manifest,
   // icons, OG/Twitter images, .well-known, llms.txt): the A/B middleware would
