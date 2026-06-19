@@ -3,6 +3,7 @@
 import { type FormEvent, useState } from "react";
 import { Check, Send } from "lucide-react";
 import { createApplication } from "@/entities/job-application";
+import { extractApiError } from "@/shared/api";
 import { CONTROL, Field } from "./field";
 import { RoleBlock } from "./role-block";
 
@@ -55,7 +56,7 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
         },
       });
       if (error || !data) {
-        setErrorMsg(extractError(error));
+        setErrorMsg(extractApiError(error));
         setStatus("error");
         return;
       }
@@ -68,7 +69,7 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
 
   if (status === "sent") {
     return (
-      <div className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center">
+      <div role="status" className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center">
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-main-accent-t1/15">
           <Check className="h-6 w-6 text-main-accent-t1" />
         </div>
@@ -113,11 +114,16 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
         </Field>
       </div>
 
-      {status === "error" && <p className="mt-3 text-xs text-destructive">{errorMsg}</p>}
+      {status === "error" && (
+        <p role="alert" className="mt-3 text-xs text-destructive">
+          {errorMsg}
+        </p>
+      )}
 
       <button
         type="submit"
         disabled={status === "sending"}
+        aria-busy={status === "sending"}
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : <>Send application <Send className="h-4 w-4" /></>}
@@ -125,12 +131,4 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
       <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-main-mist/35">Reply within ~2 weeks · Quy Nhơn · HCMC</p>
     </form>
   );
-}
-
-function extractError(error: unknown): string {
-  if (error && typeof error === "object" && "error" in error) {
-    const message = (error as { error?: unknown }).error;
-    if (typeof message === "string") return message;
-  }
-  return "Something went wrong. Please try again.";
 }

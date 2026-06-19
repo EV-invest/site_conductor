@@ -7,13 +7,13 @@ import { VacancyView } from "@/views/vacancy";
 export const dynamic = "force-dynamic";
 
 // Deduped within a request, so generateMetadata and the page share one fetch.
+// `null` means a genuine 404 (role missing); a network/5xx failure throws so the
+// 500 boundary (app/error.tsx) renders instead of a misleading "not found".
 const fetchVacancy = cache(async (slug: string): Promise<VacancyDetail | null> => {
-  try {
-    const { data } = await getVacancy({ path: { slug } });
-    return data ?? null;
-  } catch {
-    return null;
-  }
+  const { data, response } = await getVacancy({ path: { slug } });
+  if (data) return data;
+  if (response?.status === 404) return null;
+  throw new Error(`Failed to load vacancy "${slug}" (${response ? `status ${response.status}` : "network error"})`);
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

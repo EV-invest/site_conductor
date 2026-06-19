@@ -14,6 +14,15 @@ use crate::domain::port::vacancy_repository::{VacancyFilter, VacancyRepository};
 const COLUMNS: &str = "id, slug, title, category, location, employment_type, summary, about, \
 	 responsibilities, requirements, nice_to_have, offer, screening_question, compensation, published, created_at";
 
+pub struct PostgresVacancyRepository {
+	pool: PgPool,
+}
+impl PostgresVacancyRepository {
+	pub fn new(pool: PgPool) -> Self {
+		Self { pool }
+	}
+}
+
 /// Escape `\`, `%`, `_` so user search text matches literally under `ILIKE … ESCAPE '\'`.
 fn escape_like(input: &str) -> String {
 	let mut out = String::with_capacity(input.len());
@@ -24,15 +33,6 @@ fn escape_like(input: &str) -> String {
 		out.push(ch);
 	}
 	out
-}
-
-pub struct PostgresVacancyRepository {
-	pool: PgPool,
-}
-impl PostgresVacancyRepository {
-	pub fn new(pool: PgPool) -> Self {
-		Self { pool }
-	}
 }
 
 #[derive(sqlx::FromRow)]

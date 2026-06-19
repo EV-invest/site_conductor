@@ -3,9 +3,9 @@
 import { type FormEvent, useState } from "react";
 import { Check, Send } from "lucide-react";
 import { createContact } from "@/entities/contact";
+import { extractApiError } from "@/shared/api";
+import { INPUT_CLASS as CONTROL } from "@/shared/ui/control";
 
-const CONTROL =
-  "w-full rounded-md border border-white/10 bg-main-black/30 px-3.5 py-2.5 text-sm text-main-mist placeholder:text-main-mist/30 transition-colors focus:border-main-accent-t1/50 focus:outline-none";
 const LABEL = "mb-1.5 block font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/50";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -24,7 +24,7 @@ export function ContactForm() {
     try {
       const { data, error } = await createContact({ body: { name, email, message } });
       if (error || !data) {
-        setErrorMsg(extractError(error));
+        setErrorMsg(extractApiError(error));
         setStatus("error");
         return;
       }
@@ -37,7 +37,7 @@ export function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center">
+      <div role="status" className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center">
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-main-accent-t1/15">
           <Check className="h-6 w-6 text-main-accent-t1" />
         </div>
@@ -64,23 +64,20 @@ export function ContactForm() {
         </label>
       </div>
 
-      {status === "error" && <p className="mt-3 text-xs text-destructive">{errorMsg}</p>}
+      {status === "error" && (
+        <p role="alert" className="mt-3 text-xs text-destructive">
+          {errorMsg}
+        </p>
+      )}
 
       <button
         type="submit"
         disabled={status === "sending"}
+        aria-busy={status === "sending"}
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : <>Send message <Send className="h-4 w-4" /></>}
       </button>
     </form>
   );
-}
-
-function extractError(error: unknown): string {
-  if (error && typeof error === "object" && "error" in error) {
-    const message = (error as { error?: unknown }).error;
-    if (typeof message === "string") return message;
-  }
-  return "Something went wrong. Please try again.";
 }

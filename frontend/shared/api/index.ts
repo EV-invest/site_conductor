@@ -6,3 +6,4 @@
 // into `generated/` directly.
 export * from "./generated";
 export { client } from "./generated/client.gen";
+export { extractApiError } from "./error";
