@@ -11,6 +11,8 @@ import { experiments } from "@/shared/config/experiments";
 // (so the browser persists it for 30 days).
 export const proxy = createAbMiddleware(experiments);
 
+// `apps` is excluded alongside `api`: page microfrontends (`/apps/*`) are remote
+// app surfaces with no landing experiments, so there is nothing to bucket there.
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|apps|_next/static|_next/image|favicon.ico).*)"],
 };
