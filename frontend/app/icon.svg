@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Favicon: the EV Investment lockup (assets/logo/logo.svg) on the clean
-     OKLCH(0.256,0.1,260) brand field, drawn in limestone-mist ivory so it
-     reads on the dark brand background. -->
+<!-- SVG favicon (Next file convention → served at /icon.svg with sizes="any").
+     The EV Investment lockup on the OKLCH(0.256,0.1,260) brand field in
+     limestone-mist ivory. Browsers render oklch natively; the committed raster
+     icons (favicon.ico / apple-icon.png / public/icon-*.png) use the
+     hex-equivalent navy since rsvg does not resolve oklch in fills. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 1280 1280">
 <rect width="1280" height="1280" rx="160" fill="oklch(0.256 0.1 260)"/>
 <svg x="225" y="263" width="830" height="754" viewBox="0 0 387 335" fill="#E6E1D3" stroke="#E6E1D3">
