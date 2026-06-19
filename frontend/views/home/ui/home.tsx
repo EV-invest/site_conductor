@@ -2,6 +2,7 @@ import { Hero } from "./hero";
 import { Portfolio } from "./portfolio";
 import { Research } from "./research";
 import { Team } from "./team";
+import { HomeStructuredData } from "./structured-data";
 
 // Server Component composing the page top-to-bottom. It renders sections
 // uniformly and is intentionally UNAWARE that any of them are A/B tested — each
@@ -11,6 +12,7 @@ import { Team } from "./team";
 export function HomeView() {
   return (
     <div className="min-h-screen bg-main-black text-main-mist font-sans">
+      <HomeStructuredData />
       <Hero />
       <Portfolio />
       <Research />

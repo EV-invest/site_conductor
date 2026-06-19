@@ -12,5 +12,11 @@ import { experiments } from "@/shared/config/experiments";
 export const proxy = createAbMiddleware(experiments);
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Exclude the SEO/metadata file-convention routes (robots, sitemap, manifest,
+  // icons, OG/Twitter images, .well-known, llms.txt): the A/B middleware would
+  // otherwise dynamize them and write ab_* cookies onto static assets — Next's
+  // docs explicitly warn metadata routes break when caught by the matcher.
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|icon|apple-icon|opengraph-image|twitter-image|manifest.webmanifest|robots.txt|sitemap.xml|llms.txt|\\.well-known).*)",
+  ],
 };
