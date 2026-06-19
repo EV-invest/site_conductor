@@ -11,7 +11,7 @@ export function ForbiddenView() {
       subtext="You don't have the credentials to view this page. If you believe you should, our team can open the right doors."
       links={[
         { label: "Back to home", href: "/", leadingArrow: true },
-        { label: "Request access", href: "/#contact", variant: "outline" },
+        { label: "Request access", href: "/contact", variant: "outline" },
       ]}
     />
   );

@@ -11,7 +11,7 @@ export function NotFoundView() {
       subtext="The page you're looking for has drifted off our coastline — moved, renamed, or never charted. Let's get you back to shore."
       links={[
         { label: "Back to home", href: "/", leadingArrow: true },
-        { label: "Contact the team", href: "/#contact", variant: "outline" },
+        { label: "Contact the team", href: "/contact", variant: "outline" },
       ]}
     />
   );

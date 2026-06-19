@@ -41,7 +41,7 @@ export function ComingSoonView() {
           <StatusLink accent="blue" href="/">
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to home
           </StatusLink>
-          <StatusLink accent="blue" variant="outline" href="/#contact">
+          <StatusLink accent="blue" variant="outline" href="/contact">
             Notify me
           </StatusLink>
         </div>
