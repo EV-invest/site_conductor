@@ -41,6 +41,8 @@
             ## Playwright
             test-results/
             playwright-report/
+            ## Local DB (nix run .#db / .#dev)
+            .pg/
             ## LLMs
             AGENTS.md
             CLAUDE.md
@@ -88,12 +90,90 @@
           '';
         };
 
+        # ── backend (Axum API) ──────────────────────────────────────────────
+        # Needs a Postgres (use `.#db` or `.#dev`). Every other integration
+        # (SMTP, Sentry, PostHog) is a no-op until its env is set, so the bare
+        # default just boots against the local trust-auth cluster.
+        runBackend = pkgs.writeShellApplication {
+          name = "run-backend";
+          runtimeInputs = with pkgs; [ rust git ];
+          text = ''
+            ${dyldFallback}
+            repo="$(git rev-parse --show-toplevel)"
+            cd "$repo"
+            export DATABASE_URL="''${DATABASE_URL:-postgres://postgres@localhost:5432/ev_landing}"
+            export BIND_ADDR="''${BIND_ADDR:-0.0.0.0:8080}"
+            export RUST_LOG="''${RUST_LOG:-info,backend=debug}"
+            export APP_ENV="''${APP_ENV:-development}"
+            exec cargo run -p backend
+          '';
+        };
+
+        # ── local Postgres ──────────────────────────────────────────────────
+        # Project-local dev database. Cluster data + unix sockets live under
+        # .pg/ at the repo root (gitignored). First run initdb's a trust-auth
+        # cluster and creates `ev_landing`; later runs just start the server.
+        # Listens on 127.0.0.1:5432 — matches backend/.env.example.
+        runPostgres = pkgs.writeShellApplication {
+          name = "run-postgres";
+          runtimeInputs = with pkgs; [ postgresql git coreutils gnugrep ];
+          text = ''
+            repo="$(git rev-parse --show-toplevel)"
+            export PGDATA="$repo/.pg/data"
+            sockets="$repo/.pg/sockets"
+            port="''${PGPORT:-5432}"
+            db="''${PGDATABASE:-ev_landing}"
+
+            mkdir -p "$sockets"
+            if [ ! -s "$PGDATA/PG_VERSION" ]; then
+              echo "initialising postgres cluster in $PGDATA"
+              initdb --username=postgres --auth=trust --pgdata="$PGDATA" >/dev/null
+            fi
+            # Postgres refuses to start unless PGDATA is 0700/0750 — clamp it.
+            chmod 0700 "$PGDATA"
+
+            (
+              until pg_isready --host="$sockets" --port="$port" --quiet; do sleep 0.2; done
+              if ! psql --host="$sockets" --port="$port" --username=postgres --dbname=postgres \
+                     --tuples-only --no-align \
+                     --command "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1; then
+                createdb --host="$sockets" --port="$port" --username=postgres "$db"
+                echo "created database '$db'"
+              fi
+              echo "postgres ready on 127.0.0.1:$port (db '$db', user 'postgres', trust auth)"
+            ) &
+
+            exec postgres -D "$PGDATA" -k "$sockets" -h 127.0.0.1 -p "$port"
+          '';
+        };
+
+        # ── contract codegen ────────────────────────────────────────────────
+        # `nix run .#gen-api` → dump the Rust/utoipa OpenAPI spec to
+        # backend/openapi.json, then regenerate the TS client from it. Run after
+        # changing any DTO or handler signature; commit both the spec and client.
+        runGenApi = pkgs.writeShellApplication {
+          name = "run-gen-api";
+          runtimeInputs = with pkgs; [ rust nodejs git ];
+          text = ''
+            ${dyldFallback}
+            repo="$(git rev-parse --show-toplevel)"
+            cd "$repo"
+            echo "▶ dumping OpenAPI spec → backend/openapi.json"
+            cargo run --quiet --bin gen_openapi > backend/openapi.json
+            echo "▶ generating TS client → frontend/shared/api/generated"
+            cd frontend
+            [ -d node_modules/.bin ] || npm install
+            npm run gen:api
+          '';
+        };
+
         # ── dev orchestrator ────────────────────────────────────────────────
-        # `nix run .#dev` → the frontend. The backend/ placeholder joins here once
-        # it grows a service.
+        # `nix run .#dev` → Postgres + backend + frontend. Postgres starts first;
+        # the backend launches once it accepts connections. One trap tears the
+        # whole tree down on Ctrl-C / exit.
         runDev = pkgs.writeShellApplication {
           name = "run-dev";
-          runtimeInputs = with pkgs; [ git ];
+          runtimeInputs = with pkgs; [ postgresql git coreutils ];
           text = ''
             pids=()
             cleanup() {
@@ -103,6 +183,14 @@
             }
             trap cleanup EXIT INT TERM
 
+            echo "▶ postgres"
+            ${runPostgres}/bin/run-postgres & pids+=($!)
+
+            echo "  waiting for postgres on 127.0.0.1:''${PGPORT:-5432}…"
+            until pg_isready --host=127.0.0.1 --port="''${PGPORT:-5432}" --quiet; do sleep 0.3; done
+
+            echo "▶ backend  (:8080)"
+            ${runBackend}/bin/run-backend & pids+=($!)
             echo "▶ frontend (:3001)"
             ${runFrontend}/bin/run-frontend & pids+=($!)
 
@@ -111,11 +199,17 @@
         };
       in
       {
-        # `nix run .#dev`      → frontend (and the backend once it exists)
+        # `nix run .#dev`      → Postgres + backend + frontend
         # `nix run .#frontend` → Next.js marketing site (:3001)
+        # `nix run .#backend`  → Axum API only (:8080, needs a DB: `.#db` or `.#dev`)
+        # `nix run .#db`       → local Postgres only (:5432)
+        # `nix run .#gen-api`  → regenerate openapi.json + the TS client
         apps = {
           dev = { type = "app"; program = "${runDev}/bin/run-dev"; };
           frontend = { type = "app"; program = "${runFrontend}/bin/run-frontend"; };
+          backend = { type = "app"; program = "${runBackend}/bin/run-backend"; };
+          db = { type = "app"; program = "${runPostgres}/bin/run-postgres"; };
+          gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
         };
 
         devShells.default =
@@ -139,6 +233,7 @@
               clang-tools
               rust
               mold
+              postgresql
               playwright-driver.browsers
             ] ++ pre-commit-check.enabledPackages ++ combined.enabledPackages;
 
