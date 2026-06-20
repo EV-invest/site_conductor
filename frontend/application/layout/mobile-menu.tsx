@@ -46,7 +46,7 @@ export function MobileMenu() {
 
       {open &&
         createPortal(
-          <div className="fixed inset-0 z-[70] flex flex-col bg-main-black px-6 pb-10 lg:hidden">
+          <div className="fixed inset-0 z-[70] flex flex-col bg-main-black px-6 pb-10 duration-200 animate-in fade-in lg:hidden">
             <div className="flex h-20 shrink-0 items-center justify-end">
               <button
                 type="button"
@@ -57,7 +57,7 @@ export function MobileMenu() {
                 <X className="size-6" />
               </button>
             </div>
-            <nav className="flex flex-col font-mono-tech text-sm uppercase tracking-widest">
+            <nav className="flex flex-col font-mono-tech text-sm uppercase tracking-widest duration-300 ease-out animate-in fade-in slide-in-from-top-4">
               {NAV_ITEMS.map(item => (
                 <Link
                   key={item.href}
@@ -71,7 +71,7 @@ export function MobileMenu() {
             </nav>
             <InvestorPortalButton
               onNavigate={() => setOpen(false)}
-              className="mt-8 w-full justify-center py-6"
+              className="mt-8 w-full justify-center py-6 duration-300 ease-out animate-in fade-in slide-in-from-top-4"
             />
           </div>,
           document.body
