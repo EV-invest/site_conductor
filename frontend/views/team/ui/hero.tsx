@@ -1,3 +1,5 @@
+import { Container } from "@evinvest/uikit";
+
 // Top stats mirror the Figma hero ribbon. Static marketing figures.
 const STATS = [
   { label: "Years Experience", value: "30+" },
@@ -9,7 +11,7 @@ const STATS = [
 export function TeamHero() {
   return (
     <section className="pb-14 pt-36 sm:pt-40">
-      <div className="container space-y-5">
+      <Container className="space-y-5">
         <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-main-accent-t1">
           Our people
         </span>
@@ -36,7 +38,7 @@ export function TeamHero() {
             </div>
           ))}
         </dl>
-      </div>
+      </Container>
     </section>
   );
 }

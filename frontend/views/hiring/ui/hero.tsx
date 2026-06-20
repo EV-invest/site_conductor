@@ -1,3 +1,4 @@
+import { Container } from "@evinvest/uikit";
 import { ArrowDown } from "lucide-react";
 
 function Stat({
@@ -28,7 +29,7 @@ export function HiringHero({
 }) {
   return (
     <section className="relative overflow-hidden bg-main-black pt-40 pb-16">
-      <div className="container">
+      <Container>
         <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
           Hiring · Join the fund
         </p>
@@ -66,7 +67,7 @@ export function HiringHero({
           <span className="h-8 w-px bg-white/10" />
           <Stat value="2" label="Office locations" className="text-white" />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

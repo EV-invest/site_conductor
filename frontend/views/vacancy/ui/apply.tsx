@@ -1,3 +1,4 @@
+import { Container } from "@evinvest/uikit";
 import { ApplicationForm } from "@/features/job-application";
 import type { VacancyDetail } from "@/entities/vacancy";
 import { DashList } from "./dash-list";
@@ -7,7 +8,7 @@ import { DashList } from "./dash-list";
 export function VacancyApply({ vacancy }: { vacancy: VacancyDetail }) {
   return (
     <section id="apply" className="scroll-mt-24 bg-main-black pb-24 pt-8">
-      <div className="container">
+      <Container>
         <div className="rounded-3xl border border-white/[0.06] bg-main-card/20 p-8 sm:p-12">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
@@ -46,7 +47,7 @@ export function VacancyApply({ vacancy }: { vacancy: VacancyDetail }) {
             />
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

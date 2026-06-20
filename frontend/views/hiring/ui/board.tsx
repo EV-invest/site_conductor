@@ -3,7 +3,12 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
-import { VACANCY_CATEGORIES, type VacancySummary, vacancyTeamLabel } from "@/entities/vacancy";
+import { Container } from "@evinvest/uikit";
+import {
+  VACANCY_CATEGORIES,
+  type VacancySummary,
+  vacancyTeamLabel,
+} from "@/entities/vacancy";
 
 export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
   const [query, setQuery] = useState("");
@@ -11,19 +16,26 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return vacancies.filter((v) => {
+    return vacancies.filter(v => {
       const matchesCategory = category === "all" || v.category === category;
-      const matchesQuery = !q || v.title.toLowerCase().includes(q) || v.summary.toLowerCase().includes(q) || v.location.toLowerCase().includes(q);
+      const matchesQuery =
+        !q ||
+        v.title.toLowerCase().includes(q) ||
+        v.summary.toLowerCase().includes(q) ||
+        v.location.toLowerCase().includes(q);
       return matchesCategory && matchesQuery;
     });
   }, [vacancies, query, category]);
 
   return (
     <section id="open-roles" className="scroll-mt-24 bg-main-black py-20">
-      <div className="container">
-        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">Open roles</p>
+      <Container>
+        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
+          Open roles
+        </p>
         <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
-          Where we&apos;re <span className="font-serif italic text-main-accent-t1">hiring</span>.
+          Where we&apos;re{" "}
+          <span className="font-serif italic text-main-accent-t1">hiring</span>.
         </h2>
 
         <div className="mt-8 flex items-center gap-4">
@@ -31,7 +43,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-main-mist/30" />
             <input
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={e => setQuery(e.target.value)}
               placeholder="Search roles, teams, or locations…"
               aria-label="Search roles"
               className="w-full rounded-lg border border-white/10 bg-main-card/40 py-3.5 pl-11 pr-4 text-sm text-main-mist placeholder:text-main-mist/30 focus:border-main-accent-t1/40 focus:outline-none"
@@ -43,7 +55,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2.5">
-          {VACANCY_CATEGORIES.map((c) => (
+          {VACANCY_CATEGORIES.map(c => (
             <button
               key={c.key}
               type="button"
@@ -60,7 +72,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
         </div>
 
         <div className="mt-8 space-y-4">
-          {filtered.map((vacancy) => (
+          {filtered.map(vacancy => (
             <RoleRow key={vacancy.slug} vacancy={vacancy} />
           ))}
           {filtered.length === 0 && (
@@ -80,7 +92,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
             </p>
           )}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
@@ -93,8 +105,12 @@ function RoleRow({ vacancy }: { vacancy: VacancySummary }) {
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-3">
-          <h3 className="font-serif-display text-xl text-white sm:text-2xl">{vacancy.title}</h3>
-          <span className="rounded bg-main-accent-t1/10 px-2 py-0.5 font-mono-tech text-[9px] uppercase tracking-[0.16em] text-main-accent-t1">{vacancyTeamLabel(vacancy.category, vacancy.category_label)}</span>
+          <h3 className="font-serif-display text-xl text-white sm:text-2xl">
+            {vacancy.title}
+          </h3>
+          <span className="rounded bg-main-accent-t1/10 px-2 py-0.5 font-mono-tech text-[9px] uppercase tracking-[0.16em] text-main-accent-t1">
+            {vacancyTeamLabel(vacancy.category, vacancy.category_label)}
+          </span>
         </div>
         <p className="mt-2 text-sm text-main-mist/60">{vacancy.summary}</p>
         <p className="mt-2 font-mono-tech text-[10px] uppercase tracking-[0.16em] text-main-mist/40">

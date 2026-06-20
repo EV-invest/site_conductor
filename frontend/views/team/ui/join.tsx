@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Users, Globe } from "lucide-react";
+import { Container } from "@evinvest/uikit";
 import { SectionHead } from "./section-head";
 
 // Plain styled <Link> CTAs (not two sibling <Button asChild> — that desyncs
@@ -26,7 +27,7 @@ const CARDS = [
 export function TeamJoin() {
   return (
     <section className="border-t border-main-mist/10 pb-24 pt-20">
-      <div className="container space-y-12">
+      <Container className="space-y-12">
         <SectionHead eyebrow="Get involved">Build the fund with us</SectionHead>
         <div className="grid gap-6 md:grid-cols-2">
           {CARDS.map(({ icon: Icon, eyebrow, title, body, cta, href }) => (
@@ -55,7 +56,7 @@ export function TeamJoin() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

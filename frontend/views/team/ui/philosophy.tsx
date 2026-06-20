@@ -1,4 +1,5 @@
 import { LineChart, ShieldCheck, Anchor } from "lucide-react";
+import { Container } from "@evinvest/uikit";
 import { SectionHead } from "./section-head";
 
 const PRINCIPLES = [
@@ -22,7 +23,7 @@ const PRINCIPLES = [
 export function TeamPhilosophy() {
   return (
     <section className="border-t border-main-mist/10 bg-main-surface py-20">
-      <div className="container space-y-12">
+      <Container className="space-y-12">
         <SectionHead eyebrow="How we operate">
           A discipline, not a pitch
         </SectionHead>
@@ -44,7 +45,7 @@ export function TeamPhilosophy() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

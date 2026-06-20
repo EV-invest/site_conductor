@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Container } from "@evinvest/uikit";
 import { Logo } from "@/shared/ui/logo";
 import { NAV_ITEMS } from "./nav-items";
 import { InvestorPortalButton } from "./investor-portal-button";
@@ -24,7 +25,7 @@ export function Header() {
           : "bg-transparent border-transparent py-6"
       }`}
     >
-      <div className="container flex items-center justify-between gap-4">
+      <Container className="flex items-center justify-between gap-4">
         <Link
           href="/"
           className="flex items-center gap-3"
@@ -57,7 +58,7 @@ export function Header() {
           <InvestorPortalButton className="hidden sm:inline-flex" />
           <MobileMenu />
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

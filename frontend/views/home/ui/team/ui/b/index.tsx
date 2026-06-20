@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { ASSETS } from "@/shared/config/assets";
 import { TEAM } from "@/entities/team";
@@ -16,7 +17,7 @@ export function TeamB() {
       id="team"
       className="py-24 relative border-t border-main-mist/10 bg-main-black"
     >
-      <div className="container">
+      <Container>
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-16">
           <div className="lg:col-span-6 space-y-4">
             <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block">
@@ -24,7 +25,9 @@ export function TeamB() {
             </span>
             <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light">
               Led by{" "}
-              <span className="italic text-main-accent-t1 font-serif">Institutional Pioneers</span>
+              <span className="italic text-main-accent-t1 font-serif">
+                Institutional Pioneers
+              </span>
             </h2>
             <Text className="max-w-xl">
               The EV Investment team combines international experience in
@@ -47,7 +50,9 @@ export function TeamB() {
                   <span className="text-[10px] font-mono-tech text-main-accent-t1 uppercase tracking-wider">
                     Head Office
                   </span>
-                  <h4 className="text-sm font-bold text-white">EV Boardroom • Quy Nhon</h4>
+                  <h4 className="text-sm font-bold text-white">
+                    EV Boardroom • Quy Nhon
+                  </h4>
                 </div>
                 <Text asChild variant="secondary">
                   <span className="text-[10px] font-mono-tech">Q1 2026</span>
@@ -83,7 +88,7 @@ export function TeamB() {
           ))}
           <TeamPlaceholders />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

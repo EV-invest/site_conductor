@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { Container } from "@evinvest/uikit";
+
 import { RemoteElement } from "@/shared/mfe";
 import { findMfe } from "@/shared/mfe/registry";
 
@@ -34,7 +36,9 @@ export default async function MfePage({
       scriptUrl={entry.scriptUrl}
       className="block min-h-[60vh]"
       fallback={
-        <div className="container py-24 text-main-mist/60">Loading {entry.name}…</div>
+        <Container className="py-24 text-main-mist/60">
+          Loading {entry.name}…
+        </Container>
       }
     />
   );

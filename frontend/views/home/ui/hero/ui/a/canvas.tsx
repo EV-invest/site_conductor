@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, type ReactNode } from "react";
+import { Container } from "@evinvest/uikit";
 import { ASSETS } from "@/shared/config/assets";
 
 /**
@@ -44,7 +45,7 @@ export function HeroACanvas({
 
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
 
-      <div className="container relative z-10 text-center flex flex-col items-center justify-center h-full max-w-4xl px-4">
+      <Container className="relative z-10 text-center flex flex-col items-center justify-center h-full max-w-4xl px-4">
         <div
           className="transition-all duration-700 ease-out"
           style={{
@@ -56,7 +57,7 @@ export function HeroACanvas({
         </div>
 
         <div className="flex flex-col items-center gap-4">{cta}</div>
-      </div>
+      </Container>
     </>
   );
 }

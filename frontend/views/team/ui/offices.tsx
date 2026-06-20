@@ -1,11 +1,12 @@
 import { MapPin } from "lucide-react";
+import { Container } from "@evinvest/uikit";
 import { OFFICES } from "@/shared/config/site";
 import { SectionHead } from "./section-head";
 
 export function TeamOffices() {
   return (
     <section className="border-t border-main-mist/10 py-20">
-      <div className="container space-y-12">
+      <Container className="space-y-12">
         <SectionHead eyebrow="Presence">Where we work</SectionHead>
         <div className="grid gap-6 md:grid-cols-2">
           {OFFICES.map(office => (
@@ -28,7 +29,7 @@ export function TeamOffices() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

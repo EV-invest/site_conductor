@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { Container } from "@evinvest/uikit";
 import { ASSETS } from "@/shared/config/assets";
 import { TeamMembers } from "./members";
 
 export function TeamLeadership() {
   return (
     <section className="border-t border-main-mist/10 py-20">
-      <div className="container space-y-14">
+      <Container className="space-y-14">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="space-y-5">
             <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-main-accent-t1">
@@ -48,7 +49,7 @@ export function TeamLeadership() {
           </div>
         </div>
         <TeamMembers />
-      </div>
+      </Container>
     </section>
   );
 }

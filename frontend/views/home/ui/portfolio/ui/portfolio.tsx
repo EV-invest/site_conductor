@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TrendingUp, MapPin, ArrowUpRight } from "lucide-react";
-import { Button } from "@evinvest/uikit";
+import { Button, Container } from "@evinvest/uikit";
 import { Heading, Text } from "@/shared/ui/text";
 import { Reveal } from "@/shared/ui/reveal";
 import { notifyPlaceholder } from "@/shared/lib/utils";
@@ -18,7 +18,7 @@ export function PortfolioA() {
       id="portfolio"
       className="py-24 relative border-t border-main-mist/10"
     >
-      <div className="container">
+      <Container>
         <Reveal className="flex flex-col md:flex-row md:items-end justify-between mb-16">
           <div>
             <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block mb-3">
@@ -26,7 +26,9 @@ export function PortfolioA() {
             </span>
             <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light">
               Premium Asset{" "}
-              <span className="italic text-main-accent-t1 font-serif">Portfolio</span>
+              <span className="italic text-main-accent-t1 font-serif">
+                Portfolio
+              </span>
             </h2>
           </div>
           <Text className="max-w-md mt-4 md:mt-0">
@@ -190,7 +192,7 @@ export function PortfolioA() {
           {/* Asset 4 — the investment calculator lives in its own feature. */}
           <InvestmentCalculator className="md:col-span-2" />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
