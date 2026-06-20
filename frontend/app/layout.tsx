@@ -1,5 +1,4 @@
 import { Suspense, type ReactNode } from "react";
-import { cookies } from "next/headers";
 import Script from "next/script";
 import { fontInter, fontPlayfair } from "@/application/styles/fonts";
 import { Providers } from "@/application/providers";
@@ -14,11 +13,11 @@ export { metadata, viewport } from "@/application/metadata";
 const analyticsEndpoint = process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT;
 const analyticsWebsiteId = process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID;
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  // Reading cookies opts every route into dynamic rendering — required for
-  // cookie-based A/B (the assigned variant must be read per request).
-  await cookies();
-
+export default function RootLayout({ children }: { children: ReactNode }) {
+  // The layout stays static so non-A/B routes (/team, /hiring, /contact, the
+  // status pages) can statically render. A/B pages opt into dynamic rendering
+  // where it's actually needed: each tested section awaits `getVariant`, which
+  // reads the `ab_*` cookie (next/headers) and dynamizes that route on its own.
   return (
     <html
       lang="en"
