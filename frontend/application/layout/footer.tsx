@@ -1,5 +1,6 @@
 "use client";
 
+import { Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { notifyPlaceholder } from "@/shared/lib/utils";
@@ -8,7 +9,7 @@ export function Footer() {
   // 6. FOOTER (Minimalist, structured)
   return (
     <footer className="bg-main-black border-t border-main-mist/10 py-16">
-      <div className="container">
+      <Container>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
@@ -92,7 +93,7 @@ export function Footer() {
         <div className="border-t border-main-mist/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono-tech text-main-mist/40">
           <p>© 2026 EV Investment. All rights reserved.</p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

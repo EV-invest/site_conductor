@@ -1,0 +1,435 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EV Investment landing API",
+    "description": "Source of truth for vacancies, applications and contact messages.",
+    "license": {
+      "name": "BlueOak-1.0.0",
+      "identifier": "BlueOak-1.0.0"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/applications": {
+      "post": {
+        "tags": [
+          "applications"
+        ],
+        "summary": "`POST /applications` — submit a job application (general or for a role).\nReturns `202 Accepted`: the application is persisted synchronously, while\nthe confirmation/notification emails are dispatched best-effort.",
+        "operationId": "create_application",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplicationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Application received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationAccepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "404": {
+            "description": "Referenced role not found"
+          }
+        }
+      }
+    },
+    "/api/v1/contact": {
+      "post": {
+        "tags": [
+          "contact"
+        ],
+        "summary": "`POST /contact` — submit a vacancy-agnostic contact message.",
+        "operationId": "create_contact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Message received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactAccepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          }
+        }
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Liveness probe.",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Service is live"
+          }
+        }
+      }
+    },
+    "/api/v1/vacancies": {
+      "get": {
+        "tags": [
+          "vacancies"
+        ],
+        "summary": "`GET /vacancies?category=&q=` — the searchable board.",
+        "operationId": "list_vacancies",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by discipline (`investment` | `development` | `advisory` | `operations`).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Free-text search over title and summary.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching open roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VacancySummary"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unknown category"
+          }
+        }
+      }
+    },
+    "/api/v1/vacancies/{slug}": {
+      "get": {
+        "tags": [
+          "vacancies"
+        ],
+        "summary": "`GET /vacancies/{slug}` — one role for the detail-page template.",
+        "operationId": "get_vacancy",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Role slug, e.g. investment-analyst",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VacancyDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplicationAccepted": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "ContactAccepted": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateApplicationRequest": {
+        "type": "object",
+        "description": "Inbound payload for `POST /applications`. `vacancy_slug == None` is a\ngeneral talent-pool application; `confirmed_requirements` and\n`screening_answer` are only meaningful when applying to a specific role.",
+        "required": [
+          "name",
+          "email",
+          "message"
+        ],
+        "properties": {
+          "confirmed_requirements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "type": "string",
+            "example": "jane@example.com"
+          },
+          "message": {
+            "type": "string",
+            "example": "I underwrote 40 coastal deals at..."
+          },
+          "name": {
+            "type": "string",
+            "example": "Jane Doe"
+          },
+          "portfolio_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "screening_answer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "vacancy_slug": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "investment-analyst"
+          }
+        }
+      },
+      "CreateContactRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "message"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "jane@example.com"
+          },
+          "message": {
+            "type": "string",
+            "example": "I'd like to learn more about the Quy Nhơn fund."
+          },
+          "name": {
+            "type": "string",
+            "example": "Jane Doe"
+          }
+        }
+      },
+      "VacancyDetail": {
+        "type": "object",
+        "description": "Full role for the detail page template.",
+        "required": [
+          "id",
+          "slug",
+          "title",
+          "category",
+          "category_label",
+          "location",
+          "employment_type",
+          "summary",
+          "about",
+          "responsibilities",
+          "requirements",
+          "nice_to_have",
+          "offer",
+          "screening_question",
+          "compensation",
+          "created_at"
+        ],
+        "properties": {
+          "about": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "category_label": {
+            "type": "string"
+          },
+          "compensation": {
+            "type": "string",
+            "description": "Always \"Negotiable\" — the public site never publishes a figure."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "employment_type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location": {
+            "type": "string"
+          },
+          "nice_to_have": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "offer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "responsibilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "screening_question": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "VacancySummary": {
+        "type": "object",
+        "description": "Board row — the lightweight projection for the searchable list.",
+        "required": [
+          "id",
+          "slug",
+          "title",
+          "category",
+          "category_label",
+          "location",
+          "employment_type",
+          "summary"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Stable key for filtering (`investment` | `development` | `advisory` | `operations`)."
+          },
+          "category_label": {
+            "type": "string",
+            "description": "Human label for the chip."
+          },
+          "employment_type": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "vacancies",
+      "description": "Open roles"
+    },
+    {
+      "name": "applications",
+      "description": "Job applications"
+    },
+    {
+      "name": "contact",
+      "description": "Contact messages"
+    },
+    {
+      "name": "health",
+      "description": "Liveness"
+    }
+  ]
+}

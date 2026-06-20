@@ -3,13 +3,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "d2xsxph8kpxj0f.cloudfront.net",
-      },
-    ],
+  // Enables the `forbidden()` / `unauthorized()` interrupts and their
+  // `forbidden.tsx` / `unauthorized.tsx` file conventions (still experimental).
+  experimental: {
+    authInterrupts: true,
   },
 };
 

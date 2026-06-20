@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE, ROUTES } from "@/shared/config/site";
 import { ASSETS } from "@/shared/config/assets";
+import { listVacancies } from "@/entities/vacancy";
 
-// Static route — no request data, so statically generated despite the dynamic
-// page. Driven off shared/config ROUTES so adding a subpage = one list entry.
-export const dynamic = "force-static";
+// Driven off shared/config ROUTES (adding a subpage = one list entry) plus the
+// live vacancy detail pages, fetched at build so each role is indexable. ISR
+// (not force-static) so newly published roles enter the sitemap without a
+// redeploy; the backend being unreachable degrades to the static routes only.
+export const revalidate = 3600;
 
 // Sitemap requires absolute URLs.
 const abs = (path: string) =>
@@ -19,9 +22,10 @@ const HOME_IMAGES = [
   "/assets/EV_Investment_office.png",
 ].map(abs);
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
-  return ROUTES.map(route => ({
+
+  const staticEntries: MetadataRoute.Sitemap = ROUTES.map(route => ({
     url: route.path === "/" ? SITE.url : abs(route.path),
     lastModified,
     changeFrequency: route.changeFrequency,
@@ -39,4 +43,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       : {}),
     ...(route.path === "/" ? { images: HOME_IMAGES } : {}),
   }));
+
+  // Live vacancy detail pages. Degrade to static routes only if unreachable.
+  let vacancyEntries: MetadataRoute.Sitemap = [];
+  try {
+    const { data } = await listVacancies({ cache: "force-cache" });
+    vacancyEntries = (data ?? []).map(vacancy => ({
+      url: abs(`/hiring/${vacancy.slug}`),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    }));
+  } catch {
+    vacancyEntries = [];
+  }
+
+  return [...staticEntries, ...vacancyEntries];
 }

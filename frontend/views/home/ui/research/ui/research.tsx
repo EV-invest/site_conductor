@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
-import { Button } from "@evinvest/uikit";
+import { Button, Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal } from "@/shared/ui/reveal";
@@ -62,7 +62,7 @@ export function ResearchA() {
       id="research"
       className="research-texture py-24 text-main-mist relative overflow-hidden border-y border-main-mist/10"
     >
-      <div className="container relative z-10">
+      <Container className="relative z-10">
         <Reveal className="max-w-3xl mb-16">
           <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block mb-3">
             Academic Rigor
@@ -176,7 +176,7 @@ export function ResearchA() {
             </motion.div>
           </motion.div>
         </Reveal>
-      </div>
+      </Container>
     </section>
   );
 }

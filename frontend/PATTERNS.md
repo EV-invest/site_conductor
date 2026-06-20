@@ -151,3 +151,33 @@ Practical split strategies:
 
 Each slice exposes a public API via its `index.ts`; import from the slice root,
 not deep paths.
+
+---
+
+## 6. Backend data — generated client behind entities
+
+The Rust backend owns the HTTP contract. The flow is one-directional:
+
+```
+backend (utoipa) → backend/openapi.json → @hey-api/openapi-ts → shared/api/generated → entities/* → views/features
+```
+
+- **Never hand-edit `shared/api/generated/`** — regenerate with `nix run .#gen-api`
+  (dumps `openapi.json`, then runs `npm run gen:api`). Commit both.
+- **Consume via `@/shared/api`**, never reach into `generated/`. `shared/api/runtime.ts`
+  injects `baseUrl` from `NEXT_PUBLIC_API_URL` and is the only file codegen won't overwrite.
+- **Entities wrap the transport in domain names** — `entities/vacancy` re-exports
+  `listVacancies`/`getVacancy` + types; features/views depend on the entity, not `shared/api`.
+- **Fetch in Server Components**, `export const dynamic = "force-dynamic"`, and degrade
+  gracefully (try/catch → empty state) so the build never needs the backend reachable.
+  The hey-api client returns `{ data, error }` (no throw by default) — branch on it.
+
+---
+
+## 7. Gotcha — no two sibling `<Button asChild>`
+
+Two sibling `@evinvest/uikit` `<Button asChild>` (Radix Slot → `<Link>`) **desync
+hydration** under React 19 and one silently drops from the client DOM. For nav CTAs
+(which are just links), render a plain styled `<Link className={…}>` or a plain
+`<button onClick>` instead — see `views/status/ui/buttons.tsx`. A single `Button
+asChild`, or a non-`asChild` `<Button onClick>`, is fine.

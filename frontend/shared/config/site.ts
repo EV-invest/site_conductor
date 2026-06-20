@@ -103,4 +103,7 @@ export type Route = {
 
 export const ROUTES: Route[] = [
   { path: "/", changeFrequency: "monthly", priority: 1 },
+  { path: "/team", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/hiring", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
 ];
