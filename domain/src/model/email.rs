@@ -6,7 +6,7 @@ use crate::error::DomainError;
 /// structural, not exhaustive (RFC 5322 is not worth re-implementing): one
 /// `@`, a non-empty local part, and a dotted domain with no spaces. Stored
 /// trimmed; serialises transparently as the bare string.
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct EmailAddress(String);
 

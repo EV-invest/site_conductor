@@ -11,7 +11,7 @@ pub type VacancyId = Id<VacancyTag, uuid::Uuid>;
 pub struct VacancyTag;
 
 /// The discipline a role belongs to — also the board's filter facets.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum VacancyCategory {
 	Investment,
@@ -53,7 +53,7 @@ impl VacancyCategory {
 
 /// URL-safe identifier for a role (`investment-analyst`). The slug — not the
 /// UUID — is what the detail route `/hiring/{slug}` resolves against.
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct Slug(String);
 
@@ -80,7 +80,7 @@ impl Slug {
 /// Pay disclosure for a role. A closed enum with a single variant is a
 /// deliberate constraint: the public site never publishes a salary figure —
 /// compensation is always "Negotiable" (the EN rendering of «договорная»).
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Compensation {
 	Negotiable,
