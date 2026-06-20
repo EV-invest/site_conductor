@@ -33,7 +33,7 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   const toggle = (requirement: string) =>
-    setChecked((prev) => {
+    setChecked(prev => {
       const next = new Set(prev);
       if (next.has(requirement)) next.delete(requirement);
       else next.add(requirement);
@@ -69,34 +69,71 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
 
   if (status === "sent") {
     return (
-      <div role="status" className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center">
+      <div
+        role="status"
+        className="flex flex-col items-center rounded-xl border border-main-accent-t1/30 bg-main-card/40 p-10 text-center"
+      >
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-main-accent-t1/15">
           <Check className="h-6 w-6 text-main-accent-t1" />
         </div>
-        <h3 className="font-serif-display text-2xl text-white">Thanks{name ? `, ${name.split(" ")[0]}` : ""} — we&apos;ve got it.</h3>
-        <p className="mt-2 max-w-xs text-sm text-main-mist/60">Your application has reached our team. We read every one and will be in touch.</p>
+        <h3 className="font-serif-display text-2xl text-white">
+          Thanks{name ? `, ${name.split(" ")[0]}` : ""} — we&apos;ve got it.
+        </h3>
+        <p className="mt-2 max-w-xs text-sm text-main-mist/60">
+          Your application has reached our team. We read every one and will be
+          in touch.
+        </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit} className="rounded-xl border border-white/10 bg-main-card/40 p-6">
+    <form
+      onSubmit={submit}
+      className="rounded-xl border border-white/10 bg-main-card/40 p-6"
+    >
       <div className="mb-5 flex items-center justify-between">
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">Open application</span>
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">{vacancy ? `Role · ${vacancy.title}` : "Form · EV-Careers"}</span>
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
+          Open application
+        </span>
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
+          {vacancy ? `Role · ${vacancy.title}` : "Form · EV-Hiring"}
+        </span>
       </div>
-      <h3 className="font-serif-display text-2xl text-white">Tell us where you fit.</h3>
-      <p className="mb-5 mt-1 text-sm text-main-mist/55">A few lines is enough — we read every note.</p>
+      <h3 className="font-serif-display text-2xl text-white">
+        Tell us where you fit.
+      </h3>
+      <p className="mb-5 mt-1 text-sm text-main-mist/55">
+        A few lines is enough — we read every note.
+      </p>
 
       <div className="space-y-4">
         <Field label="Your name">
-          <input value={name} onChange={(e) => setName(e.target.value)} required className={CONTROL} placeholder="Jane Doe" />
+          <input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+            className={CONTROL}
+            placeholder="Jane Doe"
+          />
         </Field>
         <Field label="Email">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={CONTROL} placeholder="jane@fund.com" />
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            className={CONTROL}
+            placeholder="jane@fund.com"
+          />
         </Field>
         <Field label="Portfolio or LinkedIn (optional)">
-          <input value={portfolio} onChange={(e) => setPortfolio(e.target.value)} className={CONTROL} placeholder="https://…" />
+          <input
+            value={portfolio}
+            onChange={e => setPortfolio(e.target.value)}
+            className={CONTROL}
+            placeholder="https://…"
+          />
         </Field>
         {vacancy && (
           <RoleBlock
@@ -110,7 +147,14 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
           />
         )}
         <Field label="Where you'd fit">
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} required rows={4} className={CONTROL} placeholder="A few lines on what you'd want to own, and why EV…" />
+          <textarea
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            required
+            rows={4}
+            className={CONTROL}
+            placeholder="A few lines on what you'd want to own, and why EV…"
+          />
         </Field>
       </div>
 
@@ -126,9 +170,17 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
         aria-busy={status === "sending"}
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
       >
-        {status === "sending" ? "Sending…" : <>Send application <Send className="h-4 w-4" /></>}
+        {status === "sending" ? (
+          "Sending…"
+        ) : (
+          <>
+            Send application <Send className="h-4 w-4" />
+          </>
+        )}
       </button>
-      <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-main-mist/35">Reply within ~2 weeks · Quy Nhơn · HCMC</p>
+      <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-main-mist/35">
+        Reply within ~2 weeks · Quy Nhơn · HCMC
+      </p>
     </form>
   );
 }

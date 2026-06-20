@@ -22,11 +22,11 @@ export function TeamPlaceholders() {
         iconClassName="text-main-accent-t1"
         title="Join Us"
         body="We are always looking for talented analysts and asset managers in Quy Nhon."
-        cta="Careers"
+        cta="Hiring"
         onCtaClick={() =>
-          track("cta_clicked", { cta: "careers" }, (fire) => {
+          track("cta_clicked", { cta: "hiring" }, fire => {
             fire();
-            notifyPlaceholder("Careers");
+            notifyPlaceholder("Hiring");
           })
         }
         heading="Open Position"
@@ -40,7 +40,7 @@ export function TeamPlaceholders() {
         body="Over 40 institutional investors across 12 countries trust us with their capital."
         cta="IR Contacts"
         onCtaClick={() =>
-          track("cta_clicked", { cta: "ir_contacts" }, (fire) => {
+          track("cta_clicked", { cta: "ir_contacts" }, fire => {
             fire();
             notifyPlaceholder("IR Contacts");
           })

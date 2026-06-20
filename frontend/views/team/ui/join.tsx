@@ -10,7 +10,7 @@ const CARDS = [
     eyebrow: "Open position",
     title: "Join Us",
     body: "We are always looking for talented analysts and asset managers in Quy Nhon.",
-    cta: "Careers",
+    cta: "Hiring",
     href: "/hiring",
   },
   {

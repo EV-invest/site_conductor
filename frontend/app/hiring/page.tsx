@@ -9,7 +9,7 @@ import { HiringView } from "@/views/hiring";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Careers",
+  title: "Hiring",
   description:
     "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
   alternates: { canonical: "/hiring" },

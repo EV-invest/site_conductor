@@ -52,7 +52,7 @@ export async function generateMetadata({
   const vacancy = await fetchVacancy(slug);
   if (!vacancy) return { title: "Role not found" };
   return {
-    title: `${vacancy.title} — Careers`,
+    title: `${vacancy.title} — Hiring`,
     description: vacancy.summary,
     alternates: { canonical: `/hiring/${vacancy.slug}` },
   };
