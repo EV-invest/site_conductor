@@ -85,6 +85,8 @@ out/
 ## Playwright
 test-results/
 playwright-report/
+## Local DB (nix run .#db / .#dev)
+.pg/
 ## LLMs
 AGENTS.md
 CLAUDE.md
