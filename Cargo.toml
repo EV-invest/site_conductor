@@ -12,7 +12,10 @@ domain = { path = "domain" }
 dotenvy = "0.15.7"
 # Shared EV tactical kernel. `architecture` is the base every crate needs; the
 # backend additively enables `analytics` + `error_monitoring` (see backend/Cargo.toml).
-ev = { git = "https://github.com/EV-invest/lib.git", default-features = false, features = ["architecture"] }
+# The crate was renamed `ev` -> `ev_lib` (the `ev` name was taken on crates.io); the
+# lib target stays `ev`, so `use ev::…` and the `ev` dependency key are unchanged.
+# Pinned to the 0.3.0 commit on `main` — 0.3.0 isn't on crates.io / tagged yet.
+ev = { git = "https://github.com/EV-invest/lib.git", rev = "dffa88691d0fad9830c451c01446d071f9e90c71", package = "ev_lib", default-features = false, features = ["architecture"] }
 jiff = "0.2"
 # Transactional email. rustls (not native-tls) to share one TLS stack with sqlx.
 lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls-tls", "hostname"] }
