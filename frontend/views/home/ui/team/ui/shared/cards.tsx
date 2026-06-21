@@ -1,37 +1,7 @@
-import type { ReactNode } from "react";
 import { type LucideIcon } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
-
-/**
- * Grid cell shell — 3:4 framed visual on top, name/label below.
- * Frame contents (photo, icon) vary per card; the shell is constant.
- */
-export function Card({
-  children,
-  heading,
-  headingClassName,
-  sub,
-}: {
-  children: ReactNode;
-  heading: string;
-  headingClassName: string;
-  sub: ReactNode;
-}) {
-  return (
-    <div className="group space-y-4">
-      <div className="relative aspect-[3/4] rounded-xl overflow-hidden border border-main-mist/10 bg-main-card">
-        {children}
-      </div>
-      <div>
-        <h4 className={`font-serif-display font-bold text-base ${headingClassName}`}>
-          {heading}
-        </h4>
-        {sub}
-      </div>
-    </div>
-  );
-}
+import { FrameCard } from "@/shared/ui/frame-card";
 
 /**
  * Non-person card — centred icon-disc, title, blurb, outline CTA button.
@@ -59,7 +29,7 @@ export function PlaceholderCard({
   sub: string;
 }) {
   return (
-    <Card
+    <FrameCard
       heading={heading}
       headingClassName="text-main-mist/40"
       sub={
@@ -90,6 +60,6 @@ export function PlaceholderCard({
           </Button>
         </div>
       </div>
-    </Card>
+    </FrameCard>
   );
 }

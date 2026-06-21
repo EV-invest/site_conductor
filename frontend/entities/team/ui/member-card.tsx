@@ -1,16 +1,17 @@
 import Image from "next/image";
 import { Text } from "@/shared/ui/text";
-import type { TeamMember } from "@/entities/team";
-import { Card } from "./cards";
+import { FrameCard } from "@/shared/ui/frame-card";
+import type { TeamMember } from "../model";
 
 /**
- * One team member's portrait cell — extracted so both A/B variants and the
- * mobile carousel render from a single definition. The bio reveals on hover
- * (desktop only); on touch the carousel shows name + role, matching the design.
+ * Canonical team-member portrait cell — a 3:4 photo with name + role beneath.
+ * Single source of truth for both the homepage Team section and the /team page
+ * (grid on desktop, swipe carousel on mobile), so the two never drift. The bio
+ * reveals on hover; touch shows just name + role, matching the design.
  */
 export function MemberCard({ member }: { member: TeamMember }) {
   return (
-    <Card
+    <FrameCard
       heading={member.name}
       headingClassName="text-white"
       sub={
@@ -29,6 +30,6 @@ export function MemberCard({ member }: { member: TeamMember }) {
       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-main-black/85 via-transparent to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <Text className="text-xs">{member.bio}</Text>
       </div>
-    </Card>
+    </FrameCard>
   );
 }

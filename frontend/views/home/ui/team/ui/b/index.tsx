@@ -3,8 +3,7 @@ import { Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { MobileCarousel } from "@/shared/ui/carousel";
 import { ASSETS } from "@/shared/config/assets";
-import { TEAM } from "@/entities/team";
-import { MemberCard } from "../shared/member-card";
+import { TEAM, MemberCard } from "@/entities/team";
 import { TeamPlaceholders } from "../shared/placeholders";
 
 /**
