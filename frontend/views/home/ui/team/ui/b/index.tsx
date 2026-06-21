@@ -1,17 +1,22 @@
 import Image from "next/image";
 import { Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
+import { MobileCarousel } from "@/shared/ui/carousel";
 import { ASSETS } from "@/shared/config/assets";
 import { TEAM } from "@/entities/team";
-import { Card } from "../shared/cards";
+import { MemberCard } from "../shared/member-card";
 import { TeamPlaceholders } from "../shared/placeholders";
 
 /**
  * Variant B — same content as A without the {@link Reveal} scroll animation
- * (the A/B differentiator). Server Component; the only client island is
- * {@link TeamPlaceholders} (CTA clicks).
+ * (the A/B differentiator). Server Component; the only client islands are
+ * {@link MobileCarousel} (swipe) and {@link TeamPlaceholders} (CTA clicks).
  */
 export function TeamB() {
+  const cards = TEAM.map(member => (
+    <MemberCard key={member.name} member={member} />
+  ));
+
   return (
     <section
       id="team"
@@ -62,31 +67,17 @@ export function TeamB() {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {TEAM.map(member => (
-            <Card
-              key={member.name}
-              heading={member.name}
-              headingClassName="text-white"
-              sub={
-                <p className="text-xs text-main-accent-t1 font-mono-tech mt-1">
-                  {member.role}
-                </p>
-              }
-            >
-              <Image
-                src={member.photo}
-                alt={member.name}
-                fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-main-black/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <Text className="text-xs">{member.bio}</Text>
-              </div>
-            </Card>
-          ))}
+        {/* Desktop: members and opportunities share one 4-up grid. */}
+        <div className="hidden gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+          {cards}
           <TeamPlaceholders />
+        </div>
+        {/* Mobile: swipe the portraits, opportunities stacked beneath. */}
+        <div className="space-y-8 sm:hidden">
+          <MobileCarousel>{cards}</MobileCarousel>
+          <div className="grid gap-8">
+            <TeamPlaceholders />
+          </div>
         </div>
       </Container>
     </section>
