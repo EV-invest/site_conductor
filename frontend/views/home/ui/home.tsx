@@ -1,5 +1,5 @@
 import { Hero } from "./hero";
-import { PortfolioIframe } from "./portfolio_iframe";
+import { Overview as RealEstateAllocation } from "./real_estate_allocation";
 import { Research } from "./research";
 import { Team } from "./team";
 import { HomeStructuredData } from "./structured-data";
@@ -14,7 +14,7 @@ export function HomeView() {
     <div className="min-h-screen bg-main-black text-main-mist font-sans">
       <HomeStructuredData />
       <Hero />
-      <PortfolioIframe />
+      <RealEstateAllocation />
       <Research />
       <Team />
     </div>

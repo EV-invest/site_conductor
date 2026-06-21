@@ -7,7 +7,7 @@ import { Portfolio as PortfolioFallback } from "../../portfolio_fallback";
 // at `/embed/overview` (real_estate_allocation), embedded via <iframe>. If the
 // embed origin is unreachable we degrade to the in-repo React section. Both keep
 // `id="portfolio"` so the hero CTAs' getElementById scroll still lands here.
-export function PortfolioIframe() {
+export function Overview() {
   const base = process.env.NEXT_PUBLIC_REA_URL ?? "http://localhost:59079";
   const src = `${base}/embed/overview`;
   const [available, setAvailable] = useState(true);
@@ -18,7 +18,7 @@ export function PortfolioIframe() {
     // (embed down / connection refused) rejects — that's our "unavailable" signal.
     fetch(src, { method: "HEAD", mode: "no-cors" }).catch(() => {
       if (cancelled) return;
-      console.warn(`[portfolio] embed unreachable at ${src} — using fallback`);
+      console.warn(`[real_estate_allocation] embed unreachable at ${src} — using fallback`);
       setAvailable(false);
     });
     return () => {

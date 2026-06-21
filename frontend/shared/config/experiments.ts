@@ -14,6 +14,7 @@ import type {
 // unions (so `match` / `getVariant` stay exhaustive) while checking the shape.
 export const experiments = {
   hero: { variants: ["a", "b"], weights: [0.5, 0.5] },
+  hero_contents: { variants: ["a", "b"], weights: [0.5, 0.5] },
   team: { variants: ["a", "b"], weights: [0.5, 0.5] },
 } as const satisfies ExperimentConfig;
 

@@ -14,7 +14,7 @@ export function HeroB() {
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden z-10 bg-main-black"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px] pointer-events-none" />
 
       <Container className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-28">
         {/* Left: editorial copy */}
