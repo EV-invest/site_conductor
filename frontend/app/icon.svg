@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- SVG favicon (Next file convention → served at /icon.svg with sizes="any").
-     The EV Investment lockup on the OKLCH(0.256,0.1,260) brand field in
-     limestone-mist ivory. Browsers render oklch natively; the committed raster
-     icons (favicon.ico / apple-icon.png / public/icon-*.png) use the
-     hex-equivalent navy since rsvg does not resolve oklch in fills. -->
+     GitHub-style: no brand chip, just the EV lockup on a transparent field. The
+     mark paints in limestone-mist ivory by default (dark browser chrome) and
+     flips to brand navy under a light color scheme so it stays legible either
+     way. The committed raster icons (apple-icon.png / public/icon-*.png) keep
+     the navy field — a chip is correct for home-screen / PWA contexts. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 1280 1280">
-<rect width="1280" height="1280" rx="160" fill="oklch(0.256 0.1 260)"/>
-<svg x="225" y="263" width="830" height="754" viewBox="0 0 387 335" fill="#E6E1D3" stroke="#E6E1D3">
+<style>
+  path { fill: #e6e1d3; }
+  @media (prefers-color-scheme: light) { path { fill: #001e4e; } }
+</style>
+<svg x="225" y="263" width="830" height="754" viewBox="0 0 387 335">
 <path d="M0.120605 130.841L140.84 112.176V61.7481L156.149 65.3501V104.786L163.641 103.662V66.6599L178.625 69.607V102.353L185.791 101.043V61.0932L156.475 48.3224L119.992 60.4383V101.043L0.120605 130.841Z"/>
 <path d="M213.479 112.176L237.584 114.469L237.258 0.841309L202.078 19.8338V72.8816L213.479 78.1209V112.176Z"/>
 <path d="M240.841 0.841309L276.347 20.1612V117.743L260.711 115.778V26.3829L240.841 15.9043V0.841309Z"/>
