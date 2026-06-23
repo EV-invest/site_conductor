@@ -176,6 +176,7 @@
               cp "$dir/main.light.html" "./public/blogs/''${slug}.light.html"
               cp "$dir/main.dark.html" "./public/blogs/''${slug}.dark.html"
             done
+            chmod 666 ./public/blogs/*
             [ -d node_modules/next ] || npm install
             exec npm run dev
           '';
@@ -330,6 +331,7 @@
                   cp "$dir/main.light.html" "./frontend/public/blogs/''${slug}.light.html"
                   cp "$dir/main.dark.html" "./frontend/public/blogs/''${slug}.dark.html"
                 done
+                chmod 666 ./frontend/public/blogs/*
 
                 ${dyldFallback}
                 ${protocEnv}
