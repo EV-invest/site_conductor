@@ -447,11 +447,11 @@
         "v_flakes": "v_flakes_2"
       },
       "locked": {
-        "lastModified": 1782081075,
-        "narHash": "sha256-9Buuo1CMiR0bnz4UEA5mpETeOopgCwdL8J5L548OIyc=",
+        "lastModified": 1782149454,
+        "narHash": "sha256-Aselj6Uzv87TFZR1fUKyBAtsj/7U4Gdiryfiiu5IIy4=",
         "owner": "EV-invest",
         "repo": "whitepaper",
-        "rev": "f019f8e1f7d6ca0d203abf99d3413b5f7cd0108a",
+        "rev": "327d8d4228a9e20c53b2d302c2eee5a868b81563",
         "type": "github"
       },
       "original": {

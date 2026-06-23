@@ -73,6 +73,8 @@ venv/
 **/rustc-ice*
 ## Generated (populated from the ev_assets flake input)
 frontend/public/assets/logo.svg
+## Generated (populated from the whitepaper flake input)
+frontend/public/whitepaper.pdf
 ## Node / Next.js
 node_modules/
 .next/
