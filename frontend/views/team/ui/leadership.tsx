@@ -1,12 +1,17 @@
 import { Container } from "@evinvest/uikit";
+import { getVariant } from "@/features/ab-variant/get-variant";
+import { ASSETS } from "@/shared/config/assets";
 import { LeadershipIntro } from "@/entities/team";
 import { TeamMembers } from "./members";
 
-export function TeamLeadership() {
+export async function TeamLeadership() {
+  const variant = await getVariant("team_office");
+  const officeSrc = variant === "b" ? ASSETS.messy_office : undefined;
+
   return (
     <section className="border-t border-main-mist/10 py-20">
       <Container className="space-y-14">
-        <LeadershipIntro />
+        <LeadershipIntro officeSrc={officeSrc} />
         <TeamMembers />
       </Container>
     </section>

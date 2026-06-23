@@ -1,8 +1,6 @@
-import { getVariant } from "@/features/ab-variant/get-variant";
-import { ExperimentTracker, match } from "@/features/ab-variant";
 import { Text } from "@/shared/ui/text";
 import { HeroACanvas } from "./canvas";
-import { HeroACta, ScrollTextA, ScrollTextB } from "./cta";
+import { HeroACta } from "./cta";
 import { HeroAStats } from "./stats";
 
 /**
@@ -21,18 +19,13 @@ export function HeroA() {
   );
 }
 
-/**
- * Server-resolved scroll hint — `getVariant` reads a cookie, so the variant is
- * picked here and the chosen node handed to the client {@link HeroACta} as a prop.
- */
-async function HeroACtaAB() {
-  const variant = await getVariant("scroll_down_text");
+function HeroACtaAB() {
   return (
     <HeroACta
       scrollHint={
-        <ExperimentTracker experiment="scroll_down_text" variant={variant}>
-          {match(variant, { a: <ScrollTextA />, b: <ScrollTextB /> })}
-        </ExperimentTracker>
+        <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
+          Follow the money
+        </span>
       }
     />
   );

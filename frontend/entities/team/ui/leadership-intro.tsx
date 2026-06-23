@@ -4,7 +4,7 @@ import { ASSETS } from "@/shared/config/assets";
 
 // Shared leadership intro — heading + boardroom image. Single source for both
 // the homepage Team section and the /team page, so the copy never drifts.
-export function LeadershipIntro() {
+export function LeadershipIntro({ officeSrc }: { officeSrc?: string }) {
   return (
     <div className="grid items-center gap-12 lg:grid-cols-2">
       <div className="space-y-5">
@@ -25,7 +25,7 @@ export function LeadershipIntro() {
       </div>
       <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-main-mist/10 shadow-2xl">
         <Image
-          src={ASSETS.office_interior}
+          src={officeSrc ?? ASSETS.office_interior}
           alt="EV Investment boardroom in Quy Nhon"
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"

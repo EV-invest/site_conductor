@@ -16,7 +16,7 @@ export const experiments = {
   //HACK: defining weights by hand is bad
   hero: { variants: ["a", "b"], weights: [0.5, 0.5] },
   hero_contents: { variants: ["a", "b"], weights: [0.5, 0.5] },
-  scroll_down_text: { variants: ["a", "b"], weights: [0.5, 0.5] },
+  team_office: { variants: ["a", "b"], weights: [0.5, 0.5] },
 } as const satisfies ExperimentConfig;
 
 export type ExperimentKey = Key<typeof experiments>;

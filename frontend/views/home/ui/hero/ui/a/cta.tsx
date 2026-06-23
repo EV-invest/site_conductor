@@ -48,18 +48,3 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
   );
 }
 
-export function ScrollTextA() {
-  return (
-    <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-      Scroll to zoom in &amp; discover
-    </span>
-  );
-}
-
-export function ScrollTextB() {
-  return (
-    <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-      Follow the money
-    </span>
-  );
-}
