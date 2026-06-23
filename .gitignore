@@ -77,6 +77,8 @@ frontend/public/assets/logo.svg
 frontend/public/whitepaper.pdf
 frontend/public/whitepaper.light.html
 frontend/public/whitepaper.dark.html
+## Generated (populated from the blog flake input)
+frontend/public/blogs/
 ## Node / Next.js
 node_modules/
 .next/
@@ -96,4 +98,5 @@ AGENTS.md
 CLAUDE.md
 .claude/
 .pre-commit-config.yaml
+frontend/public/blogs/
 

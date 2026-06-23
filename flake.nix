@@ -75,6 +75,7 @@
             CLAUDE.md
             .claude/
             .pre-commit-config.yaml
+            frontend/public/blogs/
           '';
           jobs = {
             warnings.augment = [ "tokei" "code-duplication" ];
@@ -171,9 +172,9 @@
             mkdir -p ./public/blogs
             for dir in ${blogsDir}/*/; do
               slug=$(basename "$dir")
-              cp "$dir/main.pdf" "./public/blogs/${slug}.pdf"
-              cp "$dir/main.light.html" "./public/blogs/${slug}.light.html"
-              cp "$dir/main.dark.html" "./public/blogs/${slug}.dark.html"
+              cp "$dir/main.pdf" "./public/blogs/''${slug}.pdf"
+              cp "$dir/main.light.html" "./public/blogs/''${slug}.light.html"
+              cp "$dir/main.dark.html" "./public/blogs/''${slug}.dark.html"
             done
             [ -d node_modules/next ] || npm install
             exec npm run dev
@@ -325,9 +326,9 @@
                 mkdir -p ./frontend/public/blogs
                 for dir in ${blogsDir}/*/; do
                   slug=$(basename "$dir")
-                  cp "$dir/main.pdf" "./frontend/public/blogs/${slug}.pdf"
-                  cp "$dir/main.light.html" "./frontend/public/blogs/${slug}.light.html"
-                  cp "$dir/main.dark.html" "./frontend/public/blogs/${slug}.dark.html"
+                  cp "$dir/main.pdf" "./frontend/public/blogs/''${slug}.pdf"
+                  cp "$dir/main.light.html" "./frontend/public/blogs/''${slug}.light.html"
+                  cp "$dir/main.dark.html" "./frontend/public/blogs/''${slug}.dark.html"
                 done
 
                 ${dyldFallback}
