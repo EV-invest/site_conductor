@@ -13,7 +13,7 @@ export const TEAM: TeamMember[] = [
     photo: ASSETS.team_member_1,
     name: "Elisey TODO",
     role: "Managing Partner, Co-founder",
-    bio: "15+ years managing sovereign funds across Vietnam and Singapore. Former Investment Director at VinaCapital.", //TODO: .
+    bio: "Leads investment strategy and capital partnerships, focused on Vietnam's coastal growth corridors in Quy Nhon and Da Nang.", //TODO: real bio
   },
   {
     photo: ASSETS.team_member_2,

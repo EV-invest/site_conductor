@@ -56,10 +56,10 @@ export function HeroAStats() {
             variant="secondary"
             className="text-xs font-mono-tech uppercase tracking-widest mb-1"
           >
-            Institutional Grade
+            AUM cap
           </Text>
           <p className="text-2xl sm:text-3xl font-serif-display text-main-accent-t4 font-bold">
-            100%
+            $100M
           </p>
         </div>
       </Container>

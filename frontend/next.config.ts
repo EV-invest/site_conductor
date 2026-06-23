@@ -8,12 +8,6 @@ const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
   },
-  // The whitepaper is a self-contained static HTML doc (built by the whitepaper
-  // flake, copied to public/). Serve it at the clean /whitepaper URL natively —
-  // no React page, no iframe. Not linked anywhere yet.
-  async rewrites() {
-    return [{ source: "/whitepaper", destination: "/whitepaper.dark.html" }];
-  },
 };
 
 // Build-time Sentry integration (source-map upload + server instrumentation

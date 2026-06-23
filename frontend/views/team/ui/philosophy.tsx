@@ -10,13 +10,13 @@ const PRINCIPLES = [
   },
   {
     icon: ShieldCheck,
-    title: "Risk before return",
-    body: "Algorithmic risk modelling and conservative leverage are set before capital is committed, so downside is sized before upside is sold.",
+    title: "Technology-driven risk",
+    body: "We build our own risk and research stack — algorithmic modelling and conservative leverage are set before capital is committed, so downside is sized before upside is sold.",
   },
   {
     icon: Anchor,
     title: "Local roots, institutional standards",
-    body: "On-the-ground presence in Quy Nhon paired with the reporting, governance and transparency international LPs expect.",
+    body: "On-the-ground presence in Quy Nhon and Da Nang paired with the reporting, governance and transparency international partners expect.",
   },
 ];
 

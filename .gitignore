@@ -75,6 +75,8 @@ venv/
 frontend/public/assets/logo.svg
 ## Generated (populated from the whitepaper flake input)
 frontend/public/whitepaper.pdf
+frontend/public/whitepaper.light.html
+frontend/public/whitepaper.dark.html
 ## Node / Next.js
 node_modules/
 .next/

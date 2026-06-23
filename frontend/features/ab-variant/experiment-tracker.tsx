@@ -88,7 +88,9 @@ function DevVariantCycle({
   useEffect(() => {
     if (!focused) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      // Bare h/l — but never steal keystrokes while typing into a field.
+      // Bare h/l — but never steal keystrokes while typing into a field
+      // or when a modifier is held (e.g. Ctrl+L for the address bar).
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
       const el = e.target as HTMLElement | null;
       if (el?.isContentEditable || el?.closest("input, textarea, select")) return;
       const step = e.key === "l" ? 1 : e.key === "h" ? -1 : 0;
