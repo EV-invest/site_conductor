@@ -7,6 +7,13 @@ license = "BlueOak-1.0.0"
 publish = false
 default-run = "backend"
 
+[features]
+# `swagger` serves the Swagger UI at /swagger-ui. Default-on for dev, but its
+# build script downloads the UI bundle over the network — disable it for the
+# hermetic/offline production build (`nix build .#backend` → --no-default-features).
+default = ["swagger"]
+swagger = ["dep:utoipa-swagger-ui"]
+
 [dependencies]
 anyhow.workspace = true
 async-trait.workspace = true
@@ -27,7 +34,7 @@ tower-http = { workspace = true, features = ["trace", "cors"] }
 tracing.workspace = true
 tracing-subscriber = { workspace = true, features = ["env-filter", "fmt"] }
 utoipa = { workspace = true, features = ["uuid"] }
-utoipa-swagger-ui = { workspace = true, features = ["axum"] }
+utoipa-swagger-ui = { workspace = true, features = ["axum"], optional = true }
 uuid = { workspace = true, features = ["v4", "serde"] }
 
 [lints]

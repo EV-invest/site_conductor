@@ -3,19 +3,21 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
-import { Button, Container } from "@evinvest/uikit";
+import { Container } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal } from "@/shared/ui/reveal";
-import { notifyPlaceholder } from "@/shared/lib/utils";
+import { useAnalytics } from "@/features/analytics";
 
 // Report library. The list (left) and the reading pane (right) both render from
 // this — switching a card just moves the index, and the pane cross-fades.
+// TODO: generalize — hardcoded slug mapping, should come from the blog flake
 const REPORTS = [
   {
     cat: "Macroeconomics",
     title: "Vietnam Coastal Macro Report 2026",
     paneTitle: "Vietnam Coastal Macro Report 2026",
+    slug: "vietnam_coastal_2026",
     date: "May 2026",
     quote:
       "Vietnam’s coastal secondary cities are outperforming saturated primary markets, driven by domestic wealth expansion and direct FDI.",
@@ -28,6 +30,8 @@ const REPORTS = [
     cat: "Urban Planning",
     title: "Quy Nhon Infrastructure Masterplan & Land Valuation",
     paneTitle: "Quy Nhon Infrastructure Masterplan",
+    // TODO: generalize — no exact blog article yet; closest match used
+    slug: "vietnam_tail_risk",
     date: "April 2026",
     quote:
       "The expansion of Phu Cat Airport and the Nhon Hoi Economic Zone are creating unprecedented land valuation uplifts in Quy Nhon.",
@@ -40,6 +44,7 @@ const REPORTS = [
     cat: "Market Analysis",
     title: "Post-Pandemic Tourism & Hospitality Yield Shifts",
     paneTitle: "Post-Pandemic Hospitality Yield Shifts",
+    slug: "hospitality_yield_shifts",
     date: "March 2026",
     quote:
       "Yield structures in hospitality assets are shifting from volume-driven models to exclusive, low-density, high-rate private estates.",
@@ -52,6 +57,7 @@ const REPORTS = [
 
 export function ResearchA() {
   const [active, setActive] = useState(0);
+  const capture = useAnalytics();
   const report = REPORTS[active];
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
@@ -167,12 +173,14 @@ export function ResearchA() {
                   </Text>
                 </div>
               </div>
-              <Button
-                className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-xs tracking-wider uppercase py-5 px-6"
-                onClick={() => notifyPlaceholder("Download Full Report")}
+              <a
+                href={`/blogs/${report.slug}.pdf`}
+                download
+                className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-xs tracking-wider uppercase py-5 px-6 inline-flex items-center"
+                onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
               >
                 Download Full Report <ArrowUpRight className="w-4 h-4 ml-2" />
-              </Button>
+              </a>
             </motion.div>
           </motion.div>
         </Reveal>

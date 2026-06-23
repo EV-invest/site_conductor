@@ -11,8 +11,13 @@
     # Whitepaper. A flake: `nix build` → result/whitepaper.pdf. We copy its
     # built PDF into the served dir. "Latest" = `nix flake update whitepaper`.
     whitepaper.url = "github:EV-invest/whitepaper";
+    # Blog articles. A flake: `nix build` → result/<slug>/main.pdf. We copy
+    # built PDFs/HTMLs into the served dir. "Latest" = `nix flake update blog`.
+    blog.url = "git+ssh://git@github.com/EV-invest/blog";
+    # OCI image builder for the production backend (`nix build .#backend-image`).
+    nix2container = { url = "github:nlewo/nix2container"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets, whitepaper }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets, whitepaper, blog, nix2container }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -35,6 +40,7 @@
         whitepaperPdf = "${whitepaper.packages.${system}.default}/whitepaper.pdf";
         whitepaperHtmlLight = "${whitepaper.packages.${system}.default}/whitepaper.light.html";
         whitepaperHtmlDark = "${whitepaper.packages.${system}.default}/whitepaper.dark.html";
+        blogsDir = "${blog.packages.${system}.default}";
 
         rs = v_flakes.rs { inherit pkgs rust; };
         github = v_flakes.github {
@@ -48,6 +54,8 @@
             frontend/public/whitepaper.pdf
             frontend/public/whitepaper.light.html
             frontend/public/whitepaper.dark.html
+            ## Generated (populated from the blog flake input)
+            frontend/public/blogs/
             ## Node / Next.js
             node_modules/
             .next/
@@ -86,6 +94,58 @@
         };
         combined = v_flakes.utils.combine { inherit rust; modules = [ rs github readme ]; };
 
+        # ── production backend: binary + OCI image ──────────────────────────
+        # Built with the dev nightly toolchain (the workspace pins
+        # `cargo-features = ["codegen-backend"]`, which stable cargo rejects).
+        # `aws-lc-sys` (via reqwest/rustls) needs cmake + libclang; `openssl-sys`
+        # (via sentry's native-tls) needs openssl + pkg-config; `.cargo/config`
+        # links with mold.
+        rustPlatform = pkgs.makeRustPlatform { cargo = rust; rustc = rust; };
+        backendSrc = pkgs.lib.cleanSourceWith {
+          src = ./.;
+          # Cargo only needs the workspace crates + manifests; drop the heavy
+          # sibling trees (frontend, target, local DB, vcs) from the build input.
+          filter = path: _type:
+            ! builtins.elem (baseNameOf path) [ "target" "node_modules" ".pg" ".direnv" ".next" ".git" "frontend" "tmp" "docs" "result" ];
+        };
+        backendBin = rustPlatform.buildRustPackage {
+          pname = "backend";
+          version = "0.1.0";
+          src = backendSrc;
+          cargoLock = {
+            lockFile = ./Cargo.lock;
+            outputHashes = {
+              "ev_lib-0.3.1" = "sha256-vNoEbmdQKiHXq5rBK1+msHKS7tQcwCRx16YruwxRmB8=";
+            };
+          };
+          cargoBuildFlags = [ "-p" "backend" "--bin" "backend" ];
+          # Drop the `swagger` feature: utoipa-swagger-ui's build script fetches
+          # the UI bundle over the network, which the sandbox forbids.
+          buildNoDefaultFeatures = true;
+          nativeBuildInputs = with pkgs; [ pkg-config cmake perl mold pkgs.rustPlatform.bindgenHook ];
+          buildInputs = with pkgs; [ openssl ];
+          doCheck = false;
+        };
+        n2c = nix2container.packages.${system}.nix2container;
+        backendImage = n2c.buildImage {
+          name = "evinvest-backend";
+          tag = "latest";
+          copyToRoot = pkgs.buildEnv {
+            name = "image-root";
+            paths = with pkgs; [ backendBin cacert ];
+            pathsToLink = [ "/bin" ];
+          };
+          config = {
+            Entrypoint = [ "/bin/backend" ];
+            Env = [
+              "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+              "BIND_ADDR=0.0.0.0:58844"
+              "APP_ENV=production"
+            ];
+            ExposedPorts = { "58844/tcp" = { }; };
+          };
+        };
+
         # ── shared shims ────────────────────────────────────────────────────
         # rust-lld (wasm32 linker) embeds the wrong rpath on macOS — it looks for
         # libLLVM.dylib in bin/../lib/ but Nix puts it one level up in lib/. The
@@ -108,6 +168,13 @@
             cp -f ${whitepaperPdf} ./public/whitepaper.pdf
             cp -f ${whitepaperHtmlLight} ./public/whitepaper.light.html
             cp -f ${whitepaperHtmlDark} ./public/whitepaper.dark.html
+            mkdir -p ./public/blogs
+            for dir in ${blogsDir}/*/; do
+              slug=$(basename "$dir")
+              cp "$dir/main.pdf" "./public/blogs/${slug}.pdf"
+              cp "$dir/main.light.html" "./public/blogs/${slug}.light.html"
+              cp "$dir/main.dark.html" "./public/blogs/${slug}.dark.html"
+            done
             [ -d node_modules/next ] || npm install
             exec npm run dev
           '';
@@ -235,6 +302,14 @@
           gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
         };
 
+        # `nix build .#backend`       → the Axum binary (result/bin/backend)
+        # `nix build .#backend-image` → OCI image; load with `result.copyTo`
+        packages = {
+          default = backendBin;
+          backend = backendBin;
+          backend-image = backendImage;
+        };
+
         devShells.default =
           with pkgs;
           mkShell {
@@ -247,6 +322,13 @@
                 cp -f ${whitepaperPdf} ./frontend/public/whitepaper.pdf
                 cp -f ${whitepaperHtmlLight} ./frontend/public/whitepaper.light.html
                 cp -f ${whitepaperHtmlDark} ./frontend/public/whitepaper.dark.html
+                mkdir -p ./frontend/public/blogs
+                for dir in ${blogsDir}/*/; do
+                  slug=$(basename "$dir")
+                  cp "$dir/main.pdf" "./frontend/public/blogs/${slug}.pdf"
+                  cp "$dir/main.light.html" "./frontend/public/blogs/${slug}.light.html"
+                  cp "$dir/main.dark.html" "./frontend/public/blogs/${slug}.dark.html"
+                done
 
                 ${dyldFallback}
                 ${protocEnv}

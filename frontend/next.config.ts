@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Self-contained production server (.next/standalone) so the weak VPS runs
+  // `node server.js` without an `npm install` — we can't build there.
+  output: "standalone",
   // Enables the `forbidden()` / `unauthorized()` interrupts and their
   // `forbidden.tsx` / `unauthorized.tsx` file conventions (still experimental).
   experimental: {
