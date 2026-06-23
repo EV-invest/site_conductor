@@ -14,8 +14,8 @@ dotenvy = "0.15.7"
 # backend additively enables `analytics` + `error_monitoring` (see backend/Cargo.toml).
 # The crate was renamed `ev` -> `ev_lib` (the `ev` name was taken on crates.io); the
 # lib target stays `ev`, so `use ev::…` and the `ev` dependency key are unchanged.
-# Pinned to the 0.3.0 commit on `main` — 0.3.0 isn't on crates.io / tagged yet.
-ev = { git = "https://github.com/EV-invest/lib.git", rev = "dffa88691d0fad9830c451c01446d071f9e90c71", package = "ev_lib", default-features = false, features = ["architecture"] }
+# Pinned to the 0.3.1 commit on `main` — not on crates.io / tagged yet.
+ev = { git = "https://github.com/EV-invest/lib.git", rev = "64a4a3a2a5bb0a5fa6271caa29f222eb8cb2a1f6", package = "ev_lib", default-features = false, features = ["architecture"] }
 jiff = "0.2"
 # Transactional email. rustls (not native-tls) to share one TLS stack with sqlx.
 lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls-tls", "hostname"] }

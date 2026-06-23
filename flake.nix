@@ -33,6 +33,8 @@
         # public dir (gitignored; declaratively populated, never hand-edited).
         logoSrc = "${ev_assets}/logo/logo.svg";
         whitepaperPdf = "${whitepaper.packages.${system}.default}/whitepaper.pdf";
+        whitepaperHtmlLight = "${whitepaper.packages.${system}.default}/whitepaper.light.html";
+        whitepaperHtmlDark = "${whitepaper.packages.${system}.default}/whitepaper.dark.html";
 
         rs = v_flakes.rs { inherit pkgs rust; };
         github = v_flakes.github {
@@ -44,6 +46,8 @@
             frontend/public/assets/logo.svg
             ## Generated (populated from the whitepaper flake input)
             frontend/public/whitepaper.pdf
+            frontend/public/whitepaper.light.html
+            frontend/public/whitepaper.dark.html
             ## Node / Next.js
             node_modules/
             .next/
@@ -102,6 +106,8 @@
             cd "$repo/frontend"
             cp -f ${logoSrc} ./public/assets/logo.svg
             cp -f ${whitepaperPdf} ./public/whitepaper.pdf
+            cp -f ${whitepaperHtmlLight} ./public/whitepaper.light.html
+            cp -f ${whitepaperHtmlDark} ./public/whitepaper.dark.html
             [ -d node_modules/next ] || npm install
             exec npm run dev
           '';
@@ -239,6 +245,8 @@
                 cp -f ${(v_flakes.files.treefmt) { inherit pkgs; }} ./.treefmt.toml
                 cp -f ${logoSrc} ./frontend/public/assets/logo.svg
                 cp -f ${whitepaperPdf} ./frontend/public/whitepaper.pdf
+                cp -f ${whitepaperHtmlLight} ./frontend/public/whitepaper.light.html
+                cp -f ${whitepaperHtmlDark} ./frontend/public/whitepaper.dark.html
 
                 ${dyldFallback}
                 ${protocEnv}

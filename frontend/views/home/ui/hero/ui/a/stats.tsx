@@ -15,10 +15,21 @@ export function HeroAStats() {
             Target IRR
           </Text>
           <p className="text-2xl sm:text-3xl font-serif-display text-main-accent-t3 font-bold">
-            22.4% +
+            16.4% +
           </p>
         </div>
         <div>
+          <Text
+            variant="secondary"
+            className="text-xs font-mono-tech uppercase tracking-widest mb-1"
+          >
+            Specialization
+          </Text>
+          <p className="text-2xl sm:text-3xl font-serif-display text-white font-bold">
+            Rentals
+          </p>
+        </div>
+        {/*<div>
           <Text
             variant="secondary"
             className="text-xs font-mono-tech uppercase tracking-widest mb-1"
@@ -26,18 +37,18 @@ export function HeroAStats() {
             AUM Under Advisory
           </Text>
           <p className="text-2xl sm:text-3xl font-serif-display text-white font-bold">
-            $145M
+            $145M // gotta come back to this once we have more, and make it dynamic, based on total Bank's assets
           </p>
-        </div>
+        </div>*/}
         <div>
           <Text
             variant="secondary"
             className="text-xs font-mono-tech uppercase tracking-widest mb-1"
           >
-            Coastal Coastline
+            Current Target City
           </Text>
           <p className="text-2xl sm:text-3xl font-serif-display text-main-accent-t1 font-bold">
-            72 km
+            Quy Nhon
           </p>
         </div>
         <div>
