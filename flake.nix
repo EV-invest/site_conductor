@@ -113,12 +113,7 @@
           pname = "backend";
           version = "0.1.0";
           src = backendSrc;
-          cargoLock = {
-            lockFile = ./Cargo.lock;
-            outputHashes = {
-              "ev_lib-0.3.1" = "sha256-vNoEbmdQKiHXq5rBK1+msHKS7tQcwCRx16YruwxRmB8=";
-            };
-          };
+          cargoLock.lockFile = ./Cargo.lock;
           cargoBuildFlags = [ "-p" "backend" "--bin" "backend" ];
           # Drop the `swagger` feature: utoipa-swagger-ui's build script fetches
           # the UI bundle over the network, which the sandbox forbids.

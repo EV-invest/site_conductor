@@ -6,6 +6,7 @@ import { ErrorMonitoringProvider } from "@/features/error-monitoring";
 import { Header, Footer } from "@/application/layout";
 import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
+import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
 import "@/application/styles/globals.css";
 
 export { metadata, viewport } from "@/application/metadata";
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body>
+        <DarkReaderHydrationFilter />
         <ErrorMonitoringProvider>
           <Providers>
             {/* capturePageview=false: PostHogPageView owns every $pageview
