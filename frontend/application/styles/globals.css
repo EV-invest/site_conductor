@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "@evinvest/uikit/styles/tokens.css";
 
+/* `prose` typography for document microfrontends rendered in light DOM
+   (research articles — see shared/mfe/RemoteDocument). */
+@plugin "@tailwindcss/typography";
+
 /* The shared UI kit ships compiled, so its utility classes live in node_modules.
    Tailwind ignores node_modules by default — point it at the kit's dist so the
    classes baked into `@evinvest/uikit` components are generated. */

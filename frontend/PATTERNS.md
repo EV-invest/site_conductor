@@ -181,3 +181,52 @@ hydration** under React 19 and one silently drops from the client DOM. For nav C
 (which are just links), render a plain styled `<Link className={…}>` or a plain
 `<button onClick>` instead — see `views/status/ui/buttons.tsx`. A single `Button
 asChild`, or a non-`asChild` `<Button onClick>`, is fine.
+
+---
+
+## 8. Microfrontends — never `<iframe>`
+
+**Do not use `<iframe>` to embed another EV surface.** Iframes don't auto-size
+(fixed-height hacks), trap their own scroll, can't share the host's tokens/fonts,
+and bury their content in a separate document Google associates only weakly with
+the page. Compose other surfaces **natively** through `@/shared/mfe` instead. Two
+transports, picked by what the remote ships:
+
+- **Element remote — `RemoteElement`.** The remote is a self-registering ESM
+  bundle that defines a custom element (`customElements.define("mfe-<svc>-<name>",
+  …)`); identical for JS (React via `@r2wc/react-to-web-component`) and Rust/WASM
+  (Dioxus/Leptos). Mounted in **light DOM** — Tailwind v4 `@property` tokens break
+  inside shadow roots and the global uikit tokens must cascade in. Resolved from
+  `mfe-registry.json` (`findMfe`, server-only) so remotes deploy independently.
+  Inline anywhere, or as a whole page at `/apps/<name>` (the home portfolio/REA
+  section is the live example).
+- **Document remote — `RemoteDocument`.** The remote is a self-contained static
+  HTML document (the typst-built whitepaper / blog). `isolate={false}` (default)
+  injects its `<body>` into the **light DOM** so host typography (`prose`) styles
+  it — a pure Server Component, SSR'd and indexable (use for unstyled docs, e.g.
+  research articles). `isolate` mounts a **self-styled** doc (its own CSS targets
+  bare tags) in a **shadow root** via a small client island, so its styles can't
+  reach the host (use for the whitepaper). `/whitepaper` and `/blogs/[slug]` are
+  the live examples.
+
+Notes that bite:
+- **Shadow remotes are client-only.** React 19 can emit Declarative Shadow DOM
+  (`<template shadowrootmode>`) but **cannot hydrate over it**, and DSD never
+  upgrades on App-Router soft navigation — so `RemoteDocument isolate` uses
+  client-side `attachShadow`, and a self-styled doc's `html{}`/`body{}` rules are
+  preserved by recreating those elements with `createElement` (setting a shadow
+  root's `innerHTML` strips html/body tags). One consequence: `rem` inside the
+  shadow resolves against the **host** root font-size, not the doc's nested
+  `<html>` — a self-styled doc that sets its own rem base should size with `em`
+  (the whitepaper's typst CSS has a minor outer-margin drift from this; the fix is
+  `rem`→`em` in that build's source).
+- **Shadow content isn't SSR'd → not a good indexable target.** `isolate` mounts
+  the body client-side, so it's absent from the server HTML — keep such pages out
+  of the sitemap (see `shared/config/site.ts`). Only the `isolate={false}`
+  light-DOM path is SSR'd and indexable.
+- **Trust boundary = treat as code.** Element `scriptUrl`s and document HTML are
+  operator-controlled (in-repo registry / typst build), injected with no sandbox
+  and **no sanitization** — registry edits and doc sources are code. If either ever
+  becomes user-/dynamically-sourced, gate it (origin allowlist / DOMPurify).
+- Degrade gracefully: a `RemoteDocument` whose source can't be loaded renders its
+  `fallback` (a PDF link), so a missing doc build never breaks the page.

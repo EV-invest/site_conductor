@@ -11,8 +11,8 @@ import path from "node:path";
 import type { MfeEntry } from "./types";
 
 // Per-env REA origin, substituted into `${REA_URL}` scriptUrls so the registry
-// file stays env-agnostic (no rebuild to repoint). Reuses the var the old iframe
-// embed read; defaults to the dev `dx serve` port.
+// file stays env-agnostic (no rebuild to repoint). Defaults to the dev `dx serve`
+// port.
 const REA_URL = process.env.NEXT_PUBLIC_REA_URL ?? "http://localhost:59079";
 
 export async function loadRegistry(): Promise<MfeEntry[]> {

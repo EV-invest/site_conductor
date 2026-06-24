@@ -106,4 +106,8 @@ export const ROUTES: Route[] = [
   { path: "/team", changeFrequency: "monthly", priority: 0.8 },
   { path: "/hiring", changeFrequency: "weekly", priority: 0.8 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
+  // NB: /whitepaper is intentionally NOT listed. Its body mounts in a shadow root
+  // (a client-side document microfrontend), so the page text isn't in the SSR HTML
+  // and isn't a meaningful indexable target — don't advertise it as one. Making it
+  // SSR-indexable would mean rendering it light-DOM with its self-styles scoped.
 ];

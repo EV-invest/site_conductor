@@ -25,9 +25,15 @@ slice's `index.ts`, never deep paths. Conventions live in [`PATTERNS.md`](./PATT
 ## Run only landing
 
 ```sh
-nix run .#landing            # → http://localhost:58843
+nix run .#frontend           # → http://localhost:58843
 ```
-Or inside the dev shell (`.envrc` + direnv):
+This first runs `populate-docs`: it builds the **local sibling clones**
+`../whitepaper` and `../blog` (token-free — those repos are private but their
+flake inputs are public) and copies their HTML/PDF into `public/`. Missing a
+clone or a failed build only warns — the dev server still boots and the doc pages
+degrade to a PDF link. Refresh a doc with `git -C ../whitepaper pull` (or `../blog`).
+
+Or inside the dev shell (`.envrc` + direnv), which runs `populate-docs` on entry:
 ```sh
 cd landing && npm install && npm run dev
 ```
@@ -60,8 +66,17 @@ npm run test:visual:update   # regenerate baselines after an intentional UI chan
 
 ## Microfrontends
 
-Landing can compose microfrontends from other EV services at runtime — inline
-widgets or whole pages, JS bundles (React, …) or Rust/WASM (Dioxus, Leptos).
+Landing composes other EV surfaces at runtime — **never via `<iframe>`** (see
+[`PATTERNS.md` §8](./PATTERNS.md)). Two transports from `@/shared/mfe`:
+
+| Remote ships… | Use | Mount |
+| --- | --- | --- |
+| a self-registering custom-element ESM bundle (React, Rust/WASM) | `RemoteElement` | light DOM; inline or `/apps/<name>` |
+| a self-contained static HTML document (typst whitepaper/blog) | `RemoteDocument` | light DOM (`prose`) or, if self-styled, a shadow root |
+
+### Element remotes — `RemoteElement`
+
+Inline widgets or whole pages, JS bundles (React, …) or Rust/WASM (Dioxus, Leptos).
 
 **Universal contract — a custom element.** Every microfrontend ships one
 self-registering ESM bundle that calls `customElements.define("mfe-<service>-<name>", …)`.
@@ -115,6 +130,30 @@ contract is shared with `cabinet`, so keep this in sync with it.
   DOM, `wasm-bindgen =0.2.118`. Don't use `dioxus-web-component` yet (it pins Dioxus
   0.6). _Open item:_ prove multiple independent Dioxus instances per page before
   relying on it.
+
+### Document remotes — `RemoteDocument`
+
+For remotes that are a self-contained **static HTML document** (the typst-built
+[whitepaper](./app/whitepaper) and [blog](./app/blogs)) rather than a custom-element
+bundle. The document is addressed by URL (site-relative → read from `public/`;
+absolute → fetched, so a doc service can move to its own origin) and composed into
+the page natively, keeping the host chrome and scroll.
+
+```tsx
+// research article — no styles of its own: light DOM + host typography (prose),
+// rendered server-side (SSR'd, indexable)
+<RemoteDocument src={`/blogs/${slug}.dark.html`} className="prose prose-invert …" />
+
+// whitepaper — ships its own complete styles targeting bare tags: isolate it in a
+// shadow root (a small client island; see PATTERNS.md for the React-19/DSD caveat)
+<RemoteDocument src="/whitepaper.dark.html" isolate fallback={…PDF link…} />
+```
+
+`isolate={false}` (default) is a pure Server Component; `isolate` mounts a client
+shadow island. A source that can't be loaded renders the `fallback`, so a missing
+doc build degrades gracefully. The docs are produced by the sibling `whitepaper`/
+`blog` repos and copied into `public/` by the flake's `populate-docs` (see
+[`../flake.nix`](../flake.nix)).
 
 ## Design system (Figma)
 
