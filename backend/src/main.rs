@@ -22,7 +22,7 @@ use backend::{
 		},
 	},
 };
-use ev::error_monitoring;
+use ev_lib::error_monitoring;
 
 // Sentry must be initialised before the async runtime starts — no #[tokio::main].
 fn main() -> anyhow::Result<()> {
@@ -66,7 +66,7 @@ async fn run(config: AppConfig) -> anyhow::Result<()> {
 	let application_repo = Arc::new(PostgresApplicationRepository::new(pool.clone()));
 	let contact_repo = Arc::new(PostgresContactRepository::new(pool));
 
-	let analytics = ev::analytics::Analytics::new(config.posthog_key.clone(), config.posthog_host.clone());
+	let analytics = ev_lib::analytics::Analytics::new(config.posthog_key.clone(), config.posthog_host.clone());
 
 	let vacancies = VacancyService::new(vacancy_repo.clone());
 	let applications = ApplicationService::new(application_repo, vacancy_repo, notifier.clone());

@@ -1,5 +1,5 @@
 use axum::{Json, extract::State, http::StatusCode};
-use ev::analytics::Event;
+use ev_lib::analytics::Event;
 
 use crate::api::{
 	dto::contact::{ContactAccepted, CreateContactRequest},

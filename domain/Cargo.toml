@@ -7,7 +7,7 @@ license = "BlueOak-1.0.0"
 publish = false
 
 [dependencies]
-ev.workspace = true
+ev_lib.workspace = true
 jiff = { workspace = true, features = ["serde"] }
 serde.workspace = true
 thiserror.workspace = true

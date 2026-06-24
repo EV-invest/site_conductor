@@ -24,7 +24,7 @@ impl IntoResponse for ApiError {
 			DomainError::Conflict(msg) => (StatusCode::CONFLICT, msg.clone()),
 			DomainError::Validation(msg) => (StatusCode::BAD_REQUEST, msg.clone()),
 			DomainError::Repository(err) => {
-				ev::error_monitoring::report(&self.0);
+				ev_lib::error_monitoring::report(&self.0);
 				tracing::error!(error = %err, "internal repository error");
 				(StatusCode::INTERNAL_SERVER_ERROR, "internal server error".to_string())
 			}

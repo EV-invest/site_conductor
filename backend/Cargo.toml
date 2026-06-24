@@ -20,7 +20,7 @@ async-trait.workspace = true
 axum.workspace = true
 domain.workspace = true
 dotenvy.workspace = true
-ev = { workspace = true, features = ["analytics", "error_monitoring"] }
+ev_lib = { workspace = true, features = ["analytics", "error_monitoring"] }
 jiff = { workspace = true, features = ["serde"] }
 lettre.workspace = true
 serde = { workspace = true, features = ["derive"] }

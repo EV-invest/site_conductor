@@ -4,7 +4,7 @@ use axum::{
 	http::Request,
 	routing::{get, post},
 };
-use ev::error_monitoring::{NewSentryLayer, SentryHttpLayer};
+use ev_lib::error_monitoring::{NewSentryLayer, SentryHttpLayer};
 use tower::ServiceBuilder;
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
 #[cfg(feature = "swagger")]

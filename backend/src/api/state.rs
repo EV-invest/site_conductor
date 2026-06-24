@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use ev::analytics::{Analytics, Event};
+use ev_lib::analytics::{Analytics, Event};
 
 use crate::application::{application_service::ApplicationService, contact_service::ContactService, vacancy_service::VacancyService};
 

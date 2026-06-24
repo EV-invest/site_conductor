@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "name": "real-estate.overview",
+    "tag": "mfe-real-estate-overview",
+    "scriptUrl": "${REA_URL}/mfe/mfe-real-estate-overview.js",
+    "kind": "component"
+  }
+]

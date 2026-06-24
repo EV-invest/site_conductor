@@ -10,10 +10,19 @@ import path from "node:path";
 
 import type { MfeEntry } from "./types";
 
+// Per-env REA origin, substituted into `${REA_URL}` scriptUrls so the registry
+// file stays env-agnostic (no rebuild to repoint). Reuses the var the old iframe
+// embed read; defaults to the dev `dx serve` port.
+const REA_URL = process.env.NEXT_PUBLIC_REA_URL ?? "http://localhost:59079";
+
 export async function loadRegistry(): Promise<MfeEntry[]> {
   const file = path.join(process.cwd(), "mfe-registry.json");
   const raw = await fs.readFile(file, "utf8");
-  return JSON.parse(raw) as MfeEntry[];
+  const registry = JSON.parse(raw) as MfeEntry[];
+  return registry.map((entry) => ({
+    ...entry,
+    scriptUrl: entry.scriptUrl.replaceAll("${REA_URL}", REA_URL),
+  }));
 }
 
 export async function findMfe(name: string): Promise<MfeEntry | undefined> {
