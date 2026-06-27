@@ -1,3 +1,11 @@
+/* Element remotes (e.g. the REA portfolio) mount in light DOM so host tokens
+   cascade into them — but a remote's bundle injects its own full Tailwind sheet
+   into <head>, whose `@layer utilities` would merge with ours and, loading last,
+   win (its non-responsive `.grid-cols-1` beat our `lg:grid-cols-3`). Register a
+   `reamfe` layer up front so it ranks below every host layer; shared/mfe moves
+   each remote's styles into it. Must precede the tailwindcss import so the order
+   is fixed before Tailwind declares its own layers. */
+@layer reamfe, theme, base, components, utilities;
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@evinvest/uikit/styles/tokens.css";

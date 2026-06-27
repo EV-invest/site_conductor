@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { containRemoteStyles } from "./contain-remote-styles";
+
 // Loads a microfrontend's self-registering ESM bundle (once per tag), then waits
 // for its custom element to upgrade. Returns false while loading and if the
 // bundle fails (the caller shows its fallback). Client-only — registration runs
@@ -9,6 +11,10 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
 
   useEffect(() => {
     let cancelled = false;
+    // Demote any CSS the remote injects into the `reamfe` layer so it can't
+    // override host utilities (set up before the bundle runs, and on the
+    // already-loaded path too, since the remote's stylesheet may persist).
+    const stopContainment = containRemoteStyles(new URL(scriptUrl, window.location.href).origin);
     const whenReady = () =>
       customElements
         .whenDefined(tag)
@@ -19,6 +25,7 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
       void whenReady();
       return () => {
         cancelled = true;
+        stopContainment();
       };
     }
 
@@ -32,6 +39,7 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
     return () => {
       cancelled = true;
       script.removeEventListener("load", onLoad);
+      stopContainment();
     };
   }, [tag, scriptUrl]);
 
