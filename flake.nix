@@ -151,6 +151,9 @@
         };
 
         # DATABASE_URL arrives via the k8s Secret gitops owns, not baked in.
+        # Backend and frontend are separate containers (not one): distinct
+        # runtimes/processes, and so each rolls out + restarts independently —
+        # a frontend crash or deploy never touches the API.
         containerStd = v_flakes.container.implement {
           inherit pkgs pname;
           # backend (Axum API)
