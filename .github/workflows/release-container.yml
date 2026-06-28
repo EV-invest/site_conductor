@@ -22,7 +22,7 @@ jobs:
         \ name in $(nix eval --json \".#containers.$sys\" --apply builtins.attrNames\
         \ | jq -r '.[]'); do\n  echo \"::group::$name\"\n  RESULT=\"$(nix build \"\
         .#$name-container\" --no-link --print-out-paths)\"\n  nix run nixpkgs#skopeo\
-        \ -- copy \\\n    \"docker-archive:$RESULT\" \\\n    \"docker://ghcr.io/EV-invest/$name:${{\
+        \ -- copy \\\n    \"docker-archive:$RESULT\" \\\n    \"docker://ghcr.io/ev-invest/$name:${{\
         \ github.ref_name }}\"\n  echo \"::endgroup::\"\ndone\n"
       shell: bash
 name: Release containers
