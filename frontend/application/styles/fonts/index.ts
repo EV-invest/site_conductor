@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 // Self-hosted via next/font (no render-blocking <link> to Google Fonts).
@@ -6,8 +5,21 @@ import localFont from "next/font/local";
 // Inter is the single neutral workhorse: it backs both the sans body copy and
 // the "mono-tech" labels (tracked-out, uppercase) — replacing the former
 // Space Grotesk / Space Mono pairing with one quieter, institutional grotesque.
-export const fontInter = Inter({
-  subsets: ["latin"],
+// Self-hosted from the variable .ttf (not next/font/google) so the production
+// image builds hermetically — no Google fetch in the nix sandbox.
+export const fontInter = localFont({
+  src: [
+    {
+      path: "./Inter-VariableFont_opsz,wght.ttf",
+      style: "normal",
+      weight: "100 900",
+    },
+    {
+      path: "./Inter-Italic-VariableFont_opsz,wght.ttf",
+      style: "italic",
+      weight: "100 900",
+    },
+  ],
   display: "swap",
   variable: "--font-inter",
 });

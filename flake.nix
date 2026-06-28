@@ -32,6 +32,7 @@
         });
         pre-commit-check = pre-commit-hooks.lib.${system}.run (v_flakes.files.preCommit { inherit pkgs; });
         pname = "landing";
+        backendCargo = (builtins.fromTOML (builtins.readFile ./backend/Cargo.toml)).package;
 
         # Brand logo from the pinned `ev_assets` input, copied into the served
         # public dir (gitignored; declaratively populated, never hand-edited).
@@ -101,8 +102,8 @@
             ! builtins.elem (baseNameOf path) [ "target" "node_modules" ".pg" ".direnv" ".next" ".git" "frontend" "tmp" "docs" "result" ];
         };
         backendBin = rustPlatform.buildRustPackage {
-          pname = "backend";
-          version = "0.1.0";
+          pname = backendCargo.name;
+          version = backendCargo.version;
           src = backendSrc;
           cargoLock.lockFile = ./Cargo.lock;
           cargoBuildFlags = [ "-p" "backend" "--bin" "backend" ];
@@ -113,9 +114,46 @@
           buildInputs = with pkgs; [ openssl ];
           doCheck = false;
         };
+        # ── frontend production image (Next.js standalone) ──────────────────
+        # `output: "standalone"` (next.config.ts) emits a self-contained
+        # `.next/standalone/server.js` that runs under plain node — no npm at
+        # runtime. The committed brand assets are baked into public/; the runtime
+        # best-effort docs (whitepaper/blog/portfolio MFE, built from private
+        # sibling clones by populate-docs) are intentionally NOT in the image, so
+        # those pages degrade — same contract the dev runner already tolerates.
+        frontendApp = pkgs.buildNpmPackage {
+          pname = "landing-frontend";
+          version = "1.0.0";
+          src = ./frontend;
+          npmDepsHash = "sha256-VeEqSU8km3V5JVfkN5k42/A9LtlFxYmIev04z13z9tU=";
+          env.NEXT_TELEMETRY_DISABLED = "1";
+          # `npm run build` chains stylelint (a CI lint gate, not an image concern);
+          # call next build directly so a style nit can't fail the image. public/ is
+          # generated, not committed — stage the brand assets it needs first.
+          buildPhase = ''
+            runHook preBuild
+            mkdir -p public/assets
+            cp -rL assets/. public/assets/
+            cp -f ${logoSrc} public/assets/logo.svg
+            node_modules/.bin/next build
+            runHook postBuild
+          '';
+          # Standalone runtime = server.js + the static chunks + public, side by side.
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out
+            cp -r .next/standalone/. $out/
+            cp -r .next/static $out/.next/static
+            cp -r public $out/public
+            runHook postInstall
+          '';
+          dontNpmInstall = true;
+        };
+
         # DATABASE_URL arrives via the k8s Secret gitops owns, not baked in.
         containerStd = v_flakes.container.implement {
           inherit pkgs pname;
+          # backend (Axum API)
           containers."" = {
             port = 58844;
             healthPath = "/api/v1/health";
@@ -123,6 +161,16 @@
             entrypoint = [ "/bin/backend" ];
             contents = [ backendBin ];
             imageEnv = [ "BIND_ADDR=0.0.0.0:58844" "APP_ENV=production" ];
+          };
+          # frontend (Next.js marketing site) → image `landing-frontend`.
+          containers.frontend = {
+            port = 58843;
+            healthPath = "/";
+            criticality = "high";
+            entrypoint = [ "${pkgs.nodejs}/bin/node" "${frontendApp}/server.js" ];
+            contents = [ pkgs.nodejs frontendApp ];
+            workingDir = "${frontendApp}";
+            imageEnv = [ "PORT=58843" "HOSTNAME=0.0.0.0" "NODE_ENV=production" ];
           };
         };
 
