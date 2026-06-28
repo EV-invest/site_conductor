@@ -37,32 +37,6 @@
         # public dir (gitignored; declaratively populated, never hand-edited).
         logoSrc = "${ev_assets}/logo/logo.svg";
 
-        # PWA / app icons, generated from the ev_assets brand mark — no icon
-        # binaries live in the repo. The mark (logo_cut.svg) is recolored to the
-        # brand palette (mirrors SITE.theme in frontend/shared/config/site.ts:
-        # mist on brand-navy) and rasterized at each size; the maskable variant
-        # gets a larger pad so the mark stays inside the safe zone. Nested-svg
-        # `preserveAspectRatio` centers the non-square mark — no transform math.
-        brandIcons = pkgs.runCommand "brand-icons" { nativeBuildInputs = [ pkgs.librsvg ]; } ''
-          bg="#001e4e"; fg="#e6e1d3"
-          sed "s/black/$fg/g" ${ev_assets}/logo/logo_cut.svg > mark.svg
-          mkdir -p "$out"
-          render() {
-            sz="$1"; pad="$2"; name="$3"; inner=$(( $1 - 2 * $2 ))
-            sed -E "1 s#<svg [^>]*viewBox=\"([^\"]*)\"[^>]*>#<svg x=\"$pad\" y=\"$pad\" width=\"$inner\" height=\"$inner\" viewBox=\"\1\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\">#" mark.svg > inner.svg
-            {
-              printf '<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s">' "$sz" "$sz" "$sz" "$sz"
-              printf '<rect width="%s" height="%s" fill="%s"/>' "$sz" "$sz" "$bg"
-              cat inner.svg
-              printf '</svg>'
-            } > composed.svg
-            rsvg-convert -w "$sz" -h "$sz" composed.svg -o "$out/$name"
-          }
-          render 192 19 icon-192.png
-          render 512 51 icon-512.png
-          render 512 92 icon-maskable-512.png
-        '';
-
         rs = v_flakes.rs { inherit pkgs rust; };
         github = v_flakes.github {
           inherit pkgs pname rs;
@@ -177,13 +151,10 @@
             pub="$repo/frontend/public"
             mkdir -p "$pub/assets" "$pub/blogs"
             # public/ is 100% generated; the only committed source is
-            # frontend/assets/ (section imagery). Stage it, plus the brand logo
-            # and the generated app icons, into the served public/assets/.
+            # frontend/assets/ (section imagery). Stage it plus the brand logo
+            # (also the manifest + JSON-LD icon) into the served public/assets/.
             cp -rL "$repo/frontend/assets/." "$pub/assets/"
             cp -f ${logoSrc} "$pub/assets/logo.svg"
-            cp -f ${brandIcons}/icon-192.png          "$pub/assets/icon-192.png"
-            cp -f ${brandIcons}/icon-512.png          "$pub/assets/icon-512.png"
-            cp -f ${brandIcons}/icon-maskable-512.png "$pub/assets/icon-maskable-512.png"
             chmod -R u+w "$pub/assets"
 
             wp=""

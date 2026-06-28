@@ -17,12 +17,15 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io
         username: ${{ github.actor }}
-    - name: Build + push container
-      run: "RESULT=\"$(nix build .#container --no-link --print-out-paths)\"\nnix run\
-        \ nixpkgs#skopeo -- copy \\\n  \"docker-archive:$RESULT\" \\\n  \"docker://ghcr.io/EV-invest/landing:${{\
-        \ github.ref_name }}\"\n"
+    - name: Build + push containers
+      run: "sys=\"$(nix eval --impure --raw --expr builtins.currentSystem)\"\nfor\
+        \ name in $(nix eval --json \".#containers.$sys\" --apply builtins.attrNames\
+        \ | jq -r '.[]'); do\n  echo \"::group::$name\"\n  RESULT=\"$(nix build \"\
+        .#$name-container\" --no-link --print-out-paths)\"\n  nix run nixpkgs#skopeo\
+        \ -- copy \\\n    \"docker-archive:$RESULT\" \\\n    \"docker://ghcr.io/EV-invest/$name:${{\
+        \ github.ref_name }}\"\n  echo \"::endgroup::\"\ndone\n"
       shell: bash
-name: Release container
+name: Release containers
 'on':
   push:
     tags:

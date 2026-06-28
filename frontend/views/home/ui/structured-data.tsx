@@ -84,9 +84,9 @@ function homeGraph(): JsonLdNode {
     logo: {
       "@type": "ImageObject",
       "@id": LOGO_ID,
-      url: ldAbs("/assets/icon-512.png"),
-      width: 512,
-      height: 512,
+      url: ldAbs("/assets/logo.svg"),
+      width: 387,
+      height: 335,
       caption: SITE.name,
     },
     image: { "@id": LOGO_ID },
