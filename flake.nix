@@ -102,8 +102,10 @@
         rustPlatform = pkgs.makeRustPlatform { cargo = rust; rustc = rust; };
         backendSrc = pkgs.lib.cleanSourceWith {
           src = ./.;
+          # .cargo holds dev-only accelerators (sccache rustc-wrapper, cranelift) that
+          # the hermetic sandbox lacks — let nix's vendor config drive the build instead.
           filter = path: _type:
-            ! builtins.elem (baseNameOf path) [ "target" "node_modules" ".pg" ".direnv" ".next" ".git" "frontend" "tmp" "docs" "result" ];
+            ! builtins.elem (baseNameOf path) [ "target" "node_modules" ".pg" ".direnv" ".next" ".git" ".cargo" "frontend" "tmp" "docs" "result" ];
         };
         backendBin = rustPlatform.buildRustPackage {
           pname = backendCargo.name;
@@ -127,6 +129,7 @@
           env = {
             NEXT_TELEMETRY_DISABLED = "1";
             NEXT_PUBLIC_BUILD_VERSION = buildVersion;
+            NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
           };
           # call next build directly (npm run build chains stylelint, a CI gate that shouldn't fail the image).
           buildPhase = ''
