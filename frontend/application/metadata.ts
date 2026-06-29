@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { SITE } from "@/shared/config/site";
+import { requiredInProd } from "@/shared/config/require-env";
 
 // REA's backend origin, advertised to the MFE bundle via <meta name="rea-url">.
-const reaUrl = process.env.NEXT_PUBLIC_REA_URL ?? "http://localhost:59079";
+const reaUrl = requiredInProd(process.env.NEXT_PUBLIC_REA_URL, "NEXT_PUBLIC_REA_URL", "http://localhost:59079");
 
 // Must stay a STATIC export (no request data) so it streams despite the layout's
 // `await cookies()` making routes dynamic — do NOT switch to generateMetadata.

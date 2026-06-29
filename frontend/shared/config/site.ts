@@ -3,12 +3,13 @@
 // image) reads from here, so adding a locale or a subpage is a one-line edit.
 // App-agnostic config → lives in `shared/config` beside const/assets/experiments.
 
-// Canonical production origin. Set NEXT_PUBLIC_SITE_URL in the deploy env
-// (https, NO trailing slash, pick www-or-not once). The `.example` fallback is
-// a deliberately invalid placeholder so a missing env can never silently ship a
-// wrong canonical domain — it stands out in robots.txt / sitemap.xml / JSON-LD.
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://evinvest.example"
+import { requiredInProd } from "./require-env";
+
+// Canonical production origin (https, NO trailing slash, pick www-or-not once).
+export const SITE_URL = requiredInProd(
+  process.env.NEXT_PUBLIC_SITE_URL,
+  "NEXT_PUBLIC_SITE_URL",
+  "https://evinvest.example",
 ).replace(/\/+$/, "");
 
 export const SITE = {
