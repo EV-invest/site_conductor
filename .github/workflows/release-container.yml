@@ -11,9 +11,10 @@ jobs:
         \ strict semver vX.Y.Z[-prerelease] — refusing to release\" >&2\n  exit 1\n\
         fi\n"
       shell: bash
-    - uses: cachix/install-nix-action@v30
+    - uses: DeterminateSystems/nix-installer-action@main
       with:
-        extra_nix_config: experimental-features = nix-command flakes
+        extra-conf: lazy-trees = true
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Log in to GHCR
       uses: docker/login-action@v3
       with:
