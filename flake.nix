@@ -136,6 +136,7 @@
           env = {
             NEXT_TELEMETRY_DISABLED = "1";
             NEXT_PUBLIC_BUILD_VERSION = buildVersion;
+            NEXT_PUBLIC_SITE_URL = "https://evinvest.ltd";
             NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
             NEXT_PUBLIC_API_URL = "https://api.evinvest.ltd";
           };
