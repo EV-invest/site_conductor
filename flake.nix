@@ -144,18 +144,17 @@
           buildPhase = ''
             runHook preBuild
             mkdir -p public/assets public/mfe public/blogs
-            cp -rL assets/. public/assets/
-            cp -f ${logoSrc} public/assets/logo.svg
-            cp -rL ${real_estate_allocation.packages.${system}.embeds}/. public/mfe/
+            cp -rL --no-preserve=mode assets/. public/assets/
+            cp -f --no-preserve=mode ${logoSrc} public/assets/logo.svg
+            cp -rL --no-preserve=mode ${real_estate_allocation.packages.${system}.embeds}/. public/mfe/
             wp=${whitepaper.packages.${system}.default}
-            cp -f "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
+            cp -f --no-preserve=mode "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
             for dir in ${blog.packages.${system}.default}/*/; do
               slug="$(basename "$dir")"
-              cp -f "$dir/main.pdf"        "public/blogs/$slug.pdf"
-              cp -f "$dir/main.light.html" "public/blogs/$slug.light.html"
-              cp -f "$dir/main.dark.html"  "public/blogs/$slug.dark.html"
+              cp -f --no-preserve=mode "$dir/main.pdf"        "public/blogs/$slug.pdf"
+              cp -f --no-preserve=mode "$dir/main.light.html" "public/blogs/$slug.light.html"
+              cp -f --no-preserve=mode "$dir/main.dark.html"  "public/blogs/$slug.dark.html"
             done
-            chmod -R u+w public/mfe public/blogs public/whitepaper.*
             node_modules/.bin/next build
             runHook postBuild
           '';
@@ -205,9 +204,8 @@
             repo="$(git rev-parse --show-toplevel)"
             pub="$repo/frontend/public"
             mkdir -p "$pub/assets" "$pub/blogs"
-            cp -rL "$repo/frontend/assets/." "$pub/assets/"
-            cp -f ${logoSrc} "$pub/assets/logo.svg"
-            chmod -R u+w "$pub/assets"
+            cp -rL --no-preserve=mode "$repo/frontend/assets/." "$pub/assets/"
+            cp -f --no-preserve=mode ${logoSrc} "$pub/assets/logo.svg"
 
             wp=""
             if [ -d "$repo/../whitepaper" ]; then
@@ -217,9 +215,9 @@
               echo "warn: ../whitepaper not checked out — /whitepaper will degrade" >&2
             fi
             if [ -n "$wp" ]; then
-              [ -e "$wp/whitepaper.pdf" ]        && cp -f "$wp/whitepaper.pdf"        "$pub/whitepaper.pdf"
-              [ -e "$wp/whitepaper.light.html" ] && cp -f "$wp/whitepaper.light.html" "$pub/whitepaper.light.html"
-              [ -e "$wp/whitepaper.dark.html" ]  && cp -f "$wp/whitepaper.dark.html"  "$pub/whitepaper.dark.html"
+              [ -e "$wp/whitepaper.pdf" ]        && cp -f --no-preserve=mode "$wp/whitepaper.pdf"        "$pub/whitepaper.pdf"
+              [ -e "$wp/whitepaper.light.html" ] && cp -f --no-preserve=mode "$wp/whitepaper.light.html" "$pub/whitepaper.light.html"
+              [ -e "$wp/whitepaper.dark.html" ]  && cp -f --no-preserve=mode "$wp/whitepaper.dark.html"  "$pub/whitepaper.dark.html"
             fi
 
             bl=""
@@ -233,9 +231,9 @@
               for dir in "$bl"/*/; do
                 [ -d "$dir" ] || continue
                 slug="$(basename "$dir")"
-                [ -e "$dir/main.pdf" ]        && cp -f "$dir/main.pdf"        "$pub/blogs/''${slug}.pdf"
-                [ -e "$dir/main.light.html" ] && cp -f "$dir/main.light.html" "$pub/blogs/''${slug}.light.html"
-                [ -e "$dir/main.dark.html" ]  && cp -f "$dir/main.dark.html"  "$pub/blogs/''${slug}.dark.html"
+                [ -e "$dir/main.pdf" ]        && cp -f --no-preserve=mode "$dir/main.pdf"        "$pub/blogs/''${slug}.pdf"
+                [ -e "$dir/main.light.html" ] && cp -f --no-preserve=mode "$dir/main.light.html" "$pub/blogs/''${slug}.light.html"
+                [ -e "$dir/main.dark.html" ]  && cp -f --no-preserve=mode "$dir/main.dark.html"  "$pub/blogs/''${slug}.dark.html"
               done
             fi
 
@@ -248,13 +246,10 @@
               echo "warn: ../real_estate_allocation not checked out — portfolio MFE will degrade" >&2
             fi
             if [ -n "$mfe" ]; then
-              # store copies are read-only; restore write before rm/overwrite.
+              # chmod heals any read-only tree a pre-fix copy left, so rm can clear it.
               chmod -R u+w "$pub/mfe" 2>/dev/null || true; rm -rf "$pub/mfe"; mkdir -p "$pub/mfe"
-              cp -rL "$mfe"/. "$pub/mfe/"
-              chmod -R u+w "$pub/mfe"
+              cp -rL --no-preserve=mode "$mfe"/. "$pub/mfe/"
             fi
-
-            chmod -f u+w "$pub"/whitepaper.* "$pub"/blogs/* 2>/dev/null || true
           '';
         };
 

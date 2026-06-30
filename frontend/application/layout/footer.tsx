@@ -100,7 +100,12 @@ export function Footer() {
         <div className="border-t border-main-mist/10 pt-8 text-[10px] font-mono-tech text-main-mist/40">
           <p>
             © 2026 EV Investment. All rights reserved.{" "}
-            <span className="text-main-mist/30">{version}</span>
+            <a
+              href={`https://github.com/EV-invest/landing/commit/${version}`}
+              className="text-main-mist/30"
+            >
+              {version}
+            </a>
           </p>
         </div>
       </Container>
