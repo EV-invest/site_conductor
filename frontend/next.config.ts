@@ -1,5 +1,4 @@
 import { execSync } from "node:child_process";
-import { join } from "node:path";
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
@@ -26,18 +25,6 @@ const nextConfig: NextConfig = {
   // Self-contained production server (.next/standalone) so the weak VPS runs
   // `node server.js` without an `npm install` — we can't build there.
   output: "standalone",
-  // #dbg @evinvest/uikit is vendored from the vendor/lib git submodule (pinned
-  // to 0.3.1, which has CarouselEdgeFade) because it isn't on the registry yet.
-  // We compile its TS *source* (transpilePackages) instead of its built dist,
-  // which git doesn't ship — so the submodule carries three LOCAL working-tree
-  // edits that replicate the publish build: exports/main → ./src/index.ts,
-  // `prepare: tsup` removed, and a `"use client"` banner on src/index.ts. These
-  // edits don't survive `git submodule update` (submodules track a commit, not
-  // edits), so this is a local-only stopgap. Revert once publishing lands:
-  // package.json dep → "^0.3.1", drop these two lines + the submodule.
-  // outputFileTracingRoot widens the standalone trace to reach vendor/lib.
-  transpilePackages: ["@evinvest/uikit"],
-  outputFileTracingRoot: join(import.meta.dirname, ".."),
   // Enables the `forbidden()` / `unauthorized()` interrupts and their
   // `forbidden.tsx` / `unauthorized.tsx` file conventions (still experimental).
   experimental: {

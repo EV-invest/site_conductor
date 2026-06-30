@@ -1,3 +1,0 @@
-[submodule "vendor/lib"]
-	path = vendor/lib
-	url = https://github.com/ev-invest/lib
