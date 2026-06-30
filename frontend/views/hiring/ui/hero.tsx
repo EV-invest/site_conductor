@@ -1,5 +1,6 @@
 import { Container } from "@evinvest/uikit";
 import { ArrowDown } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
 
 function Stat({
   value,
@@ -12,7 +13,7 @@ function Stat({
 }) {
   return (
     <div>
-      <p className={`font-serif-display text-3xl ${className}`}>{value}</p>
+      <p className={cn("font-serif-display text-3xl", className)}>{value}</p>
       <p className="mt-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
         {label}
       </p>

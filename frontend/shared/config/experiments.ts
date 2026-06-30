@@ -15,8 +15,9 @@ import type {
 export const experiments = {
   //HACK: defining weights by hand is bad
   hero: { variants: ["a", "b"], weights: [0.5, 0.5] },
-  hero_contents: { variants: ["a", "b"], weights: [0.5, 0.5] },
   team_office: { variants: ["a", "b"], weights: [0.5, 0.5] },
+  // a: original gradient scrim; b: stacked text-shadow halo.
+  team_bio_shade: { variants: ["a", "b"], weights: [0.5, 0.5] },
 } as const satisfies ExperimentConfig;
 
 export type ExperimentKey = Key<typeof experiments>;

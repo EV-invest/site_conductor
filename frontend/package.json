@@ -19,7 +19,7 @@
     "@evinvest/analytics": "^0.1.2",
     "@evinvest/error-monitoring": "^0.1.0",
     "@evinvest/experiments": "^0.1.0",
-    "@evinvest/uikit": "^0.3.0",
+    "@evinvest/uikit": "npm:@evinvest/uikit_tmp@^0.3.1",
     "@hey-api/client-fetch": "^0.13.1",
     "@radix-ui/react-slot": "^1.2.3",
     "@sentry/nextjs": "^10.56.0",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@hey-api/openapi-ts": "^0.98.1",
-    "@playwright/test": "1.59.1",
+    "@playwright/test": "1.60.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@tailwindcss/typography": "^0.5.15",
     "@types/google.maps": "^3.58.1",

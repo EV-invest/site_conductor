@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { TrendingUp, MapPin, ArrowUpRight } from "lucide-react";
 import { Button, Container } from "@evinvest/uikit";
-import { Heading, Text } from "@/shared/ui/text";
+import { Heading, Text, Tier } from "@/shared/ui/text";
 import { Reveal } from "@/shared/ui/reveal";
-import { notifyPlaceholder } from "@/shared/lib/utils";
+import { cn, notifyPlaceholder } from "@/shared/lib/utils";
 import { ASSETS } from "@/shared/config/assets";
 import { InvestmentCalculator } from "./investment-calculator";
 
@@ -31,11 +31,13 @@ export function PortfolioA() {
               </span>
             </h2>
           </div>
-          <Text className="max-w-md mt-4 md:mt-0">
-            Curated, premium, high-yield developments across Quy Nhon city,
-            focusing on high appreciation seaside villas and urban luxury
-            residences.
-          </Text>
+          <Tier tier="main">
+            <Text className="max-w-md mt-4 md:mt-0">
+              Curated, premium, high-yield developments across Quy Nhon city,
+              focusing on high appreciation seaside villas and urban luxury
+              residences.
+            </Text>
+          </Tier>
         </Reveal>
 
         {/* Filter Tabs (Binance/DWF style) */}
@@ -44,11 +46,12 @@ export function PortfolioA() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 uppercase transition-all duration-300 ${
+              className={cn(
+                "px-5 py-2.5 uppercase transition-all duration-300",
                 activeTab === tab
                   ? "bg-main-accent-t1 text-main-black font-bold"
                   : "text-main-mist/60 hover:text-white hover:bg-main-mist/5"
-              }`}
+              )}
             >
               {tab}
             </button>
@@ -72,12 +75,14 @@ export function PortfolioA() {
               <div className="flex items-center gap-2 text-main-accent-t1 font-mono-tech text-xs mb-3">
                 <MapPin className="w-3.5 h-3.5" /> Nhon Ly Beach, Quy Nhon
               </div>
-              <Heading scale="main">The Horizon Premium Villas</Heading>
-              <Text className="max-w-xl mb-6">
-                Exclusive ultra-luxury oceanfront villas with private pools,
-                nestled between pristine limestone cliffs and crystal-clear
-                turquoise waters.
-              </Text>
+              <Tier tier="main">
+                <Heading>The Horizon Premium Villas</Heading>
+                <Text className="max-w-xl mb-6">
+                  Exclusive ultra-luxury oceanfront villas with private pools,
+                  nestled between pristine limestone cliffs and crystal-clear
+                  turquoise waters.
+                </Text>
+              </Tier>
               <div className="grid grid-cols-3 gap-4 border-t border-main-mist/10 pt-6 max-w-md">
                 <div>
                   <Text asChild variant="secondary">
@@ -126,11 +131,13 @@ export function PortfolioA() {
               <div className="flex items-center gap-2 text-main-accent-t1 font-mono-tech text-xs mb-3">
                 <MapPin className="w-3.5 h-3.5" /> Quy Nhon Center
               </div>
-              <Heading scale="alt">Quy Nhon Bay Residences</Heading>
-              <Text className="mb-6">
-                Premium high-rise apartments with panoramic views of the bay,
-                integrating luxury amenities and smart-home technology.
-              </Text>
+              <Tier tier="alt">
+                <Heading>Quy Nhon Bay Residences</Heading>
+                <Text className="mb-6">
+                  Premium high-rise apartments with panoramic views of the bay,
+                  integrating luxury amenities and smart-home technology.
+                </Text>
+              </Tier>
               <div className="flex justify-between items-center border-t border-main-mist/10 pt-6">
                 <div>
                   <Text asChild variant="secondary">
@@ -159,13 +166,15 @@ export function PortfolioA() {
               <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-main-accent-t1/10 text-main-accent-t1 border border-main-accent-t1/20 text-[9px] font-mono-tech uppercase tracking-wider mb-6">
                 <TrendingUp className="w-3 h-3" /> Market Growth
               </div>
-              <Heading scale="alt">Why Quy Nhon?</Heading>
-              <Text className="mb-6">
-                Positioned as the new gateway of Central Vietnam, Quy Nhon is
-                undergoing a multi-billion dollar infrastructure upgrade,
-                transforming into a global science and beach tourism
-                destination.
-              </Text>
+              <Tier tier="alt">
+                <Heading>Why Quy Nhon?</Heading>
+                <Text className="mb-6">
+                  Positioned as the new gateway of Central Vietnam, Quy Nhon is
+                  undergoing a multi-billion dollar infrastructure upgrade,
+                  transforming into a global science and beach tourism
+                  destination.
+                </Text>
+              </Tier>
             </div>
             <ul className="space-y-3 border-t border-main-mist/10 pt-6 font-mono-tech text-xs">
               <li className="flex justify-between">

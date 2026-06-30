@@ -1,3 +1,4 @@
+import { getVariant as readVariant } from "@evinvest/experiments/next";
 import {
   experiments,
   type ExperimentKey,
@@ -5,14 +6,12 @@ import {
 } from "@/shared/config/experiments";
 
 /**
- * Returns the control (first) variant for an experiment.
+ * Resolves an experiment's variant.
  *
- * A/B is disabled for the production launch: this deliberately does **not** read
- * the `ab_<key>` cookie, so tested routes (the home hero) stay statically
- * rendered instead of paying the per-request dynamic-render cost on the VPS.
- * Re-enable live A/B by restoring the cookie read:
- * `return readVariant(experiments, key)` (import from `@evinvest/experiments/next`)
- * and feeding `experiments` back to `createAbMiddleware` in `proxy.ts`.
+ * Production returns the control (first) variant without reading the `ab_<key>`
+ * cookie, so tested routes stay statically rendered instead of paying the
+ * per-request dynamic-render cost on the VPS. Development reads the cookie so
+ * the dev A/B panel can switch variants live.
  *
  * Curried over the app's `experiments` config so sections call `getVariant("hero")`
  * and the **page** stays agnostic of A/B: `HomeView` just renders `<Hero />` etc.
@@ -20,5 +19,8 @@ import {
 export function getVariant<K extends ExperimentKey>(
   key: K,
 ): Promise<Variant<K>> {
-  return Promise.resolve(experiments[key].variants[0] as Variant<K>);
+  if (process.env.NODE_ENV === "production") {
+    return Promise.resolve(experiments[key].variants[0] as Variant<K>);
+  }
+  return readVariant(experiments, key);
 }

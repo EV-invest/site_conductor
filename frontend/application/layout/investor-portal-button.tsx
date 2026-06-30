@@ -3,6 +3,7 @@
 import { Button } from "@evinvest/uikit";
 import { useRouter } from "next/navigation";
 import { getLoginUrl } from "@/shared/config/const";
+import { cn } from "@/shared/lib/utils";
 
 /**
  * Investor Portal CTA. The portal is a separate application on its own origin
@@ -33,7 +34,10 @@ export function InvestorPortalButton({
     <Button
       variant="outline"
       onClick={handleClick}
-      className={`font-mono-tech text-xs tracking-wider border-main-accent-t1 text-main-accent-t1 hover:bg-main-accent-t1 hover:text-main-black transition-all duration-300 bg-transparent ${className ?? ""}`}
+      className={cn(
+        "font-mono-tech text-xs tracking-wider border-main-accent-t1 text-main-accent-t1 hover:bg-main-accent-t1 hover:text-main-black transition-all duration-300 bg-transparent",
+        className
+      )}
     >
       Investor Portal
     </Button>

@@ -12,7 +12,7 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
     // Demote any CSS the remote injects into the `reamfe` layer so it can't
     // override host utilities (set up before the bundle runs, and on the
     // already-loaded path too, since the remote's stylesheet may persist).
-    const stopContainment = containRemoteStyles(new URL(scriptUrl, window.location.href).origin);
+    const stopContainment = containRemoteStyles(scriptUrl);
     const whenReady = () =>
       customElements
         .whenDefined(tag)

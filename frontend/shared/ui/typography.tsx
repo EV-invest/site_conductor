@@ -83,4 +83,4 @@ const P = make(
 );
 
 export { H1, H2, H3, H4, H5, H6, P };
-export { Heading, Text, textVariants } from "./text";
+export { Heading, Text, Tier, textVariants } from "./text";

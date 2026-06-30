@@ -1,5 +1,5 @@
 import { Container } from "@evinvest/uikit";
-import { Text } from "@/shared/ui/text";
+import { Text, Tier } from "@/shared/ui/text";
 import { HeroBCta } from "./cta";
 import { BoardroomImage } from "./boardroom";
 
@@ -32,11 +32,13 @@ export function HeroB() {
             Through Institutional Vision.
           </h1>
 
-          <Text className="max-w-xl sm:text-base md:text-lg">
-            EV Investment bridges the gap between premium coastal real estate
-            development and sophisticated investors. Experience high-yield real
-            estate assets in Vietnam&apos;s fastest-growing coastal hub.
-          </Text>
+          <Tier tier="main">
+            <Text className="max-w-xl">
+              EV Investment bridges the gap between premium coastal real estate
+              development and sophisticated investors. Experience high-yield real
+              estate assets in Vietnam&apos;s fastest-growing coastal hub.
+            </Text>
+          </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
             <HeroBCta className="bg-main-mist text-main-brand hover:bg-main-accent-t1 hover:text-main-black hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />

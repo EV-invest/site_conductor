@@ -7,6 +7,8 @@ const PORT = 58843;
 
 export default defineConfig({
   testDir: "./tests",
+  // Bail with a clear error if the browser binary is missing (see global-setup).
+  globalSetup: "./tests/global-setup.ts",
   // Baselines live beside the test file: tests/sections.spec.ts-snapshots/.
   snapshotPathTemplate: "{testDir}/__screenshots__/{arg}{ext}",
   fullyParallel: true,

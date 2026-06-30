@@ -6,18 +6,21 @@ import type { NextConfig } from "next";
 // `npm run dev` has no such env, so fall back to git so the footer still shows a
 // version; "unknown" only when git is absent too (e.g. the hermetic sandbox,
 // where the env var is always set anyway).
+const git = (cmd: string, fallback: string) => {
+  try {
+    return execSync(cmd, { encoding: "utf8" }).trim();
+  } catch {
+    return fallback;
+  }
+};
+
 const buildVersion =
-  process.env.NEXT_PUBLIC_BUILD_VERSION ??
-  (() => {
-    try {
-      return execSync("git describe --tags --always", { encoding: "utf8" }).trim();
-    } catch {
-      return "unknown";
-    }
-  })();
+  process.env.NEXT_PUBLIC_BUILD_VERSION ?? git("git describe --tags --always", "unknown");
+// Full SHA the footer link resolves to, kept separate from the display version.
+const buildCommit = process.env.NEXT_PUBLIC_BUILD_COMMIT || git("git rev-parse HEAD", "");
 
 const nextConfig: NextConfig = {
-  env: { NEXT_PUBLIC_BUILD_VERSION: buildVersion },
+  env: { NEXT_PUBLIC_BUILD_VERSION: buildVersion, NEXT_PUBLIC_BUILD_COMMIT: buildCommit },
   reactStrictMode: true,
   // Self-contained production server (.next/standalone) so the weak VPS runs
   // `node server.js` without an `npm install` — we can't build there.

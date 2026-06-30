@@ -4,7 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { Text } from "@/shared/ui/text";
+import { cn } from "@/shared/lib/utils";
+import { Text, Tier } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal } from "@/shared/ui/reveal";
 import { useAnalytics } from "@/features/analytics";
@@ -79,25 +80,62 @@ export function ResearchA() {
               Research &amp; Insights
             </span>
           </h2>
-          <Text className="mt-4">
-            We believe in deep macroeconomic analysis. Our research team
-            produces exhaustive monthly reports on Vietnam’s economic landscape,
-            urbanization trends, and Quy Nhon’s real estate cycles.
-          </Text>
+          <Tier tier="main">
+            <Text className="mt-4">
+              We believe in deep macroeconomic analysis. Our research team
+              produces exhaustive monthly reports on Vietnam’s economic
+              landscape, urbanization trends, and Quy Nhon’s real estate cycles.
+            </Text>
+          </Tier>
         </Reveal>
 
         {/* Research Carousel / Interactive List */}
-        <Reveal delay={0.05} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Research Selection Menu */}
-          <div className="lg:col-span-1 space-y-4">
+        <Reveal
+          delay={0.05}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-0"
+        >
+          {/* Mobile: browser-style tabs joined to the article. A continuous
+              bottom rule runs under the strip, broken only by the active tab,
+              which drops over it (-mb-px) to share the pane's black fill. */}
+          <div className="flex items-stretch border-b border-main-mist/10 lg:hidden">
+            {REPORTS.map((r, idx) => {
+              const on = active === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActive(idx)}
+                  className={cn(
+                    "flex-1 border-l border-main-mist/10 first:border-l-0 transition-colors",
+                    on
+                      ? "-mb-px border-t-2 border-t-main-accent-t1 bg-main-black"
+                      : "border-t border-t-main-mist/10 bg-main-card/30 hover:bg-main-card/60"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "block py-3 px-2 text-center font-mono-tech text-[8px] uppercase tracking-[0.15em] leading-tight",
+                      on ? "text-main-accent-t1" : "text-main-mist/45"
+                    )}
+                  >
+                    {r.cat}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Research Selection Menu (desktop card list) */}
+          <div className="hidden lg:block lg:col-span-1 space-y-4">
             {REPORTS.map((r, idx) => (
               <div
                 key={idx}
                 onClick={() => setActive(idx)}
-                className={`p-6 border border-l-2 cursor-pointer transition-all duration-300 ${active === idx
-                  ? "research-panel border-main-mist/10 border-l-main-accent-t1 shadow-lg shadow-main-black/50"
-                  : "bg-main-card/40 border-main-mist/10 border-l-transparent hover:bg-main-card/70 hover:border-l-main-mist/30"
-                  }`}
+                className={cn(
+                  "p-6 border border-l-2 cursor-pointer transition-all duration-300",
+                  active === idx
+                    ? "research-panel border-main-mist/10 border-l-main-accent-t1 shadow-lg shadow-main-black/50"
+                    : "bg-main-card/40 border-main-mist/10 border-l-transparent hover:bg-main-card/70 hover:border-l-main-mist/30"
+                )}
               >
                 <span className="text-[10px] font-mono-tech text-main-accent-t1 uppercase tracking-widest block mb-2">
                   {r.cat}
@@ -121,11 +159,11 @@ export function ResearchA() {
           <motion.div
             layout
             transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-            className="research-panel lg:col-span-2 border border-main-mist/10 shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between"
+            className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between"
           >
             <div>
               <div className="border-b border-main-mist/10 pb-6 mb-8">
-                <span className="text-xs font-mono-tech text-main-accent-t1 uppercase tracking-widest block mb-1">
+                <span className="text-xs font-mono-tech text-main-accent-t1 uppercase tracking-widest hidden lg:block mb-1">
                   {report.cat}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-serif-display text-white font-bold">
@@ -154,19 +192,19 @@ export function ResearchA() {
 
             <motion.div
               layout="position"
-              className="mt-12 pt-6 border-t border-main-mist/10 flex flex-col sm:flex-row justify-between items-center gap-4"
+              className="mt-8 pt-6 border-t border-main-mist/10 flex flex-row justify-between items-center gap-3"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-main-accent-t1/15 border border-main-accent-t1/30 flex items-center justify-center text-main-accent-t1">
-                  <Logo className="w-7 h-7" />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 shrink-0 rounded-full bg-main-accent-t1/15 border border-main-accent-t1/30 hidden sm:flex items-center justify-center text-main-accent-t1">
+                  <Logo className="w-6 h-6" />
                 </div>
-                <div>
-                  <p className="text-xs font-bold text-white">
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-white truncate">
                     EV Research Department
                   </p>
                   <Text
                     variant="secondary"
-                    className="text-[10px] font-mono-tech"
+                    className="text-[10px] font-mono-tech truncate hidden sm:block"
                   >
                     Lead Author: Dr. Nguyen An, Chief Economist
                   </Text>
@@ -175,10 +213,12 @@ export function ResearchA() {
               <a
                 href={`/blogs/${report.slug}.pdf`}
                 download
-                className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-xs tracking-wider uppercase py-5 px-6 inline-flex items-center"
+                className="shrink-0 bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
                 onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
               >
-                Download Full Report <ArrowUpRight className="w-4 h-4 ml-2" />
+                <span className="sm:hidden">Download</span>
+                <span className="hidden sm:inline">Download Full Report</span>
+                <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
               </a>
             </motion.div>
           </motion.div>

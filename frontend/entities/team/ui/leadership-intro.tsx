@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Text } from "@/shared/ui/text";
+import { Text, Tier } from "@/shared/ui/text";
 import { ASSETS } from "@/shared/config/assets";
 
 // Shared leadership intro — heading + boardroom image. Single source for both
@@ -17,11 +17,13 @@ export function LeadershipIntro({ officeSrc }: { officeSrc?: string }) {
             Institutional Pioneers
           </span>
         </h2>
-        <Text className="max-w-xl">
-          Our partners pair hands-on investment, risk-modelling and development
-          experience with on-the-ground execution in Quy Nhon and Da Nang —
-          local presence held to institutional discipline.
-        </Text>
+        <Tier tier="main">
+          <Text className="max-w-xl">
+            Our partners pair hands-on investment, risk-modelling and development
+            experience with on-the-ground execution in Quy Nhon and Da Nang —
+            local presence held to institutional discipline.
+          </Text>
+        </Tier>
       </div>
       <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-main-mist/10 shadow-2xl">
         <Image

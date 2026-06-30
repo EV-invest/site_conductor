@@ -10,7 +10,7 @@ import {
   SelectValue,
   Button,
 } from "@evinvest/uikit";
-import { Heading, Text } from "@/shared/ui/text";
+import { Heading, Text, Tier } from "@/shared/ui/text";
 import { cn, notifyPlaceholder } from "@/shared/lib/utils";
 import {
   calculateRoi,
@@ -48,11 +48,13 @@ export function InvestmentCalculator({ className }: { className?: string }) {
           <span className="text-xs font-mono-tech text-main-accent-t1 tracking-widest uppercase block mb-3">
             Yield Terminal
           </span>
-          <Heading scale="main">Investment Calculator</Heading>
-          <Text className="mb-6">
-            Project your returns across different asset classes in Quy Nhon based
-            on our current fund advisory models.
-          </Text>
+          <Tier tier="main">
+            <Heading>Investment Calculator</Heading>
+            <Text className="mb-6">
+              Project your returns across different asset classes in Quy Nhon
+              based on our current fund advisory models.
+            </Text>
+          </Tier>
         </div>
 
         <div className="space-y-4 font-mono-tech text-xs">
