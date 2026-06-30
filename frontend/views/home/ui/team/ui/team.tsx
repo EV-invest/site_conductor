@@ -30,12 +30,12 @@ export async function Team() {
           {cards}
           <TeamPlaceholders />
         </div>
-        {/* Mobile: swipe the portraits, opportunities stacked beneath. */}
-        <div className="space-y-8 sm:hidden">
-          <MobileCarousel>{cards}</MobileCarousel>
-          <div className="grid gap-8">
+        {/* Mobile: portraits and opportunities share one swipe carousel. */}
+        <div className="sm:hidden">
+          <MobileCarousel>
+            {cards}
             <TeamPlaceholders />
-          </div>
+          </MobileCarousel>
         </div>
       </Container>
     </section>
