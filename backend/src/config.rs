@@ -1,6 +1,6 @@
 use std::{env, net::SocketAddr};
 
-use anyhow::Context;
+use color_eyre::eyre::{Context, Result};
 
 /// SMTP transport credentials. Present only when all four variables are set;
 /// otherwise email delivery is a no-op (the notifier logs and returns Ok), the
@@ -34,7 +34,7 @@ pub struct AppConfig {
 }
 
 impl AppConfig {
-	pub fn from_env() -> anyhow::Result<Self> {
+	pub fn from_env() -> Result<Self> {
 		let database_url = env::var("DATABASE_URL").context("DATABASE_URL must be set")?;
 		let bind_addr = env::var("BIND_ADDR")
 			.unwrap_or_else(|_| "0.0.0.0:58844".to_string())

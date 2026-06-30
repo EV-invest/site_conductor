@@ -6,7 +6,6 @@
 
 use std::sync::Arc;
 
-use anyhow::Context;
 use backend::{
 	api::{self, state::AppState},
 	application::{application_service::ApplicationService, contact_service::ContactService, vacancy_service::VacancyService},
@@ -22,10 +21,12 @@ use backend::{
 		},
 	},
 };
+use color_eyre::eyre::{Context, Result};
 use ev_lib::error_monitoring;
 
 // Sentry must be initialised before the async runtime starts — no #[tokio::main].
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
+	color_eyre::install()?;
 	dotenvy::dotenv().ok();
 
 	let config = AppConfig::from_env().context("failed to load configuration")?;
@@ -47,7 +48,7 @@ fn main() -> anyhow::Result<()> {
 		.block_on(run(config))
 }
 
-async fn run(config: AppConfig) -> anyhow::Result<()> {
+async fn run(config: AppConfig) -> Result<()> {
 	let pool = db::connect(&config.database_url).await.context("failed to connect to the database")?;
 	db::migrate(&pool).await.context("failed to run migrations")?;
 
