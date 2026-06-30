@@ -11,10 +11,12 @@ jobs:
         \ strict semver vX.Y.Z[-prerelease] — refusing to release\" >&2\n  exit 1\n\
         fi\n"
       shell: bash
-    - uses: DeterminateSystems/nix-installer-action@main
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
       with:
         extra-conf: lazy-trees = true
-    - uses: nix-community/cache-nix-action@v7
+    - name: Setup Nix cache
+      uses: nix-community/cache-nix-action@v7
       with:
         primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
         restore-prefixes-first-match: nix-${{ runner.os }}-

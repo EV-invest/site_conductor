@@ -337,11 +337,11 @@
         "v_flakes": "v_flakes"
       },
       "locked": {
-        "lastModified": 1782766705,
-        "narHash": "sha256-bTrGp5h0/skJcLU5eCtNqX3myJByX+MoNDltzor1vEc=",
+        "lastModified": 1782844954,
+        "narHash": "sha256-92PhaTJq72+EP2rXqXRLQBe6c2K+irx7LYtbGFO8hro=",
         "ref": "refs/heads/main",
-        "rev": "4386901ee349fdae47718f67a442b97b1009dc7a",
-        "revCount": 63,
+        "rev": "3c484e204f15ff84d26ec982d1ef070d7e5dbc5e",
+        "revCount": 65,
         "type": "git",
         "url": "ssh://git@github.com/ev-invest/real_estate_allocation"
       },
@@ -576,11 +576,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782766693,
-        "narHash": "sha256-LV7hKA88GfywMK60D2g6sGe49SKfUVxAVEhhkA5Gi0U=",
+        "lastModified": 1782839825,
+        "narHash": "sha256-4ee6DikhT9rdp06AhbW7qCZBdvcnWVuCcM2GZQC89To=",
         "owner": "valeratrades",
         "repo": "v_flakes",
-        "rev": "1dab80a6002777a4a31375fa085aab13442f0cae",
+        "rev": "c8c1d10a61781a085f01035c61b937eceb2c147b",
         "type": "github"
       },
       "original": {

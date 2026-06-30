@@ -31,17 +31,8 @@
       rootVf = vfRevOf lock.root;
       reaVf = vfRevOf lock.nodes.${lock.root}.inputs.real_estate_allocation;
     in
-    assert nixpkgs.lib.assertMsg (rootVf == reaVf) ''
-      v_flakes pin mismatch — nixpkgs/rust-overlay would silently duplicate:
-        root (this repo, flake.nix `v_flakes.url` ref)   = ${rootVf}
-        real_estate_allocation (its own flake.lock)      = ${reaVf}
-      REA keeps its own v_flakes on purpose (see flake.nix:27), so the two locks
-      must be bumped to the SAME rev by hand. To fix, whichever is stale:
-        • bump REA forward: in the real_estate_allocation repo set the same
-          `v_flakes` ref, `nix flake update v_flakes`, push; then here run
-          `nix flake update real_estate_allocation`.
-        • or pin THIS repo back: edit flake.nix `v_flakes.url` ref to match REA,
-          then `nix flake update v_flakes`.'';
+    assert nixpkgs.lib.assertMsg (rootVf == reaVf)
+      "v_flakes drift (root ${builtins.substring 0 8 rootVf} vs REA ${builtins.substring 0 8 reaVf}). Fix: in real_estate_allocation run `nix flake update v_flakes` and push, then here `nix flake update real_estate_allocation`.";
     flake-utils.lib.eachDefaultSystem (
       system:
       let
