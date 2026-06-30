@@ -46,7 +46,22 @@
           extensions = [ "rust-src" "rust-analyzer" "rust-docs" "rustc-codegen-cranelift-preview" ];
           targets = [ "wasm32-unknown-unknown" ];
         });
-        pre-commit-check = pre-commit-hooks.lib.${system}.run (v_flakes.files.preCommit { inherit pkgs; });
+        # v_flakes ships the treefmt hook; we extend it with the same `.#test`
+        # derivation (typecheck + Playwright visual regression). Kept on pre-push,
+        # not pre-commit — a full visual run per commit is too slow; flip `stages`
+        # to ["pre-commit"] if you want it on every commit.
+        preCommitBase = v_flakes.files.preCommit { inherit pkgs; };
+        pre-commit-check = pre-commit-hooks.lib.${system}.run (preCommitBase // {
+          hooks = preCommitBase.hooks // {
+            test = {
+              enable = true;
+              name = "nix run .#test (typecheck + visual regression)";
+              entry = "${runTest}/bin/run-test";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+            };
+          };
+        });
         pname = "landing";
         backendCargo = (builtins.fromTOML (builtins.readFile ./backend/Cargo.toml)).package;
         # Deployed version, shown in the footer. CI passes the release tag via
@@ -360,6 +375,29 @@
             wait
           '';
         };
+
+        # ── test suite: frontend typecheck + Playwright visual regression ───
+        # No Rust tests exist yet; add `cargo test --workspace` here when they do.
+        runTest = pkgs.writeShellApplication {
+          name = "run-test";
+          runtimeInputs = with pkgs; [ nodejs git ];
+          text = ''
+            repo="$(git rev-parse --show-toplevel)"
+            ${populateDocs}/bin/populate-docs || true
+            cd "$repo/frontend"
+            [ -d node_modules/.bin ] || npm install
+
+            echo "▶ typecheck (tsc --noEmit)"
+            npm run check
+
+            echo "▶ visual regression (playwright)"
+            # The nixpkgs browsers — npm-downloaded ones link libs absent on NixOS.
+            export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
+            export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
+            export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE="nixos"
+            exec npm run test:visual
+          '';
+        };
       in
       {
         # `nix run .#dev`      → Postgres + backend + frontend
@@ -367,12 +405,14 @@
         # `nix run .#backend`  → Axum API only (:58844, needs a DB: `.#db` or `.#dev`)
         # `nix run .#db`       → local Postgres only (:5432)
         # `nix run .#gen-api`  → regenerate openapi.json + the TS client
+        # `nix run .#test`     → frontend typecheck + Playwright visual regression
         apps = {
           dev = { type = "app"; program = "${runDev}/bin/run-dev"; };
           frontend = { type = "app"; program = "${runFrontend}/bin/run-frontend"; };
           backend = { type = "app"; program = "${runBackend}/bin/run-backend"; };
           db = { type = "app"; program = "${runPostgres}/bin/run-postgres"; };
           gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
+          test = { type = "app"; program = "${runTest}/bin/run-test"; };
         };
 
         packages = {
