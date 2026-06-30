@@ -19,8 +19,11 @@
     real_estate_allocation.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
     blog.url = "git+ssh://git@github.com/ev-invest/blog";
     blog.inputs.nixpkgs.follows = "nixpkgs";
+    blog.inputs.v-utils.inputs.nixpkgs.follows = "nixpkgs";
+    blog.inputs.v-utils.inputs.rust-overlay.follows = "rust-overlay";
     whitepaper.url = "git+ssh://git@github.com/ev-invest/whitepaper";
     whitepaper.inputs.nixpkgs.follows = "nixpkgs";
+    whitepaper.inputs.v_flakes.follows = "v_flakes";
   };
   outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets, real_estate_allocation, blog, whitepaper }:
     let
