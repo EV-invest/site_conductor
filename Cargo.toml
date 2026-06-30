@@ -7,6 +7,7 @@ resolver = "3"
 [workspace.dependencies]
 async-trait = "0.1.89"
 axum = "0.8.9"
+color-eyre = "0.6"
 domain = { path = "domain" }
 dotenvy = "0.15.7"
 ev_lib = { version = "^0.3.8", features = ["architecture"] }
