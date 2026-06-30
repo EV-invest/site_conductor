@@ -1,4 +1,8 @@
 {
+  # Declares the setting, not the binary: Determinate honours it, vanilla CppNix
+  # ignores it ("unknown setting"). Keeps lock hashes consistent only when every
+  # evaluator is Determinate — see release-container.yml.
+  nixConfig.lazy-trees = true;
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";

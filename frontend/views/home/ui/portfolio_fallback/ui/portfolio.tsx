@@ -5,7 +5,7 @@ import { TrendingUp, MapPin, ArrowUpRight } from "lucide-react";
 import { Button, Container } from "@evinvest/uikit";
 import { Heading, Text } from "@/shared/ui/text";
 import { Reveal } from "@/shared/ui/reveal";
-import { notifyPlaceholder } from "@/shared/lib/utils";
+import { cn, notifyPlaceholder } from "@/shared/lib/utils";
 import { ASSETS } from "@/shared/config/assets";
 import { InvestmentCalculator } from "./investment-calculator";
 
@@ -44,11 +44,12 @@ export function PortfolioA() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 uppercase transition-all duration-300 ${
+              className={cn(
+                "px-5 py-2.5 uppercase transition-all duration-300",
                 activeTab === tab
                   ? "bg-main-accent-t1 text-main-black font-bold"
                   : "text-main-mist/60 hover:text-white hover:bg-main-mist/5"
-              }`}
+              )}
             >
               {tab}
             </button>

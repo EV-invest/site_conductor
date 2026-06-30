@@ -3,6 +3,7 @@ import { type LucideIcon } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
 import { FrameCard } from "@/shared/ui/frame-card";
+import { cn } from "@/shared/lib/utils";
 
 /**
  * Non-person card — centred icon-disc, title, blurb, outline CTA button.
@@ -33,7 +34,7 @@ export function PlaceholderCard({
       heading={heading}
       headingClassName="text-main-mist/40"
       sub={
-        <Text variant="secondary" className="text-xs font-mono-tech mt-1">
+        <Text variant="secondary" className="text-base sm:text-xs font-mono-tech mt-1">
           {sub}
         </Text>
       }
@@ -41,13 +42,16 @@ export function PlaceholderCard({
       <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
         <div className="space-y-4">
           <div
-            className={`w-12 h-12 rounded-full bg-main-mist/5 border border-main-mist/10 flex items-center justify-center mx-auto ${iconClassName}`}
+            className={cn(
+              "w-12 h-12 rounded-full bg-main-mist/5 border border-main-mist/10 flex items-center justify-center mx-auto",
+              iconClassName
+            )}
           >
             <Icon className="w-6 h-6" />
           </div>
           <div>
-            <h5 className="font-serif-display font-bold text-white text-sm">{title}</h5>
-            <Text variant="secondary" className="text-xs mt-2 font-light">
+            <h5 className="font-serif-display font-bold text-white text-lg sm:text-sm">{title}</h5>
+            <Text variant="secondary" className="text-sm sm:text-xs mt-2 font-light">
               {body}
             </Text>
           </div>

@@ -7,6 +7,7 @@ import { Logo } from "@/shared/ui/logo";
 import { NAV_ITEMS } from "./nav-items";
 import { InvestorPortalButton } from "./investor-portal-button";
 import { MobileMenu } from "./mobile-menu";
+import { cn } from "@/shared/lib/utils";
 
 export function Header() {
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -19,11 +20,12 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-[60] transition-all duration-500 border-b ${
+      className={cn(
+        "fixed top-0 left-0 w-full z-[60] transition-all duration-500 border-b",
         hasScrolled
           ? "bg-main-black/90 backdrop-blur-md border-main-mist/10 py-4"
           : "bg-transparent border-transparent py-6"
-      }`}
+      )}
     >
       <Container className="flex items-center justify-between gap-4">
         <Link

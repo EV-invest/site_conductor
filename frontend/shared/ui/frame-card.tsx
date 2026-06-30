@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/shared/lib/utils";
 
 /**
  * Grid-cell shell — a 3:4 framed visual on top, name/label below. The frame
@@ -23,7 +24,10 @@ export function FrameCard({
       </div>
       <div>
         <h4
-          className={`font-serif-display text-base font-bold ${headingClassName}`}
+          className={cn(
+            "font-serif-display text-2xl sm:text-base font-bold",
+            headingClassName
+          )}
         >
           {heading}
         </h4>

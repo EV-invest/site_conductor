@@ -4,10 +4,12 @@ import { Children, useState, type ReactNode } from "react";
 import {
   Carousel,
   CarouselContent,
+  CarouselEdgeFade,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "@evinvest/uikit";
+import { cn } from "@/shared/lib/utils";
 
 /**
  * Mobile swipe pattern — one card in view, inset prev/next arrows, and a dot
@@ -28,14 +30,18 @@ export function MobileCarousel({
 
   return (
     <Carousel index={index} onIndexChange={setIndex} className={className}>
-      <CarouselContent>
-        {slides.map((slide, i) => (
-          <CarouselItem key={i}>{slide}</CarouselItem>
-        ))}
-      </CarouselContent>
+      <div className="relative">
+        <CarouselContent>
+          {slides.map((slide, i) => (
+            <CarouselItem key={i}>{slide}</CarouselItem>
+          ))}
+        </CarouselContent>
 
-      <CarouselPrevious className="left-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
-      <CarouselNext className="right-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
+        <CarouselEdgeFade />
+
+        <CarouselPrevious className="left-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
+        <CarouselNext className="right-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
+      </div>
 
       <div className="mt-6 flex justify-center gap-2">
         {slides.map((_, i) => (
@@ -45,9 +51,10 @@ export function MobileCarousel({
             onClick={() => setIndex(i)}
             aria-label={`Go to slide ${i + 1}`}
             aria-current={i === index}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
+            className={cn(
+              "h-1.5 rounded-full transition-all duration-300",
               i === index ? "w-6 bg-main-accent-t1" : "w-1.5 bg-main-mist/25"
-            }`}
+            )}
           />
         ))}
       </div>

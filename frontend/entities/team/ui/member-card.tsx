@@ -15,7 +15,7 @@ export function MemberCard({ member }: { member: TeamMember }) {
       heading={member.name}
       headingClassName="text-white"
       sub={
-        <p className="mt-1 font-mono-tech text-xs text-main-accent-t1">
+        <p className="mt-1 font-mono-tech text-base sm:text-xs text-main-accent-t1">
           {member.role}
         </p>
       }

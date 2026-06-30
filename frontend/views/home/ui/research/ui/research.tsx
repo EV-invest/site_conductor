@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
 import { Container } from "@evinvest/uikit";
+import { cn } from "@/shared/lib/utils";
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal } from "@/shared/ui/reveal";
@@ -94,10 +95,12 @@ export function ResearchA() {
               <div
                 key={idx}
                 onClick={() => setActive(idx)}
-                className={`p-6 border border-l-2 cursor-pointer transition-all duration-300 ${active === idx
-                  ? "research-panel border-main-mist/10 border-l-main-accent-t1 shadow-lg shadow-main-black/50"
-                  : "bg-main-card/40 border-main-mist/10 border-l-transparent hover:bg-main-card/70 hover:border-l-main-mist/30"
-                  }`}
+                className={cn(
+                  "p-6 border border-l-2 cursor-pointer transition-all duration-300",
+                  active === idx
+                    ? "research-panel border-main-mist/10 border-l-main-accent-t1 shadow-lg shadow-main-black/50"
+                    : "bg-main-card/40 border-main-mist/10 border-l-transparent hover:bg-main-card/70 hover:border-l-main-mist/30"
+                )}
               >
                 <span className="text-[10px] font-mono-tech text-main-accent-t1 uppercase tracking-widest block mb-2">
                   {r.cat}

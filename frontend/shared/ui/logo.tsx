@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/shared/lib/utils";
 
 // The EV Investment lockup, pulled from the `ev_assets` repo into
 // public/assets/logo.svg (gitignored, populated by the flake — never hand-edited).
@@ -32,7 +33,7 @@ export function Logo({ className, withBackground = false }: LogoProps) {
       role="img"
       aria-label="EV Investment"
       style={maskStyle}
-      className={`inline-block ${withBackground ? "w-3/5 h-3/5" : (className ?? "")}`}
+      className={cn("inline-block", withBackground ? "w-3/5 h-3/5" : className)}
     />
   );
 
@@ -40,7 +41,7 @@ export function Logo({ className, withBackground = false }: LogoProps) {
 
   return (
     <span
-      className={`inline-flex items-center justify-center ${className ?? ""}`}
+      className={cn("inline-flex items-center justify-center", className)}
       style={{ backgroundColor: LOGO_BG }}
     >
       {mark}
