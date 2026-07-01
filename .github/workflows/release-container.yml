@@ -70,8 +70,8 @@ jobs:
         \ the host's.\nexport CONTAINERS_REGISTRIES_CONF=\"$(mktemp)\"\nprintf 'unqualified-search-registries\
         \ = []\\n' > \"$CONTAINERS_REGISTRIES_CONF\"\nfor name in $names; do\n  echo\
         \ \"::group::$name\"\n  RESULT=\"$(nix build --impure \".#$name-container\"\
-        \ --no-link --print-out-paths)\"\n  nix run nixpkgs#skopeo -- copy \\\n  \
-        \  \"docker-archive:$RESULT\" \\\n    \"docker://ghcr.io/ev-invest/$name:${{\
+        \ --no-link --print-out-paths --quiet)\"\n  nix run nixpkgs#skopeo -- copy\
+        \ \\\n    \"docker-archive:$RESULT\" \\\n    \"docker://ghcr.io/ev-invest/$name:${{\
         \ github.ref_name }}\"\n  echo \"::endgroup::\"\ndone\n"
       shell: bash
     timeout-minutes: 40

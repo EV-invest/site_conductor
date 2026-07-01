@@ -214,6 +214,10 @@
           text = ''
             repo="$(git rev-parse --show-toplevel)"
             pub="$repo/frontend/public"
+            # Sources live in the read-only nix store; a prior copy leaves 0444 files
+            # and 0555 dirs behind. Heal write bits before touching anything so rm/cp
+            # can overwrite — otherwise cp fails with "Permission denied"/"File exists".
+            chmod -R u+w "$pub" 2>/dev/null || true
             mkdir -p "$pub/assets" "$pub/blogs"
             cp -rL --no-preserve=mode "$repo/frontend/assets/." "$pub/assets/"
             cp -f --no-preserve=mode ${logoSrc} "$pub/assets/logo.svg"
@@ -257,9 +261,8 @@
               echo "warn: ../real_estate_allocation not checked out — portfolio MFE will degrade" >&2
             fi
             if [ -n "$mfe" ]; then
-              # chmod heals any read-only tree a pre-fix copy left, so rm can clear it.
-              chmod -R u+w "$pub/mfe" 2>/dev/null || true; rm -rf "$pub/mfe"; mkdir -p "$pub/mfe"
-              cp -rL --no-preserve=mode "$mfe"/. "$pub/mfe/"
+              rm -rf "$pub/mfe"; mkdir -p "$pub/mfe"
+              cp -rfL --no-preserve=mode "$mfe"/. "$pub/mfe/"
             fi
           '';
         };
