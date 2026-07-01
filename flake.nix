@@ -17,11 +17,11 @@
     real_estate_allocation.inputs.nixpkgs.follows = "nixpkgs";
     real_estate_allocation.inputs.rust-overlay.follows = "rust-overlay";
     real_estate_allocation.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
-    blog.url = "git+ssh://git@github.com/ev-invest/blog?lfs=1";
+    blog.url = "git+ssh://git@github.com/ev-invest/blog";
     blog.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.v-utils.inputs.nixpkgs.follows = "nixpkgs";
     blog.inputs.v-utils.inputs.rust-overlay.follows = "rust-overlay";
-    whitepaper.url = "git+ssh://git@github.com/ev-invest/whitepaper?lfs=1";
+    whitepaper.url = "git+ssh://git@github.com/ev-invest/whitepaper";
     whitepaper.inputs.nixpkgs.follows = "nixpkgs";
     whitepaper.inputs.v_flakes.follows = "v_flakes";
   };

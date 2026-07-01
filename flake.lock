@@ -9,17 +9,15 @@
         "v-utils": "v-utils"
       },
       "locked": {
-        "lastModified": 1782857201,
-        "lfs": true,
-        "narHash": "sha256-7b8/VG402Hz+QzZlHg+ZzxiV+J1nIaiRFZm/U6zZRks=",
+        "lastModified": 1782910263,
+        "narHash": "sha256-lwnVwnfrgneU4Q0HKBTOhZF+6pke2ozVQSzhzS2U99U=",
         "ref": "refs/heads/main",
-        "rev": "e54ef437a72a16c9198437c1a2c18791af861903",
-        "revCount": 10,
+        "rev": "a221a86e91dfc41e3936782c412f3e88e02656bf",
+        "revCount": 11,
         "type": "git",
         "url": "ssh://git@github.com/ev-invest/blog"
       },
       "original": {
-        "lfs": true,
         "type": "git",
         "url": "ssh://git@github.com/ev-invest/blog"
       }
@@ -513,7 +511,6 @@
       },
       "locked": {
         "lastModified": 1782200972,
-        "lfs": true,
         "narHash": "sha256-ON1UP/iGI9dvhEhXxpenAcVjdUVTj3cxA6ndM0RLWyE=",
         "ref": "refs/heads/main",
         "rev": "f39d8106c04bb21721fa36b1e9610ea498e3fcce",
@@ -522,7 +519,6 @@
         "url": "ssh://git@github.com/ev-invest/whitepaper"
       },
       "original": {
-        "lfs": true,
         "type": "git",
         "url": "ssh://git@github.com/ev-invest/whitepaper"
       }
