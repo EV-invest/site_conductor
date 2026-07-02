@@ -3,7 +3,11 @@ import { SITE } from "@/shared/config/site";
 import { requiredInProd } from "@/shared/config/require-env";
 
 // REA's backend origin, advertised to the MFE bundle via <meta name="rea-url">.
-const reaUrl = requiredInProd(process.env.NEXT_PUBLIC_REA_URL, "NEXT_PUBLIC_REA_URL", "http://localhost:59079");
+const reaUrl = requiredInProd(
+  process.env.NEXT_PUBLIC_REA_URL,
+  "NEXT_PUBLIC_REA_URL",
+  "http://localhost:59079"
+);
 
 // Must stay a STATIC export (no request data) so it streams despite the layout's
 // `await cookies()` making routes dynamic — do NOT switch to generateMetadata.
@@ -16,9 +20,10 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   applicationName: SITE.name,
-  // Self-referencing canonical collapses UTM / analytics query-string duplicates
-  // (PostHog/Umami params) onto the clean URL. Resolved against metadataBase.
-  alternates: { canonical: "/" },
+  // No `alternates` here: a root-level canonical cascades into every page that
+  // doesn't define its own (noindexed /investor-portal, /apps/*, the 404) and
+  // stamps them canonical-to-homepage — a contradictory signal pair. Each
+  // indexable page declares its own self-canonical (home's is in app/page.tsx).
   // Read by the real-estate MFE bundle (`rea_origin()`) for its REA backend calls.
   other: { "rea-url": reaUrl },
   robots: {

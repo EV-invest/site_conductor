@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { listVacancies, type VacancySummary } from "@/entities/vacancy";
+import {
+  listVacancies,
+  vacancyCacheOptions,
+  type VacancySummary,
+} from "@/entities/vacancy";
 import { HiringView } from "@/views/hiring";
 
 // SSG + ISR: the board statically prerenders (the force-cache fetch below makes
@@ -18,10 +22,11 @@ export const metadata: Metadata = {
 export default async function Page() {
   let vacancies: VacancySummary[] = [];
   try {
-    // force-cache + the segment revalidate above = ISR (static board, hourly
-    // refresh). The generated client passes a Request object, which segment
-    // revalidate alone won't make cacheable, so opt in explicitly here.
-    const { data } = await listVacancies({ cache: "force-cache" });
+    // vacancyCacheOptions = force-cache + an explicit fetch TTL (static board,
+    // hourly refresh). The generated client passes a Request object, which
+    // segment revalidate alone won't make cacheable or expire, so both the
+    // cache opt-in and the TTL ride on the fetch itself.
+    const { data } = await listVacancies(vacancyCacheOptions);
     vacancies = data ?? [];
   } catch {
     // Backend unreachable — render the page shell with an empty board.

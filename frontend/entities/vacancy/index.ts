@@ -5,7 +5,27 @@
 // domain names so feature/view code depends on "the vacancy entity" rather than
 // reaching into shared/api directly. The backend owns the data; keep the
 // generated layer untouched.
-export { type VacancySummary, type VacancyDetail, listVacancies, getVacancy } from "@/shared/api";
+export {
+  type VacancySummary,
+  type VacancyDetail,
+  listVacancies,
+  getVacancy,
+} from "@/shared/api";
+
+/// Data-cache options for ISR'd vacancy fetches (hiring board, role pages,
+/// sitemap). `cache: "force-cache"` alone caches the response *indefinitely* —
+/// a segment-level `export const revalidate` does not reach an explicit
+/// force-cache fetch — so pin the fetch's own TTL to make the hourly refresh
+/// the callers promise actually happen, in step everywhere.
+export const VACANCY_REVALIDATE_SECONDS = 3600;
+export const vacancyCacheOptions = {
+  cache: "force-cache",
+  fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+    fetch(input, {
+      ...init,
+      next: { revalidate: VACANCY_REVALIDATE_SECONDS },
+    }),
+} as const;
 
 /// Filter facets for the board, mirroring the backend `VacancyCategory`. The
 /// "All" pseudo-facet is UI-only (no category filter sent).

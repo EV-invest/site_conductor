@@ -9,7 +9,7 @@ import { requiredInProd } from "./require-env";
 export const SITE_URL = requiredInProd(
   process.env.NEXT_PUBLIC_SITE_URL,
   "NEXT_PUBLIC_SITE_URL",
-  "https://evinvest.example",
+  "https://evinvest.example"
 ).replace(/\/+$/, "");
 
 export const SITE = {
@@ -83,10 +83,12 @@ export const OFFICES: Office[] = [
 ];
 
 // ── Routes ───────────────────────────────────────────────────────────────────
-// Indexable URLs for the sitemap (and future nav). Single-page today; pushing a
-// real subpage here makes it sitemap-listed and sitelink-eligible with no other
+// Indexable URLs for the sitemap (and the footer sitemap nav). Pushing a new
+// subpage here makes it sitemap-listed and sitelink-eligible with no other
 // change. The homepage in-page sections (#portfolio, #research…) are NOT separate
-// URLs and intentionally not listed.
+// URLs and intentionally not listed; neither are noindexed surfaces
+// (/investor-portal, /apps/*). /hiring/[slug] and /blogs/[slug] detail entries
+// are added in app/sitemap.ts.
 export type ChangeFrequency =
   | "always"
   | "hourly"
@@ -106,6 +108,9 @@ export const ROUTES: Route[] = [
   { path: "/", changeFrequency: "monthly", priority: 1 },
   { path: "/team", changeFrequency: "monthly", priority: 0.8 },
   { path: "/hiring", changeFrequency: "weekly", priority: 0.8 },
+  // The research hub: its articles are light-DOM document MFEs read off disk on
+  // the server, so (unlike /whitepaper) the text IS in the SSR HTML.
+  { path: "/blogs", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
   // NB: /whitepaper is intentionally NOT listed. Its body mounts in a shadow root
   // (a client-side document microfrontend), so the page text isn't in the SSR HTML

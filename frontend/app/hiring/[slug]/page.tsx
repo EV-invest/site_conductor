@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import {
   getVacancy,
   listVacancies,
+  vacancyCacheOptions,
   type VacancyDetail,
 } from "@/entities/vacancy";
 import { VacancyView } from "@/views/vacancy";
@@ -31,9 +32,10 @@ const fetchVacancy = cache(
   async (slug: string): Promise<VacancyDetail | null> => {
     const { data, response } = await getVacancy({
       path: { slug },
-      // ISR: on-demand (non-prebuilt) roles cache for the segment's hour
-      // instead of re-fetching every request. Prebuilt params bake at build.
-      cache: "force-cache",
+      // ISR: on-demand (non-prebuilt) roles cache for an hour (the TTL rides
+      // on the fetch itself — see vacancyCacheOptions) instead of re-fetching
+      // every request. Prebuilt params bake at build.
+      ...vacancyCacheOptions,
     });
     if (data) return data;
     if (response?.status === 404) return null;

@@ -15,12 +15,17 @@ const git = (cmd: string, fallback: string) => {
 };
 
 const buildVersion =
-  process.env.NEXT_PUBLIC_BUILD_VERSION ?? git("git describe --tags --always", "unknown");
+  process.env.NEXT_PUBLIC_BUILD_VERSION ??
+  git("git describe --tags --always", "unknown");
 // Full SHA the footer link resolves to, kept separate from the display version.
-const buildCommit = process.env.NEXT_PUBLIC_BUILD_COMMIT || git("git rev-parse HEAD", "");
+const buildCommit =
+  process.env.NEXT_PUBLIC_BUILD_COMMIT || git("git rev-parse HEAD", "");
 
 const nextConfig: NextConfig = {
-  env: { NEXT_PUBLIC_BUILD_VERSION: buildVersion, NEXT_PUBLIC_BUILD_COMMIT: buildCommit },
+  env: {
+    NEXT_PUBLIC_BUILD_VERSION: buildVersion,
+    NEXT_PUBLIC_BUILD_COMMIT: buildCommit,
+  },
   reactStrictMode: true,
   // Self-contained production server (.next/standalone) so the weak VPS runs
   // `node server.js` without an `npm install` — we can't build there.
@@ -29,6 +34,20 @@ const nextConfig: NextConfig = {
   // `forbidden.tsx` / `unauthorized.tsx` file conventions (still experimental).
   experimental: {
     authInterrupts: true,
+  },
+  // The raw flake-built documents in public/ (whitepaper.*.html, blogs/*.html,
+  // *.pdf) duplicate the branded /whitepaper and /blogs/[slug] routes that
+  // compose them (shared/mfe RemoteDocument). Keep them fetchable — the routes
+  // read/mount them — but out of the index as standalone URLs. Do NOT
+  // robots.txt-Disallow instead: a noindex header only works on crawlable URLs.
+  async headers() {
+    const noindex = [{ key: "X-Robots-Tag", value: "noindex" }];
+    return [
+      { source: "/whitepaper.:variant(dark|light).html", headers: noindex },
+      { source: "/blogs/:slug.:variant(dark|light).html", headers: noindex },
+      { source: "/whitepaper.pdf", headers: noindex },
+      { source: "/blogs/:slug.pdf", headers: noindex },
+    ];
   },
 };
 

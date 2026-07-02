@@ -1,25 +1,24 @@
-"use client";
-
-import { useEffect } from "react";
+import Link from "next/link";
 import { Container } from "@evinvest/uikit";
 import { Text, Tier } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
-import { notifyPlaceholder } from "@/shared/lib/utils";
+import { BuildVersionLog } from "./build-version-log";
+import { FOOTER_NAV } from "./nav-items";
+import { NewsletterForm } from "./newsletter-form";
 
 const version = process.env.NEXT_PUBLIC_BUILD_VERSION ?? "unknown";
 const commit = process.env.NEXT_PUBLIC_BUILD_COMMIT || version;
 
 export function Footer() {
-  useEffect(() => {
-    console.log(`EV Investment — build ${version}`);
-  }, []);
-
   // 6. FOOTER (Minimalist, structured)
+  // 12-col grid (Figma: landing › Footer): brand 3 | Company 2 | Explore 2 |
+  // Offices 3 | Newsletter 2. On mobile the two sitemap columns sit side by side.
   return (
     <footer className="bg-main-black border-t border-main-mist/10 py-16">
+      <BuildVersionLog />
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-8 lg:grid-cols-12 mb-12">
+          <div className="col-span-2 lg:col-span-3">
             <div className="flex items-center gap-3 mb-6">
               <Logo className="w-8 h-8 text-white" />
               <div className="flex flex-col">
@@ -50,7 +49,31 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          {FOOTER_NAV.map(group => (
+            <nav
+              key={group.heading}
+              aria-label={`Footer ${group.heading} links`}
+              className="lg:col-span-2"
+            >
+              <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
+                {group.heading}
+              </h4>
+              <ul className="space-y-3">
+                {group.links.map(link => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-xs font-light text-main-mist/70 hover:text-main-accent-t1 transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+
+          <div className="col-span-2 lg:col-span-3">
             <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
               Offices
             </h4>
@@ -74,7 +97,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="col-span-2 lg:col-span-2">
             <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
               Newsletter
             </h4>
@@ -83,19 +106,7 @@ export function Footer() {
                 Subscribe, to receive our macro reports
               </Text>
             </Tier>
-            <div className="flex border border-main-mist/20">
-              <input
-                type="email"
-                placeholder="Institutional Email"
-                className="bg-transparent text-xs p-3 w-full focus:outline-none text-white"
-              />
-              <button
-                className="bg-main-accent-t1 text-main-black px-4 font-mono-tech text-xs uppercase font-bold hover:bg-main-mist transition-colors"
-                onClick={() => notifyPlaceholder("Newsletter Subscription")}
-              >
-                Join
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
 
