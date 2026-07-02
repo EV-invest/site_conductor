@@ -222,9 +222,13 @@
         # ── populate frontend/public/ from sibling clones (best-effort, idempotent) ──
         populateDocs = pkgs.writeShellApplication {
           name = "populate-docs";
-          runtimeInputs = with pkgs; [ git nix coreutils ];
+          runtimeInputs = with pkgs; [ git nix coreutils flock ];
           text = ''
             repo="$(git rev-parse --show-toplevel)"
+            # shellHook, run-frontend and run-test all invoke this; two instances
+            # racing in public/ mid rm/cp swap fail with EEXIST/EACCES — serialize.
+            exec 9>"$repo/.git/populate-docs.lock"
+            flock 9
             pub="$repo/frontend/public"
             # Sources live in the read-only nix store; a prior copy leaves 0444 files
             # and 0555 dirs behind. Heal write bits before touching anything so rm/cp
@@ -275,7 +279,7 @@
             if [ -n "$mfe" ]; then
               # chmod heals any read-only tree a pre-fix copy left, so rm can clear it.
               chmod -R u+w "$pub/mfe" 2>/dev/null || true; rm -rf "$pub/mfe"; mkdir -p "$pub/mfe"
-              cp -rL --no-preserve=mode "$mfe"/. "$pub/mfe/"
+              cp -rfL --no-preserve=mode "$mfe"/. "$pub/mfe/"
             fi
           '';
         };
