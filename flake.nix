@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
-    v_flakes.url = "github:valeratrades/v_flakes?ref=v1.7";
+    v_flakes.url = "github:valeratrades/v_flakes?ref=v1.6";
     v_flakes.inputs.nixpkgs.follows = "nixpkgs";
     v_flakes.inputs.rust-overlay.follows = "rust-overlay";
     ev_assets = { url = "github:EV-invest/assets"; flake = false; };
