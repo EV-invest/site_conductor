@@ -64,7 +64,7 @@ jobs:
       run: "set -euo pipefail\nsys=\"$(nix eval --impure --raw --expr builtins.currentSystem)\"\
         \n# Extract to a var first: `for x in $(cmd)` swallows cmd's exit code, so\
         \ a\n# failed eval (e.g. a flake error) would leave the loop empty and the\
-        \ job GREEN.\nnames=\"$(nix eval --impure --json \".#containers.$sys\" --apply\
+        \ job GREEN.\nnames=\"$(nix eval --impure --refresh --json \".#containers.$sys\" --apply\
         \ builtins.attrNames | jq -r '.[]')\"\n[ -n \"$names\" ] || { echo \"::error::no\
         \ containers found under .#containers.$sys\" >&2; exit 1; }\n# nixpkgs skopeo\
         \ rejects the GH runner's v1-format /etc/containers/registries.conf\n# (\"\
@@ -72,7 +72,7 @@ jobs:
         \ the host's.\nCONTAINERS_REGISTRIES_CONF=\"$(mktemp)\"; export CONTAINERS_REGISTRIES_CONF\n\
         printf 'unqualified-search-registries = []\\n' > \"$CONTAINERS_REGISTRIES_CONF\"\
         \nfor name in $names; do\n  echo \"::group::$name\"\n  RESULT=\"$(nix build\
-        \ --impure \".#$name-container\" --no-link --print-out-paths -L 2> >(gawk\
+        \ --impure --refresh \".#$name-container\" --no-link --print-out-paths -L 2> >(gawk\
         \ 'function cat(n) {\n  if      (n ~ /\\.tar\\.gz|layers\\.json|stream-|customisation-layer|-conf\\\
         .json|-base\\.json|excludePaths/) return \"packaging\"\n  else if (n ~ /landing-frontend|next/)\
         \      return \"frontend/next\"\n  else if (n ~ /-mfe|wasm/)             \
