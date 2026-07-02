@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import { SITE, ROUTES } from "@/shared/config/site";
 import { ASSETS } from "@/shared/config/assets";
-import { listVacancies } from "@/entities/vacancy";
+import { ARTICLES } from "@/entities/article";
+import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 
 // Driven off shared/config ROUTES (adding a subpage = one list entry) plus the
-// live vacancy detail pages, fetched at build so each role is indexable. ISR
-// (not force-static) so newly published roles enter the sitemap without a
-// redeploy; the backend being unreachable degrades to the static routes only.
+// static research articles and the live vacancy detail pages, fetched at build
+// so each role is indexable. ISR (not force-static) so newly published roles
+// enter the sitemap without a redeploy; the backend being unreachable degrades
+// to the static routes only. No <lastmod>: we have no real per-URL change
+// dates, and an always-now stamp teaches Google to distrust the field.
 export const revalidate = 3600;
 
 // Sitemap requires absolute URLs.
@@ -23,11 +26,8 @@ const HOME_IMAGES = [
 ].map(abs);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
-
   const staticEntries: MetadataRoute.Sitemap = ROUTES.map(route => ({
     url: route.path === "/" ? SITE.url : abs(route.path),
-    lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
     // hreflang block stays empty while English-only; lights up automatically
@@ -44,13 +44,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(route.path === "/" ? { images: HOME_IMAGES } : {}),
   }));
 
+  const articleEntries: MetadataRoute.Sitemap = ARTICLES.map(article => ({
+    url: abs(`/blogs/${article.slug}`),
+    changeFrequency: "yearly",
+    priority: 0.6,
+  }));
+
   // Live vacancy detail pages. Degrade to static routes only if unreachable.
   let vacancyEntries: MetadataRoute.Sitemap = [];
   try {
-    const { data } = await listVacancies({ cache: "force-cache" });
+    const { data } = await listVacancies(vacancyCacheOptions);
     vacancyEntries = (data ?? []).map(vacancy => ({
       url: abs(`/hiring/${vacancy.slug}`),
-      lastModified,
       changeFrequency: "weekly",
       priority: 0.6,
     }));
@@ -58,5 +63,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     vacancyEntries = [];
   }
 
-  return [...staticEntries, ...vacancyEntries];
+  return [...staticEntries, ...articleEntries, ...vacancyEntries];
 }

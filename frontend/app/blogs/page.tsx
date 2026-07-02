@@ -1,30 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-
-// TODO: generalize — hardcoded article slugs, should come from the blog flake
-const ARTICLES = [
-  {
-    slug: "vietnam_coastal_2026",
-    title: "Vietnam Coastal Macro Report 2026",
-    date: "May 2026",
-  },
-  {
-    slug: "vietnam_tail_risk",
-    title: "Vietnam Tail Risk Analysis",
-    date: "April 2026",
-  },
-  {
-    slug: "hospitality_yield_shifts",
-    title: "Post-Pandemic Hospitality Yield Shifts",
-    date: "March 2026",
-  },
-];
+import { ARTICLES } from "@/entities/article";
 
 export const metadata: Metadata = {
   title: "Research",
-  description: "EV Investment research articles — institutional analysis of Vietnam real estate.",
+  description:
+    "EV Investment research articles — institutional analysis of Vietnam real estate.",
   alternates: { canonical: "/blogs" },
-  robots: "noindex",
 };
 
 export default function Page() {
@@ -38,14 +20,16 @@ export default function Page() {
           Research <span className="italic text-main-accent-t1">Articles</span>
         </h1>
         <ul className="space-y-6">
-          {ARTICLES.map((a) => (
+          {ARTICLES.map(a => (
             <li
               key={a.slug}
               className="border border-main-mist/10 p-6 hover:border-main-accent-t1/30 transition-colors"
             >
               <div className="flex justify-between items-start gap-4">
                 <div>
-                  <span className="text-xs font-mono-tech text-main-mist/40">{a.date}</span>
+                  <span className="text-xs font-mono-tech text-main-mist/40">
+                    {a.date}
+                  </span>
                   <h2 className="text-xl font-serif-display text-white font-bold mt-1 mb-3">
                     {a.title}
                   </h2>
