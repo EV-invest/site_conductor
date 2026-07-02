@@ -18,7 +18,10 @@
       # narHash, so they can never drift or fail a hash check — every build just
       # takes latest `main`. Costs `--impure`. Fetched over ssh (your key locally;
       # per-repo deploy keys on the release runner — see github.containerRelease).
-      real_estate_allocation = builtins.getFlake "git+ssh://git@github.com/ev-invest/real_estate_allocation?ref=refs/heads/main";
+      # Pinned to an exact rev (not bare `main`): the release runner's nix store cache
+      # otherwise reuses a stale `main` resolution, baking an old embed bundle. Bump this
+      # to ship a newer REA embed.
+      real_estate_allocation = builtins.getFlake "git+ssh://git@github.com/ev-invest/real_estate_allocation?ref=refs/heads/main&rev=1371eaa352c13a8b6296a90397b4f281ea3697a4";
       blog = builtins.getFlake "git+ssh://git@github.com/ev-invest/blog?ref=refs/heads/main";
       whitepaper = builtins.getFlake "git+ssh://git@github.com/ev-invest/whitepaper?ref=refs/heads/main";
     in
