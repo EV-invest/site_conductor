@@ -2,17 +2,17 @@ import { expect, test } from "@playwright/test";
 
 // One visual-regression baseline per section of the site. `name` names the
 // screenshot file (__screenshots__/<name>.png); `selector` locates the section.
-// The anchored content sections (hero, portfolio, calculator, research, team)
-// are reachable by their nav hash, e.g. http://localhost:58843/#team — those use
-// an id selector. The page chrome (header/footer) has no anchor, so it's keyed
-// by tag.
+// The anchored content sections (hero, research, team) are reachable by their
+// nav hash, e.g. http://localhost:58843/#team — those use an id selector. The
+// page chrome (header/footer) has no anchor, so it's keyed by tag.
+//
+// portfolio/calculator are embedded from ../real_estate_allocation and not ours
+// to test.
 //
 // Adding a section to the site = adding one line here. Nothing else changes.
 const SECTIONS = [
   { name: "header", selector: "header" },
   { name: "hero", selector: "#hero" },
-  { name: "portfolio", selector: "#portfolio" },
-  { name: "calculator", selector: "#calculator" },
   { name: "research", selector: "#research" },
   { name: "team", selector: "#team" },
   { name: "footer", selector: "footer" },

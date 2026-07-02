@@ -10,29 +10,18 @@
     v_flakes.inputs.nixpkgs.follows = "nixpkgs";
     v_flakes.inputs.rust-overlay.follows = "rust-overlay";
     ev_assets = { url = "github:EV-invest/assets"; flake = false; };
-    # Private canonical sources, baked into the frontend image. Locally these resolve
-    # with your own ssh key; the release runner reads them via per-repo deploy keys
-    # (containerRelease.deployKeys), provisioned by `git_ops init-deploy-key`.
-    real_estate_allocation.url = "git+ssh://git@github.com/ev-invest/real_estate_allocation";
-    real_estate_allocation.inputs.nixpkgs.follows = "nixpkgs";
-    real_estate_allocation.inputs.rust-overlay.follows = "rust-overlay";
-    real_estate_allocation.inputs.pre-commit-hooks.follows = "pre-commit-hooks";
-    blog.url = "git+ssh://git@github.com/ev-invest/blog";
-    blog.inputs.nixpkgs.follows = "nixpkgs";
-    whitepaper.url = "git+ssh://git@github.com/ev-invest/whitepaper";
-    whitepaper.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets, real_estate_allocation, blog, whitepaper }:
+  outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets }:
     let
-      # real_estate_allocation keeps its own v_flakes (forcing `follows` swaps its API and drops `embeds`).
-      # But if its pin drifts from ours, nixpkgs+rust-overlay duplicate silently — so fail loudly instead.
-      lock = builtins.fromJSON (builtins.readFile ./flake.lock);
-      vfRevOf = node: lock.nodes.${lock.nodes.${node}.inputs.v_flakes}.locked.rev;
-      rootVf = vfRevOf lock.root;
-      reaVf = vfRevOf lock.nodes.${lock.root}.inputs.real_estate_allocation;
+      # Private canonical sources baked into the frontend image. Deliberately NOT
+      # flake inputs: as impure getFlake refs they carry no flake.lock entry and no
+      # narHash, so they can never drift or fail a hash check — every build just
+      # takes latest `main`. Costs `--impure`. Fetched over ssh (your key locally;
+      # per-repo deploy keys on the release runner — see github.containerRelease).
+      real_estate_allocation = builtins.getFlake "git+ssh://git@github.com/ev-invest/real_estate_allocation?ref=refs/heads/main";
+      blog = builtins.getFlake "git+ssh://git@github.com/ev-invest/blog?ref=refs/heads/main";
+      whitepaper = builtins.getFlake "git+ssh://git@github.com/ev-invest/whitepaper?ref=refs/heads/main";
     in
-    assert nixpkgs.lib.assertMsg (rootVf == reaVf)
-      "v_flakes drift (root ${builtins.substring 0 8 rootVf} vs REA ${builtins.substring 0 8 reaVf}). Fix: in real_estate_allocation run `nix flake update v_flakes` and push, then here `nix flake update real_estate_allocation`.";
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -46,6 +35,11 @@
           extensions = [ "rust-src" "rust-analyzer" "rust-docs" "rustc-codegen-cranelift-preview" ];
           targets = [ "wasm32-unknown-unknown" ];
         });
+        # Lean toolchain for the production backend image: rustc + cargo + std only.
+        # Drops ~1.2 GB of dev tooling (rust-analyzer/docs/clippy/rustfmt/src) the
+        # container build never touches. CI builds only the containers, so this keeps
+        # the fat `rust` above out of the release closure entirely.
+        rustBuild = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.minimal);
         # v_flakes ships the treefmt hook; we extend it with the same `.#test`
         # derivation (typecheck + Playwright visual regression). Kept on pre-push,
         # not pre-commit — a full visual run per commit is too slow; flip `stages`
@@ -56,7 +50,7 @@
             test = {
               enable = true;
               name = "nix run .#test (typecheck + visual regression)";
-              entry = "${runTest}/bin/run-test";
+              entry = "${runTestHook}/bin/run-test-hook";
               pass_filenames = false;
               stages = [ "pre-push" ];
             };
@@ -78,11 +72,16 @@
         github = v_flakes.github {
           inherit pkgs pname rs;
           enable = true;
+          # Cache only locally-built paths (toolchain + our outputs), not the
+          # ~4 GB of cache.nixos.org-substitutable deps — see v_flakes cache.nix.
+          cache = { lean = true; };
           lastSupportedVersion = "nightly-2026-05-12";
           # The frontend image bakes private inputs (REA `embeds`, blog, whitepaper),
           # so the release runner needs read access to each — one read-only deploy key
           # per repo (provision: `git_ops init-deploy-key ev-invest/<repo>`).
-          containerRelease = { registry = "ghcr.io/EV-invest"; deployKeys = [ "ev-invest/real_estate_allocation" "ev-invest/blog" "ev-invest/whitepaper" ]; };
+          # impure: the private sources are getFlake refs (off flake.lock), so the release build needs --impure.
+          # buildTiming: print a per-component build-time bar chart at the end of the release step.
+          containerRelease = { registry = "ghcr.io/EV-invest"; deployKeys = [ "ev-invest/real_estate_allocation" "ev-invest/blog" "ev-invest/whitepaper" ]; impure = true; buildTiming = true; };
           gitignore.extra = ''
             ## generated by populate-docs; source imagery lives in frontend/assets/
             frontend/public/
@@ -124,7 +123,7 @@
         combined = v_flakes.utils.combine { inherit rust; modules = [ rs github readme ]; };
 
         # ── production backend: binary + OCI image ──────────────────────────
-        rustPlatform = pkgs.makeRustPlatform { cargo = rust; rustc = rust; };
+        rustPlatform = pkgs.makeRustPlatform { cargo = rustBuild; rustc = rustBuild; };
         backendSrc = pkgs.lib.cleanSourceWith {
           src = ./.;
           # .cargo holds dev-only accelerators (sccache rustc-wrapper, cranelift) that
@@ -150,7 +149,9 @@
           pname = "landing-frontend";
           version = "1.0.0";
           src = ./frontend;
-          npmDepsHash = "sha256-VeEqSU8km3V5JVfkN5k42/A9LtlFxYmIev04z13z9tU=";
+          # build node_modules straight from package-lock.json — no FOD hash to drift on release builds.
+          npmDeps = pkgs.importNpmLock { npmRoot = ./frontend; };
+          npmConfigHook = pkgs.importNpmLock.npmConfigHook;
           env = {
             NEXT_TELEMETRY_DISABLED = "1";
             NEXT_PUBLIC_BUILD_VERSION = buildVersion;
@@ -222,6 +223,10 @@
           text = ''
             repo="$(git rev-parse --show-toplevel)"
             pub="$repo/frontend/public"
+            # Sources live in the read-only nix store; a prior copy leaves 0444 files
+            # and 0555 dirs behind. Heal write bits before touching anything so rm/cp
+            # can overwrite — otherwise cp fails with "Permission denied"/"File exists".
+            chmod -R u+w "$pub" 2>/dev/null || true
             mkdir -p "$pub/assets" "$pub/blogs"
             cp -rL --no-preserve=mode "$repo/frontend/assets/." "$pub/assets/"
             cp -f --no-preserve=mode ${logoSrc} "$pub/assets/logo.svg"
@@ -389,7 +394,7 @@
             repo="$(git rev-parse --show-toplevel)"
             ${populateDocs}/bin/populate-docs || true
             cd "$repo/frontend"
-            [ -d node_modules/.bin ] || npm install
+            [ -d node_modules/.bin ] || npm ci
 
             echo "▶ typecheck (tsc --noEmit)"
             npm run check
@@ -402,6 +407,79 @@
             exec npm run test:visual
           '';
         };
+
+        # pre-push wrapper: run the (slow) visual suite only when pushing a protected
+        # ref / tag, and skip even then if the pushed tip's tree matches the remote's
+        # (a squash/reword that leaves content identical can't change a screenshot).
+        # pre-commit sets REMOTE_BRANCH/FROM_REF/TO_REF on pre-push.
+        runTestHook = pkgs.writeShellApplication {
+          name = "run-test-hook";
+          runtimeInputs = with pkgs; [ git ];
+          text = ''
+            # Only gate the protected refs / releases; feature-branch pushes run nothing.
+            case "''${PRE_COMMIT_REMOTE_BRANCH:-}" in
+              refs/heads/main|refs/heads/dev|refs/heads/release|refs/tags/*) ;;
+              *) echo "not a protected ref / tag — skipping visual regression"; exit 0 ;;
+            esac
+
+            from="''${PRE_COMMIT_FROM_REF:-}"
+            to="''${PRE_COMMIT_TO_REF:-}"
+            # Missing refs (new branch / refs unavailable) → don't skip; run the suite.
+            if [ -n "$from" ] && [ -n "$to" ] && git rev-parse -q --verify "$from^{tree}" >/dev/null 2>&1; then
+              if [ "$(git rev-parse "$from^{tree}")" = "$(git rev-parse "$to^{tree}")" ]; then
+                echo "tip tree unchanged since remote — skipping visual regression"
+                exit 0
+              fi
+            fi
+            exec ${runTest}/bin/run-test
+          '';
+        };
+
+        # ── accept new screenshots: `.#accept-test` (all) or with -- <names> ──
+        runAcceptTest = pkgs.writeShellApplication {
+          name = "accept-test";
+          runtimeInputs = with pkgs; [ nodejs git ];
+          text = ''
+            repo="$(git rev-parse --show-toplevel)"
+            cd "$repo/frontend"
+            [ -d node_modules/.bin ] || npm ci
+            export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
+            export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
+            export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE="nixos"
+            if [ "$#" -eq 0 ]; then
+              exec npm run test:visual:update
+            fi
+            # playwright -g takes one regex; alternate the names so multiple match.
+            exec npm run test:visual:update -- -g "$(IFS='|'; echo "$*")"
+          '';
+        };
+
+        # ── bump latest remote vX.Y.Z tag and push: `.#publish major|minor|patch` ──
+        runPublish = pkgs.writeShellApplication {
+          name = "publish";
+          runtimeInputs = with pkgs; [ git ];
+          text = ''
+                        part="''${1:-}"
+                        case "$part" in major|minor|patch) ;; *) echo "usage: nix run .#publish -- major|minor|patch" >&2; exit 1 ;; esac
+                        [ -z "$(git status --porcelain)" ] || { echo "uncommitted changes — commit or stash first" >&2; exit 1; }
+
+                        git fetch --tags --force origin >/dev/null 2>&1
+                        last="$(git tag -l 'v*' --sort=-v:refname | head -n1)"
+                        ver="''${last#v}"; [ -n "$ver" ] || ver="0.0.0"
+                        IFS=. read -r ma mi pa <<EOF
+            $ver
+            EOF
+                        case "$part" in
+                          major) ma=$((ma+1)); mi=0; pa=0 ;;
+                          minor) mi=$((mi+1)); pa=0 ;;
+                          patch) pa=$((pa+1)) ;;
+                        esac
+                        next="v$ma.$mi.$pa"
+                        echo "$last → $next"
+                        git tag "$next"
+                        git push origin "$next"
+          '';
+        };
       in
       {
         # `nix run .#dev`      → Postgres + backend + frontend
@@ -410,6 +488,8 @@
         # `nix run .#db`       → local Postgres only (:5432)
         # `nix run .#gen-api`  → regenerate openapi.json + the TS client
         # `nix run .#test`     → frontend typecheck + Playwright visual regression
+        # `nix run .#accept-test` → accept new screenshots (all, or `-- <names>`)
+        # `nix run .#publish`  → bump latest remote vX.Y.Z tag (major|minor|patch) + push
         apps = {
           dev = { type = "app"; program = "${runDev}/bin/run-dev"; };
           frontend = { type = "app"; program = "${runFrontend}/bin/run-frontend"; };
@@ -417,6 +497,8 @@
           db = { type = "app"; program = "${runPostgres}/bin/run-postgres"; };
           gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
           test = { type = "app"; program = "${runTest}/bin/run-test"; };
+          accept-test = { type = "app"; program = "${runAcceptTest}/bin/accept-test"; };
+          publish = { type = "app"; program = "${runPublish}/bin/publish"; };
         };
 
         packages = {

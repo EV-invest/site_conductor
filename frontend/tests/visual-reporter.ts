@@ -43,7 +43,10 @@ class VisualReporter implements Reporter {
     for (const f of this.failed) {
       process.stdout.write(`\n    ${f.title}\n${f.lines.join("\n")}\n`);
     }
-    process.stdout.write("\n");
+    const names = this.failed.map((f) => f.title.replace(/^.*:\s*/, ""));
+    process.stdout.write(
+      `\n  accept some: nix run .#accept-test ${names[0]} [<name>...] — accept all: nix run .#accept-test\n\n`,
+    );
     void result;
   }
 }
