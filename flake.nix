@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
-    v_flakes.url = "github:valeratrades/v_flakes?ref=v1.6";
+    v_flakes.url = "github:valeratrades/v_flakes?ref=v1.7";
     v_flakes.inputs.nixpkgs.follows = "nixpkgs";
     v_flakes.inputs.rust-overlay.follows = "rust-overlay";
     ev_assets = { url = "github:EV-invest/assets"; flake = false; };
@@ -18,10 +18,7 @@
       # narHash, so they can never drift or fail a hash check — every build just
       # takes latest `main`. Costs `--impure`. Fetched over ssh (your key locally;
       # per-repo deploy keys on the release runner — see github.containerRelease).
-      # Pinned to an exact rev (not bare `main`): the release runner's nix store cache
-      # otherwise reuses a stale `main` resolution, baking an old embed bundle. Bump this
-      # to ship a newer REA embed.
-      real_estate_allocation = builtins.getFlake "git+ssh://git@github.com/ev-invest/real_estate_allocation?ref=refs/heads/main&rev=1371eaa352c13a8b6296a90397b4f281ea3697a4";
+      real_estate_allocation = builtins.getFlake "git+ssh://git@github.com/ev-invest/real_estate_allocation?ref=refs/heads/main";
       blog = builtins.getFlake "git+ssh://git@github.com/ev-invest/blog?ref=refs/heads/main";
       whitepaper = builtins.getFlake "git+ssh://git@github.com/ev-invest/whitepaper?ref=refs/heads/main";
     in
@@ -33,11 +30,9 @@
           inherit system overlays;
           allowUnfree = true;
         };
-        #NB: can't load rust-bin from nightly.latest, as there are week guarantees of which components will be available on each day.
-        rust = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
-          extensions = [ "rust-src" "rust-analyzer" "rust-docs" "rustc-codegen-cranelift-preview" ];
-          targets = [ "wasm32-unknown-unknown" ];
-        });
+        # Canonical toolchain pinned in v_flakes — byte-identical across repos, so
+        # the nix store dedups it and sccache cross-references compilations.
+        rust = v_flakes.rs.default_nightly system;
         # Lean toolchain for the production backend image: rustc + cargo + std only.
         # Drops ~1.2 GB of dev tooling (rust-analyzer/docs/clippy/rustfmt/src) the
         # container build never touches. CI builds only the containers, so this keeps
