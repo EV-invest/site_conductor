@@ -230,3 +230,29 @@ Notes that bite:
   becomes user-/dynamically-sourced, gate it (origin allowlist / DOMPurify).
 - Degrade gracefully: a `RemoteDocument` whose source can't be loaded renders its
   `fallback` (a PDF link), so a missing doc build never breaks the page.
+
+## 9. Routed zones — whole apps under conductor paths
+
+§8 composes remotes **inside** a page. When another EV app owns **whole routes**
+(a full Next.js app with its own auth, router, and deploys — the cabinet), it is
+mounted as a **multi-zone** instead: the app stays a standalone deployment on its
+own origin, and the conductor proxies one path space to it.
+
+- **Conductor side** (`next.config.ts` `rewrites()`): `/cabinet` +
+  `/cabinet/:path+` → `CABINET_ZONE_URL` (the zone's origin). Env unset ⇒ no
+  rewrites ⇒ the path 404s rather than half-proxying.
+- **Zone side** (in the zone's repo): `basePath: "/cabinet"` — its pages *and*
+  `/_next` assets all live under the one prefix, so nothing collides with the
+  conductor's own assets. The zone also needs
+  `serverActions.allowedOrigins: [<conductor host>]` since the user-facing
+  origin differs from its own.
+- **Cross-zone links are hard links.** Never `next/link` into another zone — the
+  current zone's router doesn't own the route, and prefetch/soft-nav break.
+  Use `<a>` / `window.location` (see `application/layout/investor-portal-button.tsx`);
+  navigation between zones is a full document load by design.
+- **Auth composes for free**: the browser only ever talks to the conductor
+  origin, so the zone's session cookies (`__Host-*` included) arrive first-party
+  on this domain through the rewrite.
+- **Pick the transport by ownership**: inline widget or single mounted surface →
+  element remote (§8); an app owning a route subtree with its own navigation →
+  zone. A zone's own pages can still mount §8 remotes.

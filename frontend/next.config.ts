@@ -49,6 +49,19 @@ const nextConfig: NextConfig = {
       { source: "/blogs/:slug.pdf", headers: noindex },
     ];
   },
+  // Multi-zone mount: the cabinet is its own Next.js deployment (basePath
+  // "/cabinet", so pages AND its /_next assets all live under the one prefix);
+  // the conductor proxies that whole path space to it. Unset ⇒ no rewrites, so
+  // /cabinet 404s instead of half-proxying (the header CTA only points here
+  // when NEXT_PUBLIC_CABINET_PATH is set alongside). See PATTERNS.md §9.
+  async rewrites() {
+    const cabinet = process.env.CABINET_ZONE_URL;
+    if (!cabinet) return [];
+    return [
+      { source: "/cabinet", destination: `${cabinet}/cabinet` },
+      { source: "/cabinet/:path+", destination: `${cabinet}/cabinet/:path+` },
+    ];
+  },
 };
 
 // Build-time Sentry integration (source-map upload + server instrumentation
