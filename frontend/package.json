@@ -19,7 +19,7 @@
     "@evinvest/analytics": "^0.1.2",
     "@evinvest/error-monitoring": "^0.1.0",
     "@evinvest/experiments": "^0.1.0",
-    "@evinvest/uikit": "^0.3.2",
+    "@evinvest/uikit": "^0.4.0",
     "@hey-api/client-fetch": "^0.13.1",
     "@radix-ui/react-slot": "^1.2.3",
     "@sentry/nextjs": "^10.56.0",

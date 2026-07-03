@@ -1,66 +1,19 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Container } from "@evinvest/uikit";
-import { Logo } from "@/shared/ui/logo";
+import { Header as BrandHeader } from "@evinvest/uikit";
 import { NAV_ITEMS } from "./nav-items";
 import { InvestorPortalButton } from "./investor-portal-button";
-import { MobileMenu } from "./mobile-menu";
-import { cn } from "@/shared/lib/utils";
 
+// The chrome itself (scroll-aware bar, lockup, mobile overlay) is the shared
+// @evinvest/uikit Header — one shell across every EV surface. This app only
+// wires in its nav items and CTA. The bar CTA hides below `sm` (the overlay
+// carries the full-width variant instead), matching the pre-uikit behavior.
 export function Header() {
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setHasScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 w-full z-[60] transition-all duration-500 border-b",
-        hasScrolled
-          ? "bg-main-black/90 backdrop-blur-md border-main-mist/10 py-4"
-          : "bg-transparent border-transparent py-6"
-      )}
-    >
-      <Container className="flex items-center justify-between gap-4">
-        <Link
-          href="/"
-          className="flex items-center gap-3"
-          aria-label="EV Investment — home"
-        >
-          <Logo className="w-10 h-10 text-white" />
-          <div className="flex flex-col">
-            <span className="font-serif-display font-bold text-lg tracking-wider text-white">
-              EV INVESTMENT
-            </span>
-            <span className="text-[9px] font-mono-tech tracking-[0.3em] text-main-accent-t1 uppercase">
-              Quy Nhon Fund
-            </span>
-          </div>
-        </Link>
-
-        <nav className="hidden lg:flex items-center gap-6 font-mono-tech text-xs tracking-widest uppercase">
-          {NAV_ITEMS.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-main-mist/80 hover:text-main-accent-t1 transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <InvestorPortalButton className="hidden sm:inline-flex" />
-          <MobileMenu />
-        </div>
-      </Container>
-    </header>
+    <BrandHeader
+      nav={NAV_ITEMS}
+      linkComponent={Link}
+      cta={<InvestorPortalButton className="hidden sm:inline-flex" />}
+      mobileCta={<InvestorPortalButton className="w-full justify-center py-6" />}
+    />
   );
 }
