@@ -11,7 +11,7 @@ const commit = process.env.NEXT_PUBLIC_BUILD_COMMIT || version;
 
 export function Footer() {
   // 6. FOOTER (Minimalist, structured)
-  // 12-col grid (Figma: landing › Footer): brand 3 | Company 2 | Explore 2 |
+  // 12-col grid (Figma: site_conductor › Footer): brand 3 | Company 2 | Explore 2 |
   // Offices 3 | Newsletter 2. On mobile the two sitemap columns sit side by side.
   return (
     <footer className="bg-main-black border-t border-main-mist/10 py-16">
@@ -114,7 +114,7 @@ export function Footer() {
           <p>
             © 2026 EV Investment. All rights reserved.{" "}
             <a
-              href={`https://github.com/EV-invest/landing/commit/${commit}`}
+              href={`https://github.com/EV-invest/site_conductor/commit/${commit}`}
               className="text-main-mist/30"
             >
               {version}

@@ -54,7 +54,7 @@
             };
           };
         });
-        pname = "landing";
+        pname = "site_conductor";
         backendCargo = (builtins.fromTOML (builtins.readFile ./backend/Cargo.toml)).package;
         # Deployed version, shown in the footer. CI passes the release tag via
         # BUILD_VERSION (needs --impure); pure builds fall back to the commit rev.
@@ -112,7 +112,7 @@
         };
         readme = v_flakes.readme-fw {
           inherit pkgs pname;
-          repo = "EV-invest/landing";
+          repo = "EV-invest/site_conductor";
           defaults = true;
           lastSupportedVersion = "nightly-1.92";
           rootDir = ./.;
@@ -145,7 +145,7 @@
         };
         # ── frontend production image (Next.js standalone) ──────────────────
         frontendApp = pkgs.buildNpmPackage {
-          pname = "landing-frontend";
+          pname = "site_conductor-frontend";
           version = "1.0.0";
           src = ./frontend;
           # build node_modules straight from package-lock.json — no FOD hash to drift on release builds.
@@ -301,7 +301,7 @@
             ${dyldFallback}
             repo="$(git rev-parse --show-toplevel)"
             cd "$repo"
-            export DATABASE_URL="''${DATABASE_URL:-postgres://postgres@localhost:5432/ev_landing}"
+            export DATABASE_URL="''${DATABASE_URL:-postgres://postgres@localhost:5432/ev_site_conductor}"
             export BIND_ADDR="''${BIND_ADDR:-0.0.0.0:58844}"
             export RUST_LOG="''${RUST_LOG:-info,backend=debug}"
             export APP_ENV="''${APP_ENV:-development}"
@@ -318,7 +318,7 @@
             export PGDATA="$repo/.pg/data"
             sockets="$repo/.pg/sockets"
             port="''${PGPORT:-5432}"
-            db="''${PGDATABASE:-ev_landing}"
+            db="''${PGDATABASE:-ev_site_conductor}"
 
             mkdir -p "$sockets"
             if [ ! -s "$PGDATA/PG_VERSION" ]; then
