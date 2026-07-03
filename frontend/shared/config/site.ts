@@ -16,7 +16,7 @@ export const SITE = {
   url: SITE_URL,
   name: "EV Investment",
   alternateName: "Quy Nhon Fund",
-  tagline: "Premium Real Estate Fund",
+  tagline: "Vietnam-Oriented Macro Fund",
   // ~155 chars, leads with value + place; reused as the default meta
   // description and the Organization / WebSite description.
   description:
