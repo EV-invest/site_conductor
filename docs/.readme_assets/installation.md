@@ -39,7 +39,7 @@ load, `nix build .#container` emits a `docker-archive` tarball. See `flake.nix`.
 
 ```sh
 nix build .#container   # result → a docker-archive .tar.gz
-skopeo copy docker-archive:result docker://ghcr.io/EV-invest/landing:v0.0.1
+skopeo copy docker-archive:result docker://ghcr.io/EV-invest/site_conductor:v0.0.1
 # or load locally:
 podman load < result
 ```
