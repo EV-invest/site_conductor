@@ -11,7 +11,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: SITE.name,
     description: SITE.description,
     start_url: "/",
-    display: "standalone",
+    display: "browser",
     background_color: SITE.theme.black,
     theme_color: SITE.theme.black,
     icons: [
