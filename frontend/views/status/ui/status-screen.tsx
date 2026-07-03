@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { StatusLink } from "./buttons";
-import { Seal } from "./seal";
+import { LogoMark } from "./logo-mark";
 
 export type StatusAccent = "teal" | "gold" | "red" | "blue";
 
@@ -37,7 +37,7 @@ interface StatusScreenProps {
 
 /**
  * Shared skeleton for the 404 / 403 / 500 status pages: a centred hero with the
- * skyline seal, a mono eyebrow, a giant Playfair code, a headline whose final
+ * logo mark, a mono eyebrow, a giant Playfair code, a headline whose final
  * clause is an italic accent, supporting copy, and the CTAs. The accent threads
  * through all four marks. Actions render inline (from `links` data, plus an
  * optional `children` slot) — never passed as a JSX prop through this server
@@ -49,7 +49,7 @@ export function StatusScreen({ accent, eyebrow, code, headlineLead, headlineAcce
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-main-black px-6 py-32 text-center">
       <div aria-hidden className={cn("pointer-events-none absolute inset-0 opacity-[0.07] [background:radial-gradient(55%_45%_at_50%_30%,currentColor,transparent_70%)]", accentText)} />
       <div className="relative z-10 flex w-full max-w-2xl flex-col items-center">
-        <Seal className={cn("mb-7 h-10 w-auto", accentText)} />
+        <LogoMark className={cn("mb-7 h-10 w-auto", accentText)} />
         <p className={cn("mb-6 font-mono-tech text-[11px] uppercase tracking-[0.34em]", accentText)}>{eyebrow}</p>
         <p className={cn("font-serif-display text-[110px] font-medium leading-[0.9] sm:text-[180px]", accentText)}>{code}</p>
         <h1 className="mt-4 font-serif-display text-3xl font-light leading-tight text-white sm:text-5xl">
