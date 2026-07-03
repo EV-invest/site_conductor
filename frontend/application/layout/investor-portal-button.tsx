@@ -16,17 +16,10 @@ import { cn } from "@/shared/lib/utils";
  * 3. Neither set (local / preview) — the in-app Coming Soon stub, so the CTA
  *    is never a dead end. A single non-`asChild` Button is hydration-safe.
  */
-export function InvestorPortalButton({
-  className,
-  onNavigate,
-}: {
-  className?: string;
-  onNavigate?: () => void;
-}) {
+export function InvestorPortalButton({ className }: { className?: string }) {
   const router = useRouter();
 
   const handleClick = () => {
-    onNavigate?.();
     if (process.env.NEXT_PUBLIC_CABINET_PATH) {
       window.location.href = process.env.NEXT_PUBLIC_CABINET_PATH;
     } else if (process.env.NEXT_PUBLIC_OAUTH_PORTAL_URL) {

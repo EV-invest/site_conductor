@@ -1,3 +1,7 @@
+"use client";
+
+// Client boundary on purpose: `linkComponent={Link}` is a function prop, which
+// cannot cross the server→client boundary into the uikit's client Header.
 import Link from "next/link";
 import { Header as BrandHeader } from "@evinvest/uikit";
 import { NAV_ITEMS } from "./nav-items";

@@ -55,7 +55,7 @@ const nextConfig: NextConfig = {
   // /cabinet 404s instead of half-proxying (the header CTA only points here
   // when NEXT_PUBLIC_CABINET_PATH is set alongside). See PATTERNS.md §9.
   async rewrites() {
-    const cabinet = process.env.CABINET_ZONE_URL;
+    const cabinet = process.env.CABINET_ZONE_URL?.replace(/\/+$/, "");
     if (!cabinet) return [];
     return [
       { source: "/cabinet", destination: `${cabinet}/cabinet` },

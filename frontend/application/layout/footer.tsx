@@ -1,3 +1,7 @@
+"use client";
+
+// Client boundary on purpose: `linkComponent={Link}` is a function prop, which
+// cannot cross the server→client boundary into the uikit's client Footer.
 import Link from "next/link";
 import { Footer as BrandFooter } from "@evinvest/uikit";
 import { BuildVersionLog } from "./build-version-log";
