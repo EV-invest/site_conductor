@@ -1,7 +1,9 @@
+"use client";
+
+// Client boundary on purpose: `linkComponent={Link}` is a function prop, which
+// cannot cross the server→client boundary into the uikit's client Footer.
 import Link from "next/link";
-import { Container } from "@evinvest/uikit";
-import { Text, Tier } from "@/shared/ui/text";
-import { Logo } from "@/shared/ui/logo";
+import { Footer as BrandFooter } from "@evinvest/uikit";
 import { BuildVersionLog } from "./build-version-log";
 import { FOOTER_NAV } from "./nav-items";
 import { NewsletterForm } from "./newsletter-form";
@@ -9,119 +11,19 @@ import { NewsletterForm } from "./newsletter-form";
 const version = process.env.NEXT_PUBLIC_BUILD_VERSION ?? "unknown";
 const commit = process.env.NEXT_PUBLIC_BUILD_COMMIT || version;
 
+// The 12-col footer grid (Figma: site_conductor › Footer) is the shared
+// @evinvest/uikit Footer; this app supplies the sitemap columns, the
+// newsletter form island, and the deployed-version line.
 export function Footer() {
-  // 6. FOOTER (Minimalist, structured)
-  // 12-col grid (Figma: site_conductor › Footer): brand 3 | Company 2 | Explore 2 |
-  // Offices 3 | Newsletter 2. On mobile the two sitemap columns sit side by side.
   return (
-    <footer className="bg-main-black border-t border-main-mist/10 py-16">
+    <BrandFooter
+      nav={FOOTER_NAV}
+      linkComponent={Link}
+      newsletter={<NewsletterForm />}
+      version={version}
+      commitHref={`https://github.com/EV-invest/site_conductor/commit/${commit}`}
+    >
       <BuildVersionLog />
-      <Container>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-8 lg:grid-cols-12 mb-12">
-          <div className="col-span-2 lg:col-span-3">
-            <div className="flex items-center gap-3 mb-6">
-              <Logo className="w-8 h-8 text-white" />
-              <div className="flex flex-col">
-                <span className="font-serif-display font-bold text-base tracking-wider text-white">
-                  EV INVESTMENT
-                </span>
-                <span className="text-[8px] font-mono-tech tracking-[0.3em] text-main-accent-t1 uppercase">
-                  Quy Nhon Fund
-                </span>
-              </div>
-            </div>
-            <Text
-              variant="secondary"
-              className="text-xs font-light max-w-sm leading-relaxed mb-6"
-            >
-              EV Investment is a registered real estate advisory and investment
-              management fund specializing in premium coastal developments in
-              Quy Nhon, Binh Dinh province, Vietnam.
-            </Text>
-            <div className="flex gap-4 text-xs font-mono-tech text-main-accent-t1">
-              <a href="#hero" className="hover:underline">
-                Privacy Policy
-              </a>
-              <span className="text-main-mist/20">|</span>
-              <a href="#hero" className="hover:underline">
-                Terms of Service
-              </a>
-            </div>
-          </div>
-
-          {FOOTER_NAV.map(group => (
-            <nav
-              key={group.heading}
-              aria-label={`Footer ${group.heading} links`}
-              className="lg:col-span-2"
-            >
-              <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
-                {group.heading}
-              </h4>
-              <ul className="space-y-3">
-                {group.links.map(link => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-xs font-light text-main-mist/70 hover:text-main-accent-t1 transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-
-          <div className="col-span-2 lg:col-span-3">
-            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
-              Offices
-            </h4>
-            {/* Plain <p>, not <Text>: these address lines want a fixed text-xs and
-                sit under no <Tier>, so an info <Text> would panic. Sizing stays local. */}
-            <ul className="space-y-4 text-xs text-main-mist/70 font-light leading-relaxed">
-              <li>
-                <strong className="text-white block font-mono-tech text-[10px] uppercase tracking-wider mb-1">
-                  Quy Nhon Head Office
-                </strong>
-                102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City,
-                Vietnam
-              </li>
-              <li>
-                <strong className="text-white block font-mono-tech text-[10px] uppercase tracking-wider mb-1">
-                  Ho Chi Minh Representative
-                </strong>
-                Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City,
-                Vietnam
-              </li>
-            </ul>
-          </div>
-
-          <div className="col-span-2 lg:col-span-2">
-            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
-              Newsletter
-            </h4>
-            <Tier tier="alt">
-              <Text className="mb-4">
-                Subscribe, to receive our macro reports
-              </Text>
-            </Tier>
-            <NewsletterForm />
-          </div>
-        </div>
-
-        <div className="border-t border-main-mist/10 pt-8 text-[10px] font-mono-tech text-main-mist/40">
-          <p>
-            © 2026 EV Investment. All rights reserved.{" "}
-            <a
-              href={`https://github.com/EV-invest/site_conductor/commit/${commit}`}
-              className="text-main-mist/30"
-            >
-              {version}
-            </a>
-          </p>
-        </div>
-      </Container>
-    </footer>
+    </BrandFooter>
   );
 }
