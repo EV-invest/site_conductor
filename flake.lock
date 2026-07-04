@@ -5,13 +5,13 @@
       "locked": {
         "lastModified": 1782283368,
         "narHash": "sha256-6byWdIuv3K5AuqByX16RWJ6/k78KD/dl1ISqNlPUgmY=",
-        "owner": "EV-invest",
+        "owner": "ev-invest",
         "repo": "assets",
         "rev": "398dc6c8a5b109ca67f749d1133318ddb23877e5",
         "type": "github"
       },
       "original": {
-        "owner": "EV-invest",
+        "owner": "ev-invest",
         "repo": "assets",
         "type": "github"
       }
