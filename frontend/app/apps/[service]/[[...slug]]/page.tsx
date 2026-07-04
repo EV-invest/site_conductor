@@ -12,7 +12,7 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 // Page-level microfrontends: a service owns a whole route under /apps. The
 // optional catch-all `[[...slug]]` means this also matches the bare
 // `/apps/<service>` index, and the rest of the path belongs to the
-// microfrontend's own internal router. Landing keeps its chrome (Header/Footer
+// microfrontend's own internal router. site_conductor keeps its chrome (Header/Footer
 // from the root layout); the remote owns the content region. Same custom-element
 // contract as inline widgets — just mounted at a route.
 //

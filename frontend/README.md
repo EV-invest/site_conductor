@@ -1,8 +1,8 @@
-# landing
+# site_conductor
 
-Public marketing site for the EV Investment fund — Next.js 16 (App Router) +
-React 19, laid out with Feature-Sliced Design, styled with Tailwind v4. Serves on
-`:58843`.
+Public site and conductor shell for the EV Investment fund — Next.js 16 (App
+Router) + React 19, laid out with Feature-Sliced Design, styled with Tailwind v4.
+Serves on `:58843`.
 
 ## Layout
 
@@ -15,14 +15,13 @@ shared/       app-agnostic ui/, lib/, config/, hooks/, mfe/ (microfrontend host)
 application/  styles/globals.css → imports ../public/tokens.css
 public/       static assets
 tests/        per-section Playwright visual baselines
-proxy.ts      Next 16 proxy — sticky weighted A/B cookie assignment
 mfe-registry.json  microfrontend registry (name → tag/scriptUrl/kind)
 ```
 
 FSD import order `app → views → features → entities → shared`; import from a
 slice's `index.ts`, never deep paths. Conventions live in [`PATTERNS.md`](./PATTERNS.md).
 
-## Run only landing
+## Run only the frontend
 
 ```sh
 nix run .#frontend           # → http://localhost:58843
@@ -35,7 +34,7 @@ degrade to a PDF link. Refresh a doc with `git -C ../whitepaper pull` (or `../bl
 
 Or inside the dev shell (`.envrc` + direnv), which runs `populate-docs` on entry:
 ```sh
-cd landing && npm install && npm run dev
+cd site_conductor/frontend && npm install && npm run dev
 ```
 Tailwind builds automatically inside Next via the `@tailwindcss/postcss` plugin —
 no separate step. It imports the shared tokens from
@@ -61,12 +60,12 @@ npm run test:visual:update   # regenerate baselines after an intentional UI chan
 ```
 > Linux-only via nix; skip locally on macOS.
 
-> The landing is a static marketing site — it does not call the hub backend, so
-> there is no API client here.
+> The site calls only its own backend (vacancies / applications / contact)
+> through the generated client in `shared/api` — there is no hub API client here.
 
 ## Microfrontends
 
-Landing composes other EV surfaces at runtime — **never via `<iframe>`** (see
+site_conductor composes other EV surfaces at runtime — **never via `<iframe>`** (see
 [`PATTERNS.md` §8](./PATTERNS.md)). Two transports from `@/shared/mfe`:
 
 | Remote ships… | Use | Mount |
@@ -89,11 +88,11 @@ shadow roots, and the global uikit tokens must cascade in.
 - **Registry.** A logical name resolves to `{tag, scriptUrl, kind}` from
   [`mfe-registry.json`](./mfe-registry.json) (served to the browser at
   `/api/mfe-registry`). Remotes deploy independently — add an entry, don't rebuild
-  landing. Tags are globally unique and versioned. Registry reads
+  site_conductor. Tags are globally unique and versioned. Registry reads
   (`shared/mfe/registry.ts`) use `node:fs` and are **server-only**; the client-safe
   `RemoteElement` is the public API from `@/shared/mfe`. `scriptUrl`s are
   operator-controlled and served openly at `/api/mfe-registry` — **treat registry
-  edits as code** (they execute third-party JS in the landing origin); gate them
+  edits as code** (they execute third-party JS in the site_conductor origin); gate them
   against an origin allowlist if the registry ever becomes user-/dynamically-sourced.
 
   ```jsonc
@@ -112,10 +111,10 @@ shadow roots, and the global uikit tokens must cascade in.
 
 - **Whole page** — register an entry with `"kind": "page"`; it mounts at
   `/apps/<name>/…` ([`app/apps/[service]/[[...slug]]`](./app/apps)) and owns the
-  content region while landing keeps its chrome. Scoped under `/apps` (not a root
+  content region while site_conductor keeps its chrome. Scoped under `/apps` (not a root
   catch-all) so it never shadows the marketing routes or the real 404.
 
-**Producing a microfrontend** (other repos — landing ships no producer SDK). The
+**Producing a microfrontend** (other repos — site_conductor ships no producer SDK). The
 canonical, fuller recipe lives in the hub's
 [`docs/ARCHITECTURE.md` § Microfrontends](../../banking/docs/ARCHITECTURE.md); the
 contract is shared with `cabinet`, so keep this in sync with it.
@@ -127,7 +126,7 @@ contract is shared with `cabinet`, so keep this in sync with it.
   `bridge-react`) to share one React instance — never `@module-federation/nextjs-mf`.
 - **Rust/WASM** — Dioxus 0.7 mounts via `dioxus-web` `Config::rootelement(Element)`
   into the custom element; Leptos via `mount_to(HtmlElement, …)`. CSR-only, light
-  DOM, `wasm-bindgen =0.2.118`. Don't use `dioxus-web-component` yet (it pins Dioxus
+  DOM, `wasm-bindgen =0.2.125`. Don't use `dioxus-web-component` yet (it pins Dioxus
   0.6). _Open item:_ prove multiple independent Dioxus instances per page before
   relying on it.
 
@@ -158,7 +157,7 @@ doc build degrades gracefully. The docs are produced by the sibling `whitepaper`
 ## Design system (Figma)
 
 The visual language is mirrored in a Figma file
-([`Landing`](https://www.figma.com/design/e0V2P1cQpEFRuXTeNtEMh6/Landing)), kept
+([`Main`](https://www.figma.com/design/e0V2P1cQpEFRuXTeNtEMh6/Main)), kept
 **code-first**: [`application/styles/globals.css`](./application/styles/globals.css)
 plus the shared [`../public/tokens.css`](../public/tokens.css) are the source of
 truth; the Figma side is conformed to them, never the reverse.

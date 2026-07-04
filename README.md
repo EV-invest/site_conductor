@@ -1,11 +1,14 @@
-# landing
+# site_conductor
 ![Minimum Supported Rust Version](https://img.shields.io/badge/nightly-1.92+-ab6000.svg)
 
-`landing` is the public marketing site for **EV Investment** — a real-estate
-advisory and investment fund specializing in premium coastal developments in Quy
-Nhon, Vietnam. A Next.js 16 (App Router) front end in [`frontend/`](frontend)
-lives alongside a [`backend/`](backend) placeholder to grow the site's own API
-into. The shared design system ships as the published `@evinvest/uikit`.
+`site_conductor` is the public site and central shell for **EV Investment** — a
+real-estate advisory and investment fund specializing in premium coastal
+developments in Quy Nhon, Vietnam. It conducts the other EV web apps: each runs
+as a standalone service on its own subdomain, and this repo composes them into
+one client-facing surface (microfrontends — custom-element remotes and routed
+zones). A Next.js 16 (App Router) front end in [`frontend/`](frontend) lives
+alongside a [`backend/`](backend) placeholder to grow the site's own API into.
+The shared design system ships as the published `@evinvest/uikit`.
 <!-- markdownlint-disable -->
 <details>
 <summary>
@@ -53,7 +56,7 @@ load, `nix build .#container` emits a `docker-archive` tarball. See `flake.nix`.
 
 ```sh
 nix build .#container   # result → a docker-archive .tar.gz
-skopeo copy docker-archive:result docker://ghcr.io/EV-invest/landing:v0.0.1
+skopeo copy docker-archive:result docker://ghcr.io/EV-invest/site_conductor:v0.0.1
 # or load locally:
 podman load < result
 ```
@@ -108,11 +111,11 @@ journalctl -u evinvest-frontend -f
 ### Local development — bring the whole stack up
 
 Everything runs **token-free** via Nix (no GitHub auth needed for `nix`). Check the
-sibling EV repos out next to `landing/` so the flake can build them locally:
+sibling EV repos out next to `site_conductor/` so the flake can build them locally:
 
 ```
 ev/
-├── landing/                  ← this repo
+├── site_conductor/           ← this repo
 ├── whitepaper/               ← typst → /whitepaper           (optional)
 ├── blog/                     ← typst → /blogs/[slug]         (optional)
 └── real_estate_allocation/   ← REA microfrontend (portfolio) (optional)
@@ -121,21 +124,21 @@ ev/
 ```sh
 # Terminal 1 — REA microfrontend (the home "Premium Asset Portfolio" section).
 # Serves the self-registering custom-element bundle at /mfe on :59079, with CORS.
-# Optional: without it, landing renders the in-repo portfolio fallback.
+# Optional: without it, site_conductor renders the in-repo portfolio fallback.
 cd real_estate_allocation && nix run .#dev            # → http://localhost:59079
 
-# Terminal 2 — landing. `populate-docs` first builds ./docs/whitepaper and ./docs/blog
+# Terminal 2 — site_conductor. `populate-docs` first builds ./docs/whitepaper and ./docs/blog
 # (best-effort: a missing sibling just warns and that doc page degrades to a PDF link).
-cd landing && nix run .#frontend                      # → http://localhost:58843
+cd site_conductor && nix run .#frontend               # → http://localhost:58843
 # …or the full backend stack (postgres + axum API + frontend):
-cd landing && nix run .#dev                           # → :58843 + :58844 + :5432
+cd site_conductor && nix run .#dev                    # → :58843 + :58844 + :5432
 ```
 
-Landing finds the REA bundle via `NEXT_PUBLIC_REA_URL` (defaults to
+site_conductor finds the REA bundle via `NEXT_PUBLIC_REA_URL` (defaults to
 `http://localhost:59079`), so once both are up the portfolio section composes the
 remote automatically. Verify the wiring end-to-end (REA `/mfe` endpoints + CORS +
 a headless-browser check that `<mfe-real-estate-overview>` actually mounts on the
-landing page):
+home page):
 
 ```sh
 cd real_estate_allocation && nix run .#healthcheck
@@ -143,16 +146,16 @@ cd real_estate_allocation && nix run .#healthcheck
 
 | Port | Service | Command |
 | --- | --- | --- |
-| 58843 | landing (Next.js) | `landing`: `nix run .#frontend` / `.#dev` |
-| 58844 | backend (axum API) | `landing`: `nix run .#dev` / `.#backend` |
-| 5432  | postgres | `landing`: `nix run .#dev` / `.#db` |
+| 58843 | site_conductor (Next.js) | `site_conductor`: `nix run .#frontend` / `.#dev` |
+| 58844 | backend (axum API) | `site_conductor`: `nix run .#dev` / `.#backend` |
+| 5432  | postgres | `site_conductor`: `nix run .#dev` / `.#db` |
 | 59079 | REA microfrontend (`/mfe`) | `real_estate_allocation`: `nix run .#dev` |
 
 ---
 
 ### Microfrontends — no iframes
 
-Landing composes other EV surfaces at runtime through `frontend/shared/mfe`,
+site_conductor composes other EV surfaces at runtime through `frontend/shared/mfe`,
 **never via `<iframe>`**. Two transports, by what the remote ships (full reference:
 [`frontend/PATTERNS.md` §8](./frontend/PATTERNS.md) and
 [`frontend/README.md`](./frontend/README.md)).
@@ -166,13 +169,15 @@ bundle that defines the custom element `<mfe-real-estate-overview>`; the host
 DOM** (so the host fonts/tokens cascade in), and falls back to the in-repo React
 section (`portfolio_fallback/`) when the remote is missing or fails to load.
 
-- **Bundle URL:** `${NEXT_PUBLIC_REA_URL}/mfe/mfe-real-estate-overview.js` —
-  defaults to `http://localhost:59079` when the env var is unset. Resolved from
-  `frontend/mfe-registry.json` (`findMfe`), so the remote deploys independently —
-  edit the registry, don't rebuild landing.
+- **Bundle URL:** `/mfe/mfe-real-estate-overview.js` (same-origin — the flake's
+  `populate-docs` copies the built bundle into `frontend/public/mfe/`), resolved
+  from `frontend/mfe-registry.json` (`findMfe`). `NEXT_PUBLIC_REA_URL` advertises
+  the REA **backend** origin via `<meta name="rea-url">` for the bundle's own API
+  calls (defaults to `http://localhost:59079`). Remotes deploy independently —
+  edit the registry, don't rebuild site_conductor.
 - **Contract:** CSR-only, light DOM, self-registering custom element. The tag is
   global + versioned. `scriptUrl`s are operator-controlled — treat the registry
-  as code (it runs third-party JS in the landing origin, no sandbox).
+  as code (it runs third-party JS in the site_conductor origin, no sandbox).
 - **Whole-page form:** a `kind:"page"` registry entry mounts at `/apps/<name>`.
 
 #### Document remotes (`RemoteDocument`) — whitepaper + blog

@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "EV Investment landing API",
+    "title": "EV Investment site conductor API",
     "description": "Source of truth for vacancies, applications and contact messages.",
     "license": {
       "name": "BlueOak-1.0.0",

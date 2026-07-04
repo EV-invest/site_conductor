@@ -15,7 +15,7 @@ use crate::api::{
 /// `gen_openapi` binary, which feeds the frontend's `npm run gen:api`.
 #[derive(OpenApi)]
 #[openapi(
-	info(title = "EV Investment landing API", description = "Source of truth for vacancies, applications and contact messages.", version = env!("CARGO_PKG_VERSION")),
+	info(title = "EV Investment site conductor API", description = "Source of truth for vacancies, applications and contact messages.", version = env!("CARGO_PKG_VERSION")),
 	paths(
 		handler::health::health,
 		handler::vacancy::list_vacancies,

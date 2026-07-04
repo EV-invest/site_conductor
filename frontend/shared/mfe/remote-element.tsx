@@ -4,7 +4,7 @@
 // upgrade, then mounts <tag> imperatively (not JSX, to dodge React's
 // attribute/property quirks for any framework's element). Light DOM only.
 //
-// Trust boundary: scriptUrl runs third-party JS in the landing origin with no
+// Trust boundary: scriptUrl runs third-party JS in the host origin with no
 // sandbox. It's operator-controlled via the in-repo registry — treat registry edits
 // as code; add an origin allowlist if the registry ever becomes user-sourced.
 
