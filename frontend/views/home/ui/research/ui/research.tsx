@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight } from "lucide-react";
 import { Container } from "@evinvest/uikit";
@@ -59,7 +60,13 @@ const REPORTS = [
 export function ResearchA() {
   const [active, setActive] = useState(0);
   const capture = useAnalytics();
+  const router = useRouter();
   const report = REPORTS[active];
+
+  const openReport = () => {
+    capture("cta_clicked", { cta: "open_report", report: report.slug });
+    router.push(`/blogs/${report.slug}`);
+  };
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
   //    faint dot-grid texture so it reads as its own "document / library" zone
@@ -161,7 +168,18 @@ export function ResearchA() {
             transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
             className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between"
           >
-            <div>
+            <div
+              role="link"
+              tabIndex={0}
+              onClick={openReport}
+              onKeyDown={e => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openReport();
+                }
+              }}
+              className="cursor-pointer"
+            >
               <div className="border-b border-main-mist/10 pb-6 mb-8">
                 <span className="text-xs font-mono-tech text-main-accent-t1 uppercase tracking-widest hidden lg:block mb-1">
                   {report.cat}
@@ -188,6 +206,10 @@ export function ResearchA() {
                   ))}
                 </motion.div>
               </AnimatePresence>
+
+              <span className="mt-6 inline-flex items-center gap-1 font-mono-tech text-[10px] text-main-accent-t1 uppercase tracking-widest">
+                Read full report <ChevronRight className="w-3 h-3" />
+              </span>
             </div>
 
             <motion.div
