@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronRight, ArrowUpRight } from "lucide-react";
+import { ChevronRight, ArrowUpRight, BookOpen } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import { cn } from "@/shared/lib/utils";
 import { Text, Tier } from "@/shared/ui/text";
@@ -210,16 +211,27 @@ export function ResearchA() {
                   </Text>
                 </div>
               </div>
-              <a
-                href={`/blogs/${report.slug}.pdf`}
-                download
-                className="shrink-0 bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
-              >
-                <span className="sm:hidden">Download</span>
-                <span className="hidden sm:inline">Download Full Report</span>
-                <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
-              </a>
+              <div className="flex shrink-0 gap-2">
+                <Link
+                  href={`/blogs/${report.slug}`}
+                  className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+                  onClick={() => capture("cta_clicked", { cta: "read_report", report: report.slug })}
+                >
+                  <span className="sm:hidden">Read</span>
+                  <span className="hidden sm:inline">Read Full Report</span>
+                  <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
+                </Link>
+                <a
+                  href={`/blogs/${report.slug}.pdf`}
+                  download
+                  className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+                  onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
+                >
+                  <span className="sm:hidden">Download</span>
+                  <span className="hidden sm:inline">Download Full Report</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         </Reveal>
