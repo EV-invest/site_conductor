@@ -20,7 +20,7 @@ export const SITE = {
   // ~155 chars, leads with value + place; reused as the default meta
   // description and the Organization / WebSite description.
   description:
-    "EV Investment is a Quy Nhon–based real-estate fund developing premium coastal property in Vietnam, open to international investors via bank transfer or crypto.",
+    "EV Investment is a Quy Nhon–based Emerging Markets Macro Fund, focusing on Vietnam's Real Estate",
   // Brand palette (mirrors @evinvest/uikit tokens). manifest theme_color and the
   // generated OG/icon art use raw hex (manifest forbids oklch).
   theme: {

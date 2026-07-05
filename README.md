@@ -122,13 +122,9 @@ ev/
 ```
 
 ```sh
-# Terminal 1 — REA microfrontend (the home "Premium Asset Portfolio" section).
-# Serves the self-registering custom-element bundle at /mfe on :59079, with CORS.
-# Optional: without it, site_conductor renders the in-repo portfolio fallback.
+# Terminal 1 — REA microfrontend
 cd real_estate_allocation && nix run .#dev            # → http://localhost:59079
 
-# Terminal 2 — site_conductor. `populate-docs` first builds ./docs/whitepaper and ./docs/blog
-# (best-effort: a missing sibling just warns and that doc page degrades to a PDF link).
 cd site_conductor && nix run .#frontend               # → http://localhost:58843
 # …or the full backend stack (postgres + axum API + frontend):
 cd site_conductor && nix run .#dev                    # → :58843 + :58844 + :5432
