@@ -4,9 +4,11 @@
 // composes the document into the page natively — no iframe: the host keeps its
 // chrome (Header/Footer) and scroll, and the content lives in the page.
 //
-// - isolate=false (default): the document has no styles of its own (or styles
-//   meant to inherit the host's) — inject its <body> into the LIGHT DOM so host
-//   typography (prose) styles it. Pure Server Component: SSR'd, zero JS, indexable.
+// - isolate=false (default): inject the document's <body> into the LIGHT DOM so
+//   host typography (prose) styles it. Any <style> the build carries (for
+//   standalone viewing of the raw file) is stripped — light-DOM means
+//   host-styled, and bare-tag doc CSS would reshape the whole host otherwise.
+//   Pure Server Component: SSR'd, zero JS, indexable.
 // - isolate=true: the document ships its own complete styles targeting bare tags —
 //   mount it in a shadow root (client island) so its CSS can't leak into the host.
 //
@@ -40,7 +42,10 @@ export async function RemoteDocument({
   // Light DOM, SSR. Trusted operator content (see ShadowDocument trust note).
   let inner: string;
   try {
-    inner = extractBodyInner(await loadDocHtml(src));
+    inner = extractBodyInner(await loadDocHtml(src)).replace(
+      /<style[\s\S]*?<\/style>/gi,
+      "",
+    );
   } catch {
     return <>{fallback}</>;
   }

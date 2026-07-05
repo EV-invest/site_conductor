@@ -1,7 +1,8 @@
 import { type ReactNode } from "react";
-import { Download } from "lucide-react";
+import { FileDown } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 
+import { HeaderAction } from "@/shared/ui/header-actions";
 import { RemoteDocument } from "@/shared/mfe";
 
 export interface DocumentReaderProps {
@@ -19,15 +20,11 @@ export interface DocumentReaderProps {
   fallback?: ReactNode;
 }
 
-const downloadLinkClassName =
-  "inline-flex shrink-0 items-center gap-1.5 border border-main-accent-t1/30 px-3 py-1.5 font-mono-tech text-[11px] uppercase tracking-wider text-main-accent-t1 transition-colors hover:border-main-accent-t1 hover:text-main-mist";
-
 /**
  * The read/download framework for a `RemoteDocument`-backed page: the doc body
- * plus a toolbar — sticky under the fixed `Header` — that lets the reader bail
- * out to the PDF at any point, the way a browser's own PDF viewer chrome does.
- * `/whitepaper` and `/blogs/[slug]` both render through this so the two never
- * drift into their own copies of the same read/download interaction.
+ * plus a PDF-download action mounted into the top bar for the duration of the
+ * read. `/whitepaper` and `/blogs/[slug]` both render through this so the two
+ * never drift into their own copies of the same read/download interaction.
  */
 export function DocumentReader({
   title,
@@ -43,14 +40,17 @@ export function DocumentReader({
           a11y/heading landmark on the host page. */}
       <h1 className="sr-only">{title}</h1>
 
-      <div className="sticky top-24 z-40 border-b border-main-mist/10 bg-main-black/90 backdrop-blur-md">
-        <Container className="flex items-center justify-end py-3">
-          <a href={pdfSrc} download className={downloadLinkClassName}>
-            Download PDF
-            <Download className="size-3.5" />
-          </a>
-        </Container>
-      </div>
+      <HeaderAction>
+        <a
+          href={pdfSrc}
+          download
+          aria-label={`Download ${title} as PDF`}
+          title="Download PDF"
+          className="inline-flex shrink-0 items-center border border-main-accent-t1/30 p-2 text-main-accent-t1 transition-colors hover:border-main-accent-t1 hover:text-main-mist"
+        >
+          <FileDown className="size-4" />
+        </a>
+      </HeaderAction>
 
       <RemoteDocument
         src={htmlSrc}

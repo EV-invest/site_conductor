@@ -26,9 +26,10 @@ export async function generateMetadata({
 }
 
 // Research articles are self-contained static HTML builds (blog flake → public/),
-// composed into the page as *document microfrontends* — no iframe. They carry no
-// styles of their own, so they mount in the light DOM and inherit the host's
-// reading typography (prose). Dark is the default variant.
+// composed into the page as *document microfrontends* — no iframe. They mount in
+// the light DOM and take the host's reading typography (prose); the standalone
+// stylesheet they carry is stripped by the light-DOM path. Dark is the default
+// variant.
 export default async function Page({
   params,
 }: {
