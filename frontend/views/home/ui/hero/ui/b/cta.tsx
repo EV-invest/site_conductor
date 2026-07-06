@@ -26,7 +26,7 @@ export function HeroBCta({ className }: { className?: string }) {
 
       <Button
         asChild
-        className="bg-transparent text-main-mist border border-main-mist/40 hover:bg-main-mist hover:text-main-brand hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
+        className="max-sm:hidden bg-transparent text-main-mist border border-main-mist/40 hover:bg-main-mist hover:text-main-brand hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
         onClick={() => track("cta_clicked", { cta: "whitepaper" })}
       >
         <a href="/whitepaper.pdf" download>
