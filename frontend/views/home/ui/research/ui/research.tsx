@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronRight, ArrowUpRight } from "lucide-react";
+import { ChevronRight, ArrowUpRight, BookOpen } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import { cn } from "@/shared/lib/utils";
 import { Text, Tier } from "@/shared/ui/text";
@@ -59,7 +61,9 @@ const REPORTS = [
 export function ResearchA() {
   const [active, setActive] = useState(0);
   const capture = useAnalytics();
+  const router = useRouter();
   const report = REPORTS[active];
+  const goToReport = () => router.push(`/blogs/${report.slug}`);
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
   //    faint dot-grid texture so it reads as its own "document / library" zone
@@ -159,7 +163,17 @@ export function ResearchA() {
           <motion.div
             layout
             transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-            className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between"
+            role="link"
+            tabIndex={0}
+            aria-label={`Read full report: ${report.paneTitle}`}
+            onClick={goToReport}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                goToReport();
+              }
+            }}
+            className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-main-accent-t1/60"
           >
             <div>
               <div className="border-b border-main-mist/10 pb-6 mb-8">
@@ -192,6 +206,7 @@ export function ResearchA() {
 
             <motion.div
               layout="position"
+              onClick={(e) => e.stopPropagation()}
               className="mt-8 pt-6 border-t border-main-mist/10 flex flex-row justify-between items-center gap-3"
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -210,16 +225,27 @@ export function ResearchA() {
                   </Text>
                 </div>
               </div>
-              <a
-                href={`/blogs/${report.slug}.pdf`}
-                download
-                className="shrink-0 bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
-              >
-                <span className="sm:hidden">Download</span>
-                <span className="hidden sm:inline">Download Full Report</span>
-                <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
-              </a>
+              <div className="flex shrink-0 gap-2">
+                <Link
+                  href={`/blogs/${report.slug}`}
+                  className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+                  onClick={() => capture("cta_clicked", { cta: "read_report", report: report.slug })}
+                >
+                  <span className="sm:hidden">Read</span>
+                  <span className="hidden sm:inline">Read Full Report</span>
+                  <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
+                </Link>
+                <a
+                  href={`/blogs/${report.slug}.pdf`}
+                  download
+                  className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+                  onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
+                >
+                  <span className="sm:hidden">Download</span>
+                  <span className="hidden sm:inline">Download Full Report</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         </Reveal>

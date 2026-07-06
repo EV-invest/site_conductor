@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
@@ -35,9 +36,9 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
           className="max-sm:hidden bg-transparent text-main-mist border border-main-mist/40 hover:bg-main-mist hover:text-main-brand hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
           onClick={() => track("cta_clicked", { cta: "whitepaper" })}
         >
-          <a href="/whitepaper.pdf" download>
+          <Link href="/whitepaper">
             Whitepaper <FileText className="w-4 h-4 ml-2" />
-          </a>
+          </Link>
         </Button>
       </div>
 

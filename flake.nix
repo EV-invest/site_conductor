@@ -9,7 +9,7 @@
     v_flakes.url = "github:valeratrades/v_flakes?ref=v1.6";
     v_flakes.inputs.nixpkgs.follows = "nixpkgs";
     v_flakes.inputs.rust-overlay.follows = "rust-overlay";
-    ev_assets = { url = "github:EV-invest/assets"; flake = false; };
+    ev_assets = { url = "github:ev-invest/assets"; flake = false; };
   };
   outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets }:
     let
@@ -112,7 +112,7 @@
         };
         readme = v_flakes.readme-fw {
           inherit pkgs pname;
-          repo = "EV-invest/site_conductor";
+          repo = "ev-invest/site_conductor";
           defaults = true;
           lastSupportedVersion = "nightly-1.92";
           rootDir = ./.;

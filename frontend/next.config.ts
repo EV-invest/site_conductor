@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_BUILD_COMMIT: buildCommit,
   },
   reactStrictMode: true,
+  // Dev-only: Next 16 blocks its dev resources (incl. the HMR socket) for any
+  // origin but `localhost`, and a dead HMR socket means the client runtime
+  // never boots — pages hydrate on localhost but are inert on 127.0.0.1.
+  allowedDevOrigins: ["127.0.0.1"],
   // Self-contained production server (.next/standalone) so the weak VPS runs
   // `node server.js` without an `npm install` — we can't build there.
   output: "standalone",
