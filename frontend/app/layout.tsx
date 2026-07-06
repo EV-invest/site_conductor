@@ -3,7 +3,7 @@ import Script from "next/script";
 import { fontInter, fontPlayfair } from "@/application/styles/fonts";
 import { Providers } from "@/application/providers";
 import { ErrorMonitoringProvider } from "@/features/error-monitoring";
-import { Header, Footer } from "@/application/layout";
+import { Header, AccountChipRemote, Footer } from "@/application/layout";
 import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
@@ -37,7 +37,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Suspense fallback={null}>
                 <PostHogPageView />
               </Suspense>
-              <Header />
+              <Header
+                accountSlot={<AccountChipRemote className="hidden items-center sm:flex" />}
+                mobileAccountSlot={
+                  <AccountChipRemote className="flex w-full justify-center" fallbackClassName="w-full justify-center py-6" />
+                }
+              />
               {children}
               <Footer />
             </PostHogProvider>

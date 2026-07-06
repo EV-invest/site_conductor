@@ -4,5 +4,11 @@
     "tag": "mfe-real-estate-overview",
     "scriptUrl": "/mfe/mfe-real-estate-overview.js",
     "kind": "component"
+  },
+  {
+    "name": "cabinet.account",
+    "tag": "mfe-cabinet-account-chip",
+    "scriptUrl": "/cabinet/mfe/account-chip.js",
+    "kind": "component"
   }
 ]
