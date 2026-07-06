@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { reportError } from "@/features/error-monitoring";
-import { ServerErrorView } from "@/views/status";
+import { ServerError } from "@evinvest/uikit";
 
 // Route-segment error boundary (500). `reset` re-renders the segment; we also
 // forward the error to monitoring.
@@ -11,5 +11,5 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
     reportError(error);
   }, [error]);
 
-  return <ServerErrorView reset={reset} />;
+  return <ServerError reset={reset} />;
 }

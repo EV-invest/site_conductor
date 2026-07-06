@@ -37,7 +37,15 @@ export function MobileCarousel({
           ))}
         </CarouselContent>
 
-        <CarouselEdgeFade />
+        {/* Softer than the uikit default (issue #91): the stock fade ramps
+            from a fully-opaque background edge (pitch black) over a narrow band,
+            which reads as a hard wall rather than a "more to come" hint. Cap the
+            peak well below solid and spread it wider so it eases in — the
+            minimum tint that still signals off-screen slides. transition-none
+            kills the stock 300ms opacity cross-fade: mid-swipe it left BOTH
+            edges dark at once (the old side fading out while the new faded in),
+            which read as side shadows on every switch. */}
+        <CarouselEdgeFade className="w-24 from-background/45 via-background/20 transition-none" />
 
         <CarouselPrevious className="left-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
         <CarouselNext className="right-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />

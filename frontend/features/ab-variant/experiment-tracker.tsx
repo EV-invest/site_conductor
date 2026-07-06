@@ -103,12 +103,11 @@ function DevVariantCycle({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [focused, experiment, variant, router]);
 
+  // No hover outline: the dashed box flashed on every section the cursor crossed.
+  // Hover still arms h/l variant-cycling for the section under the cursor — just
+  // without the visual frame.
   return (
-    <div
-      onMouseEnter={() => setFocused(true)}
-      onMouseLeave={() => setFocused(false)}
-      className={focused ? "outline-dashed outline-1 outline-main-accent-t1/40" : undefined}
-    >
+    <div onMouseEnter={() => setFocused(true)} onMouseLeave={() => setFocused(false)}>
       {children}
     </div>
   );

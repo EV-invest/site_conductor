@@ -9,7 +9,7 @@ export function VacancyApply({ vacancy }: { vacancy: VacancyDetail }) {
   return (
     <section id="apply" className="scroll-mt-24 bg-main-black pb-24 pt-8">
       <Container>
-        <div className="rounded-3xl border border-white/[0.06] bg-main-card/20 p-8 sm:p-12">
+        <div className="rounded-3xl border border-white/[0.06] bg-main-card/20 p-4 sm:p-12">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
