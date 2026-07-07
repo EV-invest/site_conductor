@@ -39,7 +39,8 @@ impl Gateway for EmailNotifier {}
 impl Notifier for EmailNotifier {
 	async fn application_received(&self, application: &JobApplication, vacancy: Option<&Vacancy>) -> Result<(), DomainError> {
 		let candidate = templates::candidate_application_received(application, vacancy, &self.site_url);
-		self.transport
+		let candidate_result = self
+			.transport
 			.send(
 				&self.from,
 				OutgoingEmail {
@@ -49,10 +50,11 @@ impl Notifier for EmailNotifier {
 					text: candidate.text,
 				},
 			)
-			.await?;
+			.await;
 
 		let internal = templates::internal_new_application(application, vacancy, &self.site_url);
-		self.transport
+		let internal_result = self
+			.transport
 			.send(
 				&self.from,
 				OutgoingEmail {
@@ -62,13 +64,17 @@ impl Notifier for EmailNotifier {
 					text: internal.text,
 				},
 			)
-			.await?;
-		Ok(())
+			.await;
+
+		// Both sends are always attempted: a rejected candidate address must
+		// never suppress the internal team-inbox copy, and vice versa.
+		candidate_result.and(internal_result)
 	}
 
 	async fn contact_received(&self, message: &ContactMessage) -> Result<(), DomainError> {
 		let candidate = templates::candidate_contact_received(message, &self.site_url);
-		self.transport
+		let candidate_result = self
+			.transport
 			.send(
 				&self.from,
 				OutgoingEmail {
@@ -78,10 +84,11 @@ impl Notifier for EmailNotifier {
 					text: candidate.text,
 				},
 			)
-			.await?;
+			.await;
 
 		let internal = templates::internal_new_contact(message, &self.site_url);
-		self.transport
+		let internal_result = self
+			.transport
 			.send(
 				&self.from,
 				OutgoingEmail {
@@ -91,7 +98,8 @@ impl Notifier for EmailNotifier {
 					text: internal.text,
 				},
 			)
-			.await?;
-		Ok(())
+			.await;
+
+		candidate_result.and(internal_result)
 	}
 }
