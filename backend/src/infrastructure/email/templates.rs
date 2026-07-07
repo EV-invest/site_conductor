@@ -289,6 +289,8 @@ fn button(label: &str, href: &str) -> String {
 
 /// Wrap rendered sections in the brand shell: logo header, body, legal footer.
 fn shell(preheader: &str, body: &str, footer_context: &str) -> String {
+	let preheader = esc(preheader);
+	let footer_context = esc(footer_context);
 	format!(
 		r##"<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"></head>
 <body style="margin:0;padding:0;background:#04070e;">
