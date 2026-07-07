@@ -3,24 +3,23 @@
 // image) reads from here, so adding a locale or a subpage is a one-line edit.
 // App-agnostic config → lives in `shared/config` beside const/assets/experiments.
 
-import { requiredInProd } from "./require-env";
+import { config } from "@/config";
 
 // Canonical production origin (https, NO trailing slash, pick www-or-not once).
-export const SITE_URL = requiredInProd(
-  process.env.NEXT_PUBLIC_SITE_URL,
-  "NEXT_PUBLIC_SITE_URL",
-  "https://evinvest.example"
-).replace(/\/+$/, "");
+// Only the production image build exports NEXT_PUBLIC_SITE_URL; every other
+// launch (the flake dev run, a bare `next dev`) omits it, so fall back to the
+// obvious placeholder rather than failing — going live means setting the var.
+export const SITE_URL = (config.public.siteUrl ?? "https://evinvest.example").replace(/\/+$/, "");
 
 export const SITE = {
   url: SITE_URL,
   name: "EV Investment",
   alternateName: "Quy Nhon Fund",
-  tagline: "Vietnam-Oriented Macro Fund",
-  // ~155 chars, leads with value + place; reused as the default meta
-  // description and the Organization / WebSite description.
+  tagline: "Invest in China+1 Narrative",
+  // Reused as the default meta description, the Organization / WebSite
+  // description, and the OG image alt.
   description:
-    "EV Investment is a Quy Nhon–based Emerging Markets Macro Fund, focusing on Vietnam's Real Estate",
+    "Through Vietnam, with Quy-Nhon based fund, - we have direct pulse on Real Estate and tourist flows. Follow the money.",
   // Brand palette (mirrors @evinvest/uikit tokens). manifest theme_color and the
   // generated OG/icon art use raw hex (manifest forbids oklch).
   theme: {

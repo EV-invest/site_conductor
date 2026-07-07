@@ -7,9 +7,10 @@ import { Footer as BrandFooter } from "@evinvest/uikit";
 import { BuildVersionLog } from "./build-version-log";
 import { FOOTER_NAV } from "./nav-items";
 import { NewsletterForm } from "./newsletter-form";
+import { config } from "@/config";
 
-const version = process.env.NEXT_PUBLIC_BUILD_VERSION ?? "unknown";
-const commit = process.env.NEXT_PUBLIC_BUILD_COMMIT || version;
+const version = config.public.buildVersion ?? "unknown";
+const commit = config.public.buildCommit || version;
 
 // The 12-col footer grid (Figma: site_conductor › Footer) is the shared
 // @evinvest/uikit Footer; this app supplies the sitemap columns, the

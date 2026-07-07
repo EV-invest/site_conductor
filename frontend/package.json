@@ -4,9 +4,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --port 58843",
+    "predev": "npm install --no-audit --no-fund",
+    "dev": "next dev",
+    "prebuild": "npm install --no-audit --no-fund",
     "build": "stylelint \"application/styles/**/*.css\" && next build",
-    "start": "next start --port 58843",
+    "start": "next start",
     "lint": "eslint .",
     "check": "tsc --noEmit",
     "gen:api": "openapi-ts",

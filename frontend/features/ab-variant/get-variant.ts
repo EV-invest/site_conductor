@@ -4,6 +4,7 @@ import {
   type ExperimentKey,
   type Variant,
 } from "@/shared/config/experiments";
+import { config } from "@/config";
 
 /**
  * Resolves an experiment's variant.
@@ -19,7 +20,7 @@ import {
 export function getVariant<K extends ExperimentKey>(
   key: K,
 ): Promise<Variant<K>> {
-  if (process.env.NODE_ENV === "production") {
+  if (config.isProduction) {
     return Promise.resolve(experiments[key].variants[0] as Variant<K>);
   }
   return readVariant(experiments, key);

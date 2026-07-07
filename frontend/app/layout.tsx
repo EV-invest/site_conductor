@@ -7,12 +7,13 @@ import { Header, AccountChipRemote, Footer } from "@/application/layout";
 import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
+import { config } from "@/config";
 import "@/application/styles/globals.css";
 
 export { metadata, viewport } from "@/application/metadata";
 
-const analyticsEndpoint = process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT;
-const analyticsWebsiteId = process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID;
+const analyticsEndpoint = config.public.analyticsEndpoint;
+const analyticsWebsiteId = config.public.analyticsWebsiteId;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   // The layout stays static so non-A/B routes (/team, /hiring, /contact, the

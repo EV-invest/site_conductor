@@ -1,5 +1,7 @@
 "use client";
 
+import { config } from "@/config";
+
 // DarkReader (and similar restyling extensions) rewrite inline styles before
 // React hydrates, so React logs an unfixable hydration mismatch for attributes
 // the app never set. It's harmless — React keeps the server DOM, event handlers
@@ -16,7 +18,7 @@
 // hydrateRoot runs — so this wrapper sits outermost and intercepts first. The
 // `typeof window` guard keeps it off the server; the whole thing is stripped from
 // production builds.
-if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+if (!config.isProduction && typeof window !== "undefined") {
   const darkReaderActive = () =>
     !!document.querySelector(
       "style.darkreader, [data-darkreader-mode], [data-darkreader-scheme], [data-darkreader-inline-stroke], [data-darkreader-inline-bgcolor], [data-darkreader-inline-color]",

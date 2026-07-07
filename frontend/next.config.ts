@@ -2,6 +2,8 @@ import { execSync } from "node:child_process";
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
+import { config } from "./config";
+
 // The Nix/CI build injects NEXT_PUBLIC_BUILD_VERSION (the release tag). A bare
 // `npm run dev` has no such env, so fall back to git so the footer still shows a
 // version; "unknown" only when git is absent too (e.g. the hermetic sandbox,
@@ -15,11 +17,11 @@ const git = (cmd: string, fallback: string) => {
 };
 
 const buildVersion =
-  process.env.NEXT_PUBLIC_BUILD_VERSION ??
+  config.public.buildVersion ??
   git("git describe --tags --always", "unknown");
 // Full SHA the footer link resolves to, kept separate from the display version.
 const buildCommit =
-  process.env.NEXT_PUBLIC_BUILD_COMMIT || git("git rev-parse HEAD", "");
+  config.public.buildCommit || git("git rev-parse HEAD", "");
 
 const nextConfig: NextConfig = {
   env: {
@@ -59,7 +61,7 @@ const nextConfig: NextConfig = {
   // /cabinet 404s instead of half-proxying (the header CTA only points here
   // when NEXT_PUBLIC_CABINET_PATH is set alongside). See PATTERNS.md §9.
   async rewrites() {
-    const cabinet = process.env.CABINET_ZONE_URL?.replace(/\/+$/, "");
+    const cabinet = config.cabinetZoneUrl?.replace(/\/+$/, "");
     if (!cabinet) return [];
     return [
       { source: "/cabinet", destination: `${cabinet}/cabinet` },
@@ -77,10 +79,10 @@ const nextConfig: NextConfig = {
 // `withSentryConfig`, so behaviour is identical. App/runtime code
 // (`instrumentation.ts`, the providers) uses the package as ESM.
 export default withSentryConfig(nextConfig, {
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  silent: !process.env.CI,
+  org: config.sentryOrg,
+  project: config.sentryProject,
+  authToken: config.sentryAuthToken,
+  silent: !config.isCi,
   widenClientFileUpload: true,
   sourcemaps: {
     // Delete local source maps after upload so they don't ship in the bundle.

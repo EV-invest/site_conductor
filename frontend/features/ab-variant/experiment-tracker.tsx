@@ -9,6 +9,7 @@ import {
 import { nextVariant } from "@evinvest/experiments";
 import { useAnalytics } from "@/features/analytics";
 import { experiments, type ExperimentKey } from "@/shared/config/experiments";
+import { config } from "@/config";
 
 // The experiments package never imports an analytics SDK — it emits events
 // through an injected `onEvent` sink. This is where the app wires that sink to
@@ -58,7 +59,7 @@ export function ExperimentTracker({
 
   // Production renders the bare section; the dev-only hover + h/l cycling
   // wrapper adds nothing to the shipped bundle.
-  if (process.env.NODE_ENV !== "development") return tracked;
+  if (!config.isDevelopment) return tracked;
   return (
     <DevVariantCycle experiment={experiment} variant={variant}>
       {tracked}

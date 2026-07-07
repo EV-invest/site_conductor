@@ -3,7 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 // Visual-regression config. Browsers come from nixpkgs (see flake.nix:
 // PLAYWRIGHT_BROWSERS_PATH), pinned to the same revision as @playwright/test,
 // so screenshots render identically across every machine on this flake.
-const PORT = 58843;
+// Port comes from the flake (ports attrset). Fallback keeps a bare `playwright
+// test` outside the flake runnable.
+const PORT = process.env.SITE_CONDUCTOR_FRONTEND_PORT ?? "50063";
 
 export default defineConfig({
   testDir: "./tests",

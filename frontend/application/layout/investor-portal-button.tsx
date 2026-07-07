@@ -4,6 +4,7 @@ import { Button } from "@evinvest/uikit";
 import { useRouter } from "next/navigation";
 import { getLoginUrl } from "@/shared/config/const";
 import { cn } from "@/shared/lib/utils";
+import { config } from "@/config";
 
 /**
  * Investor Portal CTA. Three destinations, by deployment shape:
@@ -20,9 +21,9 @@ export function InvestorPortalButton({ className }: { className?: string }) {
   const router = useRouter();
 
   const handleClick = () => {
-    if (process.env.NEXT_PUBLIC_CABINET_PATH) {
-      window.location.href = process.env.NEXT_PUBLIC_CABINET_PATH;
-    } else if (process.env.NEXT_PUBLIC_OAUTH_PORTAL_URL) {
+    if (config.public.cabinetPath) {
+      window.location.href = config.public.cabinetPath;
+    } else if (config.public.oauthPortalUrl) {
       window.location.href = getLoginUrl();
     } else {
       router.push("/investor-portal");

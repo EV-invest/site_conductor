@@ -3,19 +3,20 @@
 // Next-aware request tracing survive.
 import * as Sentry from "@sentry/nextjs";
 import { defaultTracesSampleRate } from "@evinvest/error-monitoring";
+import { config } from "@/config";
 
 export function register() {
-  if (process.env.NEXT_RUNTIME === "nodejs") {
+  if (config.runtime === "nodejs") {
     Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.APP_ENV ?? "development",
-      tracesSampleRate: defaultTracesSampleRate(process.env.NODE_ENV),
+      dsn: config.sentryDsn,
+      environment: config.appEnv ?? "development",
+      tracesSampleRate: defaultTracesSampleRate(config.isProduction ? "production" : undefined),
     });
   }
-  if (process.env.NEXT_RUNTIME === "edge") {
+  if (config.runtime === "edge") {
     Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.APP_ENV ?? "development",
+      dsn: config.sentryDsn,
+      environment: config.appEnv ?? "development",
       tracesSampleRate: 0,
     });
   }

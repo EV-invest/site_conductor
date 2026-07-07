@@ -1,4 +1,4 @@
-import { requiredInProd } from "@/shared/config/require-env";
+import { config as appConfig } from "@/config";
 
 import type { CreateClientConfig } from "./generated/client.gen";
 
@@ -10,11 +10,10 @@ import type { CreateClientConfig } from "./generated/client.gen";
 // (API_URL_INTERNAL, not NEXT_PUBLIC_) while the browser must use the public
 // origin (NEXT_PUBLIC_API_URL). The backend's OpenAPI paths already include
 // `/api/v1`, so the base URL is just the origin.
-const PUBLIC_API_URL = requiredInProd(process.env.NEXT_PUBLIC_API_URL, "NEXT_PUBLIC_API_URL", "http://localhost:58844");
-const SERVER_BASE_URL = process.env.API_URL_INTERNAL ?? PUBLIC_API_URL;
-const BROWSER_BASE_URL = PUBLIC_API_URL;
-
 export const createClientConfig: CreateClientConfig = config => ({
   ...config,
-  baseUrl: typeof window === "undefined" ? SERVER_BASE_URL : BROWSER_BASE_URL,
+  baseUrl:
+    typeof window === "undefined"
+      ? appConfig.apiUrlInternal ?? appConfig.public.apiUrl
+      : appConfig.public.apiUrl,
 });

@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { statusButtonClass, type StatusAccent } from "@evinvest/uikit";

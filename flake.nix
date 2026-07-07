@@ -55,6 +55,20 @@
           };
         });
         pname = "site_conductor";
+        # ── ev_invest dev topology (single source of truth for ports) ───────
+        # ONE shared postgres serves every sibling repo (banking/concierge mirror
+        # these values). Postgres database name == app name. Web UIs cluster on
+        # 5006x. CABINET_FRONTEND_PORT is banking's cabinet, referenced by
+        # CABINET_ZONE_URL for the multi-zone /cabinet mount.
+        ports = {
+          POSTGRES_PORT = "5432";
+          SITE_CONDUCTOR_FRONTEND_PORT = "58843";
+          SITE_CONDUCTOR_BACKEND_PORT = "58844";
+          CABINET_FRONTEND_PORT = "50061";
+        };
+        # DEFAULTS, not overrides: anything already set in the environment (or a
+        # sourced `.env`) wins — machines with non-standard ports stay working.
+        portEnv = pkgs.lib.concatStrings (pkgs.lib.mapAttrsToList (n: v: "export ${n}=\"\${${n}:-${v}}\"\n") ports);
         backendCargo = (builtins.fromTOML (builtins.readFile ./backend/Cargo.toml)).package;
         # Deployed version, shown in the footer. CI passes the release tag via
         # BUILD_VERSION (needs --impure); pure builds fall back to the commit rev.
@@ -289,57 +303,88 @@
             repo="$(git rev-parse --show-toplevel)"
             cd "$repo/frontend"
             [ -d node_modules/next ] || npm install
-            exec npm run dev
+            ${portEnv}
+            export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
+            export CABINET_ZONE_URL="''${CABINET_ZONE_URL:-http://localhost:$CABINET_FRONTEND_PORT}"
+            exec npm run dev -- --port "$SITE_CONDUCTOR_FRONTEND_PORT"
           '';
         };
 
-        # ── backend (Axum API) — needs a Postgres (`.#db` or `.#dev`) ───────
+        # ── backend (Axum API) ──────────────────────────────────────────────
+        # Ensures the shared Postgres is up, then boots. Topology defaults come
+        # from the flake; anything already set in the environment or backend/.env wins.
         runBackend = pkgs.writeShellApplication {
           name = "run-backend";
           runtimeInputs = with pkgs; [ rust git ];
           text = ''
             ${dyldFallback}
+            ${runPostgres}/bin/run-postgres
             repo="$(git rev-parse --show-toplevel)"
             cd "$repo"
-            export DATABASE_URL="''${DATABASE_URL:-postgres://postgres@localhost:5432/ev_site_conductor}"
-            export BIND_ADDR="''${BIND_ADDR:-0.0.0.0:58844}"
+
+            set -a
+            if [ -f backend/.env ]; then
+              # shellcheck disable=SC1091
+              . backend/.env
+            fi
+            set +a
+
+            ${portEnv}
+            export DATABASE_URL="''${DATABASE_URL:-postgres://postgres@localhost:$POSTGRES_PORT/site_conductor}"
+            export BIND_ADDR="''${BIND_ADDR:-0.0.0.0:$SITE_CONDUCTOR_BACKEND_PORT}"
             export RUST_LOG="''${RUST_LOG:-info,backend=debug}"
             export APP_ENV="''${APP_ENV:-development}"
             exec cargo run -p backend
           '';
         };
 
-        # ── local Postgres — cluster under .pg/, listens on 127.0.0.1:5432 ──
+        # ── shared Postgres (ensure-running) ────────────────────────────────
+        # ONE trust-auth cluster for all ev_invest repos, under the user state dir —
+        # NOT the repo. Started detached so no repo's dev-stack exit yanks it out from
+        # under the siblings; each repo's runner only ensures its own databases exist
+        # (database name == app name). Stop: pg_ctl -D ~/.local/state/ev_invest/pg/data stop
         runPostgres = pkgs.writeShellApplication {
           name = "run-postgres";
-          runtimeInputs = with pkgs; [ postgresql git coreutils gnugrep ];
+          runtimeInputs = with pkgs; [ postgresql coreutils gnugrep util-linux ];
           text = ''
-            repo="$(git rev-parse --show-toplevel)"
-            export PGDATA="$repo/.pg/data"
-            sockets="$repo/.pg/sockets"
-            port="''${PGPORT:-5432}"
-            db="''${PGDATABASE:-ev_site_conductor}"
-
+            ${portEnv}
+            state="''${XDG_STATE_HOME:-$HOME/.local/state}/ev_invest"
+            export PGDATA="$state/pg/data"
+            sockets="$state/pg/sockets"
+            dbs="''${PGDATABASES:-site_conductor}"
             mkdir -p "$sockets"
-            if [ ! -s "$PGDATA/PG_VERSION" ]; then
-              echo "initialising postgres cluster in $PGDATA"
-              initdb --username=postgres --auth=trust --pgdata="$PGDATA" >/dev/null
-            fi
-            # Postgres refuses to start unless PGDATA is 0700/0750 — clamp it.
-            chmod 0700 "$PGDATA"
 
-            (
-              until pg_isready --host="$sockets" --port="$port" --quiet; do sleep 0.2; done
-              if ! psql --host="$sockets" --port="$port" --username=postgres --dbname=postgres \
+            # Serialize sibling repos racing to first-boot the shared cluster.
+            exec 9>"$state/pg.lock"
+            flock 9
+
+            if ! pg_isready --host="$sockets" --port="$POSTGRES_PORT" --quiet; then
+              # TCP answering while our socket is silent = some OTHER cluster owns
+              # the port — refuse rather than silently use the wrong database.
+              if pg_isready --host=127.0.0.1 --port="$POSTGRES_PORT" --quiet; then
+                echo "error: 127.0.0.1:$POSTGRES_PORT serves a postgres that is not the shared ev_invest cluster" >&2
+                exit 1
+              fi
+              if [ ! -s "$PGDATA/PG_VERSION" ]; then
+                echo "initialising shared postgres cluster in $PGDATA"
+                initdb --username=postgres --auth=trust --pgdata="$PGDATA" >/dev/null
+              fi
+              chmod 0700 "$PGDATA"
+              # 9>&- : the daemon must NOT inherit the lock fd, or it holds the
+              # flock for its lifetime and every later ensure-run blocks forever.
+              pg_ctl -D "$PGDATA" -l "$state/pg/log" -o "-k $sockets -h 127.0.0.1 -p $POSTGRES_PORT" start 9>&-
+            fi
+            exec 9>&-
+
+            for db in $dbs; do
+              if ! psql --host="$sockets" --port="$POSTGRES_PORT" --username=postgres --dbname=postgres \
                      --tuples-only --no-align \
                      --command "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1; then
-                createdb --host="$sockets" --port="$port" --username=postgres "$db"
+                createdb --host="$sockets" --port="$POSTGRES_PORT" --username=postgres "$db"
                 echo "created database '$db'"
               fi
-              echo "postgres ready on 127.0.0.1:$port (db '$db', user 'postgres', trust auth)"
-            ) &
-
-            exec postgres -D "$PGDATA" -k "$sockets" -h 127.0.0.1 -p "$port"
+            done
+            echo "postgres ready on 127.0.0.1:$POSTGRES_PORT (databases ensured: $dbs)"
           '';
         };
 
@@ -360,11 +405,14 @@
           '';
         };
 
-        # ── dev orchestrator: Postgres → backend → frontend, one trap tears it all down ──
+        # ── dev orchestrator ────────────────────────────────────────────────
+        # Ensures the SHARED postgres (detached, survives this stack), then owns
+        # backend + frontend; a single trap tears the owned tree down on exit.
         runDev = pkgs.writeShellApplication {
           name = "run-dev";
-          runtimeInputs = with pkgs; [ postgresql git coreutils ];
+          runtimeInputs = with pkgs; [ coreutils ];
           text = ''
+            ${portEnv}
             pids=()
             cleanup() {
               echo; echo "shutting down dev stack…"
@@ -373,15 +421,12 @@
             }
             trap cleanup EXIT INT TERM
 
-            echo "▶ postgres"
-            ${runPostgres}/bin/run-postgres & pids+=($!)
+            echo "▶ postgres (shared)"
+            ${runPostgres}/bin/run-postgres
 
-            echo "  waiting for postgres on 127.0.0.1:''${PGPORT:-5432}…"
-            until pg_isready --host=127.0.0.1 --port="''${PGPORT:-5432}" --quiet; do sleep 0.3; done
-
-            echo "▶ backend  (:58844)"
+            echo "▶ backend  (:$SITE_CONDUCTOR_BACKEND_PORT)"
             ${runBackend}/bin/run-backend & pids+=($!)
-            echo "▶ frontend (:58843)"
+            echo "▶ frontend (:$SITE_CONDUCTOR_FRONTEND_PORT)"
             ${runFrontend}/bin/run-frontend & pids+=($!)
 
             wait
@@ -403,6 +448,7 @@
             npm run check
 
             echo "▶ visual regression (playwright)"
+            ${portEnv}
             # The nixpkgs browsers — npm-downloaded ones link libs absent on NixOS.
             export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
             export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
@@ -446,6 +492,7 @@
             repo="$(git rev-parse --show-toplevel)"
             cd "$repo/frontend"
             [ -d node_modules/.bin ] || npm ci
+            ${portEnv}
             export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
             export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
             export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE="nixos"
@@ -485,10 +532,10 @@
         };
       in
       {
-        # `nix run .#dev`      → Postgres + backend + frontend
-        # `nix run .#frontend` → Next.js marketing site (:58843)
-        # `nix run .#backend`  → Axum API only (:58844, needs a DB: `.#db` or `.#dev`)
-        # `nix run .#db`       → local Postgres only (:5432)
+        # `nix run .#dev`      → ensures shared Postgres, then backend + frontend
+        # `nix run .#frontend` → Next.js marketing site (:$SITE_CONDUCTOR_FRONTEND_PORT)
+        # `nix run .#backend`  → Axum API only (:$SITE_CONDUCTOR_BACKEND_PORT; ensures the shared DB)
+        # `nix run .#db`       → ensure the SHARED ev_invest Postgres is up (+ this repo's databases)
         # `nix run .#gen-api`  → regenerate openapi.json + the TS client
         # `nix run .#test`     → frontend typecheck + Playwright visual regression
         # `nix run .#accept-test` → accept new screenshots (all, or `-- <names>`)

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { toast } from "@evinvest/uikit";
+import { config } from "@/config";
 
 // Kept local (not re-exported from the kit) so it stays server-safe: the kit
 // bundle is a `"use client"` module, whereas `cn` is used in server components.
@@ -14,7 +15,7 @@ import { toast } from "@evinvest/uikit";
 export function cn(...inputs: ClassValue[]) {
   const raw = clsx(inputs);
   const merged = twMerge(raw);
-  if (process.env.NODE_ENV !== "production") {
+  if (!config.isProduction) {
     const kept = new Set(merged.split(/\s+/).filter(Boolean));
     const dropped = raw.split(/\s+/).filter(t => t && !kept.has(t));
     if (dropped.length) {

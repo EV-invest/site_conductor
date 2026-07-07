@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 // One visual-regression baseline per section of the site. `name` names the
 // screenshot file (__screenshots__/<name>.png); `selector` locates the section.
 // The anchored content sections (hero, research, team) are reachable by their
-// nav hash, e.g. http://localhost:58843/#team — those use an id selector. The
+// nav hash, e.g. <baseURL>/#team — those use an id selector. The
 // page chrome (header/footer) has no anchor, so it's keyed by tag.
 //
 // portfolio/calculator are embedded from ../real_estate_allocation and not ours

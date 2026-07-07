@@ -2,12 +2,15 @@
 
 Everything runs via Nix, token-free:
 
+Ports live in one place — the `ports` attrset in `flake.nix`; the runners
+export them, so nothing here hardcodes a number.
+
 | Command | What |
 | --- | --- |
-| `nix run .#dev` | full stack: postgres (:5432) + backend (:58844) + frontend (:58843) |
-| `nix run .#frontend` | Next.js site only → http://localhost:58843 |
-| `nix run .#backend` | axum API only (:58844, needs `.#db` or `.#dev`) |
-| `nix run .#db` | local postgres only (:5432, cluster under `.pg/`) |
+| `nix run .#dev` | full stack: shared postgres + backend + frontend |
+| `nix run .#frontend` | Next.js site only |
+| `nix run .#backend` | axum API only (ensures the shared postgres) |
+| `nix run .#db` | ensure the shared ev_invest postgres is up (+ this repo's `site_conductor` db) |
 | `nix run .#gen-api` | regenerate `backend/openapi.json` + the TS client (run after any DTO/handler change; commit both) |
 | `nix run .#test` | frontend typecheck + Playwright visual regression |
 | `nix run .#accept-test` | accept new screenshots (all, or `-- <names>`) |

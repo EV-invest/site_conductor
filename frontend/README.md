@@ -2,7 +2,7 @@
 
 Public site and conductor shell for the EV Investment fund — Next.js 16 (App
 Router) + React 19, laid out with Feature-Sliced Design, styled with Tailwind v4.
-Serves on `:58843`.
+The dev port comes from the `ports` attrset in the repo's `flake.nix`.
 
 ## Layout
 
@@ -24,7 +24,7 @@ slice's `index.ts`, never deep paths. Conventions live in [`PATTERNS.md`](./PATT
 ## Run only the frontend
 
 ```sh
-nix run .#frontend           # → http://localhost:58843
+nix run .#frontend           # port from flake.nix `ports`
 ```
 This first runs `populate-docs`: it builds the **local sibling clones**
 `../whitepaper` and `../blog` (token-free — those repos are private but their

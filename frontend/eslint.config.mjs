@@ -25,6 +25,23 @@ const eslintConfig = [
       "react-hooks/set-state-in-effect": "warn",
     },
   },
+  {
+    // All env access is centralised in config.ts; everything else imports the
+    // typed `config` object instead of reaching into process.env. config.ts is
+    // the reader; playwright.config.ts and its harness run under tsx outside
+    // Next's alias/transpile, so they read the flake's port/CI vars directly.
+    ignores: ["config.ts", "playwright.config.ts", "tests/**"],
+    rules: {
+      "no-restricted-properties": [
+        "error",
+        {
+          object: "process",
+          property: "env",
+          message: "Read env through the typed `config` object (config.ts), not process.env.",
+        },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

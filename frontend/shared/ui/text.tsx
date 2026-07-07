@@ -5,6 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/shared/lib/utils";
+import { config } from "@/config";
 
 /**
  * A card/block has ONE tier, declared by a surrounding <Tier>. The heading size
@@ -40,7 +41,7 @@ function Tier({ tier, children }: { tier: Tier; children: React.ReactNode }) {
 
 function useTier(component: string): Tier {
   const tier = React.useContext(TierContext);
-  if (process.env.NODE_ENV !== "production" && !tier) {
+  if (!config.isProduction && !tier) {
     throw new Error(`<${component}> must be inside a <Tier tier=…> — none found.`);
   }
   return tier as Tier;
@@ -98,7 +99,7 @@ function Text({
   const tier = React.useContext(TierContext);
   // Only info inherits the tier's body size; secondary owns its own sizing and
   // needs no tier. An info <Text> with no <Tier> ancestor panics in dev.
-  if (process.env.NODE_ENV !== "production" && variant !== "secondary" && !tier) {
+  if (!config.isProduction && variant !== "secondary" && !tier) {
     throw new Error("<Text> (info) must be inside a <Tier tier=…> — none found.");
   }
   const size = variant === "secondary" ? undefined : BODY_SIZE[tier as Tier];

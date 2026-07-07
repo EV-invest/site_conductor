@@ -1,17 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { SITE } from "@/shared/config/site";
-import { requiredInProd } from "@/shared/config/require-env";
+import { config } from "@/config";
 
 // REA's backend origin, advertised to the MFE bundle via <meta name="rea-url">.
-const reaUrl = requiredInProd(
-  process.env.NEXT_PUBLIC_REA_URL,
-  "NEXT_PUBLIC_REA_URL",
-  "http://localhost:59079"
-);
+// Only the production image build exports NEXT_PUBLIC_REA_URL; the dev launch
+// omits it, so fall back to the local REA port rather than failing the build.
+const reaUrl = config.public.reaUrl ?? "http://localhost:59079";
 
 // Must stay a STATIC export (no request data) so it streams despite the layout's
 // `await cookies()` making routes dynamic — do NOT switch to generateMetadata.
-// Icons/OG images are owned by the app/icon.* + app/opengraph-image.* conventions.
+// Icons are owned by the app/icon.* conventions. The OG image lives in public/
+// and is declared here (not via the opengraph-image.* convention) so its alt
+// pulls from SITE instead of a static .alt.txt duplicate. X/Twitter falls back
+// to og:image, so no separate twitter image.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
@@ -45,6 +46,14 @@ export const metadata: Metadata = {
     description: SITE.description,
     url: "/",
     locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: `${SITE.tagline}. ${SITE.description}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
