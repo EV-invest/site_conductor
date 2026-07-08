@@ -39,9 +39,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <PostHogPageView />
               </Suspense>
               <Header
-                accountSlot={<AccountChipRemote className="hidden items-center sm:flex" />}
+                accountSlot={
+                  <AccountChipRemote className="hidden items-center sm:flex" />
+                }
                 mobileAccountSlot={
-                  <AccountChipRemote className="flex w-full justify-center" fallbackClassName="w-full justify-center py-6" />
+                  <AccountChipRemote className="flex w-full justify-center" />
                 }
               />
               {children}
