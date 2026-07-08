@@ -141,7 +141,9 @@ async function buildCss(markup: string): Promise<string> {
   scope.append(...root.nodes);
   root.removeAll();
   root.append(...hoisted, scope);
-  root.append(postcss.parse(":root { --ev-shell-offset: 4rem; }"));
+  // !important: this link is injected before the zone's own stylesheet, whose
+  // `--ev-shell-offset: 0px` standalone default would otherwise win on order.
+  root.append(postcss.parse(":root { --ev-shell-offset: 4rem !important; }"));
   return transformSync(root.toResult().css, { loader: "css", minify: true })
     .code;
 }
