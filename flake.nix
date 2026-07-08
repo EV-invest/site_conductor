@@ -58,13 +58,15 @@
         # ── ev_invest dev topology (single source of truth for ports) ───────
         # ONE shared postgres serves every sibling repo (banking/concierge mirror
         # these values). Postgres database name == app name. Web UIs cluster on
-        # 5006x. CABINET_FRONTEND_PORT is banking's cabinet, referenced by
-        # CABINET_ZONE_URL for the multi-zone /cabinet mount.
+        # 5006x. CABINET_FRONTEND_PORT is banking's cabinet and REA_PORT is
+        # real_estate_allocation's dev server, referenced by CABINET_ZONE_URL /
+        # REA_ZONE_URL for the multi-zone mounts.
         ports = {
           POSTGRES_PORT = "5432";
           SITE_CONDUCTOR_FRONTEND_PORT = "58843";
           SITE_CONDUCTOR_BACKEND_PORT = "58844";
           CABINET_FRONTEND_PORT = "50061";
+          REA_PORT = "59079";
         };
         # DEFAULTS, not overrides: anything already set in the environment (or a
         # sourced `.env`) wins — machines with non-standard ports stay working.
@@ -306,6 +308,7 @@
             ${portEnv}
             export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
             export CABINET_ZONE_URL="''${CABINET_ZONE_URL:-http://localhost:$CABINET_FRONTEND_PORT}"
+            export REA_ZONE_URL="''${REA_ZONE_URL:-http://localhost:$REA_PORT}"
             exec npm run dev -- --port "$SITE_CONDUCTOR_FRONTEND_PORT"
           '';
         };
