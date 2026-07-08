@@ -17,11 +17,9 @@ const git = (cmd: string, fallback: string) => {
 };
 
 const buildVersion =
-  config.public.buildVersion ??
-  git("git describe --tags --always", "unknown");
+  config.public.buildVersion ?? git("git describe --tags --always", "unknown");
 // Full SHA the footer link resolves to, kept separate from the display version.
-const buildCommit =
-  config.public.buildCommit || git("git rev-parse HEAD", "");
+const buildCommit = config.public.buildCommit || git("git rev-parse HEAD", "");
 
 const nextConfig: NextConfig = {
   env: {
@@ -53,20 +51,58 @@ const nextConfig: NextConfig = {
       { source: "/blogs/:slug.:variant(dark|light).html", headers: noindex },
       { source: "/whitepaper.pdf", headers: noindex },
       { source: "/blogs/:slug.pdf", headers: noindex },
+      // AppShell assets are content-hashed by scripts/build-shell.mts — one
+      // fetch, then cached across conductor pages and every zone.
+      {
+        source: "/shell/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
-  // Multi-zone mount: the cabinet is its own Next.js deployment (basePath
-  // "/cabinet", so pages AND its /_next assets all live under the one prefix);
-  // the conductor proxies that whole path space to it. Unset ⇒ no rewrites, so
-  // /cabinet 404s instead of half-proxying (the header CTA only points here
-  // when NEXT_PUBLIC_CABINET_PATH is set alongside). See PATTERNS.md §9.
+  // Multi-zone mounts (PATTERNS.md §9): asset/API traffic goes straight to the
+  // zone over native rewrites; zone *HTML* goes through the shell-injecting
+  // proxy route handlers (app/cabinet/…, app/real-estate/…) instead, which is
+  // why these must be beforeFiles — a bare array is afterFiles, which would
+  // shadow the catch-all handlers. Env unset ⇒ no rewrites and the handler
+  // 404s, a deliberate "zone disabled" state.
   async rewrites() {
+    const beforeFiles = [];
     const cabinet = config.cabinetZoneUrl?.replace(/\/+$/, "");
-    if (!cabinet) return [];
-    return [
-      { source: "/cabinet", destination: `${cabinet}/cabinet` },
-      { source: "/cabinet/:path+", destination: `${cabinet}/cabinet/:path+` },
-    ];
+    if (cabinet) {
+      beforeFiles.push(
+        {
+          source: "/cabinet/_next/:path*",
+          destination: `${cabinet}/cabinet/_next/:path*`,
+        },
+        {
+          source: "/cabinet/api/:path*",
+          destination: `${cabinet}/cabinet/api/:path*`,
+        },
+        {
+          source: "/cabinet/mfe/:path*",
+          destination: `${cabinet}/cabinet/mfe/:path*`,
+        }
+      );
+    }
+    const rea = config.reaZoneUrl?.replace(/\/+$/, "");
+    if (rea) {
+      beforeFiles.push(
+        {
+          source: "/real-estate/assets/:path*",
+          destination: `${rea}/real-estate/assets/:path*`,
+        },
+        {
+          source: "/real-estate/api/:path*",
+          destination: `${rea}/real-estate/api/:path*`,
+        }
+      );
+    }
+    return { beforeFiles, afterFiles: [], fallback: [] };
   },
 };
 

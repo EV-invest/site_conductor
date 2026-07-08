@@ -44,11 +44,14 @@ export const config = {
   get apiUrlInternal(): string | undefined {
     return optional(process.env.API_URL_INTERNAL);
   },
-  // Cabinet zone origin (multi-zone /cabinet mount). Unset ⇒ no rewrites, so
-  // /cabinet 404s instead of half-proxying — a deliberate "zone disabled" state,
-  // hence optional (the container image ships without it).
+  // Zone origins (multi-zone mounts; see PATTERNS.md §9). Unset ⇒ no rewrites
+  // and the HTML proxy 404s instead of half-proxying — a deliberate "zone
+  // disabled" state, hence optional (the container image ships without them).
   get cabinetZoneUrl(): string | undefined {
     return optional(process.env.CABINET_ZONE_URL);
+  },
+  get reaZoneUrl(): string | undefined {
+    return optional(process.env.REA_ZONE_URL);
   },
   // Server/edge Sentry environment tag (instrumentation.ts).
   get appEnv(): string | undefined {
@@ -88,17 +91,6 @@ export const config = {
     },
     get buildCommit(): string | undefined {
       return optional(process.env.NEXT_PUBLIC_BUILD_COMMIT);
-    },
-    // Cabinet mounted as a zone of this domain; when set the header CTA
-    // hard-links into it (cross-zone nav = full document load).
-    get cabinetPath(): string | undefined {
-      return optional(process.env.NEXT_PUBLIC_CABINET_PATH);
-    },
-    get oauthPortalUrl(): string | undefined {
-      return optional(process.env.NEXT_PUBLIC_OAUTH_PORTAL_URL);
-    },
-    get appId(): string | undefined {
-      return optional(process.env.NEXT_PUBLIC_APP_ID);
     },
     get analyticsEndpoint(): string | undefined {
       return optional(process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT);
