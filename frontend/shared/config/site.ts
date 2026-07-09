@@ -66,9 +66,10 @@ export const OFFICES: Office[] = [
   {
     id: "quynhon",
     name: "Quy Nhon Head Office",
-    streetAddress: "102 An Duong Vuong St, Nguyen Van Cu Ward",
-    addressLocality: "Quy Nhon",
-    addressRegion: "Binh Dinh",
+    streetAddress: "01 Nguyễn Tất Thành",
+    addressLocality: "Quy Nhơn",
+    addressRegion: "Gia Lai",
+    postalCode: "590000",
     addressCountry: "VN",
   },
   {
