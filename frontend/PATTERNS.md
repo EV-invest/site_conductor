@@ -240,11 +240,11 @@ and the conductor is the only party that knows chrome exists — its proxy injec
 the conductor-owned AppShell (the brand header) into the zone's HTML stream.
 
 - **Traffic splits by content, not path.** Asset/API traffic (`/cabinet/_next`,
-  `/cabinet/api`, `/cabinet/mfe`, `/real-estate/assets`, `/real-estate/api`)
+  `/cabinet/api`, `/cabinet/mfe`, `/rea/assets`, `/rea/api`)
   goes straight to the zone over native `beforeFiles` rewrites (`next.config.ts`
   — they must be beforeFiles, or they'd lose to the catch-all handlers). Zone
   *HTML* goes through `shared/zone-proxy.ts` via the catch-all route handlers
-  (`app/cabinet/[[...path]]/route.ts`, `app/real-estate/[[...path]]/route.ts`).
+  (`app/cabinet/[[...path]]/route.ts`, `app/rea/[[...path]]/route.ts`).
   Zone env (`CABINET_ZONE_URL` / `REA_ZONE_URL`) unset ⇒ no rewrites and the
   handler 404s rather than half-proxying.
 - **Injection is a string insert on the initial HTML stream**: header CSS/JS
@@ -260,7 +260,7 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   `calc(100dvh - var(--ev-shell-offset, 0px))`. Never inject inline code — zone
   CSPs (`script-src 'self' 'nonce-…'`) must pass with zero changes.
 - **Zone side** (in the zone's repo): `basePath: "/cabinet"` (Next) or
-  `base_path = "real-estate"` (Dioxus) — pages *and* assets all live under the
+  `base_path = "rea"` (Dioxus) — pages *and* assets all live under the
   one prefix, so nothing collides with the conductor's own assets.
 - **Cross-zone links are hard links.** Never `next/link` into another zone — the
   current zone's router doesn't own the route, and prefetch/soft-nav break.

@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
   },
   // Multi-zone mounts (PATTERNS.md §9): asset/API traffic goes straight to the
   // zone over native rewrites; zone *HTML* goes through the shell-injecting
-  // proxy route handlers (app/cabinet/…, app/real-estate/…) instead, which is
+  // proxy route handlers (app/cabinet/…, app/rea/…) instead, which is
   // why these must be beforeFiles — a bare array is afterFiles, which would
   // shadow the catch-all handlers. Env unset ⇒ no rewrites and the handler
   // 404s, a deliberate "zone disabled" state.
@@ -93,12 +93,12 @@ const nextConfig: NextConfig = {
     if (rea) {
       beforeFiles.push(
         {
-          source: "/real-estate/assets/:path*",
-          destination: `${rea}/real-estate/assets/:path*`,
+          source: "/rea/assets/:path*",
+          destination: `${rea}/rea/assets/:path*`,
         },
         {
-          source: "/real-estate/api/:path*",
-          destination: `${rea}/real-estate/api/:path*`,
+          source: "/rea/api/:path*",
+          destination: `${rea}/rea/api/:path*`,
         }
       );
     }
