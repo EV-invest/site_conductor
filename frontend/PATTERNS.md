@@ -231,28 +231,45 @@ Notes that bite:
 - Degrade gracefully: a `RemoteDocument` whose source can't be loaded renders its
   `fallback` (a PDF link), so a missing doc build never breaks the page.
 
-## 9. Routed zones — whole apps under conductor paths
+## 9. Routed zones — whole apps under conductor paths, wearing the conductor's shell
 
 §8 composes remotes **inside** a page. When another EV app owns **whole routes**
-(a full Next.js app with its own auth, router, and deploys — the cabinet), it is
-mounted as a **multi-zone** instead: the app stays a standalone deployment on its
-own origin, and the conductor proxies one path space to it.
+(the cabinet, the REA dashboard), it is mounted as a **zone**: the app stays a
+standalone deployment on its own origin, emits **chromeless** full documents,
+and the conductor is the only party that knows chrome exists — its proxy injects
+the conductor-owned AppShell (the brand header) into the zone's HTML stream.
 
-- **Conductor side** (`next.config.ts` `rewrites()`): `/cabinet` +
-  `/cabinet/:path+` → `CABINET_ZONE_URL` (the zone's origin). Env unset ⇒ no
-  rewrites ⇒ the path 404s rather than half-proxying.
-- **Zone side** (in the zone's repo): `basePath: "/cabinet"` — its pages *and*
-  `/_next` assets all live under the one prefix, so nothing collides with the
-  conductor's own assets. The zone also needs
-  `serverActions.allowedOrigins: [<conductor host>]` since the user-facing
-  origin differs from its own.
+- **Traffic splits by content, not path.** Asset/API traffic (`/cabinet/_next`,
+  `/cabinet/api`, `/cabinet/mfe`, `/real-estate/assets`, `/real-estate/api`)
+  goes straight to the zone over native `beforeFiles` rewrites (`next.config.ts`
+  — they must be beforeFiles, or they'd lose to the catch-all handlers). Zone
+  *HTML* goes through `shared/zone-proxy.ts` via the catch-all route handlers
+  (`app/cabinet/[[...path]]/route.ts`, `app/real-estate/[[...path]]/route.ts`).
+  Zone env (`CABINET_ZONE_URL` / `REA_ZONE_URL`) unset ⇒ no rewrites and the
+  handler 404s rather than half-proxying.
+- **Injection is a string insert on the initial HTML stream**: header CSS/JS
+  `<link>`/`<script src>` after `<head…>`, the static header fragment after
+  `<body…>`, everything after piped raw. Non-HTML (RSC payloads, files) streams
+  through byte-identical. Assets are content-hashed under `/shell/*`
+  (immutable-cached) and built by `scripts/build-shell.mts` from the same
+  `application/layout/header.tsx` the conductor's own pages hydrate — zones get
+  static markup plus a ~30-line vanilla behavior script, no React.
+- **Zones know nothing about the shell** — the single contract is the
+  `--ev-shell-offset` token (uikit tokens.css, `0px` standalone; the injected
+  header CSS overrides it to `4rem`): zones size viewport-bound surfaces with
+  `calc(100dvh - var(--ev-shell-offset, 0px))`. Never inject inline code — zone
+  CSPs (`script-src 'self' 'nonce-…'`) must pass with zero changes.
+- **Zone side** (in the zone's repo): `basePath: "/cabinet"` (Next) or
+  `base_path = "real-estate"` (Dioxus) — pages *and* assets all live under the
+  one prefix, so nothing collides with the conductor's own assets.
 - **Cross-zone links are hard links.** Never `next/link` into another zone — the
   current zone's router doesn't own the route, and prefetch/soft-nav break.
-  Use `<a>` / `window.location` (see `application/layout/investor-portal-button.tsx`);
-  navigation between zones is a full document load by design.
+  Use `<a>` / `window.location`; navigation between zones is a full document
+  load by design.
 - **Auth composes for free**: the browser only ever talks to the conductor
   origin, so the zone's session cookies (`__Host-*` included) arrive first-party
-  on this domain through the rewrite.
+  on this domain through the proxy (each `Set-Cookie` forwarded individually).
 - **Pick the transport by ownership**: inline widget or single mounted surface →
   element remote (§8); an app owning a route subtree with its own navigation →
-  zone. A zone's own pages can still mount §8 remotes.
+  zone. A zone's own pages can still mount §8 remotes (the account chip the
+  shell injects *is* one).

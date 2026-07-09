@@ -1,8 +1,9 @@
-// Header navigation — single source for desktop + mobile menus.
+// Header navigation — single source for desktop + mobile menus, on conductor
+// pages and in the zone-injected shell fragment (scripts/build-shell.mts) alike.
 // Portfolio / Research are root-relative anchors to the homepage sections (so
 // they work from any route, then scroll); Team / Hiring / Contact are dedicated
-// pages. The brand logo links home. The Investor Portal CTA is rendered
-// separately (destination resolution lives in investor-portal-button).
+// pages. The brand logo links home. The account chip CTA is rendered separately
+// (application/layout/account-chip-remote.tsx).
 export const NAV_ITEMS = [
   { label: "Portfolio", href: "/#portfolio" },
   { label: "Research", href: "/#research" },

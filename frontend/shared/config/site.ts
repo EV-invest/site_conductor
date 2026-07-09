@@ -66,9 +66,10 @@ export const OFFICES: Office[] = [
   {
     id: "quynhon",
     name: "Quy Nhon Head Office",
-    streetAddress: "102 An Duong Vuong St, Nguyen Van Cu Ward",
-    addressLocality: "Quy Nhon",
-    addressRegion: "Binh Dinh",
+    streetAddress: "01 Nguyễn Tất Thành",
+    addressLocality: "Quy Nhơn",
+    addressRegion: "Gia Lai",
+    postalCode: "590000",
     addressCountry: "VN",
   },
   {
@@ -86,7 +87,7 @@ export const OFFICES: Office[] = [
 // subpage here makes it sitemap-listed and sitelink-eligible with no other
 // change. The homepage in-page sections (#portfolio, #research…) are NOT separate
 // URLs and intentionally not listed; neither are noindexed surfaces
-// (/investor-portal, /apps/*). /hiring/[slug] and /blogs/[slug] detail entries
+// (/apps/*). /hiring/[slug] and /blogs/[slug] detail entries
 // are added in app/sitemap.ts.
 export type ChangeFrequency =
   | "always"

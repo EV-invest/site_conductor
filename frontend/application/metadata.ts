@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: SITE.description,
   applicationName: SITE.name,
   // No `alternates` here: a root-level canonical cascades into every page that
-  // doesn't define its own (noindexed /investor-portal, /apps/*, the 404) and
+  // doesn't define its own (noindexed /apps/*, the 404) and
   // stamps them canonical-to-homepage — a contradictory signal pair. Each
   // indexable page declares its own self-canonical (home's is in app/page.tsx).
   // Read by the real-estate MFE bundle (`rea_origin()`) for its REA backend calls.

@@ -2,6 +2,7 @@ import { Text, Tier } from "@/shared/ui/text";
 import { HeroACanvas } from "./canvas";
 import { HeroACta } from "./cta";
 import { HeroAStats } from "./stats";
+import { HeroHeadline } from "./headline";
 
 /**
  * Variant A — scroll-zoom metaphor. Server Component.
@@ -34,12 +35,7 @@ function HeroACtaAB() {
 function HeroCopy() {
   return (
     <HeroACanvas cta={<HeroACtaAB />}>
-      <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif-display font-light text-white leading-tight mb-6">
-        Invest in{" "}
-        <span className="italic text-main-accent-t1 font-serif">Vietnam</span>
-        <br />
-        Through Institutional Vision.
-      </h1>
+      <HeroHeadline />
       <Tier tier="main">
         <Text className="max-w-2xl mx-auto mb-12">
           Invest in Emergent Markets through Vietnam.<br />
