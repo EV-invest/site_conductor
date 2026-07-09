@@ -31,8 +31,16 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
     script.type = "module";
     script.src = scriptUrl;
     script.dataset.mfe = tag;
-    const onLoad = () => void whenReady();
+    // A failed script must leave the DOM or the guard above would treat it as
+    // loaded for the rest of the session; deliberately not removed on cleanup
+    // so a failure that fires after unmount still allows a later mount to retry.
+    const onError = () => script.remove();
+    const onLoad = () => {
+      script.removeEventListener("error", onError);
+      void whenReady();
+    };
     script.addEventListener("load", onLoad);
+    script.addEventListener("error", onError, { once: true });
     document.head.appendChild(script);
     return () => {
       cancelled = true;
