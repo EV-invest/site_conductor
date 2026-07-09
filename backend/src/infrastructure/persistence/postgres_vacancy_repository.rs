@@ -116,7 +116,9 @@ impl VacancyRepository for PostgresVacancyRepository {
 	}
 
 	async fn find_by_slug(&self, slug: &Slug) -> Result<Option<Vacancy>, DomainError> {
-		let row = sqlx::query_as::<_, VacancyRow>(sqlx::AssertSqlSafe(format!("SELECT {COLUMNS} FROM vacancies WHERE slug = $1")))
+		// `published = TRUE` mirrors `list()`: an unpublished/draft role must 404 on the
+		// detail route and reject applications, not just be hidden from the board.
+		let row = sqlx::query_as::<_, VacancyRow>(sqlx::AssertSqlSafe(format!("SELECT {COLUMNS} FROM vacancies WHERE slug = $1 AND published = TRUE")))
 			.bind(slug.as_str())
 			.fetch_optional(&self.pool)
 			.await
