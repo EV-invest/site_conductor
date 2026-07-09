@@ -39,6 +39,12 @@ const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
   },
+  // Next's automatic 308 strips trailing slashes, but the Dioxus zone's router
+  // strips its base_path from the pathname — `/rea/` → `/` matches, `/rea` → ""
+  // never can. So no automatic stripping; the /rea route handler canonicalises
+  // the bare prefix INTO the slash (a redirects() source would match both
+  // shapes and loop). Conductor's own routes match either shape.
+  skipTrailingSlashRedirect: true,
   // The raw flake-built documents in public/ (whitepaper.*.html, blogs/*.html,
   // *.pdf) duplicate the branded /whitepaper and /blogs/[slug] routes that
   // compose them (shared/mfe RemoteDocument). Keep them fetchable — the routes
