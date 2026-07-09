@@ -67,6 +67,9 @@
           SITE_CONDUCTOR_BACKEND_PORT = "58844";
           CABINET_FRONTEND_PORT = "50061";
           REA_PORT = "59079";
+          # Concierge's auth web surface — /api/auth/* + /api/callback/auth/*
+          # rewrite there (AUTH_WEB_URL); auth is shell-owned, zones never run OAuth.
+          CONCIERGE_WEB_PORT = "55671";
         };
         # DEFAULTS, not overrides: anything already set in the environment (or a
         # sourced `.env`) wins — machines with non-standard ports stay working.
@@ -309,6 +312,7 @@
             export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
             export CABINET_ZONE_URL="''${CABINET_ZONE_URL:-http://localhost:$CABINET_FRONTEND_PORT}"
             export REA_ZONE_URL="''${REA_ZONE_URL:-http://localhost:$REA_PORT}"
+            export AUTH_WEB_URL="''${AUTH_WEB_URL:-http://localhost:$CONCIERGE_WEB_PORT}"
             exec npm run dev -- --port "$SITE_CONDUCTOR_FRONTEND_PORT"
           '';
         };

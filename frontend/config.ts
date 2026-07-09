@@ -53,6 +53,12 @@ export const config = {
   get reaZoneUrl(): string | undefined {
     return optional(process.env.REA_ZONE_URL);
   },
+  // The concierge plane's auth web surface. Auth is shell-owned: /api/auth/* and
+  // /api/callback/auth/* on THIS origin rewrite there, so session cookies land
+  // first-party for every zone. Unset ⇒ no rewrites ⇒ auth disabled (404s).
+  get authWebUrl(): string | undefined {
+    return optional(process.env.AUTH_WEB_URL);
+  },
   // Server/edge Sentry environment tag (instrumentation.ts).
   get appEnv(): string | undefined {
     return optional(process.env.APP_ENV);

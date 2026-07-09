@@ -102,6 +102,20 @@ const nextConfig: NextConfig = {
         }
       );
     }
+    // Auth is shell-owned but concierge-implemented: login/callback/session live
+    // on THIS origin (cookies land first-party for every zone) and rewrite to the
+    // concierge plane's auth web surface. Zones never run OAuth — they link to
+    // /api/auth/login and verify the shared access-JWT cookie.
+    const auth = config.authWebUrl?.replace(/\/+$/, "");
+    if (auth) {
+      beforeFiles.push(
+        { source: "/api/auth/:path*", destination: `${auth}/auth/:path*` },
+        {
+          source: "/api/callback/auth/:path*",
+          destination: `${auth}/callback/auth/:path*`,
+        }
+      );
+    }
     return { beforeFiles, afterFiles: [], fallback: [] };
   },
 };
