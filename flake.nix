@@ -395,6 +395,27 @@
           '';
         };
 
+        # ── dev refresh from prod ───────────────────────────────────────────
+        # `nix run .#pull-prod-db` → replace the local site_conductor database
+        # with prod's (the `evinvest` db on rpi5's host Postgres, reached over
+        # tailscale). Prod is authoritative; dev only pulls. Trust auth on both
+        # ends, so no passwords; local pg_restore (17.10) ≥ remote pg_dump (17.9)
+        # keeps the custom-format stream compatible.
+        runPullProdDb = pkgs.writeShellApplication {
+          name = "pull-prod-db";
+          runtimeInputs = with pkgs; [ postgresql openssh ];
+          text = ''
+            ${portEnv}
+            ${runPostgres}/bin/run-postgres
+            rpi5="''${RPI5_SSH:-rpi5-ts}"
+            echo "▶ pg_dump on $rpi5 → pg_restore into local site_conductor"
+            ssh "$rpi5" "pg_dump -Fc -h 127.0.0.1 -U evinvest evinvest" \
+              | pg_restore --clean --if-exists --no-owner --no-privileges \
+                  -h 127.0.0.1 -p "$POSTGRES_PORT" -U postgres -d site_conductor
+            echo "✓ local site_conductor now mirrors prod"
+          '';
+        };
+
         # ── contract codegen: openapi.json + TS client. Run after any DTO/handler change; commit both. ──
         runGenApi = pkgs.writeShellApplication {
           name = "run-gen-api";
@@ -547,11 +568,13 @@
         # `nix run .#test`     → frontend typecheck + Playwright visual regression
         # `nix run .#accept-test` → accept new screenshots (all, or `-- <names>`)
         # `nix run .#publish`  → bump latest remote vX.Y.Z tag (major|minor|patch) + push
+        # `nix run .#pull-prod-db` → replace the local site_conductor db with prod's (rpi5)
         apps = {
           dev = { type = "app"; program = "${runDev}/bin/run-dev"; };
           frontend = { type = "app"; program = "${runFrontend}/bin/run-frontend"; };
           backend = { type = "app"; program = "${runBackend}/bin/run-backend"; };
           db = { type = "app"; program = "${runPostgres}/bin/run-postgres"; };
+          pull-prod-db = { type = "app"; program = "${runPullProdDb}/bin/pull-prod-db"; };
           gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
           test = { type = "app"; program = "${runTest}/bin/run-test"; };
           accept-test = { type = "app"; program = "${runAcceptTest}/bin/accept-test"; };
