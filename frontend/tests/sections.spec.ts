@@ -1,4 +1,7 @@
+import { cookieName } from "@evinvest/experiments";
 import { expect, test } from "@playwright/test";
+
+import { experiments } from "../shared/config/experiments";
 
 // One visual-regression baseline per section of the site. `name` names the
 // screenshot file (__screenshots__/<name>.png); `selector` locates the section.
@@ -22,6 +25,25 @@ const SECTIONS = [
 // position makes its zoom (and the header's blur-on-scroll state) deterministic.
 // Top-of-page for the chrome sections, the element itself otherwise.
 const PIN_TO_TOP = new Set<string>(["header", "hero"]);
+
+// A/B experiments assign per fresh context (weighted random, sticky cookie), so
+// an unpinned run screenshots a random variant. Pin every experiment to the
+// variant the committed baselines were captured from.
+const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
+  hero: "a",
+  hero_headline: "b",
+  team_office: "a",
+  team_bio_shade: "a",
+};
+test.beforeEach(async ({ context, baseURL }) => {
+  await context.addCookies(
+    Object.entries(BASELINE_VARIANTS).map(([key, value]) => ({
+      name: cookieName(key),
+      value,
+      url: baseURL,
+    })),
+  );
+});
 
 for (const { name, selector } of SECTIONS) {
   test(`- mismatch on: ${name}`, async ({ page }) => {
