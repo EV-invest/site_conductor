@@ -177,6 +177,14 @@
             NEXT_PUBLIC_SITE_URL = "https://evinvest.ltd";
             NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
             NEXT_PUBLIC_API_URL = "https://api.evinvest.ltd";
+            # Zone/auth topology must be present at `next build`: rewrites() resolves
+            # into routes-manifest.json here and is never re-evaluated at runtime, so
+            # runtime-only env cannot enable the asset/API/auth rewrites (the /rea and
+            # /cabinet HTML proxy handlers DO read env per request — the contract env
+            # below feeds those). In-cluster service DNS, non-secret.
+            CABINET_ZONE_URL = "http://ev-banking-cabinet:50061";
+            REA_ZONE_URL = "http://real-estate-allocation:59079";
+            AUTH_WEB_URL = "http://concierge:55671";
           };
           # call next build directly (npm run build chains stylelint, a CI gate that shouldn't fail the image).
           buildPhase = ''
@@ -226,6 +234,13 @@
             contents = [ pkgs.nodejs frontendApp ];
             workingDir = "${frontendApp}";
             imageEnv = [ "PORT=58843" "HOSTNAME=0.0.0.0" "NODE_ENV=production" ];
+            # Runtime halves of the zone mounts (the HTML proxy handlers read these
+            # per request); the build-time copies above own the baked rewrites.
+            env = {
+              CABINET_ZONE_URL = "http://ev-banking-cabinet:50061";
+              REA_ZONE_URL = "http://real-estate-allocation:59079";
+              AUTH_WEB_URL = "http://concierge:55671";
+            };
           };
         };
 
