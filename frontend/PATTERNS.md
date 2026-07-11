@@ -254,7 +254,8 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   (immutable-cached) and built by `scripts/build-shell.mts` from the same
   `application/layout/header.tsx` the conductor's own pages render. The script
   runs at predev/prebuild *and* in the flake's image buildPhase; its outputs —
-  the `zone-shell.generated.json` manifest included — are gitignored, so a
+  the `public/shell/manifest.json` the proxy imports included — are gitignored
+  (all of `public/` is), so a
   build that skips generation fails at the proxy's static import instead of
   shipping markup that points at `/shell` assets absent from the image. The
   header carries no React state anywhere; both hosts load the same ~30-line

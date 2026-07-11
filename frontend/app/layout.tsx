@@ -8,7 +8,7 @@ import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
 import { config } from "@/config";
-import shell from "@/shared/zone-shell.generated.json";
+import shell from "@/public/shell/manifest.json";
 import "@/application/styles/globals.css";
 
 export { metadata, viewport } from "@/application/metadata";

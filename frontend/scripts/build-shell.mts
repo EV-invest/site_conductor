@@ -67,7 +67,7 @@ writeFileSync(path.join(outDir, cssName), fragmentCss);
 writeFileSync(path.join(outDir, jsName), behaviorJs);
 
 writeFileSync(
-  path.join(frontend, "shared/zone-shell.generated.json"),
+  path.join(outDir, "manifest.json"),
   JSON.stringify(
     {
       css: `/shell/${cssName}`,

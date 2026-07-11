@@ -490,7 +490,6 @@
           '';
         };
 
-        # ── zone-shell manifest regen (pre-commit hook) ─────────────────────
         # ── test suite: frontend typecheck + Playwright visual regression ───
         # No Rust tests exist yet; add `cargo test --workspace` here when they do.
         runTest = pkgs.writeShellApplication {
