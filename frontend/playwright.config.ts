@@ -58,5 +58,11 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // instrumentation.ts asserts required config at boot; a bare `playwright
+    // test` outside the flake needs the same default the flake run script owns.
+    env: {
+      ...(process.env as Record<string, string>),
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:58844",
+    },
   },
 });
