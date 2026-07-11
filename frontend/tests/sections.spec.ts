@@ -65,6 +65,49 @@ for (const { name, selector } of SECTIONS) {
     // Let the scroll-driven transform settle to its resting frame.
     await page.waitForTimeout(150);
 
-    await expect(section).toHaveScreenshot(`${name}.png`);
+    // Reveal wrappers SSR at opacity:0 and only animate in client-side; a dead
+    // bundle (dev server mid-restart, chunk 404s) screenshots a structurally
+    // valid but blank section. Fail loud instead of diffing a void.
+    await page
+      .waitForFunction(
+        sel => {
+          const root = document.querySelector(sel);
+          if (!root) return false;
+          return !Array.from(root.querySelectorAll("[style*='opacity']")).some(
+            el => getComputedStyle(el).opacity === "0",
+          );
+        },
+        selector,
+        { timeout: 15_000 },
+      )
+      .catch(() => {
+        throw new Error(
+          `${name}: content never revealed — client bundle likely never hydrated`,
+        );
+      });
+
+    if (name === "header") {
+      // The header CTA is the cabinet-served MFE account chip, present only
+      // when that service is reachable — clip at the nav's right edge so the
+      // baseline is independent of it.
+      const header = await section.boundingBox();
+      const nav = await page.locator("header nav").first().boundingBox();
+      if (!header || !nav) throw new Error("header/nav has no bounding box");
+      await expect(page).toHaveScreenshot(`${name}.png`, {
+        clip: {
+          x: header.x,
+          y: header.y,
+          width: nav.x + nav.width - header.x,
+          height: header.height,
+        },
+      });
+    } else {
+      // The fixed header overlays whatever sits at the viewport top, leaking
+      // its MFE chip (network-dependent) into section baselines — mask it; it
+      // has its own test above.
+      await expect(section).toHaveScreenshot(`${name}.png`, {
+        mask: [page.locator("header")],
+      });
+    }
   });
 }

@@ -28,9 +28,11 @@ const eslintConfig = [
   {
     // All env access is centralised in config.ts; everything else imports the
     // typed `config` object instead of reaching into process.env. config.ts is
-    // the reader; playwright.config.ts and its harness run under tsx outside
+    // the reader (config.assert.ts is its Node-only boot check); instrumentation.ts
+    // needs literal NEXT_RUNTIME checks for edge dead-code elimination;
+    // playwright.config.ts and its harness run under tsx outside
     // Next's alias/transpile, so they read the flake's port/CI vars directly.
-    ignores: ["config.ts", "playwright.config.ts", "tests/**"],
+    ignores: ["config.ts", "config.assert.ts", "instrumentation.ts", "playwright.config.ts", "tests/**"],
     rules: {
       "no-restricted-properties": [
         "error",
