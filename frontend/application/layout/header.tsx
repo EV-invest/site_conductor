@@ -1,8 +1,8 @@
-// The EV brand chrome header, absorbed from @evinvest/uikit@0.6.0: with zones
-// chromeless, the conductor is its only consumer. One markup serves two hosts —
-// SSR'd on conductor pages, and `renderToStaticMarkup` into the shell fragment
-// injected over zone HTML (scripts/build-shell.mts). Behavior is one
-// implementation for both: scripts/header-behavior.ts toggles `data-scrolled` /
+// THE header. The conductor owns it, and there is exactly one: SSR'd on
+// conductor pages, and `renderToStaticMarkup` into the shell fragment injected
+// over zone HTML (scripts/build-shell.mts) — zones never render chrome.
+// Behavior is one implementation for both hosts:
+// scripts/header-behavior.ts toggles `data-scrolled` /
 // `data-menu-open` on the root, and the markup styles off them with
 // `group-data-[...]/header:` variants — no React state, no hydration.
 //   - The mobile overlay renders inline (a Portal renders nothing under

@@ -252,9 +252,13 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   `<body…>`, everything after piped raw. Non-HTML (RSC payloads, files) streams
   through byte-identical. Assets are content-hashed under `/shell/*`
   (immutable-cached) and built by `scripts/build-shell.mts` from the same
-  `application/layout/header.tsx` the conductor's own pages render — the header
-  carries no React state anywhere; both hosts load the same ~30-line vanilla
-  behavior script (`scripts/header-behavior.ts`).
+  `application/layout/header.tsx` the conductor's own pages render. The script
+  runs at predev/prebuild *and* in the flake's image buildPhase; its outputs —
+  the `zone-shell.generated.json` manifest included — are gitignored, so a
+  build that skips generation fails at the proxy's static import instead of
+  shipping markup that points at `/shell` assets absent from the image. The
+  header carries no React state anywhere; both hosts load the same ~30-line
+  vanilla behavior script (`scripts/header-behavior.ts`).
 - **Zones know nothing about the shell** — the single contract is the
   `--ev-shell-offset` token (uikit tokens.css, `0px` standalone; the injected
   header CSS overrides it to the bar's at-rest height and pads `body` by it,

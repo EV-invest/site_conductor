@@ -52,17 +52,6 @@
               pass_filenames = false;
               stages = [ "pre-push" ];
             };
-            # Regenerate + stage the shell manifest whenever frontend sources
-            # change, so a stale zone-shell.generated.json never lands in a
-            # commit (the run-test freshness check stays as the pre-push backstop).
-            zone-shell = {
-              enable = true;
-              name = "zone-shell manifest";
-              entry = "${runBuildShell}/bin/build-shell";
-              files = "^frontend/";
-              pass_filenames = false;
-              stages = [ "pre-commit" ];
-            };
           };
         });
         pname = "site_conductor";
@@ -212,6 +201,10 @@
               cp -f --no-preserve=mode "$dir/main.light.html" "public/blogs/$slug.light.html"
               cp -f --no-preserve=mode "$dir/main.dark.html"  "public/blogs/$slug.dark.html"
             done
+            # The AppShell (THE header — the only one; zones are chromeless and the
+            # proxy injects this over their HTML) is generated, never committed:
+            # skipping this step must fail `next build` at the manifest import.
+            node_modules/.bin/tsx scripts/build-shell.mts
             node_modules/.bin/next build
             runHook postBuild
           '';
@@ -498,18 +491,6 @@
         };
 
         # ── zone-shell manifest regen (pre-commit hook) ─────────────────────
-        runBuildShell = pkgs.writeShellApplication {
-          name = "build-shell";
-          runtimeInputs = with pkgs; [ nodejs git ];
-          text = ''
-            repo="$(git rev-parse --show-toplevel)"
-            cd "$repo/frontend"
-            [ -d node_modules/.bin ] || npm ci
-            npx tsx scripts/build-shell.mts
-            git add shared/zone-shell.generated.json
-          '';
-        };
-
         # ── test suite: frontend typecheck + Playwright visual regression ───
         # No Rust tests exist yet; add `cargo test --workspace` here when they do.
         runTest = pkgs.writeShellApplication {
@@ -521,15 +502,11 @@
             cd "$repo/frontend"
             [ -d node_modules/.bin ] || npm ci
 
+            # tsc resolves the (gitignored) generated manifest import.
+            npx tsx scripts/build-shell.mts
+
             echo "▶ typecheck (tsc --noEmit)"
             npm run check
-
-            echo "▶ zone-shell freshness (build-shell output must match the committed manifest)"
-            npx tsx scripts/build-shell.mts
-            git diff --exit-code -- shared/zone-shell.generated.json || {
-              echo "error: shared/zone-shell.generated.json is stale — commit the regenerated manifest" >&2
-              exit 1
-            }
 
             echo "▶ visual regression (playwright)"
             ${portEnv}

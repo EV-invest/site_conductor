@@ -3,7 +3,9 @@
 // self-contained stylesheet for exactly that markup, and type-strips the vanilla
 // behavior script. Everything is emitted content-hashed into public/shell/
 // (immutable-cached, see next.config.ts headers()) plus a manifest the proxy
-// imports. Wired into predev/prebuild; outputs are gitignored.
+// imports. Wired into predev/prebuild and the flake's image buildPhase; all
+// outputs (manifest included) are gitignored — the proxy's static import makes
+// a build that skips this script fail instead of shipping dead /shell URLs.
 //
 // The stylesheet is the delicate part — it loads inside a zone's document, which
 // runs its own Tailwind with its own cascade layers:
