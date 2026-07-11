@@ -1,18 +1,16 @@
 import { RemoteElement } from "@/shared/mfe";
 import { findMfe } from "@/shared/mfe/registry";
-import { Portfolio as PortfolioFallback } from "../../portfolio_fallback";
 
-// Renders the REA microfrontend, degrading to the in-repo section if the registry
-// entry is missing or the remote fails to load. Both carry id="portfolio" (only one
-// renders at a time), so the hero CTA's scroll always lands — no extra id wrapper.
+// The REA microfrontend owns the portfolio section. `id="portfolio"` is the
+// hero CTA's scroll target and the /#portfolio nav anchor, held by the host
+// wrapper so it lands whether or not the remote has upgraded yet.
 export async function Portfolio() {
   const entry = await findMfe("real-estate.overview");
-  if (!entry) return <PortfolioFallback />;
+  // The registry is in-repo static data; a missing entry is a broken build.
+  if (!entry) throw new Error("real-estate.overview missing from mfe-registry.json");
   return (
-    <RemoteElement
-      tag={entry.tag}
-      scriptUrl={entry.scriptUrl}
-      fallback={<PortfolioFallback />}
-    />
+    <div id="portfolio">
+      <RemoteElement tag={entry.tag} scriptUrl={entry.scriptUrl} />
+    </div>
   );
 }
