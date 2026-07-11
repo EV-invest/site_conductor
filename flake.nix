@@ -240,6 +240,16 @@
               CABINET_ZONE_URL = "http://ev-banking-cabinet:50061";
               REA_ZONE_URL = "http://real-estate-allocation:59079";
               AUTH_WEB_URL = "http://concierge:55671";
+              # config.ts reads env dynamically (process.env[name]), so nothing is
+              # inlined server-side: every dynamic render (ISR revalidate, RSC nav,
+              # cookied request) needs these at RUNTIME too — build-time env only
+              # covers the prerender. Missing ⇒ module-eval throw ⇒ 500.
+              NEXT_PUBLIC_API_URL = "https://api.evinvest.ltd";
+              NEXT_PUBLIC_SITE_URL = "https://evinvest.ltd";
+              NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
+              # Server Component fetches stay in-cluster instead of hairpinning
+              # through the Cloudflare tunnel.
+              API_URL_INTERNAL = "http://site-conductor-backend:58844";
             };
           };
         };
