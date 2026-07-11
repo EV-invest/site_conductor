@@ -43,7 +43,6 @@ if (!chip) throw new Error("cabinet.account missing from mfe-registry.json");
 // self-registering — the fragment appends its module script after the markup.
 const headerHtml = renderToStaticMarkup(
   createElement(BrandHeader, {
-    variant: "compact",
     nav: NAV_ITEMS,
     cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
     mobileCta: createElement(chip.tag, { class: "flex w-full justify-center" }),
@@ -143,7 +142,14 @@ async function buildCss(markup: string): Promise<string> {
   root.append(...hoisted, scope);
   // !important: this link is injected before the zone's own stylesheet, whose
   // `--ev-shell-offset: 0px` standalone default would otherwise win on order.
-  root.append(postcss.parse(":root { --ev-shell-offset: 4rem !important; }"));
+  // The bar is `fixed` (no layout space), so the zone document is padded by its
+  // at-rest height: py-6 (3rem) + the 40px lockup + border. Zones keep sizing
+  // viewport-bound surfaces with calc(100dvh - offset), unchanged.
+  root.append(
+    postcss.parse(
+      ":root { --ev-shell-offset: calc(5.5rem + 1px) !important; } body { padding-top: var(--ev-shell-offset); }"
+    )
+  );
   return transformSync(root.toResult().css, { loader: "css", minify: true })
     .code;
 }

@@ -9,8 +9,8 @@
 //     renderToStaticMarkup), gated by `data-menu-open`. `backdrop-blur` lives on
 //     the inner bar div, not the root: a backdrop-filtered root would become the
 //     containing block for the overlay's `fixed inset-0` and clamp it to the bar.
-//   - `compact` is sticky, not fixed: it takes layout space, so zones need zero
-//     knowledge of the header's height beyond the `--ev-shell-offset` token.
+//   - The bar is `fixed` and takes no layout space; the shell CSS pads the zone
+//     document below it via the `--ev-shell-offset` token (build-shell.mts).
 import type { ElementType, ReactNode } from "react";
 import Link from "next/link";
 import { Container, Logo } from "@evinvest/uikit";
@@ -29,14 +29,6 @@ export interface BrandHeaderProps {
   /** Overlay-specific CTA (e.g. full-width variant); falls back to `cta`. */
   mobileCta?: ReactNode;
   linkComponent?: ElementType;
-  /**
-   * Chrome density, per host surface.
-   * - `"marketing"` (default): the scroll-aware bar — tall and transparent over a
-   *   hero, condensing to an opaque blurred bar past 50px.
-   * - `"compact"`: a sticky short, opaque bar for zone surfaces — it takes layout
-   *   space, so zone content flows beneath it with no padding knowledge.
-   */
-  variant?: "marketing" | "compact";
 }
 
 export function BrandHeader({
@@ -44,26 +36,15 @@ export function BrandHeader({
   cta,
   mobileCta,
   linkComponent,
-  variant = "marketing",
 }: BrandHeaderProps) {
   const L = linkComponent ?? "a";
-  const compact = variant === "compact";
 
   return (
     <header
       data-slot="header"
-      data-variant={variant}
-      className={`group/header top-0 left-0 z-[60] w-full ${compact ? "sticky" : "fixed"}`}
+      className="group/header fixed top-0 left-0 z-[60] w-full"
     >
-      <div
-        className={`border-b ${
-          compact
-            ? // A 4rem bar (py-3 + the 40px lockup): opaque by default so zone
-              // content beneath it never bleeds through.
-              "h-16 border-main-mist/10 bg-main-black/90 backdrop-blur-md"
-            : "border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md"
-        }`}
-      >
+      <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md">
         <Container className="flex h-full items-center justify-between gap-4">
           <L
             href="/"

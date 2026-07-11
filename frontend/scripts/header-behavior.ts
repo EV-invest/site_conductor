@@ -9,14 +9,12 @@
   );
   if (!header) return;
 
-  if (header.dataset.variant === "marketing") {
-    const onScroll = () =>
-      window.scrollY > 50
-        ? header.setAttribute("data-scrolled", "")
-        : header.removeAttribute("data-scrolled");
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  }
+  const onScroll = () =>
+    window.scrollY > 50
+      ? header.setAttribute("data-scrolled", "")
+      : header.removeAttribute("data-scrolled");
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
   const setOpen = (open: boolean) => {
     if (open) header.setAttribute("data-menu-open", "");

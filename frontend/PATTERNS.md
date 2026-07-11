@@ -257,9 +257,11 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   behavior script (`scripts/header-behavior.ts`).
 - **Zones know nothing about the shell** — the single contract is the
   `--ev-shell-offset` token (uikit tokens.css, `0px` standalone; the injected
-  header CSS overrides it to `4rem`): zones size viewport-bound surfaces with
-  `calc(100dvh - var(--ev-shell-offset, 0px))`. Never inject inline code — zone
-  CSPs (`script-src 'self' 'nonce-…'`) must pass with zero changes.
+  header CSS overrides it to the bar's at-rest height and pads `body` by it,
+  since the fixed bar takes no layout space): zones size viewport-bound
+  surfaces with `calc(100dvh - var(--ev-shell-offset, 0px))`. Never inject
+  inline code — zone CSPs (`script-src 'self' 'nonce-…'`) must pass with zero
+  changes.
 - **Zone side** (in the zone's repo): `basePath: "/cabinet"` (Next) or
   `base_path = "rea"` (Dioxus) — pages *and* assets all live under the
   one prefix, so nothing collides with the conductor's own assets.
