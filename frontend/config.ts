@@ -5,7 +5,7 @@
 // Access is lazy: `next build` evaluates next.config.ts (and imports its module
 // graph) with the deploy env absent, so eager reads/throws would break the
 // build. Each field is a getter that reads on first use, so a required var
-// throws — naming itself — only when actually consumed (see `required`).
+// throws — naming itself — only when actually consumed.
 //
 // The client/server split is physical: NEXT_PUBLIC_* are the only vars Next
 // inlines into browser bundles, so they live under `config.public` and are the
@@ -14,12 +14,6 @@
 // NEXT_PUBLIC_* are read via STATIC member access on purpose: Next only inlines
 // literal `process.env.NEXT_PUBLIC_X` references into the client bundle, so the
 // getters below spell each name out rather than routing through a helper.
-
-export function required(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`missing required env var ${name}`);
-  return value;
-}
 
 // `next build` evaluates with a deliberately partial env; only a running prod
 // server must have these.
@@ -114,8 +108,13 @@ export const config = {
   public: {
     // Public API origin. Topology owned by flake.nix, which always exports it
     // (dev run and container build alike) — a missing value is a broken launch.
+    // Static member access is load-bearing here (see header): routed through a
+    // `process.env[name]` helper, the browser bundle keeps the dynamic lookup,
+    // finds an empty env shim, and throws on hydration.
     get apiUrl(): string {
-      return required("NEXT_PUBLIC_API_URL");
+      if (!process.env.NEXT_PUBLIC_API_URL)
+        throw new Error("missing required env var NEXT_PUBLIC_API_URL");
+      return process.env.NEXT_PUBLIC_API_URL;
     },
     // Canonical production origin. The dev launch omits it (metadataBase
     // tolerates a relative base); the prod server refuses to boot without it.
