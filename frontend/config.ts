@@ -21,8 +21,42 @@ export function required(name: string): string {
   return value;
 }
 
+// `next build` evaluates with a deliberately partial env; only a running prod
+// server must have these.
+const isProdRuntime = () =>
+  process.env.NODE_ENV === "production" &&
+  process.env.NEXT_PHASE !== "phase-production-build";
+
+function prodRequired(name: string): string | undefined {
+  const value = process.env[name];
+  if (!value && isProdRuntime()) throw new Error(`missing required env var ${name}`);
+  return value || undefined;
+}
+
 function optional(value: string | undefined): string | undefined {
   return value || undefined;
+}
+
+// Touches every getter (recursing into `public`), so any required var missing
+// in prod fails at server start — not mid-request weeks later. Called from
+// instrumentation.ts `register()`; no-op during `next build`, whose env is
+// deliberately partial.
+export function assertConfig(): void {
+  if (process.env.NEXT_PHASE === "phase-production-build") return;
+  const touch = (obj: object): void => {
+    for (const key of Object.keys(obj)) {
+      const v = (obj as Record<string, unknown>)[key];
+      if (v && typeof v === "object") touch(v);
+    }
+  };
+  try {
+    touch(config);
+  } catch (e) {
+    // Next swallows instrumentation throws into per-request 500s; a server
+    // missing config must die (→ CrashLoopBackOff → auto-rollback), not limp.
+    console.error(e);
+    process.exit(1);
+  }
 }
 
 export const config = {
@@ -40,24 +74,24 @@ export const config = {
   },
   // Server-only override for Server Component fetches (internal/cluster origin).
   // Not NEXT_PUBLIC_, so never inlined into the browser bundle; the runtime
-  // client falls back to the public API URL when unset.
+  // client falls back to the public API URL when unset — a dev-only state.
   get apiUrlInternal(): string | undefined {
-    return optional(process.env.API_URL_INTERNAL);
+    return prodRequired("API_URL_INTERNAL");
   },
   // Zone origins (multi-zone mounts; see PATTERNS.md §9). Unset ⇒ no rewrites
-  // and the HTML proxy 404s instead of half-proxying — a deliberate "zone
-  // disabled" state, hence optional (the container image ships without them).
+  // and the HTML proxy 404s instead of half-proxying — tolerable only in dev,
+  // so prod asserts presence at boot.
   get cabinetZoneUrl(): string | undefined {
-    return optional(process.env.CABINET_ZONE_URL);
+    return prodRequired("CABINET_ZONE_URL");
   },
   get reaZoneUrl(): string | undefined {
-    return optional(process.env.REA_ZONE_URL);
+    return prodRequired("REA_ZONE_URL");
   },
   // The concierge plane's auth web surface. Auth is shell-owned: /api/auth/* and
   // /api/callback/auth/* on THIS origin rewrite there, so session cookies land
-  // first-party for every zone. Unset ⇒ no rewrites ⇒ auth disabled (404s).
+  // first-party for every zone. Unset ⇒ no rewrites ⇒ auth disabled (dev-only).
   get authWebUrl(): string | undefined {
-    return optional(process.env.AUTH_WEB_URL);
+    return prodRequired("AUTH_WEB_URL");
   },
   // Server/edge Sentry environment tag (instrumentation.ts).
   get appEnv(): string | undefined {
@@ -83,13 +117,17 @@ export const config = {
     get apiUrl(): string {
       return required("NEXT_PUBLIC_API_URL");
     },
-    // Canonical production origin. Set only by the production image build; the
-    // dev launch omits it, so optional (metadataBase tolerates a relative base).
+    // Canonical production origin. The dev launch omits it (metadataBase
+    // tolerates a relative base); the prod server refuses to boot without it.
     get siteUrl(): string | undefined {
+      if (!process.env.NEXT_PUBLIC_SITE_URL && isProdRuntime())
+        throw new Error("missing required env var NEXT_PUBLIC_SITE_URL");
       return optional(process.env.NEXT_PUBLIC_SITE_URL);
     },
-    // REA backend origin advertised to the MFE bundle. Prod-image-only, as above.
+    // REA backend origin advertised to the MFE bundle. Same prod contract.
     get reaUrl(): string | undefined {
+      if (!process.env.NEXT_PUBLIC_REA_URL && isProdRuntime())
+        throw new Error("missing required env var NEXT_PUBLIC_REA_URL");
       return optional(process.env.NEXT_PUBLIC_REA_URL);
     },
     get buildVersion(): string | undefined {
