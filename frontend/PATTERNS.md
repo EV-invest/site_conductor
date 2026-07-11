@@ -252,8 +252,9 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   `<body…>`, everything after piped raw. Non-HTML (RSC payloads, files) streams
   through byte-identical. Assets are content-hashed under `/shell/*`
   (immutable-cached) and built by `scripts/build-shell.mts` from the same
-  `application/layout/header.tsx` the conductor's own pages hydrate — zones get
-  static markup plus a ~30-line vanilla behavior script, no React.
+  `application/layout/header.tsx` the conductor's own pages render — the header
+  carries no React state anywhere; both hosts load the same ~30-line vanilla
+  behavior script (`scripts/header-behavior.ts`).
 - **Zones know nothing about the shell** — the single contract is the
   `--ev-shell-offset` token (uikit tokens.css, `0px` standalone; the injected
   header CSS overrides it to `4rem`): zones size viewport-bound surfaces with

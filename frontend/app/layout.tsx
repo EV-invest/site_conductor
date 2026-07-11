@@ -8,6 +8,7 @@ import { PostHogProvider, PostHogPageView } from "@/features/analytics";
 import { DevAbPanel } from "@/features/ab-variant";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
 import { config } from "@/config";
+import shell from "@/shared/zone-shell.generated.json";
 import "@/application/styles/globals.css";
 
 export { metadata, viewport } from "@/application/metadata";
@@ -27,6 +28,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body>
+        {/* The header's one behavior implementation — the same content-hashed
+            script the zone proxy injects (BrandHeader ships no React state). */}
+        <script defer src={shell.js} />
         <DarkReaderHydrationFilter />
         <ErrorMonitoringProvider>
           <Providers>

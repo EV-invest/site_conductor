@@ -1,7 +1,8 @@
-// Zone-side behavior for the injected static header fragment — the entire
-// header JS in zones (no React). Zero imports; built to a content-hashed IIFE
-// by scripts/build-shell.mts. Mirrors what application/layout/header.tsx does
-// through React state: toggle `data-scrolled` / `data-menu-open` on the root.
+// THE header behavior — one implementation for both hosts: injected into zone
+// HTML by the proxy and loaded by the conductor's own layout (the markup in
+// application/layout/header.tsx ships no state). Zero imports; built to a
+// content-hashed IIFE by scripts/build-shell.mts. All it does: toggle
+// `data-scrolled` / `data-menu-open` on the root.
 (() => {
   const header = document.querySelector<HTMLElement>(
     'header[data-slot="header"]'

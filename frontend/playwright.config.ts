@@ -3,9 +3,9 @@ import { defineConfig, devices } from "@playwright/test";
 // Visual-regression config. Browsers come from nixpkgs (see flake.nix:
 // PLAYWRIGHT_BROWSERS_PATH), pinned to the same revision as @playwright/test,
 // so screenshots render identically across every machine on this flake.
-// Port comes from the flake (ports attrset). Fallback keeps a bare `playwright
-// test` outside the flake runnable.
-const PORT = process.env.SITE_CONDUCTOR_FRONTEND_PORT ?? "50063";
+// Env fallbacks live in flake.nix only — run via `nix run .#test`.
+const PORT = process.env.SITE_CONDUCTOR_FRONTEND_PORT;
+if (!PORT) throw new Error("missing SITE_CONDUCTOR_FRONTEND_PORT — run via the flake: nix run .#test");
 
 export default defineConfig({
   testDir: "./tests",
@@ -58,11 +58,5 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    // instrumentation.ts asserts required config at boot; a bare `playwright
-    // test` outside the flake needs the same default the flake run script owns.
-    env: {
-      ...(process.env as Record<string, string>),
-      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:58844",
-    },
   },
 });
