@@ -26,7 +26,11 @@ pub async fn list_vacancies(State(state): State<AppState>, Query(query): Query<L
 		Some(c) => Some(VacancyCategory::parse(c)?),
 		None => None,
 	};
-	let filter = VacancyFilter { category, search: query.q };
+	// Truncate rather than reject: an oversized q is an accident, not an error.
+	let filter = VacancyFilter {
+		category,
+		search: query.q.map(|q| q.chars().take(200).collect()),
+	};
 	let vacancies = state.vacancies.list(filter).await?;
 	Ok(Json(vacancies.iter().map(VacancySummary::from).collect()))
 }
