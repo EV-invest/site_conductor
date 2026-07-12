@@ -2,22 +2,24 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { DocumentReader } from "@/shared/ui/document-reader";
-import { articleTitle } from "@/entities/article";
+import { findArticle } from "@/entities/article";
 
 // Reading the static doc off disk per request, so the latest flake-copied file
 // is served (the page is cheap: one file read + inject).
 export const dynamic = "force-dynamic";
 
-// Confines the [slug] to a safe segment before it reaches the filesystem reader.
-const isSlug = (s: string) => /^[a-z0-9_]+$/.test(s);
-
+// Only catalogued articles resolve — anything else is a real 404 with an
+// explicit noindex (the robots backstop keeps the page unindexable even if a
+// future streaming boundary locks the status at 200), never a soft-404 (#105).
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const title = articleTitle(slug);
+  const article = findArticle(slug);
+  if (!article) return { title: "Article not found", robots: { index: false } };
+  const { title } = article;
   return {
     title,
     description: `EV Investment research — ${title}`,
@@ -36,8 +38,9 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!isSlug(slug)) notFound();
-  const title = articleTitle(slug);
+  const article = findArticle(slug);
+  if (!article) notFound();
+  const { title } = article;
   return (
     <DocumentReader
       title={title}
