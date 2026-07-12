@@ -22,11 +22,11 @@ export const nameField = z
     `Name must be ${LIMITS.name} characters or fewer.`
   )
   .refine(
-    v => /^[\p{L} .'-]*$/u.test(v),
+    v => /^[\p{Alphabetic} .'-]*$/u.test(v),
     "Use letters, spaces, and . ' - only."
   )
   .refine(
-    v => (v.match(/\p{L}/gu) ?? []).length >= 2,
+    v => (v.match(/\p{Alphabetic}/gu) ?? []).length >= 2,
     "Name must contain at least 2 letters."
   );
 
