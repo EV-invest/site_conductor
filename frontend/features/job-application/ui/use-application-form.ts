@@ -34,6 +34,7 @@ export function useApplicationForm(vacancy?: VacancyContext) {
   const edit = (field: keyof typeof EMPTY) => (value: string) => {
     setFields(prev => ({ ...prev, [field]: value }));
     setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+    setStatus(prev => (prev === "error" ? "idle" : prev));
   };
 
   const toggle = (requirement: string) =>

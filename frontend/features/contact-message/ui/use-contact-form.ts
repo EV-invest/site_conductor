@@ -15,6 +15,7 @@ export function useContactForm() {
   const edit = (field: keyof typeof fields) => (value: string) => {
     setFields(prev => ({ ...prev, [field]: value }));
     setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+    setStatus(prev => (prev === "error" ? "idle" : prev));
   };
 
   async function submit(event: FormEvent) {
