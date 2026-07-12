@@ -231,6 +231,32 @@ Notes that bite:
 - Degrade gracefully: a `RemoteDocument` whose source can't be loaded renders its
   `fallback` (a PDF link), so a missing doc build never breaks the page.
 
+### Component-MFE snapshot contract
+
+Every `kind:"component"` microfrontend MUST emit a self-contained static HTML
+snapshot of its root component from its own `nix build`, named `<name>.html` beside
+the embed bundle (e.g. `real-estate.overview` → `portfolio.html`). The snapshot is
+rendered **natively** (e.g. `dioxus_ssr`) from the **same** presentation components
+the live bundle mounts — never hand-authored — so it can't drift. Self-contained:
+the producer's compiled MFE stylesheet is inlined + a minimal reset + dark
+`color-scheme` (the conductor is dark-only; snapshots use system-font fallback, as
+the MFE stylesheet ships no fonts and the shadow boundary blocks host inheritance).
+Any value the snapshot can't resolve at build time (live-fetched data) renders the
+**standard missing-data placeholder `—`** (`"ERR"` is reserved for detected data
+faults — a value that *should* exist but is absent).
+
+The host wires it as the element's fallback:
+`<RemoteElement fallback={<ShadowDocument src="/mfe/<name>.html" />}>`. `RemoteElement`
+renders `{ready ? null : fallback}`, so the snapshot shows until the remote upgrades
+and **permanently** if it never does; `ShadowDocument` mounts it in a shadow root
+(full style containment — the inlined MFE css can't leak). A missing registry entry
+OR a missing snapshot at **build** time is a broken build (`findMfe` + `loadDocHtml`
+both throw); the snapshot is **runtime** degradation only. The host `id` anchor stays
+on the light-DOM wrapper `<div>`; the snapshot's own inner `id` is shadow-scoped, so
+there's no `getElementById` collision. The home portfolio/REA section is the live
+example. (One producer today — the cargo-run + css-inline + anchor-grep lives in REA's
+flake; extract to `v_flakes` when a second component-MFE producer appears.)
+
 ## 9. Routed zones — whole apps under conductor paths, wearing the conductor's shell
 
 §8 composes remotes **inside** a page. When another EV app owns **whole routes**

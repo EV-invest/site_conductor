@@ -193,6 +193,9 @@
             cp -rL --no-preserve=mode assets/. public/assets/
             cp -f --no-preserve=mode ${logoSrc} public/assets/logo.svg
             cp -rL --no-preserve=mode ${real_estate_allocation.packages.${system}.embeds}/. public/mfe/
+            # § component-MFE snapshot contract: REA must emit the drift-proof fallback.
+            # `loadDocHtml` enforces it at prerender too; this is the clearer failure.
+            test -f public/mfe/portfolio.html
             wp=${whitepaper.packages.${system}.default}
             cp -f --no-preserve=mode "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
             for dir in ${blog.packages.${system}.default}/*/; do
