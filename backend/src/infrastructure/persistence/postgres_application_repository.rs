@@ -69,12 +69,12 @@ impl ApplicationRepository for PostgresApplicationRepository {
 			 RETURNING id, vacancy_id, applicant_name, email, portfolio_url, message, confirmed_requirements, screening_answer, created_at",
 		)
 		.bind(vacancy_id.map(VacancyId::raw))
-		.bind(&new.applicant_name)
+		.bind(new.applicant_name.as_str())
 		.bind(new.email.as_str())
-		.bind(&new.portfolio_url)
-		.bind(&new.message)
-		.bind(&new.confirmed_requirements)
-		.bind(&new.screening_answer)
+		.bind(new.portfolio_url.as_ref().map(|u| u.as_str()))
+		.bind(new.message.as_str())
+		.bind(new.confirmed_requirements.as_slice())
+		.bind(new.screening_answer.as_ref().map(|a| a.as_str()))
 		.fetch_one(&self.pool)
 		.await
 		.map_err(map_sqlx_error)?;

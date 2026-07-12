@@ -58,9 +58,9 @@ impl ContactRepository for PostgresContactRepository {
 			 VALUES ($1, $2, $3) \
 			 RETURNING id, name, email, message, created_at",
 		)
-		.bind(&new.name)
+		.bind(new.name.as_str())
 		.bind(new.email.as_str())
-		.bind(&new.message)
+		.bind(new.message.as_str())
 		.fetch_one(&self.pool)
 		.await
 		.map_err(map_sqlx_error)?;

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
 	architecture::{AggregateRoot, Entity, Id},
-	model::email::EmailAddress,
+	model::{email::EmailAddress, message_body::MessageBody, person_name::PersonName},
 };
 
 pub type ContactId = Id<ContactTag, uuid::Uuid>;
@@ -34,7 +34,7 @@ impl AggregateRoot for ContactMessage {
 /// Validated intent to create a [`ContactMessage`].
 #[derive(Clone, Debug)]
 pub struct NewContact {
-	pub name: String,
+	pub name: PersonName,
 	pub email: EmailAddress,
-	pub message: String,
+	pub message: MessageBody,
 }
