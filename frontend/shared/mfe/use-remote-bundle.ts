@@ -5,7 +5,10 @@ import { containRemoteStyles } from "./contain-remote-styles";
 // Loads a remote's ESM bundle once per tag and resolves true when its element
 // upgrades; stays false while loading or on failure (caller shows its fallback).
 export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
-  const [ready, setReady] = useState(false);
+  // Keyed by tag (not a boolean) so a reused instance switching remotes is
+  // un-ready for the new tag immediately; a stale boolean would report the
+  // previous remote's readiness and suppress the fallback.
+  const [readyTag, setReadyTag] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -16,7 +19,7 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
     const whenReady = () =>
       customElements
         .whenDefined(tag)
-        .then(() => !cancelled && setReady(true))
+        .then(() => !cancelled && setReadyTag(tag))
         .catch(() => {});
 
     if (customElements.get(tag) || document.querySelector(`script[data-mfe="${tag}"]`)) {
@@ -49,5 +52,5 @@ export function useRemoteBundle(tag: string, scriptUrl: string): boolean {
     };
   }, [tag, scriptUrl]);
 
-  return ready;
+  return readyTag === tag;
 }
