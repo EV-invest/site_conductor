@@ -6,10 +6,11 @@ import { ASSETS } from "@/shared/config/assets";
 import { TEAM, MemberCard, LeadershipIntro } from "@/entities/team";
 import { TeamPlaceholders } from "./shared/placeholders";
 
-// Homepage Team section. Server Component; the only client island is
-// {@link TeamPlaceholders} (CTA clicks) and {@link MobileCarousel} (swipe).
-// Resolves the team_office A/B variant server-side so the right photo lands in
-// the shared {@link LeadershipIntro}.
+// Homepage Team section. Server Component; client islands are
+// {@link TeamPlaceholders} (CTA clicks), {@link MobileCarousel} (swipe), and
+// the {@link ExperimentTracker} boundaries. Resolves the team_office A/B
+// variant server-side so the right photo lands in the shared
+// {@link LeadershipIntro}.
 export async function Team() {
   const shadeVariant = await getVariant("team_bio_shade");
   const shade = shadeVariant === "b" ? "shadow" : "gradient";
@@ -26,7 +27,9 @@ export async function Team() {
       className="py-24 relative border-t border-main-mist/10 bg-main-black"
     >
       <Container className="space-y-16">
-        <LeadershipIntro officeSrc={officeSrc} />
+        <ExperimentTracker experiment="team_office" variant={officeVariant}>
+          <LeadershipIntro officeSrc={officeSrc} />
+        </ExperimentTracker>
 
         <ExperimentTracker experiment="team_bio_shade" variant={shadeVariant}>
           {/* Desktop: members and opportunities share one 4-up grid. */}
