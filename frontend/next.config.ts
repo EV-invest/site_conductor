@@ -27,6 +27,12 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_BUILD_COMMIT: buildCommit,
   },
   reactStrictMode: true,
+  // The /rea zone is a Dioxus app under base_path "rea": its WebHistory strips
+  // the "/rea" prefix, so `/rea/?q` → `/?q` (matches) but `/rea?q` → `?q` (route
+  // parse fails). Next's default trailing-slash redirect turns `/rea/?q` into
+  // `/rea?q`, breaking every deep link. Serve URLs as-is so the trailing slash
+  // survives to the proxy — our own links never rely on the redirect.
+  skipTrailingSlashRedirect: true,
   // Dev-only: Next 16 blocks its dev resources (incl. the HMR socket) for any
   // origin but `localhost`, and a dead HMR socket means the client runtime
   // never boots — pages hydrate on localhost but are inert on 127.0.0.1.
