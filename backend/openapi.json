@@ -225,31 +225,39 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "maxItems": 20
           },
           "email": {
             "type": "string",
-            "example": "jane@example.com"
+            "example": "jane@example.com",
+            "maxLength": 254
           },
           "message": {
             "type": "string",
-            "example": "I underwrote 40 coastal deals at..."
+            "example": "I underwrote 40 coastal deals at...",
+            "maxLength": 5000,
+            "minLength": 1
           },
           "name": {
             "type": "string",
-            "example": "Jane Doe"
+            "example": "Jane Doe",
+            "maxLength": 100,
+            "minLength": 2
           },
           "portfolio_url": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "maxLength": 2048
           },
           "screening_answer": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "maxLength": 5000
           },
           "vacancy_slug": {
             "type": [
@@ -270,15 +278,20 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "jane@example.com"
+            "example": "jane@example.com",
+            "maxLength": 254
           },
           "message": {
             "type": "string",
-            "example": "I'd like to learn more about the Quy Nhơn fund."
+            "example": "I'd like to learn more about the Quy Nhơn fund.",
+            "maxLength": 5000,
+            "minLength": 1
           },
           "name": {
             "type": "string",
-            "example": "Jane Doe"
+            "example": "Jane Doe",
+            "maxLength": 100,
+            "minLength": 2
           }
         }
       },
