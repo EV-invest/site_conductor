@@ -9,14 +9,18 @@ import { experiments } from "../shared/config/experiments";
 // nav hash, e.g. <baseURL>/#team — those use an id selector. The
 // page chrome (header/footer) has no anchor, so it's keyed by tag.
 //
-// portfolio/calculator are embedded from ../real_estate_allocation and not ours
-// to test.
+// portfolio is embedded from ../real_estate_allocation. The live wasm bundle IS
+// served in the test env, so to get a deterministic baseline we block it (below)
+// and screenshot the ShadowDocument snapshot fallback instead — which is ours
+// (host-side mount) and the regression guard for the styled-snapshot fix. The
+// live interactive element itself is not ours to test.
 //
 // Adding a section to the site = adding one line here. Nothing else changes.
 const SECTIONS = [
   { name: "header", selector: "header" },
   { name: "hero", selector: "#hero" },
   { name: "research", selector: "#research" },
+  { name: "portfolio", selector: "#portfolio" },
   { name: "team", selector: "#team" },
   { name: "footer", selector: "footer" },
 ] as const;
@@ -47,6 +51,14 @@ test.beforeEach(async ({ context, baseURL }) => {
 
 for (const { name, selector } of SECTIONS) {
   test(`- mismatch on: ${name}`, async ({ page }) => {
+    if (name === "portfolio") {
+      // Block REA's embed bundle so RemoteElement never upgrades and the
+      // ShadowDocument snapshot fallback stays put — a deterministic, wasm-timing-
+      // independent target. This is exactly what the styled-snapshot fix renders.
+      await page.route(/real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/, r =>
+        r.abort(),
+      );
+    }
     await page.goto("/");
 
     // Web fonts shift glyph metrics; wait until they're applied.
@@ -54,7 +66,10 @@ for (const { name, selector } of SECTIONS) {
     // CloudFront background images load over the network, not via <img> decode.
     await page.waitForLoadState("networkidle");
 
-    const section = page.locator(selector);
+    // Playwright's CSS locator pierces open shadow roots, so `#portfolio` matches
+    // both the light-DOM wrapper and the snapshot's own `id="portfolio"` inside the
+    // shadow. The wrapper is their common ancestor → `.first()` in DOM order.
+    const section = name === "portfolio" ? page.locator(selector).first() : page.locator(selector);
     await expect(section).toBeVisible();
 
     if (PIN_TO_TOP.has(name)) {

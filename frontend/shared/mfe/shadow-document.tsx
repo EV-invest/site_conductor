@@ -2,9 +2,11 @@
 
 // Client island that composes a self-styled HTML document into the page inside a
 // shadow root — the no-iframe way to embed a complete document whose CSS targets
-// bare tags (html/body/p/…) and would otherwise reshape the whole host. The
-// shadow boundary isolates the doc's styles both ways. The doc is fetched lazily
-// by URL (same network shape the old iframe had), so the host stays a light shell.
+// bare tags (html/body/p/…) and would otherwise reshape the whole host. The whole
+// parsed document is adopted into the shadow root, so its <head> styles come
+// across with the body; the shadow boundary isolates the doc's styles both ways.
+// The doc is fetched lazily by URL (same network shape the old iframe had), so
+// the host stays a light shell.
 //
 // Why client-side attachShadow, not SSR Declarative Shadow DOM: React 19 can
 // emit a <template shadowrootmode> but cannot hydrate over it, and DSD never
@@ -16,8 +18,6 @@
 // no sanitization. If docs ever become user-sourced, sanitize here (DOMPurify).
 
 import { useEffect, useRef, type ReactNode } from "react";
-
-import { extractBodyInner } from "./doc-html";
 
 export interface ShadowDocumentProps {
   /** URL of the document to mount (site-relative or absolute). */
@@ -40,15 +40,15 @@ export function ShadowDocument({ src, className, fallback = null }: ShadowDocume
       .then((html) => {
         const host = hostRef.current;
         if (cancelled || !host) return;
-        // Recreate the document's <html>/<body> via createElement so the doc's
-        // own `html{}` / `body{}` / `body > x` rules still match — setting a
-        // shadow root's innerHTML strips html/body tags (fragment parsing).
+        // Adopt the whole parsed document so its <head> styles come across with
+        // the body. A shadow root's innerHTML fragment-parses and drops
+        // <html>/<head>/<body>, taking the snapshot's inlined stylesheet with it
+        // (the unstyled-dump bug). DOMParser never executes scripts and
+        // parser-created scripts don't run on adoption — safe for the trusted,
+        // script-free snapshot.
         const root = host.shadowRoot ?? host.attachShadow({ mode: "open" });
-        const htmlEl = document.createElement("html");
-        const bodyEl = document.createElement("body");
-        bodyEl.innerHTML = extractBodyInner(html);
-        htmlEl.appendChild(bodyEl);
-        root.replaceChildren(htmlEl);
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        root.replaceChildren(doc.documentElement);
       })
       .catch(() => {});
     return () => {

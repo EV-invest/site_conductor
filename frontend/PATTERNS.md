@@ -213,9 +213,10 @@ Notes that bite:
 - **Shadow remotes are client-only.** React 19 can emit Declarative Shadow DOM
   (`<template shadowrootmode>`) but **cannot hydrate over it**, and DSD never
   upgrades on App-Router soft navigation — so `RemoteDocument isolate` uses
-  client-side `attachShadow`, and a self-styled doc's `html{}`/`body{}` rules are
-  preserved by recreating those elements with `createElement` (setting a shadow
-  root's `innerHTML` strips html/body tags). One consequence: `rem` inside the
+  client-side `attachShadow`, and the whole parsed document is adopted into the
+  shadow root, so its `<head>` styles come across too (not just body) and its
+  `html{}`/`body{}` rules still match (setting a shadow root's `innerHTML`
+  fragment-parses and strips html/head/body tags). One consequence: `rem` inside the
   shadow resolves against the **host** root font-size, not the doc's nested
   `<html>` — a self-styled doc that sets its own rem base should size with `em`
   (the whitepaper's typst CSS has a minor outer-margin drift from this; the fix is
@@ -248,8 +249,9 @@ faults — a value that *should* exist but is absent).
 The host wires it as the element's fallback:
 `<RemoteElement fallback={<ShadowDocument src="/mfe/<name>.html" />}>`. `RemoteElement`
 renders `{ready ? null : fallback}`, so the snapshot shows until the remote upgrades
-and **permanently** if it never does; `ShadowDocument` mounts it in a shadow root
-(full style containment — the inlined MFE css can't leak). A missing registry entry
+and **permanently** if it never does; `ShadowDocument` adopts the full document
+(head + body) into a shadow root (full style containment — the inlined MFE css
+can't leak). A missing registry entry
 OR a missing snapshot at **build** time is a broken build (`findMfe` + `loadDocHtml`
 both throw); the snapshot is **runtime** degradation only. The host `id` anchor stays
 on the light-DOM wrapper `<div>`; the snapshot's own inner `id` is shadow-scoped, so
