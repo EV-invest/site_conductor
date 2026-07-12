@@ -28,6 +28,8 @@ export const ARTICLES: Article[] = [
   },
 ];
 
-export function articleTitle(slug: string): string {
-  return ARTICLES.find(a => a.slug === slug)?.title ?? slug;
+// `undefined` (not a slug fallback) so an uncatalogued slug is a hard miss
+// callers must handle — never a silently rendered soft-404 (#105).
+export function findArticle(slug: string): Article | undefined {
+  return ARTICLES.find(a => a.slug === slug);
 }
