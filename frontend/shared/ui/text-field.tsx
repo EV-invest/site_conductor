@@ -56,7 +56,11 @@ export function TextField({
         <input type={type} {...shared} />
       )}
       {error && (
-        <p id={errorId} className="mt-1.5 text-xs text-destructive">
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-xs text-destructive"
+        >
           {error}
         </p>
       )}
