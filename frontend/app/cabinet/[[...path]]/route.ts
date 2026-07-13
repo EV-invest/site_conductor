@@ -5,6 +5,6 @@ import { proxyZone } from "@/shared/zone-proxy";
 export const dynamic = "force-dynamic";
 
 export const GET = (request: Request) =>
-  proxyZone(request, config.cabinetZoneUrl);
+  proxyZone(request, config.cabinetZoneUrl, { headerZone: "cabinet" });
 export const HEAD = GET;
 export const POST = GET;

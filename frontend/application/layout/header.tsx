@@ -44,11 +44,11 @@ export function BrandHeader({
       data-slot="header"
       className="group/header fixed top-0 left-0 z-[60] w-full"
     >
-      <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md">
-        <Container className="flex h-full items-center justify-between gap-4">
+      <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md group-data-[zone=cabinet]/header:border-main-mist/10 group-data-[zone=cabinet]/header:bg-main-black">
+        <Container className="flex h-full items-center justify-between gap-4 group-data-[zone=cabinet]/header:max-w-none group-data-[zone=cabinet]/header:pl-[18px] group-data-[zone=cabinet]/header:pr-8">
           <L
             href="/"
-            className="flex items-center gap-3"
+            className="flex items-center gap-3 group-data-[zone=cabinet]/header:motion-safe:animate-in group-data-[zone=cabinet]/header:slide-in-from-right-6 group-data-[zone=cabinet]/header:duration-300 group-data-[zone=cabinet]/header:ease-out"
             aria-label="EV Investment — home"
           >
             <Logo src="/assets/logo.svg" className="h-10 w-10 text-white" />
@@ -74,7 +74,7 @@ export function BrandHeader({
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 group-data-[zone=cabinet]/header:motion-safe:animate-in group-data-[zone=cabinet]/header:slide-in-from-left-6 group-data-[zone=cabinet]/header:duration-300 group-data-[zone=cabinet]/header:ease-out">
             {cta}
             <button
               type="button"

@@ -32,9 +32,24 @@ const HOP_BY_HOP = [
 const HEAD_INSERT = `<link rel="stylesheet" href="${shell.css}"><script defer src="${shell.js}"></script>`;
 const BODY_INSERT = shell.fragment;
 
+// A zone whose header wants a zone-specific treatment (e.g. the cabinet's
+// full-bleed bordered bar) is tagged at inject time: the server already knows
+// which zone it is proxying, so the `data-zone` lands in the very first painted
+// frame — the styling variants key off it with no client round-trip and no
+// reflow. Only the header root's exact `data-slot="header"` is patched (not the
+// `data-slot="header-mobile-overlay"` sibling, whose value differs).
+function bodyInsertFor(headerZone: string | undefined): string {
+  if (!headerZone) return BODY_INSERT;
+  return BODY_INSERT.replace(
+    'data-slot="header"',
+    `data-slot="header" data-zone="${headerZone}"`
+  );
+}
+
 export async function proxyZone(
   request: Request,
-  zoneUrl: string | undefined
+  zoneUrl: string | undefined,
+  opts?: { headerZone?: string }
 ): Promise<Response> {
   // Env unset ⇒ zone disabled: 404 rather than half-proxying, preserving the
   // old rewrite-less semantics.
@@ -96,7 +111,7 @@ export async function proxyZone(
   );
   const body =
     isHtml && upstream.body
-      ? upstream.body.pipeThrough(shellInjector())
+      ? upstream.body.pipeThrough(shellInjector(bodyInsertFor(opts?.headerZone)))
       : upstream.body;
   return new Response(body, {
     status: upstream.status,
@@ -110,17 +125,19 @@ export async function proxyZone(
 const SCAN_CAP = 64 * 1024;
 
 /** Streams bytes through, inserting {@link HEAD_INSERT} after the `<head…>`
- *  open tag and {@link BODY_INSERT} after `<body…>`. Only what's needed to
+ *  open tag and {@link bodyInsert} after `<body…>`. Only what's needed to
  *  finish a match is withheld (a tag split across chunks, or an open tag whose
  *  `>` hasn't arrived); everything else flows the moment it's scanned. */
-function shellInjector(): TransformStream<Uint8Array, Uint8Array> {
+function shellInjector(
+  bodyInsert: string
+): TransformStream<Uint8Array, Uint8Array> {
   const encoder = new TextEncoder();
   let carry = Buffer.alloc(0);
   let scanned = 0;
   // 0: seeking <head…>, 1: seeking <body…>, 2: passthrough.
   let phase = 0;
   const tags = ["<head", "<body"];
-  const inserts = [encoder.encode(HEAD_INSERT), encoder.encode(BODY_INSERT)];
+  const inserts = [encoder.encode(HEAD_INSERT), encoder.encode(bodyInsert)];
 
   const scan = (controller: TransformStreamDefaultController<Uint8Array>) => {
     while (phase < 2) {
