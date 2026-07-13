@@ -1,29 +1,27 @@
 use domain::{
 	error::DomainError,
-	model::{contact::NewContact, email::EmailAddress},
+	model::{contact::NewContact, email::EmailAddress, message_body::MessageBody, person_name::PersonName},
 };
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use super::required;
-
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct CreateContactRequest {
-	#[schema(example = "Jane Doe")]
+	#[schema(example = "Jane Doe", min_length = 2, max_length = 100)]
 	pub name: String,
-	#[schema(example = "jane@example.com")]
+	#[schema(example = "jane@example.com", max_length = 254)]
 	pub email: String,
-	#[schema(example = "I'd like to learn more about the Quy Nhơn fund.")]
+	#[schema(example = "I'd like to learn more about the Quy Nhơn fund.", min_length = 1, max_length = 5000)]
 	pub message: String,
 }
 
 impl CreateContactRequest {
 	pub fn into_domain(self) -> Result<NewContact, DomainError> {
 		Ok(NewContact {
-			name: required("name", self.name)?,
+			name: PersonName::parse(self.name)?,
 			email: EmailAddress::parse(self.email)?,
-			message: required("message", self.message)?,
+			message: MessageBody::parse("message", self.message)?,
 		})
 	}
 }

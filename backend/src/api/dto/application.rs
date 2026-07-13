@@ -1,12 +1,19 @@
 use domain::{
 	error::DomainError,
-	model::{application::NewApplication, email::EmailAddress, vacancy::Slug},
+	model::{
+		application::{ConfirmedRequirements, NewApplication},
+		email::EmailAddress,
+		message_body::MessageBody,
+		person_name::PersonName,
+		portfolio_url::PortfolioUrl,
+		vacancy::Slug,
+	},
 };
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use super::{optional, required};
+use super::optional;
 
 /// Inbound payload for `POST /applications`. `vacancy_slug == None` is a
 /// general talent-pool application; `confirmed_requirements` and
@@ -15,15 +22,18 @@ use super::{optional, required};
 pub struct CreateApplicationRequest {
 	#[schema(example = "investment-analyst")]
 	pub vacancy_slug: Option<String>,
-	#[schema(example = "Jane Doe")]
+	#[schema(example = "Jane Doe", min_length = 2, max_length = 100)]
 	pub name: String,
-	#[schema(example = "jane@example.com")]
+	#[schema(example = "jane@example.com", max_length = 254)]
 	pub email: String,
+	#[schema(max_length = 2048)]
 	pub portfolio_url: Option<String>,
-	#[schema(example = "I underwrote 40 coastal deals at...")]
+	#[schema(example = "I underwrote 40 coastal deals at...", min_length = 1, max_length = 5000)]
 	pub message: String,
 	#[serde(default)]
+	#[schema(max_items = 20)]
 	pub confirmed_requirements: Vec<String>,
+	#[schema(max_length = 5000)]
 	pub screening_answer: Option<String>,
 }
 
@@ -35,13 +45,21 @@ impl CreateApplicationRequest {
 			Some(s) => Some(Slug::parse(s)?),
 			None => None,
 		};
+		let portfolio_url = match optional(self.portfolio_url) {
+			Some(u) => Some(PortfolioUrl::parse(u)?),
+			None => None,
+		};
+		let screening_answer = match optional(self.screening_answer) {
+			Some(a) => Some(MessageBody::parse("screening_answer", a)?),
+			None => None,
+		};
 		let new = NewApplication {
-			applicant_name: required("name", self.name)?,
+			applicant_name: PersonName::parse(self.name)?,
 			email: EmailAddress::parse(self.email)?,
-			portfolio_url: optional(self.portfolio_url),
-			message: required("message", self.message)?,
-			confirmed_requirements: self.confirmed_requirements.into_iter().map(|r| r.trim().to_string()).filter(|r| !r.is_empty()).collect(),
-			screening_answer: optional(self.screening_answer),
+			portfolio_url,
+			message: MessageBody::parse("message", self.message)?,
+			confirmed_requirements: ConfirmedRequirements::parse(self.confirmed_requirements)?,
+			screening_answer,
 		};
 		Ok((slug, new))
 	}

@@ -3,6 +3,8 @@
 **/target/
 **/debug/
 **/bin/
+## cargo bin *sources* are not build output
+!**/src/bin/
 **/*.test
 **/*.out
 **/*.db

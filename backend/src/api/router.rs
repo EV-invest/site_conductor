@@ -1,6 +1,7 @@
 use axum::{
 	Router,
 	body::Body,
+	extract::DefaultBodyLimit,
 	http::Request,
 	routing::{get, post},
 };
@@ -38,5 +39,8 @@ pub fn build(state: AppState) -> Router {
 	)
 	.layer(TraceLayer::new_for_http())
 	.layer(CorsLayer::permissive())
+	// 64 KiB comfortably fits the largest legitimate form submit while keeping
+	// multi-megabyte junk out of the handlers.
+	.layer(DefaultBodyLimit::max(64 * 1024))
 	.with_state(state)
 }
