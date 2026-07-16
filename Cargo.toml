@@ -10,7 +10,7 @@ axum = "0.8.9"
 color-eyre = "0.6"
 domain = { path = "domain" }
 dotenvy = "0.15.7"
-ev_lib = { version = "^0.3.8", features = ["architecture"] }
+ev_lib = { version = "0.6.2", features = ["architecture"] }
 jiff = "0.2"
 # Transactional email. rustls (not native-tls) to share one TLS stack with sqlx.
 lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls-tls", "hostname"] }

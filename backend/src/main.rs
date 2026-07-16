@@ -39,7 +39,7 @@ fn main() -> Result<()> {
 		traces_sample_rate: error_monitoring::Config::traces_sample_rate_for(&config.app_env),
 	});
 
-	init_tracing();
+	let _otel_guard = init_tracing(&config.app_env);
 
 	tokio::runtime::Builder::new_multi_thread()
 		.enable_all()
@@ -85,9 +85,20 @@ async fn run(config: AppConfig) -> Result<()> {
 	Ok(())
 }
 
-fn init_tracing() {
+fn init_tracing(environment: &str) -> Option<ev_lib::otel::Telemetry> {
 	use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 
 	let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info,backend=debug"));
-	tracing_subscriber::registry().with(filter).with(fmt::layer()).with(error_monitoring::tracing_layer()).init();
+	let (otel_guard, otel_layers) = ev_lib::otel::telemetry(&ev_lib::otel::Config {
+		environment: environment.to_string(),
+		traces_sample_rate: ev_lib::otel::Config::traces_sample_rate_for(environment),
+	})
+	.unzip();
+	tracing_subscriber::registry()
+		.with(filter)
+		.with(fmt::layer())
+		.with(error_monitoring::tracing_layer())
+		.with(otel_layers)
+		.init();
+	otel_guard
 }
