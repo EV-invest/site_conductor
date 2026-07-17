@@ -12,7 +12,7 @@ domain = { path = "domain" }
 dotenvy = "0.15.7"
 # git until an ev_lib with the `settings` feature is published (> 0.6.2),
 # then flip back to a crates.io version dep
-ev_lib = { git = "https://github.com/EV-invest/lib.git", branch = "fen/otel-to-main", features = ["architecture"] }
+ev_lib = { git = "https://github.com/EV-invest/lib.git", features = ["architecture"] }
 jiff = "0.2"
 # Transactional email. rustls (not native-tls) to share one TLS stack with sqlx.
 lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls-tls", "hostname"] }
