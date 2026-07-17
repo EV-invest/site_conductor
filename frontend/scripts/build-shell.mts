@@ -140,12 +140,24 @@ async function buildCss(markup: string): Promise<string> {
 
   const scope = new AtRule({ name: "scope", params: '([data-slot="header"])' });
   scope.append(...root.nodes);
+  // Plain selectors inside @scope match only descendants, never the scoping
+  // root itself — so the root's own utilities (`fixed top-0 left-0 z-[60]
+  // w-full`) are dead on zones and must be restated on `:scope`, which does
+  // match the root. Without this the zone's later-in-DOM fixed elements paint
+  // over the bar (z-index never applied).
+  scope.prepend(
+    postcss.parse(
+      ":scope { position: fixed; top: 0; left: 0; z-index: 60; width: 100%; }"
+    )
+  );
   root.removeAll();
   root.append(...hoisted, scope);
   // !important: this link is injected before the zone's own stylesheet, whose
   // `--ev-shell-offset: 0px` standalone default would otherwise win on order.
   // The bar is `fixed` (no layout space), so the zone document is padded by its
-  // at-rest height: py-6 (3rem) + the 40px lockup + border. Zones keep sizing
+  // height — which the zone-tagged bar pins to exactly this value (header.tsx
+  // `h-[calc(5.5rem+1px)]`), so the bar's bottom border lands flush where the
+  // zone's chrome (e.g. the cabinet's fixed rail) begins. Zones keep sizing
   // viewport-bound surfaces with calc(100dvh - offset), unchanged.
   root.append(
     postcss.parse(
