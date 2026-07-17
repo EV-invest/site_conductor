@@ -36,6 +36,7 @@ fn main() -> Result<()> {
 	let _sentry_guard = error_monitoring::init(&error_monitoring::Config {
 		dsn: config.sentry_dsn.clone(),
 		environment: config.app_env.clone(),
+		release: error_monitoring::release_name!().map(|r| r.into_owned()),
 		traces_sample_rate: error_monitoring::Config::traces_sample_rate_for(&config.app_env),
 	});
 
