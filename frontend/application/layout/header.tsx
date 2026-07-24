@@ -103,12 +103,13 @@ export function BrandHeader({
       {/* Below-`lg` navigation: a full-screen opaque overlay with its own close
           button. Any `<a>`/`<button>` click inside closes it (delegation in
           header-behavior.ts), so the app-side CTA needs no wiring. `display:
-          none → flex` restarts the `animate-in` enter animation on every open. */}
+          none → flex` restarts the `animate-in` enter animation on every open.
+          Layout: close bar → CTA/chip → separator → nav → flex-spacer → signout. */}
       <div
         data-slot="header-mobile-overlay"
-        className="fixed inset-0 z-[70] hidden flex-col bg-main-black px-6 pb-10 duration-200 animate-in fade-in group-data-[menu-open]/header:flex lg:group-data-[menu-open]/header:hidden"
+        className="fixed inset-0 z-[70] hidden flex-col bg-main-black duration-200 animate-in fade-in group-data-[menu-open]/header:flex lg:group-data-[menu-open]/header:hidden"
       >
-        <div className="flex h-20 shrink-0 items-center justify-end">
+        <div className="flex h-20 shrink-0 items-center justify-end px-6">
           <button
             type="button"
             data-menu-toggle="close"
@@ -128,7 +129,16 @@ export function BrandHeader({
             </svg>
           </button>
         </div>
-        <nav className="flex flex-col font-mono-tech text-sm uppercase tracking-widest duration-300 ease-out animate-in fade-in slide-in-from-top-4">
+
+        {(mobileCta ?? cta) && (
+          <div className="px-6 pb-5 pt-1">{mobileCta ?? cta}</div>
+        )}
+
+        <div className="px-6 pb-2">
+          <div className="h-px bg-border" />
+        </div>
+
+        <nav className="flex flex-col px-6 font-mono-tech text-sm uppercase tracking-widest duration-300 ease-out animate-in fade-in slide-in-from-top-4">
           {nav.map(item => (
             <L
               key={item.href}
@@ -139,9 +149,31 @@ export function BrandHeader({
             </L>
           ))}
         </nav>
-        {(mobileCta ?? cta) && (
-          <div className="mt-8 block w-full">{mobileCta ?? cta}</div>
-        )}
+
+        <div className="flex-1" />
+
+        <div className="px-6 pb-10">
+          <button
+            type="button"
+            data-action="signout"
+            className="flex items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 transition-colors hover:bg-destructive/10"
+          >
+            <svg
+              className="size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Sign out
+          </button>
+        </div>
       </div>
     </header>
   );

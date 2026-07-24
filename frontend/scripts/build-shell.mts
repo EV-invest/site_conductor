@@ -47,7 +47,7 @@ const headerHtml = renderToStaticMarkup(
   createElement(BrandHeader, {
     nav: NAV_ITEMS,
     cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
-    mobileCta: createElement(chip.tag, { class: "flex w-full justify-center" }),
+    mobileCta: createElement(chip.tag, { class: "flex w-full" }),
   })
 );
 
