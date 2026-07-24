@@ -160,6 +160,10 @@ export function BrandHeader({
           <button
             type="button"
             data-action="signout"
+            // Starts hidden — the static markup has no session awareness of its
+            // own; header-behavior.ts reveals it only once /api/auth/session
+            // confirms a signed-in principal.
+            hidden
             className="flex items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 transition-colors hover:bg-destructive/10"
           >
             <svg
