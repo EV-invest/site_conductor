@@ -16,6 +16,43 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  // The logo/CTA "entrance" slide (group-data-[zone=cabinet]/header:slide-in-*
+  // in header.tsx) is meant to read as arriving in the cabinet app — but the
+  // account chip has no cabinet router (account-chip.tsx: every destination is
+  // a hard <a href>, on purpose, since the bundle is framework-agnostic), so
+  // any in-zone chip click is a full page reload and would replay the slide
+  // every time. Play it once per tab session: on a repeat cabinet load, strip
+  // the animation utility classes before they paint.
+  if (header.dataset.zone === "cabinet") {
+    const KEY = "ev-cabinet-zone-entered";
+    if (sessionStorage.getItem(KEY)) {
+      header.querySelectorAll<HTMLElement>("*").forEach(el => {
+        const drop = [...el.classList].filter(
+          c => c.includes("animate-in") || c.includes("slide-in-from")
+        );
+        if (drop.length) el.classList.remove(...drop);
+      });
+    } else {
+      sessionStorage.setItem(KEY, "1");
+    }
+  }
+
+  // The static mobile sign-out button ships `hidden` (the markup has no
+  // session awareness of its own — that lives in the AccountChip mfe); reveal
+  // it only once /api/auth/session confirms a signed-in principal, so a
+  // signed-out visitor on any zone never sees it.
+  const signoutBtn = header.querySelector<HTMLElement>(
+    '[data-action="signout"]'
+  );
+  if (signoutBtn) {
+    fetch("/api/auth/session")
+      .then(r => r.json())
+      .then((s: { authenticated?: boolean }) => {
+        if (s?.authenticated) signoutBtn.hidden = false;
+      })
+      .catch(() => {});
+  }
+
   const setOpen = (open: boolean) => {
     if (open) header.setAttribute("data-menu-open", "");
     else header.removeAttribute("data-menu-open");
