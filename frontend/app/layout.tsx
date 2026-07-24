@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         {/* The header's one behavior implementation — the same content-hashed
             script the zone proxy injects (BrandHeader ships no React state). */}
-        <script defer src={shell.js} />
+        <Script defer src={shell.js} strategy="afterInteractive" />
         <DarkReaderHydrationFilter />
         <ErrorMonitoringProvider>
           <Providers>
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   <AccountChipRemote className="hidden items-center sm:flex" />
                 }
                 mobileAccountSlot={
-                  <AccountChipRemote className="flex w-full justify-center" />
+                  <AccountChipRemote className="flex w-full" />
                 }
               />
               {children}

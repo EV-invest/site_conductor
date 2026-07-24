@@ -30,6 +30,24 @@
     const toggle = target.closest("[data-menu-toggle]");
     if (toggle)
       return setOpen(toggle.getAttribute("data-menu-toggle") === "open");
+    // Sign-out handler: POSTs /api/auth/logout with the CSRF token from the
+    // page's meta tag (same mechanism as the AccountChip microfrontend), then
+    // navigates home. Runs before the delegated-close so the menu closes too.
+    const signout = target.closest<HTMLElement>('[data-action="signout"]');
+    if (signout) {
+      setOpen(false);
+      const csrf =
+        document
+          .querySelector('meta[name="csrf-token"]')
+          ?.getAttribute("content") ?? "";
+      fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "X-CSRF-Token": csrf, "Content-Type": "application/json" },
+      }).finally(() => {
+        window.location.href = "/";
+      });
+      return;
+    }
     // Delegated close: any link/button inside the open overlay dismisses it.
     if (target.closest('[data-slot="header-mobile-overlay"] :is(a, button)'))
       setOpen(false);
