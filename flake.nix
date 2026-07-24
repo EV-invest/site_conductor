@@ -153,7 +153,11 @@
           pname = backendCargo.name;
           version = backendCargo.version;
           src = backendSrc;
-          cargoLock.lockFile = ./Cargo.lock;
+          cargoLock = {
+            lockFile = ./Cargo.lock;
+            # ev_lib is a rev-pinned public git dep — builtin fetchGit needs no hash.
+            allowBuiltinFetchGit = true;
+          };
           cargoBuildFlags = [ "-p" "backend" "--bin" "backend" ];
           # swagger feature fetches its UI bundle over the network, which the sandbox forbids.
           buildNoDefaultFeatures = true;
