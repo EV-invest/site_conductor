@@ -49,6 +49,7 @@ export function BrandHeader({
           <L
             href="/"
             className="flex items-center gap-3 group-data-[zone=cabinet]/header:motion-safe:animate-in group-data-[zone=cabinet]/header:slide-in-from-right-6 group-data-[zone=cabinet]/header:duration-300 group-data-[zone=cabinet]/header:ease-out"
+            data-slot="header-logo"
             aria-label="EV Investment — home"
           >
             <Logo src="/assets/logo.svg" className="h-10 w-10 text-white" />
@@ -74,7 +75,10 @@ export function BrandHeader({
             ))}
           </nav>
 
-          <div className="flex items-center gap-3 group-data-[zone=cabinet]/header:motion-safe:animate-in group-data-[zone=cabinet]/header:slide-in-from-left-6 group-data-[zone=cabinet]/header:duration-300 group-data-[zone=cabinet]/header:ease-out">
+          <div
+            data-slot="header-actions"
+            className="flex items-center gap-3 group-data-[zone=cabinet]/header:motion-safe:animate-in group-data-[zone=cabinet]/header:slide-in-from-left-6 group-data-[zone=cabinet]/header:duration-300 group-data-[zone=cabinet]/header:ease-out"
+          >
             {cta}
             <button
               type="button"

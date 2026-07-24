@@ -59,4 +59,83 @@
     if (e.key === "Escape" && header.hasAttribute("data-menu-open"))
       setOpen(false);
   });
+
+  // ── Cabinet ↔ landing transition ──────────────────────────────
+  // Forward (landing → cabinet): the CSS group-data-[zone=cabinet]
+  // variants on the logo / actions trigger animate-in on mount.
+  // Reverse (cabinet → landing): the page fully reloads (the cabinet
+  // is a route-handler zone — no shared React tree), so CSS
+  // transitions can't bridge the two DOMs.  We detect the direction
+  // with a sessionStorage flag set while on a cabinet page + a
+  // document.referrer fallback, then play a one-shot slide-in on the
+  // landing render that mirrors the forward animation in reverse.
+  const CABINET_FLAG = "sc_from_cabinet";
+
+  if (header.getAttribute("data-zone") === "cabinet") {
+    // We're on a cabinet zone page.  Plant the flag so the next
+    // non-zone landing knows where we came from.
+    try {
+      sessionStorage.setItem(CABINET_FLAG, "1");
+    } catch {
+      // storage denied / full — not critical
+    }
+  } else {
+    // We're on a conductor-owned page.  Only animate when returning
+    // from cabinet — never on a cold load or internal landing nav.
+    let fromCabinet = false;
+    try {
+      if (sessionStorage.getItem(CABINET_FLAG) === "1") {
+        sessionStorage.removeItem(CABINET_FLAG);
+        fromCabinet = true;
+      }
+    } catch {
+      // storage denied — try referrer below
+    }
+    if (!fromCabinet) {
+      try {
+        const ref = new URL(document.referrer);
+        if (ref.pathname.startsWith("/cabinet")) fromCabinet = true;
+      } catch {
+        // no / malformed referrer
+      }
+    }
+
+    if (
+      fromCabinet &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      const logo = header.querySelector<HTMLElement>(
+        '[data-slot="header-logo"]'
+      );
+      const actions = header.querySelector<HTMLElement>(
+        '[data-slot="header-actions"]'
+      );
+      // Easing that matches the forward animate-in ease-out feel.
+      const ease = "cubic-bezier(0,0,0.2,1)";
+
+      if (logo) {
+        // Logo slides in from the left (the cabinet position was
+        // further left — the element appears to glide rightward).
+        logo.animate(
+          [
+            { transform: "translateX(-1.5rem)", opacity: "0.5" },
+            { transform: "translateX(0)", opacity: "1" },
+          ],
+          { duration: 300, easing: ease, fill: "backwards" }
+        );
+      }
+
+      if (actions) {
+        // Actions slide in from the right (the cabinet position was
+        // further right — the element appears to glide leftward).
+        actions.animate(
+          [
+            { transform: "translateX(1.5rem)", opacity: "0.5" },
+            { transform: "translateX(0)", opacity: "1" },
+          ],
+          { duration: 300, easing: ease, fill: "backwards" }
+        );
+      }
+    }
+  }
 })();
