@@ -61,23 +61,73 @@
   });
 
   // ── Cabinet ↔ landing transition ──────────────────────────────
-  // Forward (landing → cabinet): the CSS group-data-[zone=cabinet]
-  // variants on the logo / actions trigger animate-in on mount.
-  // Reverse (cabinet → landing): the page fully reloads (the cabinet
-  // is a route-handler zone — no shared React tree), so CSS
-  // transitions can't bridge the two DOMs.  We detect the direction
-  // with a sessionStorage flag set while on a cabinet page + a
-  // document.referrer fallback, then play a one-shot slide-in on the
-  // landing render that mirrors the forward animation in reverse.
+  // Both directions use the Web Animation API — the page fully
+  // reloads across the zone boundary (cabinet is a route-handler
+  // proxy; no shared React tree), so CSS transitions can't bridge
+  // the two DOMs.  A sessionStorage flag tracks direction:
+  //
+  //   Forward (landing → cabinet): on first entry (flag absent),
+  //   logo slides in from right, actions from left → spreading
+  //   apart toward the full-bleed cabinet edges.
+  //
+  //   Reverse (cabinet → landing): flag consumed on the next
+  //   non-zone page; logo & actions slide back to center.
+  //
+  // Falls back to document.referrer when storage is denied.
+  // Respects prefers-reduced-motion: reduce.
   const CABINET_FLAG = "sc_from_cabinet";
 
   if (header.getAttribute("data-zone") === "cabinet") {
-    // We're on a cabinet zone page.  Plant the flag so the next
-    // non-zone landing knows where we came from.
+    // We're on a cabinet zone page.  Determine whether this is the
+    // first entry from the conductor (landing) — in which case we
+    // play a one-shot slide-in — or a client-side intra-cabinet
+    // navigation where the header already sits in its cabinet state.
+    let firstEntry = false;
     try {
+      if (sessionStorage.getItem(CABINET_FLAG) !== "1") firstEntry = true;
+      // Plant the flag so the next non-zone landing knows where we
+      // came from AND so intra-cabinet SPA navigations don't
+      // re-trigger the forward animation.
       sessionStorage.setItem(CABINET_FLAG, "1");
     } catch {
-      // storage denied / full — not critical
+      // storage denied / full — not critical; skip the animation
+    }
+
+    if (
+      firstEntry &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      const logo = header.querySelector<HTMLElement>(
+        '[data-slot="header-logo"]'
+      );
+      const actions = header.querySelector<HTMLElement>(
+        '[data-slot="header-actions"]'
+      );
+      const ease = "cubic-bezier(0,0,0.2,1)";
+
+      if (logo) {
+        // Logo slides in from the right → appears to spread leftward
+        // to its cabinet edge position.
+        logo.animate(
+          [
+            { transform: "translateX(1.5rem)", opacity: "0.5" },
+            { transform: "translateX(0)", opacity: "1" },
+          ],
+          { duration: 300, easing: ease, fill: "backwards" }
+        );
+      }
+
+      if (actions) {
+        // Actions slide in from the left → appears to spread rightward
+        // to its cabinet edge position.
+        actions.animate(
+          [
+            { transform: "translateX(-1.5rem)", opacity: "0.5" },
+            { transform: "translateX(0)", opacity: "1" },
+          ],
+          { duration: 300, easing: ease, fill: "backwards" }
+        );
+      }
     }
   } else {
     // We're on a conductor-owned page.  Only animate when returning
