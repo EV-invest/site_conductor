@@ -150,6 +150,23 @@ async function buildCss(markup: string): Promise<string> {
       ":scope { position: fixed; top: 0; left: 0; z-index: 60; width: 100%; }"
     )
   );
+  // Cabinet-entry offset: on cabinet pages the logo and actions start
+  // at their animation-offset positions in CSS — before any JS runs —
+  // so the first paint already shows them offset.  The WAAPI in
+  // header-behavior.ts transitions them to natural positions, then
+  // sets data-slide-enter="done" to suppress these rules.
+  // :not([data-slide-enter="done"]) lets the script disable the offset
+  // on repeat loads / reduced-motion without a flash.
+  scope.append(
+    postcss.parse(`[data-zone="cabinet"] [data-slot="header-logo"]:not([data-slide-enter="done"]) {
+      transform: translateX(1.5rem);
+      opacity: 0.5;
+    }
+    [data-zone="cabinet"] [data-slot="header-actions"]:not([data-slide-enter="done"]) {
+      transform: translateX(-1.5rem);
+      opacity: 0.5;
+    }`)
+  );
   root.removeAll();
   root.append(...hoisted, scope);
   // !important: this link is injected before the zone's own stylesheet, whose

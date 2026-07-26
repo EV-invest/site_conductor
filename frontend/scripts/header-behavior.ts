@@ -16,27 +16,6 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // The logo/CTA "entrance" slide (group-data-[zone=cabinet]/header:slide-in-*
-  // in header.tsx) is meant to read as arriving in the cabinet app — but the
-  // account chip has no cabinet router (account-chip.tsx: every destination is
-  // a hard <a href>, on purpose, since the bundle is framework-agnostic), so
-  // any in-zone chip click is a full page reload and would replay the slide
-  // every time. Play it once per tab session: on a repeat cabinet load, strip
-  // the animation utility classes before they paint.
-  if (header.dataset.zone === "cabinet") {
-    const KEY = "ev-cabinet-zone-entered";
-    if (sessionStorage.getItem(KEY)) {
-      header.querySelectorAll<HTMLElement>("*").forEach(el => {
-        const drop = [...el.classList].filter(
-          c => c.includes("animate-in") || c.includes("slide-in-from")
-        );
-        if (drop.length) el.classList.remove(...drop);
-      });
-    } else {
-      sessionStorage.setItem(KEY, "1");
-    }
-  }
-
   // The static mobile sign-out button ships `hidden` (the markup has no
   // session awareness of its own — that lives in the AccountChip mfe); reveal
   // it only once /api/auth/session confirms a signed-in principal, so a
@@ -103,12 +82,17 @@
   // proxy; no shared React tree), so CSS transitions can't bridge
   // the two DOMs.  A sessionStorage flag tracks direction:
   //
-  //   Forward (landing → cabinet): on first entry (flag absent),
-  //   logo slides in from right, actions from left → spreading
-  //   apart toward the full-bleed cabinet edges.
+  //   Forward (landing → cabinet): the shell CSS presets the logo
+  //   and actions at their animation-offset positions
+  //   ([data-zone=cabinet] …), so the first paint already shows
+  //   them offset — no flash of the natural position.  The WAAPI
+  //   transitions them to translateX(0) / opacity 1, then sets
+  //   data-slide-enter="done" to suppress the CSS offset.
   //
-  //   Reverse (cabinet → landing): flag consumed on the next
-  //   non-zone page; logo & actions slide back to center.
+  //   Reverse (cabinet → landing): the landing page has no
+  //   data-zone to key CSS off, so we set the offset via inline
+  //   style + forced layout, then animate to natural.  The forced
+  //   layout collapses the flash window to at most one frame.
   //
   // Falls back to document.referrer when storage is denied.
   // Respects prefers-reduced-motion: reduce.
@@ -130,41 +114,55 @@
       // storage denied / full — not critical; skip the animation
     }
 
+    const logo = header.querySelector<HTMLElement>(
+      '[data-slot="header-logo"]'
+    );
+    const actions = header.querySelector<HTMLElement>(
+      '[data-slot="header-actions"]'
+    );
+
     if (
       firstEntry &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      const logo = header.querySelector<HTMLElement>(
-        '[data-slot="header-logo"]'
-      );
-      const actions = header.querySelector<HTMLElement>(
-        '[data-slot="header-actions"]'
-      );
+      // The shell CSS already positions the elements at their
+      // offset via [data-zone=cabinet] rules — no flash, no
+      // fill:backwards snap.  Animate from that offset to natural.
       const ease = "cubic-bezier(0,0,0.2,1)";
 
       if (logo) {
-        // Logo slides in from the right → appears to spread leftward
-        // to its cabinet edge position.
-        logo.animate(
+        const anim = logo.animate(
           [
             { transform: "translateX(1.5rem)", opacity: "0.5" },
             { transform: "translateX(0)", opacity: "1" },
           ],
-          { duration: 300, easing: ease, fill: "backwards" }
+          { duration: 300, easing: ease, fill: "none" }
         );
+        anim.onfinish = () => {
+          anim.cancel();
+          logo.setAttribute("data-slide-enter", "done");
+        };
       }
 
       if (actions) {
-        // Actions slide in from the left → appears to spread rightward
-        // to its cabinet edge position.
-        actions.animate(
+        const anim = actions.animate(
           [
             { transform: "translateX(-1.5rem)", opacity: "0.5" },
             { transform: "translateX(0)", opacity: "1" },
           ],
-          { duration: 300, easing: ease, fill: "backwards" }
+          { duration: 300, easing: ease, fill: "none" }
         );
+        anim.onfinish = () => {
+          anim.cancel();
+          actions.setAttribute("data-slide-enter", "done");
+        };
       }
+    } else {
+      // Skip animation (repeat load or reduced motion) — suppress
+      // the CSS offset immediately so elements sit at their natural
+      // cabinet positions.
+      logo?.setAttribute("data-slide-enter", "done");
+      actions?.setAttribute("data-slide-enter", "done");
     }
   } else {
     // We're on a conductor-owned page.  Only animate when returning
@@ -197,31 +195,52 @@
       const actions = header.querySelector<HTMLElement>(
         '[data-slot="header-actions"]'
       );
-      // Easing that matches the forward animate-in ease-out feel.
       const ease = "cubic-bezier(0,0,0.2,1)";
 
+      // Set offset via inline style first, then force layout so the
+      // browser commits the offset before WAAPI interpolation starts.
+      // This prevents the elements from flashing at their natural
+      // landing positions before the slide-in begins.
       if (logo) {
-        // Logo slides in from the left (the cabinet position was
-        // further left — the element appears to glide rightward).
-        logo.animate(
+        logo.style.transform = "translateX(-1.5rem)";
+        logo.style.opacity = "0.5";
+      }
+      if (actions) {
+        actions.style.transform = "translateX(1.5rem)";
+        actions.style.opacity = "0.5";
+      }
+
+      // Force the inline styles to be resolved before animation.
+      void header.offsetHeight;
+
+      if (logo) {
+        const anim = logo.animate(
           [
             { transform: "translateX(-1.5rem)", opacity: "0.5" },
             { transform: "translateX(0)", opacity: "1" },
           ],
-          { duration: 300, easing: ease, fill: "backwards" }
+          { duration: 300, easing: ease, fill: "none" }
         );
+        anim.onfinish = () => {
+          anim.cancel();
+          logo.style.transform = "";
+          logo.style.opacity = "";
+        };
       }
 
       if (actions) {
-        // Actions slide in from the right (the cabinet position was
-        // further right — the element appears to glide leftward).
-        actions.animate(
+        const anim = actions.animate(
           [
             { transform: "translateX(1.5rem)", opacity: "0.5" },
             { transform: "translateX(0)", opacity: "1" },
           ],
-          { duration: 300, easing: ease, fill: "backwards" }
+          { duration: 300, easing: ease, fill: "none" }
         );
+        anim.onfinish = () => {
+          anim.cancel();
+          actions.style.transform = "";
+          actions.style.opacity = "";
+        };
       }
     }
   }
