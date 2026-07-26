@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use domain::{
 	architecture::Gateway,
 	error::DomainError,
-	model::{application::JobApplication, contact::ContactMessage, vacancy::Vacancy},
+	model::{application::JobApplication, contact::ContactMessage, newsletter::NewsletterSubscription, vacancy::Vacancy},
 };
 
 /// External notification boundary (email). A `Gateway`, not a `Repository`:
@@ -14,4 +14,6 @@ use domain::{
 pub trait Notifier: Gateway {
 	async fn application_received(&self, application: &JobApplication, vacancy: Option<&Vacancy>) -> Result<(), DomainError>;
 	async fn contact_received(&self, message: &ContactMessage) -> Result<(), DomainError>;
+	/// Send a "welcome to the list" confirmation to a new newsletter subscriber.
+	async fn newsletter_subscribed(&self, subscription: &NewsletterSubscription) -> Result<(), DomainError>;
 }

@@ -4,4 +4,5 @@
 
 pub mod application_service;
 pub mod contact_service;
+pub mod newsletter_service;
 pub mod vacancy_service;

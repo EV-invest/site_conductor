@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use domain::{
 	architecture::Gateway,
 	error::DomainError,
-	model::{application::JobApplication, contact::ContactMessage, vacancy::Vacancy},
+	model::{application::JobApplication, contact::ContactMessage, newsletter::NewsletterSubscription, vacancy::Vacancy},
 };
 
 use super::{
@@ -101,5 +101,20 @@ impl Notifier for EmailNotifier {
 			.await;
 
 		candidate_result.and(internal_result)
+	}
+
+	async fn newsletter_subscribed(&self, subscription: &NewsletterSubscription) -> Result<(), DomainError> {
+		let email = templates::candidate_newsletter_subscribed(subscription, &self.site_url);
+		self.transport
+			.send(
+				&self.from,
+				OutgoingEmail {
+					to: subscription.email.as_str().to_string(),
+					subject: email.subject,
+					html: email.html,
+					text: email.text,
+				},
+			)
+			.await
 	}
 }

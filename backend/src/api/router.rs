@@ -26,7 +26,8 @@ pub fn build(state: AppState) -> Router {
 		.route("/vacancies", get(handler::vacancy::list_vacancies))
 		.route("/vacancies/{slug}", get(handler::vacancy::get_vacancy))
 		.route("/applications", post(handler::application::create_application))
-		.route("/contact", post(handler::contact::create_contact));
+		.route("/contact", post(handler::contact::create_contact))
+		.route("/newsletter", post(handler::newsletter::subscribe_newsletter));
 
 	let app = Router::new().nest("/api/v1", routes);
 	#[cfg(feature = "swagger")]

@@ -8,7 +8,7 @@ use std::sync::Arc;
 
 use backend::{
 	api::{self, state::AppState},
-	application::{application_service::ApplicationService, contact_service::ContactService, vacancy_service::VacancyService},
+	application::{application_service::ApplicationService, contact_service::ContactService, newsletter_service::NewsletterService, vacancy_service::VacancyService},
 	config::AppConfig,
 	infrastructure::{
 		db,
@@ -17,7 +17,8 @@ use backend::{
 			transport::{EmailTransport, NoopTransport, SmtpTransport},
 		},
 		persistence::{
-			postgres_application_repository::PostgresApplicationRepository, postgres_contact_repository::PostgresContactRepository, postgres_vacancy_repository::PostgresVacancyRepository,
+			postgres_application_repository::PostgresApplicationRepository, postgres_contact_repository::PostgresContactRepository,
+			postgres_newsletter_repository::PostgresNewsletterRepository, postgres_vacancy_repository::PostgresVacancyRepository,
 		},
 	},
 };
@@ -66,14 +67,16 @@ async fn run(config: AppConfig) -> Result<()> {
 	// Driven adapters ▶ use cases ▶ shared state.
 	let vacancy_repo = Arc::new(PostgresVacancyRepository::new(pool.clone()));
 	let application_repo = Arc::new(PostgresApplicationRepository::new(pool.clone()));
-	let contact_repo = Arc::new(PostgresContactRepository::new(pool));
+	let contact_repo = Arc::new(PostgresContactRepository::new(pool.clone()));
+	let newsletter_repo = Arc::new(PostgresNewsletterRepository::new(pool));
 
 	let analytics = ev_lib::analytics::Analytics::new(config.posthog_key.clone(), config.posthog_host.clone());
 
 	let vacancies = VacancyService::new(vacancy_repo.clone());
 	let applications = ApplicationService::new(application_repo, vacancy_repo, notifier.clone());
-	let contacts = ContactService::new(contact_repo, notifier);
-	let state = AppState::new(vacancies, applications, contacts, analytics);
+	let contacts = ContactService::new(contact_repo, notifier.clone());
+	let newsletter = NewsletterService::new(newsletter_repo, notifier);
+	let state = AppState::new(vacancies, applications, contacts, newsletter, analytics);
 
 	let router = api::router::build(state);
 

@@ -80,7 +80,12 @@ impl AppConfig {
 	pub fn from_env() -> Result<Self> {
 		let raw = RawSettings::from_env()?;
 		let smtp = match (raw.smtp_host, raw.smtp_username, raw.smtp_password) {
-			(Some(host), Some(username), Some(password)) => Some(SmtpConfig { host, port: raw.smtp_port, username, password }),
+			(Some(host), Some(username), Some(password)) => Some(SmtpConfig {
+				host,
+				port: raw.smtp_port,
+				username,
+				password,
+			}),
 			_ => None,
 		};
 		Ok(Self {

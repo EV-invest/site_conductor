@@ -4,6 +4,7 @@ use crate::api::{
 	dto::{
 		application::{ApplicationAccepted, CreateApplicationRequest},
 		contact::{ContactAccepted, CreateContactRequest},
+		newsletter::{SubscribeNewsletterAccepted, SubscribeNewsletterRequest},
 		vacancy::{VacancyDetail, VacancySummary},
 	},
 	handler,
@@ -22,12 +23,14 @@ use crate::api::{
 		handler::vacancy::get_vacancy,
 		handler::application::create_application,
 		handler::contact::create_contact,
+		handler::newsletter::subscribe_newsletter,
 	),
-	components(schemas(VacancySummary, VacancyDetail, CreateApplicationRequest, ApplicationAccepted, CreateContactRequest, ContactAccepted)),
+	components(schemas(VacancySummary, VacancyDetail, CreateApplicationRequest, ApplicationAccepted, CreateContactRequest, ContactAccepted, SubscribeNewsletterRequest, SubscribeNewsletterAccepted)),
 	tags(
 		(name = "vacancies", description = "Open roles"),
 		(name = "applications", description = "Job applications"),
 		(name = "contact", description = "Contact messages"),
+		(name = "newsletter", description = "Newsletter subscriptions"),
 		(name = "health", description = "Liveness"),
 	),
 )]

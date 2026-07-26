@@ -4,7 +4,7 @@
 //! is required here: email clients support neither CSS variables nor external
 //! stylesheets, so brand colours are inlined per element.
 
-use domain::model::{application::JobApplication, contact::ContactMessage, vacancy::Vacancy};
+use domain::model::{application::JobApplication, contact::ContactMessage, newsletter::NewsletterSubscription, vacancy::Vacancy};
 
 const MIST: &str = "#e6e1d3";
 const MUTED: &str = "#9aa6b8";
@@ -335,3 +335,33 @@ fn application_received_text(vacancy: Option<&Vacancy>, reference: &str, submitt
 // ── candidate: contact message received ────────────────────────────────────
 
 // ── internal: new contact message ──────────────────────────────────────────
+
+// ── newsletter: subscriber confirmation ────────────────────────────────────
+
+pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, _site_url: &str) -> RenderedEmail {
+	let reference = reference(subscription.id.raw());
+	let submitted = fmt_ts(&subscription.created_at);
+
+	let mut body = String::new();
+	body.push_str(&eyebrow("You're on the list"));
+	body.push_str(&heading("Welcome to the EV Investment newsletter."));
+	body.push_str(&paragraph(
+		"We'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities — no more than once a month, unsubscribe anytime.",
+	));
+	body.push_str(&detail_box(&[
+		("Email", subscription.email.as_str().to_string()),
+		("Subscribed", submitted.clone()),
+		("Reference", reference.clone()),
+	]));
+
+	let html = shell("Welcome to the EV Investment newsletter.", &body, "You're receiving this because you subscribed via evinvest.vn.");
+	let text = format!(
+		"Welcome to the EV Investment newsletter.\n\nWe'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities.\n\nEmail: {}\nSubscribed: {submitted}\nReference: {reference}\n\n— EV Investment",
+		subscription.email.as_str()
+	);
+	RenderedEmail {
+		subject: "You're on the list — EV Investment".to_string(),
+		html,
+		text,
+	}
+}

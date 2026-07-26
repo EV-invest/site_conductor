@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use ev_lib::analytics::{Analytics, Event};
 
-use crate::application::{application_service::ApplicationService, contact_service::ContactService, vacancy_service::VacancyService};
+use crate::application::{application_service::ApplicationService, contact_service::ContactService, newsletter_service::NewsletterService, vacancy_service::VacancyService};
 
 /// Upper bound on how long a best-effort analytics capture may delay a response.
 const CAPTURE_TIMEOUT: Duration = Duration::from_millis(500);
@@ -15,15 +15,17 @@ pub struct AppState {
 	pub vacancies: VacancyService,
 	pub applications: ApplicationService,
 	pub contacts: ContactService,
+	pub newsletter: NewsletterService,
 	pub analytics: Analytics,
 }
 
 impl AppState {
-	pub fn new(vacancies: VacancyService, applications: ApplicationService, contacts: ContactService, analytics: Analytics) -> Self {
+	pub fn new(vacancies: VacancyService, applications: ApplicationService, contacts: ContactService, newsletter: NewsletterService, analytics: Analytics) -> Self {
 		Self {
 			vacancies,
 			applications,
 			contacts,
+			newsletter,
 			analytics,
 		}
 	}

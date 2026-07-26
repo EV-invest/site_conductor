@@ -1,5 +1,6 @@
 pub mod application;
 pub mod contact;
+pub mod newsletter;
 pub mod vacancy;
 
 /// Normalise an optional text field: trim, then collapse empty to `None`.

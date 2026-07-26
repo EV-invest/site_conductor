@@ -1,5 +1,6 @@
 pub mod postgres_application_repository;
 pub mod postgres_contact_repository;
+pub mod postgres_newsletter_repository;
 pub mod postgres_vacancy_repository;
 
 use domain::error::DomainError;
