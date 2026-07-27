@@ -1,16 +1,33 @@
 //! Server-rendered transactional emails. One dark shell, four messages, all
-//! adaptive on whether a vacancy is attached — the universal-letter mechanic
-//! from the Figma "Transactional Emails" board. Inline hex (not design tokens)
-//! is required here: email clients support neither CSS variables nor external
-//! stylesheets, so brand colours are inlined per element.
+//! adaptive on whether a vacancy is attached — the universal-letter mechanic.
+//! Inline hex (not design tokens) is required here: email clients support
+//! neither CSS variables nor external stylesheets, so brand colours are
+//! inlined per element.
+//!
+//! The palette below is flattened from `@evinvest/uikit` (`styles/tokens.css`),
+//! which is the same source the Figma `ev/color` variables publish from — keep
+//! the two in step when either moves.
 
 use domain::model::{application::JobApplication, contact::ContactMessage, newsletter::NewsletterSubscription, vacancy::Vacancy};
 
-const MIST: &str = "#e6e1d3";
-const MUTED: &str = "#9aa6b8";
-const TEAL: &str = "#2a9d8f";
-const HAIR: &str = "#1b2742";
-const CARD: &str = "#0b1322";
+// Flattened `@evinvest/uikit` tokens. Mail clients support neither CSS variables
+// nor `color-mix`, so the alpha-based semantic tokens are pre-composited against
+// the surface they sit on and pasted as opaque hex.
+const MIST: &str = "#e6e1d3"; // --color-main-mist
+const TEAL: &str = "#2a9d8f"; // --color-main-accent-t1
+const HAIR: &str = "#1b2742"; // navy-hairline
+const BLACK: &str = "#070d18"; // --color-main-black / --background
+const SURFACE: &str = "#081020"; // --color-main-surface
+const CARD: &str = "#0c1626"; // --color-main-card / --card
+// --muted-foreground is `mist 40%`, which composites to ~#63676b on the card —
+// 3.3:1, under the 4.5:1 that 13px body copy needs. Kept on the same mist ramp
+// but at 60% so the label column stays legible in a mail client.
+const MUTED: &str = "#8f908e";
+
+// Playfair/Inter are the site's families; a mail client that lacks them falls
+// through to the same serif/sans pairing the templates used before.
+const SERIF: &str = "'Playfair Display',Georgia,'Times New Roman',serif";
+const SANS: &str = "Inter,-apple-system,'Segoe UI',Arial,Helvetica,sans-serif";
 pub struct RenderedEmail {
 	pub subject: String,
 	pub html: String,
@@ -77,7 +94,7 @@ pub fn candidate_application_received(application: &JobApplication, vacancy: Opt
 	let html = shell(
 		&format!("We received your application, {first_name}."),
 		&body,
-		"You're receiving this because you applied via evinvest.vn/hiring.",
+		"You're receiving this because you applied via evinvest.ltd/hiring.",
 	);
 	let text = application_received_text(vacancy, &reference, &submitted, &first_name);
 	RenderedEmail { subject, html, text }
@@ -157,7 +174,7 @@ pub fn candidate_contact_received(message: &ContactMessage, site_url: &str) -> R
 	let html = shell(
 		&format!("We received your message, {first_name}."),
 		&body,
-		"You're receiving this because you contacted us via evinvest.vn.",
+		"You're receiving this because you contacted us via evinvest.ltd.",
 	);
 	let text = format!(
 		"Thanks for reaching out, {first_name}.\n\nWe received your message and will reply within two business days.\n\nReference: {reference}\nSubmitted: {submitted}\n\nYour message:\n{}\n\n— EV Investment",
@@ -198,6 +215,33 @@ pub fn internal_new_contact(message: &ContactMessage, _site_url: &str) -> Render
 		text,
 	}
 }
+pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, _site_url: &str) -> RenderedEmail {
+	let reference = reference(subscription.id.raw());
+	let submitted = fmt_ts(&subscription.created_at);
+
+	let mut body = String::new();
+	body.push_str(&eyebrow("You're on the list"));
+	body.push_str(&heading("Welcome to the EV Investment newsletter."));
+	body.push_str(&paragraph(
+		"We'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities — no more than once a month, unsubscribe anytime.",
+	));
+	body.push_str(&detail_box(&[
+		("Email", subscription.email.as_str().to_string()),
+		("Subscribed", submitted.clone()),
+		("Reference", reference.clone()),
+	]));
+
+	let html = shell("Welcome to the EV Investment newsletter.", &body, "You're receiving this because you subscribed via evinvest.ltd.");
+	let text = format!(
+		"Welcome to the EV Investment newsletter.\n\nWe'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities.\n\nEmail: {}\nSubscribed: {submitted}\nReference: {reference}\n\n— EV Investment",
+		subscription.email.as_str()
+	);
+	RenderedEmail {
+		subject: "You're on the list — EV Investment".to_string(),
+		html,
+		text,
+	}
+}
 fn esc(raw: &str) -> String {
 	raw.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;")
 }
@@ -206,27 +250,30 @@ fn reference(id: uuid::Uuid) -> String {
 	id.simple().to_string()[..8].to_uppercase()
 }
 
+/// Human-readable UTC, e.g. `27 Jul 2026, 16:31 UTC`. The raw RFC 3339 form
+/// (`2026-07-27T16:31:07.918453Z`) reads as machine output in a letter.
 fn fmt_ts(ts: &jiff::Timestamp) -> String {
-	ts.to_string()
+	ts.strftime("%-d %b %Y, %H:%M UTC").to_string()
 }
 
 fn heading(text: &str) -> String {
+	// -0.02em tracking mirrors the `h1,h2,h3` rule in the site's globals.css.
 	format!(
-		r#"<h1 style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:1.25;color:{MIST};font-weight:600;">{}</h1>"#,
+		r#"<h1 style="margin:0 0 14px;font-family:{SERIF};font-size:24px;line-height:1.25;letter-spacing:-0.02em;color:{MIST};font-weight:600;">{}</h1>"#,
 		esc(text)
 	)
 }
 
 fn eyebrow(text: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:{TEAL};">{}</p>"#,
+		r#"<p style="margin:0 0 18px;font-family:{SANS};font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:{TEAL};">{}</p>"#,
 		esc(text)
 	)
 }
 
 fn paragraph(text: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:{MIST};">{}</p>"#,
+		r#"<p style="margin:0 0 16px;font-family:{SANS};font-size:15px;line-height:1.6;color:{MIST};">{}</p>"#,
 		esc(text)
 	)
 }
@@ -236,20 +283,20 @@ fn detail_box(rows: &[(&str, String)]) -> String {
 		.iter()
 		.map(|(label, value)| {
 			format!(
-				r#"<tr><td style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:{MUTED};">{}</td><td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:{MIST};">{}</td></tr>"#,
+				r#"<tr><td style="padding:6px 0;font-family:{SANS};font-size:13px;color:{MUTED};">{}</td><td align="right" style="padding:6px 0;font-family:{SANS};font-size:13px;color:{MIST};">{}</td></tr>"#,
 				esc(label),
 				esc(value)
 			)
 		})
 		.collect();
 	format!(
-		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;padding:16px 18px;background:#070d18;border:1px solid {HAIR};border-radius:10px;">{body}</table>"#
+		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;padding:16px 18px;background:{BLACK};border:1px solid {HAIR};border-radius:8px;">{body}</table>"#
 	)
 }
 
 fn quote_block(text: &str) -> String {
 	format!(
-		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;"><tr><td width="3" style="background:{TEAL};border-radius:2px;"></td><td style="padding:4px 0 4px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:{MIST};">{}</td></tr></table>"#,
+		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;"><tr><td width="3" style="background:{TEAL};border-radius:2px;"></td><td style="padding:4px 0 4px 16px;font-family:{SANS};font-size:14px;line-height:1.6;color:{MIST};">{}</td></tr></table>"#,
 		esc(text).replace('\n', "<br>")
 	)
 }
@@ -260,7 +307,7 @@ fn checklist(items: &[(String, bool)]) -> String {
 		.map(|(label, checked)| {
 			let (mark, color) = if *checked { ("&#10003;", TEAL) } else { ("&#9675;", MUTED) };
 			format!(
-				r#"<tr><td width="22" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:{color};">{mark}</td><td style="padding:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:{MIST};">{}</td></tr>"#,
+				r#"<tr><td width="22" valign="top" style="font-family:{SANS};font-size:14px;color:{color};">{mark}</td><td style="padding:0 0 8px;font-family:{SANS};font-size:14px;line-height:1.5;color:{MIST};">{}</td></tr>"#,
 				esc(label)
 			)
 		})
@@ -271,17 +318,17 @@ fn checklist(items: &[(String, bool)]) -> String {
 fn steps(label: &str, items: &[&str]) -> String {
 	let lis: String = items
 		.iter()
-		.map(|i| format!(r#"<tr><td width="22" valign="top" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:{TEAL};">&mdash;</td><td style="padding:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:{MIST};">{}</td></tr>"#, esc(i)))
+		.map(|i| format!(r#"<tr><td width="22" valign="top" style="font-family:{SANS};font-size:14px;color:{TEAL};">&mdash;</td><td style="padding:0 0 8px;font-family:{SANS};font-size:14px;line-height:1.5;color:{MIST};">{}</td></tr>"#, esc(i)))
 		.collect();
 	format!(
-		r#"<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">{lis}</table>"#,
+		r#"<p style="margin:0 0 10px;font-family:{SANS};font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">{lis}</table>"#,
 		esc(label)
 	)
 }
 
 fn button(label: &str, href: &str) -> String {
 	format!(
-		r#"<table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 4px;"><tr><td style="background:{TEAL};border-radius:8px;"><a href="{}" style="display:inline-block;padding:13px 26px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#04130f;text-decoration:none;">{}</a></td></tr></table>"#,
+		r#"<table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 4px;"><tr><td style="background:{TEAL};border-radius:8px;"><a href="{}" style="display:inline-block;padding:13px 26px;font-family:{SANS};font-size:14px;font-weight:600;color:{BLACK};text-decoration:none;">{}</a></td></tr></table>"#,
 		esc(href),
 		esc(label)
 	)
@@ -293,21 +340,21 @@ fn shell(preheader: &str, body: &str, footer_context: &str) -> String {
 	let footer_context = esc(footer_context);
 	format!(
 		r##"<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"></head>
-<body style="margin:0;padding:0;background:#04070e;">
+<body style="margin:0;padding:0;background:{BLACK};">
 <span style="display:none;max-height:0;overflow:hidden;opacity:0;">{preheader}</span>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#04070e;padding:32px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{BLACK};padding:32px 12px;">
 <tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:{CARD};border:1px solid {HAIR};border-radius:14px;overflow:hidden;">
 <tr><td style="padding:26px 36px;border-bottom:1px solid {HAIR};">
-<span style="font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;letter-spacing:.06em;color:{MIST};">EV</span>
-<span style="font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:300;letter-spacing:.22em;color:{MUTED};">&nbsp;INVESTMENT</span>
+<div style="font-family:{SANS};font-size:18px;line-height:1.3;"><span style="font-weight:700;letter-spacing:.06em;color:{MIST};">EV</span><span style="font-weight:300;letter-spacing:.22em;color:{MUTED};">&nbsp;INVESTMENT</span></div>
+<div style="margin-top:2px;font-family:{SANS};font-size:9px;letter-spacing:.28em;color:{MUTED};">QUY NHON FUND</div>
 </td></tr>
-<tr><td style="padding:34px 36px;background:#070d18;">{body}</td></tr>
-<tr><td style="padding:24px 36px;background:#05080e;border-top:1px solid {HAIR};">
-<p style="margin:0 0 6px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:{MIST};">EV Investment</p>
-<p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:{MUTED};">Premium coastal developments &middot; Quy Nh&#417;n, Vietnam</p>
-<p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:{MUTED};">{footer_context}</p>
-<p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#5a6576;">&copy; 2026 EV Investment</p>
+<tr><td style="padding:34px 36px;background:{CARD};">{body}</td></tr>
+<tr><td style="padding:24px 36px;background:{SURFACE};border-top:1px solid {HAIR};">
+<p style="margin:0 0 6px;font-family:{SANS};font-size:12px;color:{MIST};">EV Investment</p>
+<p style="margin:0 0 12px;font-family:{SANS};font-size:12px;line-height:1.6;color:{MUTED};">Premium coastal developments &middot; Quy Nh&#417;n, Vietnam</p>
+<p style="margin:0 0 12px;font-family:{SANS};font-size:12px;line-height:1.6;color:{MUTED};">{footer_context}</p>
+<p style="margin:0;font-family:{SANS};font-size:11px;color:{MUTED};">&copy; 2026 EV Investment</p>
 </td></tr>
 </table>
 </td></tr></table></body></html>"##
@@ -318,7 +365,7 @@ fn shell(preheader: &str, body: &str, footer_context: &str) -> String {
 
 fn steps_heading(label: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 10px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p>"#,
+		r#"<p style="margin:0 0 10px;font-family:{SANS};font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p>"#,
 		esc(label)
 	)
 }
@@ -338,30 +385,42 @@ fn application_received_text(vacancy: Option<&Vacancy>, reference: &str, submitt
 
 // ── newsletter: subscriber confirmation ────────────────────────────────────
 
-pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, _site_url: &str) -> RenderedEmail {
-	let reference = reference(subscription.id.raw());
-	let submitted = fmt_ts(&subscription.created_at);
 
-	let mut body = String::new();
-	body.push_str(&eyebrow("You're on the list"));
-	body.push_str(&heading("Welcome to the EV Investment newsletter."));
-	body.push_str(&paragraph(
-		"We'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities — no more than once a month, unsubscribe anytime.",
-	));
-	body.push_str(&detail_box(&[
-		("Email", subscription.email.as_str().to_string()),
-		("Subscribed", submitted.clone()),
-		("Reference", reference.clone()),
-	]));
+#[cfg(test)]
+mod render_preview {
+	use super::*;
 
-	let html = shell("Welcome to the EV Investment newsletter.", &body, "You're receiving this because you subscribed via evinvest.vn.");
-	let text = format!(
-		"Welcome to the EV Investment newsletter.\n\nWe'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities.\n\nEmail: {}\nSubscribed: {submitted}\nReference: {reference}\n\n— EV Investment",
-		subscription.email.as_str()
-	);
-	RenderedEmail {
-		subject: "You're on the list — EV Investment".to_string(),
-		html,
-		text,
+	// Dumps the rendered newsletter mail so the shell can be eyeballed in a
+	// browser. Not an assertion — run with `--ignored` when tweaking the design.
+	#[test]
+	#[ignore]
+	fn dump_newsletter_html() {
+		use domain::model::{email::EmailAddress, newsletter::{NewsletterId, NewsletterSubscription}};
+		let sub = NewsletterSubscription {
+			id: NewsletterId::from_raw(uuid::Uuid::parse_str("636b9c35-4f4b-40e4-9785-47cf4ff17e07").unwrap()),
+			email: EmailAddress::parse("admin+newsletter@evinvest.ltd").unwrap(),
+			created_at: "2026-07-27T16:31:07Z".parse().unwrap(),
+		};
+		let mail = candidate_newsletter_subscribed(&sub, "https://evinvest.ltd");
+		std::fs::write(std::env::var("PREVIEW_OUT").unwrap_or_else(|_| "/tmp/mail.html".into()), &mail.html).unwrap();
+	}
+
+	// The richest shell: quote block, step list and the CTA button.
+	#[test]
+	#[ignore]
+	fn dump_contact_html() {
+		use domain::model::{
+			contact::{ContactId, ContactMessage},
+			email::EmailAddress,
+		};
+		let msg = ContactMessage {
+			id: ContactId::from_raw(uuid::Uuid::parse_str("047937fb-be8f-4074-8c07-822a137b771b").unwrap()),
+			name: "Jane Doe".to_string(),
+			email: EmailAddress::parse("jane@example.com").unwrap(),
+			message: "I'd like to learn more about the Quy Nhơn fund.\nCould we set up a call next week?".to_string(),
+			created_at: "2026-07-27T16:31:07Z".parse().unwrap(),
+		};
+		let mail = candidate_contact_received(&msg, "https://evinvest.ltd");
+		std::fs::write(std::env::var("PREVIEW_OUT").unwrap_or_else(|_| "/tmp/mail-contact.html".into()), &mail.html).unwrap();
 	}
 }
