@@ -236,6 +236,20 @@
             entrypoint = [ "/bin/backend" ];
             contents = [ backendBin ];
             imageEnv = [ "BIND_ADDR=0.0.0.0:58844" "APP_ENV=production" ];
+            # Transactional email. The code's defaults still say evinvest.vn, so
+            # these are not optional: unset ⇒ mail would be sent from — and link
+            # to — the wrong domain. SMTP_PASSWORD is the only real secret and
+            # arrives via the k8s Secret (`kubernetes-site-conductor-backend`);
+            # without it config.rs yields `smtp: None` and every send is a
+            # logged no-op, so mail silently stops rather than erroring.
+            env = {
+              SMTP_HOST = "smtp.gmail.com";
+              SMTP_PORT = "587";
+              SMTP_USERNAME = "admin@evinvest.ltd";
+              MAIL_FROM = "EV Investment <admin@evinvest.ltd>";
+              MAIL_TEAM = "admin@evinvest.ltd";
+              SITE_URL = "https://evinvest.ltd";
+            };
           };
           containers.frontend = {
             port = 58843;
