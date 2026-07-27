@@ -68,7 +68,30 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Section art under public/assets is served raw (the hero paints
+      // quynhon_future as a CSS background, outside the next/image pipeline),
+      // and Next's default for public/ is max-age=0 — a revalidation round trip
+      // on every repeat visit for the largest above-the-fold byte. These
+      // filenames are not content-hashed, so no `immutable`: a day of freshness
+      // plus a month of stale-while-revalidate serves instantly and still picks
+      // a replacement up in the background.
+      {
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=2592000",
+          },
+        ],
+      },
     ];
+  },
+  images: {
+    // The VPS is weak and re-encoding is the expensive half of next/image.
+    // Next's default TTL expires optimized variants within hours, so the same
+    // team portraits get re-encoded all week; a month of on-disk cache means
+    // each size is produced once.
+    minimumCacheTTL: 2592000,
   },
   // Multi-zone mounts (PATTERNS.md §9): asset/API traffic goes straight to the
   // zone over native rewrites; zone *HTML* goes through the shell-injecting
