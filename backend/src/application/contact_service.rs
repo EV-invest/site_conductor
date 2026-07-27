@@ -5,7 +5,10 @@ use domain::{
 	model::contact::{ContactMessage, NewContact},
 };
 
-use crate::domain::port::{contact_repository::ContactRepository, notifier::Notifier};
+use crate::{
+	application::deliver_best_effort,
+	domain::port::{contact_repository::ContactRepository, notifier::Notifier},
+};
 
 #[derive(Clone)]
 pub struct ContactService {
@@ -18,15 +21,11 @@ impl ContactService {
 		Self { contacts, notifier }
 	}
 
-	/// Persist a contact message, then send the "we got it" + internal copy.
-	/// As with applications, email delivery is best-effort.
+	/// Store the message, then fan out the sender's receipt and the team copy.
+	/// Both mails are attempted even if one address is rejected.
 	pub async fn submit(&self, new: NewContact) -> Result<ContactMessage, DomainError> {
 		let message = self.contacts.create(new).await?;
-
-		if let Err(error) = self.notifier.contact_received(&message).await {
-			tracing::error!(%error, contact_id = %message.id.raw(), "failed to send contact emails");
-		}
-
+		deliver_best_effort(self.notifier.contact_received(&message), "contact", message.id.raw()).await;
 		Ok(message)
 	}
 }

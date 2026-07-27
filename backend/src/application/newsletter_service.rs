@@ -5,7 +5,10 @@ use domain::{
 	model::newsletter::{NewNewsletterSubscription, NewsletterSubscription},
 };
 
-use crate::domain::port::{newsletter_repository::NewsletterRepository, notifier::Notifier};
+use crate::{
+	application::deliver_best_effort,
+	domain::port::{newsletter_repository::NewsletterRepository, notifier::Notifier},
+};
 
 #[derive(Clone)]
 pub struct NewsletterService {
@@ -18,15 +21,12 @@ impl NewsletterService {
 		Self { subscriptions, notifier }
 	}
 
-	/// Persist a newsletter subscription, then send a confirmation email.
-	/// Duplicate email is rejected with a conflict; email delivery is best-effort.
+	/// Store the address, then welcome it. A repeat address is a `Conflict` from
+	/// the unique index — the caller turns that into `409`, so re-subscribing
+	/// never silently mails a second welcome.
 	pub async fn subscribe(&self, new: NewNewsletterSubscription) -> Result<NewsletterSubscription, DomainError> {
 		let subscription = self.subscriptions.create(new).await?;
-
-		if let Err(error) = self.notifier.newsletter_subscribed(&subscription).await {
-			tracing::error!(%error, subscriber_id = %subscription.id.raw(), "failed to send newsletter confirmation email");
-		}
-
+		deliver_best_effort(self.notifier.newsletter_subscribed(&subscription), "newsletter", subscription.id.raw()).await;
 		Ok(subscription)
 	}
 }

@@ -196,6 +196,10 @@
             mkdir -p public/assets public/mfe public/blogs
             cp -rL --no-preserve=mode assets/. public/assets/
             cp -f --no-preserve=mode ${logoSrc} public/assets/logo.svg
+            # Raster twin of the same mark for transactional email: mail clients
+            # broadly refuse SVG in <img>, so the backend's shell links this. 2x
+            # the 37x32 the design lays out, for retina.
+            ${pkgs.librsvg}/bin/rsvg-convert --width=74 --height=64 --format=png -o public/assets/email-logo.png ${logoSrc}
             cp -rL --no-preserve=mode ${real_estate_allocation.packages.${system}.embeds}/. public/mfe/
             # § component-MFE snapshot contract: REA must emit the drift-proof fallback.
             # `loadDocHtml` enforces it at prerender too; this is the clearer failure.

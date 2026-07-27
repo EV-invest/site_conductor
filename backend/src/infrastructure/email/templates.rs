@@ -14,20 +14,27 @@ use domain::model::{application::JobApplication, contact::ContactMessage, newsle
 // nor `color-mix`, so the alpha-based semantic tokens are pre-composited against
 // the surface they sit on and pasted as opaque hex.
 const MIST: &str = "#e6e1d3"; // --color-main-mist
+const WHITE: &str = "#ffffff"; // headings are pure white in the board, not mist
 const TEAL: &str = "#2a9d8f"; // --color-main-accent-t1
 const HAIR: &str = "#1b2742"; // navy-hairline
-const BLACK: &str = "#070d18"; // --color-main-black / --background
-const SURFACE: &str = "#081020"; // --color-main-surface
-const CARD: &str = "#0c1626"; // --color-main-card / --card
-// --muted-foreground is `mist 40%`, which composites to ~#63676b on the card —
-// 3.3:1, under the 4.5:1 that 13px body copy needs. Kept on the same mist ramp
-// but at 60% so the label column stays legible in a mail client.
-const MUTED: &str = "#8f908e";
+const BLACK: &str = "#070d18"; // --color-main-black — the card body
+const SURFACE: &str = "#081020"; // --color-main-surface — the detail box
+const CARD: &str = "#0c1626"; // --color-main-card — the logo header
+const FOOTER: &str = "#05080e"; // board-only shade, one step under main-black
+// --muted-foreground is `mist 40%`; composited over BLACK that is #606263. The
+// board uses it for labels and the whole footer, so it is reproduced as-is —
+// note this lands at ~3.3:1, below the 4.5:1 WCAG asks of body copy.
+const MUTED: &str = "#606263";
 
 // Playfair/Inter are the site's families; a mail client that lacks them falls
 // through to the same serif/sans pairing the templates used before.
 const SERIF: &str = "'Playfair Display',Georgia,'Times New Roman',serif";
 const SANS: &str = "Inter,-apple-system,'Segoe UI',Arial,Helvetica,sans-serif";
+
+// Where the footer's Unsubscribe / Email preferences links land. A mailto is the
+// honest stopgap: it works today with no new surface, unlike a one-click
+// unsubscribe URL, which needs a signed token and a route to redeem it.
+const MAIL_LIST: &str = "admin@evinvest.ltd";
 pub struct RenderedEmail {
 	pub subject: String,
 	pub html: String,
@@ -35,7 +42,7 @@ pub struct RenderedEmail {
 }
 
 pub fn candidate_application_received(application: &JobApplication, vacancy: Option<&Vacancy>, site_url: &str) -> RenderedEmail {
-	let reference = reference(application.id.raw());
+	let reference = reference(&vacancy.map(|v| role_kind(&v.title)).unwrap_or_else(|| "GEN".into()), application.id.raw());
 	let submitted = fmt_ts(&application.created_at);
 	let first_name = application.applicant_name.split_whitespace().next().unwrap_or(&application.applicant_name).to_string();
 
@@ -90,18 +97,20 @@ pub fn candidate_application_received(application: &JobApplication, vacancy: Opt
 		],
 	));
 	body.push_str(&cta);
+	body.push_str(&signoff("— The EV Investment talent team"));
 
 	let html = shell(
 		&format!("We received your application, {first_name}."),
 		&body,
-		"You're receiving this because you applied via evinvest.ltd/hiring.",
+		"You're receiving this because you applied via evinvest.ltd/careers.",
+		site_url,
 	);
 	let text = application_received_text(vacancy, &reference, &submitted, &first_name);
 	RenderedEmail { subject, html, text }
 }
-pub fn internal_new_application(application: &JobApplication, vacancy: Option<&Vacancy>, _site_url: &str) -> RenderedEmail {
-	let reference = reference(application.id.raw());
-	let submitted = fmt_ts(&application.created_at);
+pub fn internal_new_application(application: &JobApplication, vacancy: Option<&Vacancy>, site_url: &str) -> RenderedEmail {
+	let reference = reference(&vacancy.map(|v| role_kind(&v.title)).unwrap_or_else(|| "GEN".into()), application.id.raw());
+	let submitted = fmt_ts_precise(&application.created_at);
 	let role_label = vacancy.map(|v| v.title.clone()).unwrap_or_else(|| "General talent pool — no specific role".to_string());
 
 	let mut body = String::new();
@@ -133,7 +142,7 @@ pub fn internal_new_application(application: &JobApplication, vacancy: Option<&V
 		Some(v) => format!("Internal notification · application for {}.", v.title),
 		None => "Internal notification · general talent-pool application.".to_string(),
 	};
-	let html = shell("New application received.", &body, &footer);
+	let html = shell("New application received.", &body, &footer, site_url);
 	let text = format!(
 		"New application\n\nName: {}\nEmail: {}\nRole: {}\nSubmitted: {submitted}\nReference: {reference}\n\nNote:\n{}\n",
 		application.applicant_name,
@@ -148,7 +157,7 @@ pub fn internal_new_application(application: &JobApplication, vacancy: Option<&V
 	}
 }
 pub fn candidate_contact_received(message: &ContactMessage, site_url: &str) -> RenderedEmail {
-	let reference = reference(message.id.raw());
+	let reference = reference("MSG", message.id.raw());
 	let submitted = fmt_ts(&message.created_at);
 	let first_name = message.name.split_whitespace().next().unwrap_or(&message.name).to_string();
 
@@ -170,11 +179,13 @@ pub fn candidate_contact_received(message: &ContactMessage, site_url: &str) -> R
 		&["Explore our coastal developments in Quy Nhơn.", "Read our latest research on the market."],
 	));
 	body.push_str(&button("Explore developments", site_url));
+	body.push_str(&signoff("— EV Investment"));
 
 	let html = shell(
 		&format!("We received your message, {first_name}."),
 		&body,
 		"You're receiving this because you contacted us via evinvest.ltd.",
+		site_url,
 	);
 	let text = format!(
 		"Thanks for reaching out, {first_name}.\n\nWe received your message and will reply within two business days.\n\nReference: {reference}\nSubmitted: {submitted}\n\nYour message:\n{}\n\n— EV Investment",
@@ -186,9 +197,9 @@ pub fn candidate_contact_received(message: &ContactMessage, site_url: &str) -> R
 		text,
 	}
 }
-pub fn internal_new_contact(message: &ContactMessage, _site_url: &str) -> RenderedEmail {
-	let reference = reference(message.id.raw());
-	let submitted = fmt_ts(&message.created_at);
+pub fn internal_new_contact(message: &ContactMessage, site_url: &str) -> RenderedEmail {
+	let reference = reference("MSG", message.id.raw());
+	let submitted = fmt_ts_precise(&message.created_at);
 
 	let mut body = String::new();
 	body.push_str(&eyebrow("New message"));
@@ -202,7 +213,7 @@ pub fn internal_new_contact(message: &ContactMessage, _site_url: &str) -> Render
 	body.push_str(&steps_heading("Message"));
 	body.push_str(&quote_block(&message.message));
 
-	let html = shell("New contact message.", &body, "Internal notification · contact form.");
+	let html = shell("New contact message.", &body, "Internal notification · contact form.", site_url);
 	let text = format!(
 		"New message\n\nName: {}\nEmail: {}\nSubmitted: {submitted}\nReference: {reference}\n\n{}\n",
 		message.name,
@@ -215,8 +226,8 @@ pub fn internal_new_contact(message: &ContactMessage, _site_url: &str) -> Render
 		text,
 	}
 }
-pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, _site_url: &str) -> RenderedEmail {
-	let reference = reference(subscription.id.raw());
+pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, site_url: &str) -> RenderedEmail {
+	let reference = reference("NL", subscription.id.raw());
 	let submitted = fmt_ts(&subscription.created_at);
 
 	let mut body = String::new();
@@ -231,7 +242,14 @@ pub fn candidate_newsletter_subscribed(subscription: &NewsletterSubscription, _s
 		("Reference", reference.clone()),
 	]));
 
-	let html = shell("Welcome to the EV Investment newsletter.", &body, "You're receiving this because you subscribed via evinvest.ltd.");
+	body.push_str(&signoff("— EV Investment"));
+
+	let html = shell(
+		"Welcome to the EV Investment newsletter.",
+		&body,
+		"You're receiving this because you subscribed via evinvest.ltd.",
+		site_url,
+	);
 	let text = format!(
 		"Welcome to the EV Investment newsletter.\n\nWe'll send you curated research, market updates on Quy Nhơn, and early access to new opportunities.\n\nEmail: {}\nSubscribed: {submitted}\nReference: {reference}\n\n— EV Investment",
 		subscription.email.as_str()
@@ -246,34 +264,57 @@ fn esc(raw: &str) -> String {
 	raw.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;")
 }
 
-fn reference(id: uuid::Uuid) -> String {
-	id.simple().to_string()[..8].to_uppercase()
+/// Board-style reference: `EV-<KIND>-1234`. The digits are derived from the id
+/// so the code stays stable for a given record and quotable over the phone.
+fn reference(kind: &str, id: uuid::Uuid) -> String {
+	let n = u16::from_be_bytes([id.as_bytes()[0], id.as_bytes()[1]]) % 10_000;
+	format!("EV-{kind}-{n:04}")
 }
 
-/// Human-readable UTC, e.g. `27 Jul 2026, 16:31 UTC`. The raw RFC 3339 form
+/// Initials of a vacancy title — "Investment Analyst" becomes `IA`, matching the
+/// `EV-IA-2381` sample on the board. Falls back to `ROLE` when nothing is usable.
+fn role_kind(title: &str) -> String {
+	let initials: String = title.split_whitespace().filter_map(|w| w.chars().find(|c| c.is_alphabetic())).take(3).collect::<String>().to_uppercase();
+	if initials.is_empty() { "ROLE".to_string() } else { initials }
+}
+
+/// `20 Jun 2026` — what candidate-facing letters show. The raw RFC 3339 form
 /// (`2026-07-27T16:31:07.918453Z`) reads as machine output in a letter.
 fn fmt_ts(ts: &jiff::Timestamp) -> String {
-	ts.strftime("%-d %b %Y, %H:%M UTC").to_string()
+	ts.strftime("%-d %b %Y").to_string()
+}
+
+/// `20 Jun 2026 · 14:32` — the internal copies keep the time of day, which is
+/// what an operator triaging the queue actually needs.
+fn fmt_ts_precise(ts: &jiff::Timestamp) -> String {
+	ts.strftime("%-d %b %Y · %H:%M").to_string()
 }
 
 fn heading(text: &str) -> String {
-	// -0.02em tracking mirrors the `h1,h2,h3` rule in the site's globals.css.
 	format!(
-		r#"<h1 style="margin:0 0 14px;font-family:{SERIF};font-size:24px;line-height:1.25;letter-spacing:-0.02em;color:{MIST};font-weight:600;">{}</h1>"#,
+		r#"<h1 style="margin:0 0 18px;font-family:{SERIF};font-size:26px;line-height:32px;letter-spacing:-0.26px;color:{WHITE};font-weight:600;">{}</h1>"#,
 		esc(text)
 	)
 }
 
 fn eyebrow(text: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 18px;font-family:{SANS};font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:{TEAL};">{}</p>"#,
+		r#"<p style="margin:0 0 18px;font-family:{SANS};font-size:12px;line-height:15px;font-weight:600;letter-spacing:.84px;text-transform:uppercase;color:{TEAL};">{}</p>"#,
 		esc(text)
 	)
 }
 
 fn paragraph(text: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 16px;font-family:{SANS};font-size:15px;line-height:1.6;color:{MIST};">{}</p>"#,
+		r#"<p style="margin:0 0 18px;font-family:{SANS};font-size:14.5px;line-height:23px;color:{MIST};">{}</p>"#,
+		esc(text)
+	)
+}
+
+/// The muted sign-off that closes every candidate-facing letter.
+fn signoff(text: &str) -> String {
+	format!(
+		r#"<p style="margin:18px 0 0;font-family:{SANS};font-size:14.5px;line-height:23px;color:{MUTED};">{}</p>"#,
 		esc(text)
 	)
 }
@@ -283,14 +324,14 @@ fn detail_box(rows: &[(&str, String)]) -> String {
 		.iter()
 		.map(|(label, value)| {
 			format!(
-				r#"<tr><td style="padding:6px 0;font-family:{SANS};font-size:13px;color:{MUTED};">{}</td><td align="right" style="padding:6px 0;font-family:{SANS};font-size:13px;color:{MIST};">{}</td></tr>"#,
+				r#"<tr><td style="padding:5px 0;font-family:{SANS};font-size:12.5px;line-height:16px;font-weight:500;color:{MUTED};">{}</td><td align="right" style="padding:5px 0;font-family:{SANS};font-size:13px;line-height:17px;font-weight:600;color:{MIST};">{}</td></tr>"#,
 				esc(label),
 				esc(value)
 			)
 		})
 		.collect();
 	format!(
-		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px;padding:16px 18px;background:{BLACK};border:1px solid {HAIR};border-radius:8px;">{body}</table>"#
+		r#"<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px;padding:16px 18px;background:{SURFACE};border:1px solid {HAIR};border-radius:10px;">{body}</table>"#
 	)
 }
 
@@ -318,43 +359,50 @@ fn checklist(items: &[(String, bool)]) -> String {
 fn steps(label: &str, items: &[&str]) -> String {
 	let lis: String = items
 		.iter()
-		.map(|i| format!(r#"<tr><td width="22" valign="top" style="font-family:{SANS};font-size:14px;color:{TEAL};">&mdash;</td><td style="padding:0 0 8px;font-family:{SANS};font-size:14px;line-height:1.5;color:{MIST};">{}</td></tr>"#, esc(i)))
+		// The bullet is an 8x2 teal rule, nudged down to sit on the first line.
+		.map(|i| format!(r#"<tr><td width="18" valign="top" style="padding:8px 10px 0 0;"><div style="width:8px;height:2px;background:{TEAL};border-radius:1px;font-size:0;line-height:0;">&nbsp;</div></td><td style="padding:0 0 8px;font-family:{SANS};font-size:13.5px;line-height:21px;color:{MIST};">{}</td></tr>"#, esc(i)))
 		.collect();
 	format!(
-		r#"<p style="margin:0 0 10px;font-family:{SANS};font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">{lis}</table>"#,
-		esc(label)
+		r#"{}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">{lis}</table>"#,
+		steps_heading(label)
 	)
 }
 
 fn button(label: &str, href: &str) -> String {
 	format!(
-		r#"<table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 4px;"><tr><td style="background:{TEAL};border-radius:8px;"><a href="{}" style="display:inline-block;padding:13px 26px;font-family:{SANS};font-size:14px;font-weight:600;color:{BLACK};text-decoration:none;">{}</a></td></tr></table>"#,
+		r#"<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0;"><tr><td style="background:{TEAL};border-radius:10px;"><a href="{}" style="display:inline-block;padding:13px 24px;font-family:{SANS};font-size:14.5px;line-height:18px;font-weight:600;color:{BLACK};text-decoration:none;">{}</a></td></tr></table>"#,
 		esc(href),
 		esc(label)
 	)
 }
 
 /// Wrap rendered sections in the brand shell: logo header, body, legal footer.
-fn shell(preheader: &str, body: &str, footer_context: &str) -> String {
+///
+/// `site_url` sources the header mark and the footer links. The logo is a hosted
+/// PNG rather than the source SVG — mail clients largely refuse SVG in `<img>` —
+/// and carries alt text so a client that blocks remote images still shows the
+/// brand rather than a gap.
+fn shell(preheader: &str, body: &str, footer_context: &str, site_url: &str) -> String {
 	let preheader = esc(preheader);
 	let footer_context = esc(footer_context);
+	let site = esc(site_url.trim_end_matches('/'));
 	format!(
 		r##"<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"></head>
 <body style="margin:0;padding:0;background:{BLACK};">
 <span style="display:none;max-height:0;overflow:hidden;opacity:0;">{preheader}</span>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{BLACK};padding:32px 12px;">
 <tr><td align="center">
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:{CARD};border:1px solid {HAIR};border-radius:14px;overflow:hidden;">
-<tr><td style="padding:26px 36px;border-bottom:1px solid {HAIR};">
-<div style="font-family:{SANS};font-size:18px;line-height:1.3;"><span style="font-weight:700;letter-spacing:.06em;color:{MIST};">EV</span><span style="font-weight:300;letter-spacing:.22em;color:{MUTED};">&nbsp;INVESTMENT</span></div>
-<div style="margin-top:2px;font-family:{SANS};font-size:9px;letter-spacing:.28em;color:{MUTED};">QUY NHON FUND</div>
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:{BLACK};border:1px solid {HAIR};border-radius:16px;overflow:hidden;">
+<tr><td style="padding:22px 32px;background:{CARD};border-bottom:1px solid {HAIR};">
+<img src="{site}/assets/email-logo.png" width="37" height="32" alt="EV Investment" style="display:block;width:37px;height:32px;border:0;outline:none;text-decoration:none;">
 </td></tr>
-<tr><td style="padding:34px 36px;background:{CARD};">{body}</td></tr>
-<tr><td style="padding:24px 36px;background:{SURFACE};border-top:1px solid {HAIR};">
-<p style="margin:0 0 6px;font-family:{SANS};font-size:12px;color:{MIST};">EV Investment</p>
-<p style="margin:0 0 12px;font-family:{SANS};font-size:12px;line-height:1.6;color:{MUTED};">Premium coastal developments &middot; Quy Nh&#417;n, Vietnam</p>
-<p style="margin:0 0 12px;font-family:{SANS};font-size:12px;line-height:1.6;color:{MUTED};">{footer_context}</p>
-<p style="margin:0;font-family:{SANS};font-size:11px;color:{MUTED};">&copy; 2026 EV Investment</p>
+<tr><td style="padding:34px 32px 36px;background:{BLACK};">{body}</td></tr>
+<tr><td style="padding:24px 32px 26px;background:{FOOTER};">
+<p style="margin:0 0 7px;font-family:{SANS};font-size:12px;line-height:15px;font-weight:600;letter-spacing:.96px;color:{MIST};">EV INVESTMENT</p>
+<p style="margin:0 0 7px;font-family:{SANS};font-size:12px;line-height:17px;color:{MUTED};">Quy Nh&#417;n &amp; Ho Chi Minh City, Vietnam</p>
+<p style="margin:0 0 7px;font-family:{SANS};font-size:11.5px;line-height:17px;color:{MUTED};">{footer_context}</p>
+<p style="margin:0 0 7px;font-family:{SANS};font-size:11.5px;line-height:15px;font-weight:500;letter-spacing:.23px;color:{MUTED};"><a href="mailto:{MAIL_LIST}?subject=Unsubscribe" style="color:{MUTED};text-decoration:none;">Unsubscribe</a>&nbsp;&nbsp; &middot; &nbsp;&nbsp;<a href="mailto:{MAIL_LIST}?subject=Email%20preferences" style="color:{MUTED};text-decoration:none;">Email preferences</a>&nbsp;&nbsp; &middot; &nbsp;&nbsp;<a href="{site}/privacy" style="color:{MUTED};text-decoration:none;">Privacy</a></p>
+<p style="margin:0;font-family:{SANS};font-size:11px;line-height:15px;color:{MUTED};">&copy; 2026 EV Investment. All rights reserved.</p>
 </td></tr>
 </table>
 </td></tr></table></body></html>"##
@@ -365,7 +413,7 @@ fn shell(preheader: &str, body: &str, footer_context: &str) -> String {
 
 fn steps_heading(label: &str) -> String {
 	format!(
-		r#"<p style="margin:0 0 10px;font-family:{SANS};font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{MUTED};">{}</p>"#,
+		r#"<p style="margin:0 0 12px;font-family:{SANS};font-size:13px;line-height:16px;font-weight:600;color:{MIST};">{}</p>"#,
 		esc(label)
 	)
 }

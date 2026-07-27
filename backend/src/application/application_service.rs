@@ -9,7 +9,10 @@ use domain::{
 	},
 };
 
-use crate::domain::port::{application_repository::ApplicationRepository, notifier::Notifier, vacancy_repository::VacancyRepository};
+use crate::{
+	application::deliver_best_effort,
+	domain::port::{application_repository::ApplicationRepository, notifier::Notifier, vacancy_repository::VacancyRepository},
+};
 
 #[derive(Clone)]
 pub struct ApplicationService {
@@ -38,11 +41,7 @@ impl ApplicationService {
 		};
 
 		let application = self.applications.create(vacancy.as_ref().map(|v| v.id), new).await?;
-
-		if let Err(error) = self.notifier.application_received(&application, vacancy.as_ref()).await {
-			tracing::error!(%error, application_id = %application.id.raw(), "failed to send application emails");
-		}
-
+		deliver_best_effort(self.notifier.application_received(&application, vacancy.as_ref()), "application", application.id.raw()).await;
 		Ok(application)
 	}
 }
