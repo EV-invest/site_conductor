@@ -274,7 +274,12 @@ fn reference(kind: &str, id: uuid::Uuid) -> String {
 /// Initials of a vacancy title — "Investment Analyst" becomes `IA`, matching the
 /// `EV-IA-2381` sample on the board. Falls back to `ROLE` when nothing is usable.
 fn role_kind(title: &str) -> String {
-	let initials: String = title.split_whitespace().filter_map(|w| w.chars().find(|c| c.is_alphabetic())).take(3).collect::<String>().to_uppercase();
+	let initials: String = title
+		.split_whitespace()
+		.filter_map(|w| w.chars().find(|c| c.is_alphabetic()))
+		.take(3)
+		.collect::<String>()
+		.to_uppercase();
 	if initials.is_empty() { "ROLE".to_string() } else { initials }
 }
 
@@ -433,7 +438,6 @@ fn application_received_text(vacancy: Option<&Vacancy>, reference: &str, submitt
 
 // ── newsletter: subscriber confirmation ────────────────────────────────────
 
-
 #[cfg(test)]
 mod render_preview {
 	use super::*;
@@ -443,7 +447,10 @@ mod render_preview {
 	#[test]
 	#[ignore]
 	fn dump_newsletter_html() {
-		use domain::model::{email::EmailAddress, newsletter::{NewsletterId, NewsletterSubscription}};
+		use domain::model::{
+			email::EmailAddress,
+			newsletter::{NewsletterId, NewsletterSubscription},
+		};
 		let sub = NewsletterSubscription {
 			id: NewsletterId::from_raw(uuid::Uuid::parse_str("636b9c35-4f4b-40e4-9785-47cf4ff17e07").unwrap()),
 			email: EmailAddress::parse("admin+newsletter@evinvest.ltd").unwrap(),

@@ -11,7 +11,7 @@ use backend::{
 	application::{application_service::ApplicationService, contact_service::ContactService, newsletter_service::NewsletterService, vacancy_service::VacancyService},
 	config::AppConfig,
 	infrastructure::{
-		db,
+		config_drift, db,
 		email::{
 			notifier::EmailNotifier,
 			transport::{EmailTransport, NoopTransport, SmtpTransport},
@@ -30,7 +30,19 @@ fn main() -> Result<()> {
 	color_eyre::install()?;
 	dotenvy::dotenv().ok();
 
-	let config = AppConfig::from_env().context("failed to load configuration")?;
+	// The deploy contract, straight out of the image: the gitops preflight runs
+	// this against the built image and diffs it with the cluster Secret's keys,
+	// so a missing variable is caught before the rollout instead of as a
+	// CrashLoopBackOff after it.
+	if let Some(profile) = print_required_vars_for() {
+		for var in backend::config::required_settings_var_names(&profile) {
+			println!("{var}");
+		}
+		return Ok(());
+	}
+
+	// Exits 78 (EX_CONFIG) on a bad environment, before anything else is built.
+	let config = AppConfig::from_env();
 
 	// Guard must stay alive for the duration of main — dropping it flushes events.
 	// `init` is a no-op (returns None) when SENTRY_DSN is unset.
@@ -51,6 +63,8 @@ fn main() -> Result<()> {
 }
 
 async fn run(config: AppConfig) -> Result<()> {
+	config_drift::spawn(backend::config::settings_var_names());
+
 	let pool = db::connect(&config.database_url).await.context("failed to connect to the database")?;
 	db::migrate(&pool).await.context("failed to run migrations")?;
 
@@ -87,6 +101,22 @@ async fn run(config: AppConfig) -> Result<()> {
 	axum::serve(listener, router).await.context("server error")?;
 
 	Ok(())
+}
+
+/// `--print-required-vars[=PROFILE]` (default `production`). Hand-rolled: this
+/// binary has no other CLI surface, and a whole arg parser for one flag is not
+/// worth the dependency.
+fn print_required_vars_for() -> Option<String> {
+	const FLAG: &str = "--print-required-vars";
+
+	let mut args = std::env::args().skip(1);
+	let arg = args.next()?;
+	match arg.split_once('=') {
+		Some((FLAG, profile)) => Some(profile.to_string()),
+		Some(_) => None,
+		None if arg == FLAG => Some(args.next().unwrap_or_else(|| "production".to_string())),
+		None => None,
+	}
 }
 
 fn init_tracing(environment: &str) -> Option<ev_lib::otel::Telemetry> {
