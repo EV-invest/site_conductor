@@ -9,10 +9,11 @@ const reaUrl = config.public.reaUrl ?? "http://localhost:59079";
 
 // Must stay a STATIC export (no request data) so it streams despite the layout's
 // `await cookies()` making routes dynamic — do NOT switch to generateMetadata.
-// Icons are owned by the app/icon.* conventions. The OG image lives in public/
-// and is declared here (not via the opengraph-image.* convention) so its alt
-// pulls from SITE instead of a static .alt.txt duplicate. X/Twitter falls back
-// to og:image, so no separate twitter image.
+// Icons are owned by the app/icon.* conventions. The OG image is rendered from
+// this same SITE data by scripts/build-og.tsx into public/, and is declared here
+// (not via the opengraph-image.* convention) so its alt pulls from SITE instead
+// of a static .alt.txt duplicate. X/Twitter falls back to og:image, so no
+// separate twitter image.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {

@@ -15,7 +15,7 @@ export const SITE = {
   url: SITE_URL,
   name: "EV Investment",
   alternateName: "Quy Nhon Fund",
-  tagline: "Invest in China+1 Narrative",
+  tagline: "Invest in China+1 narrative",
   // Reused as the default meta description, the Organization / WebSite
   // description, and the OG image alt.
   description:

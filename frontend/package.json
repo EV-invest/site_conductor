@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "npm install --no-audit --no-fund && tsx scripts/build-shell.mts",
     "dev": "next dev",
-    "prebuild": "npm install --no-audit --no-fund && tsx scripts/build-shell.mts",
+    "prebuild": "npm install --no-audit --no-fund && tsx scripts/build-shell.mts && tsx scripts/build-og.tsx",
     "build": "stylelint \"application/styles/**/*.css\" && next build",
     "start": "next start",
     "lint": "eslint .",

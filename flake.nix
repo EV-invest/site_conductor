@@ -216,6 +216,9 @@
             # proxy injects this over their HTML) is generated, never committed:
             # skipping this step must fail `next build` at the manifest import.
             node_modules/.bin/tsx scripts/build-shell.mts
+            # The social card is re-rendered from SITE copy here; the committed
+            # public/opengraph-image.png only exists so a bare checkout serves one.
+            node_modules/.bin/tsx scripts/build-og.tsx
             node_modules/.bin/next build
             runHook postBuild
           '';
@@ -617,33 +620,45 @@
                         git push origin "$next"
           '';
         };
-      in
-      {
-        # `nix run .#dev`      → ensures shared Postgres, then backend + frontend
-        # `nix run .#frontend` → Next.js marketing site (:$SITE_CONDUCTOR_FRONTEND_PORT)
-        # `nix run .#backend`  → Axum API only (:$SITE_CONDUCTOR_BACKEND_PORT; ensures the shared DB)
-        # `nix run .#db`       → ensure the SHARED ev_invest Postgres is up (+ this repo's databases)
-        # `nix run .#gen-api`  → regenerate openapi.json + the TS client
-        # `nix run .#test`     → frontend typecheck + Playwright visual regression
-        # `nix run .#accept-test` → accept new screenshots (all, or `-- <names>`)
-        # `nix run .#publish`  → bump latest remote vX.Y.Z tag (major|minor|patch) + push
-        # `nix run .#pull-prod-db` → replace the local site_conductor db with prod's (rpi5)
-        apps = {
-          dev = { type = "app"; program = "${runDev}/bin/run-dev"; };
-          frontend = { type = "app"; program = "${runFrontend}/bin/run-frontend"; };
-          backend = { type = "app"; program = "${runBackend}/bin/run-backend"; };
-          db = { type = "app"; program = "${runPostgres}/bin/run-postgres"; };
-          pull-prod-db = { type = "app"; program = "${runPullProdDb}/bin/pull-prod-db"; };
-          gen-api = { type = "app"; program = "${runGenApi}/bin/run-gen-api"; };
-          test = { type = "app"; program = "${runTest}/bin/run-test"; };
-          accept-test = { type = "app"; program = "${runAcceptTest}/bin/accept-test"; };
-          publish = { type = "app"; program = "${runPublish}/bin/publish"; };
-        };
-
-        packages = {
+        packagesOut = {
           default = backendBin;
           backend = backendBin;
         } // containerStd.packages;
+
+        # The whole `nix run` surface, described exactly once — `.#help` prints it,
+        # so there is no comment block above `apps` left to go stale.
+        runnable =
+          let
+            pad = n: builtins.substring 0 14 (n + "              ");
+            runHelp = pkgs.writeShellScriptBin "help" ''
+              cat <<'EOF'
+              nix run .#<target>
+              ${pkgs.lib.concatStringsSep "\n" (
+                pkgs.lib.mapAttrsToList (n: c: "  ${pad n}${c.about}") runnable
+              )}
+
+              nix build .#<package>
+                ${pkgs.lib.concatStringsSep ", " (builtins.attrNames packagesOut)}
+              EOF
+            '';
+          in
+          {
+            dev = { program = "${runDev}/bin/run-dev"; about = "ensure the shared Postgres, then backend + frontend"; };
+            frontend = { program = "${runFrontend}/bin/run-frontend"; about = "Next.js marketing site (:$SITE_CONDUCTOR_FRONTEND_PORT)"; };
+            backend = { program = "${runBackend}/bin/run-backend"; about = "Axum API only (:$SITE_CONDUCTOR_BACKEND_PORT; ensures the shared DB)"; };
+            db = { program = "${runPostgres}/bin/run-postgres"; about = "ensure the SHARED ev_invest Postgres is up (+ this repo's databases)"; };
+            pull-prod-db = { program = "${runPullProdDb}/bin/pull-prod-db"; about = "replace the local site_conductor db with prod's (rpi5)"; };
+            gen-api = { program = "${runGenApi}/bin/run-gen-api"; about = "regenerate openapi.json + the TS client"; };
+            test = { program = "${runTest}/bin/run-test"; about = "frontend typecheck + Playwright visual regression"; };
+            accept-test = { program = "${runAcceptTest}/bin/accept-test"; about = "accept new screenshots (all, or `-- <names>`)"; };
+            publish = { program = "${runPublish}/bin/publish"; about = "bump latest remote vX.Y.Z tag (major|minor|patch) + push"; };
+            help = { program = "${runHelp}/bin/help"; about = "print this list"; };
+          };
+      in
+      {
+        apps = pkgs.lib.mapAttrs (_: c: { type = "app"; program = c.program; }) runnable;
+
+        packages = packagesOut;
 
         containers = containerStd.containers;
 
