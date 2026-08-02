@@ -1,18 +1,11 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    flake-utils.url = "github:numtide/flake-utils";
-    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
-    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
     v_flakes.url = "github:valeratrades/v_flakes?ref=v1.6";
-    v_flakes.inputs.nixpkgs.follows = "nixpkgs";
-    v_flakes.inputs.rust-overlay.follows = "rust-overlay";
     ev_assets = { url = "github:ev-invest/assets"; flake = false; };
   };
-  outputs = { self, nixpkgs, rust-overlay, flake-utils, pre-commit-hooks, v_flakes, ev_assets }:
+  outputs = { self, v_flakes, ev_assets }:
     let
+      inherit (v_flakes) flake-utils pre-commit-hooks rust-overlay;
       # Private canonical sources baked into the frontend image. Deliberately NOT
       # flake inputs: as impure getFlake refs they carry no flake.lock entry and no
       # narHash, so they can never drift or fail a hash check — every build just
@@ -25,10 +18,10 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        overlays = [ (import rust-overlay) ];
-        pkgs = import nixpkgs {
-          inherit system overlays;
-          allowUnfree = true;
+        pkgs = import v_flakes.default_nixpkgs {
+          inherit system;
+          overlays = [ (import rust-overlay) ];
+          config.allowUnfree = true;
         };
         # Canonical toolchain pinned in v_flakes — byte-identical across repos, so
         # the nix store dedups it and sccache cross-references compilations.
