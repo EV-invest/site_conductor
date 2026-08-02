@@ -632,12 +632,12 @@
     "t": "Vermietung"
   },
   "home.hero.stat.currentCity": {
-    "en": "Current Target City",
-    "t": "Aktuelle Zielstadt"
+    "en": "Highest EV City",
+    "t": "Stadt mit höchstem EV"
   },
   "home.hero.stat.aumCap": {
-    "en": "AUM hard cap",
-    "t": "Harte AUM-Obergrenze"
+    "en": "Closing at",
+    "t": "Schluss bei"
   },
   "home.hero.b.eyebrow": {
     "en": "Institutional Real Estate • Quy Nhon",

@@ -632,12 +632,12 @@
     "t": "Cho thuê"
   },
   "home.hero.stat.currentCity": {
-    "en": "Current Target City",
-    "t": "Thành phố mục tiêu hiện tại"
+    "en": "Highest EV City",
+    "t": "Thành phố có EV cao nhất"
   },
   "home.hero.stat.aumCap": {
-    "en": "AUM hard cap",
-    "t": "Trần AUM"
+    "en": "Closing at",
+    "t": "Đóng ở mức"
   },
   "home.hero.b.eyebrow": {
     "en": "Institutional Real Estate • Quy Nhon",

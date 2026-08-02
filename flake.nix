@@ -567,6 +567,12 @@
             export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
             export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
             export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE="nixos"
+            # The html reporter auto-opens the Expected/Actual/Diff view only when
+            # stdin is a TTY; under the pre-commit hook it is /dev/null, so hand the
+            # terminal back when there is one.
+            if (: < /dev/tty) 2>/dev/null; then
+              exec npm run test:visual < /dev/tty
+            fi
             exec npm run test:visual
           '';
         };

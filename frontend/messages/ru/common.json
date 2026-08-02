@@ -632,12 +632,12 @@
     "t": "Аренда"
   },
   "home.hero.stat.currentCity": {
-    "en": "Current Target City",
-    "t": "Текущий целевой город"
+    "en": "Highest EV City",
+    "t": "Город с наибольшим EV"
   },
   "home.hero.stat.aumCap": {
-    "en": "AUM hard cap",
-    "t": "Жёсткий лимит AUM"
+    "en": "Closing at",
+    "t": "Закрытие на"
   },
   "home.hero.b.eyebrow": {
     "en": "Institutional Real Estate • Quy Nhon",
