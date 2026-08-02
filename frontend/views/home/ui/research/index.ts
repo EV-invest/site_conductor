@@ -1,1 +1,1 @@
-export { ResearchA as Research } from "./ui/research";
+export { Research } from "./ui/research-section";

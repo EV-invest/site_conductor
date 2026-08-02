@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE, ROUTES } from "@/shared/config/site";
 import { ASSETS } from "@/shared/config/assets";
-import { ARTICLES } from "@/entities/article";
+import { allPublications } from "@/entities/publication";
 import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 
 // Driven off shared/config ROUTES (adding a subpage = one list entry) plus the
@@ -44,11 +44,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(route.path === "/" ? { images: HOME_IMAGES } : {}),
   }));
 
-  const articleEntries: MetadataRoute.Sitemap = ARTICLES.map(article => ({
-    url: abs(`/blogs/${article.slug}`),
-    changeFrequency: "yearly",
-    priority: 0.6,
-  }));
+  // The whitepaper is excluded on purpose: it mounts in a shadow root, so its
+  // text is not in the SSR HTML and it is not a meaningful indexable target —
+  // same reasoning as its absence from ROUTES (shared/config/site.ts).
+  const articleEntries: MetadataRoute.Sitemap = allPublications()
+    .filter(publication => publication.kind !== "whitepaper")
+    .map(publication => ({
+      url: abs(`/publications/${publication.slug}`),
+      changeFrequency: "yearly",
+      priority: 0.6,
+    }));
 
   // Live vacancy detail pages. Degrade to static routes only if unreachable.
   let vacancyEntries: MetadataRoute.Sitemap = [];

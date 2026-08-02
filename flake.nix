@@ -193,7 +193,7 @@
           # call next build directly (npm run build chains stylelint, a CI gate that shouldn't fail the image).
           buildPhase = ''
             runHook preBuild
-            mkdir -p public/assets public/mfe public/blogs
+            mkdir -p public/assets public/mfe public/publications
             cp -rL --no-preserve=mode assets/. public/assets/
             cp -f --no-preserve=mode ${logoSrc} public/assets/logo.svg
             # Raster twin of the same mark for transactional email: mail clients
@@ -208,10 +208,24 @@
             cp -f --no-preserve=mode "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
             for dir in ${blog.packages.${system}.default}/*/; do
               slug="$(basename "$dir")"
-              cp -f --no-preserve=mode "$dir/main.pdf"        "public/blogs/$slug.pdf"
-              cp -f --no-preserve=mode "$dir/main.light.html" "public/blogs/$slug.light.html"
-              cp -f --no-preserve=mode "$dir/main.dark.html"  "public/blogs/$slug.dark.html"
+              cp -f --no-preserve=mode "$dir/main.pdf"        "public/publications/$slug.pdf"
+              cp -f --no-preserve=mode "$dir/main.light.html" "public/publications/$slug.light.html"
+              cp -f --no-preserve=mode "$dir/main.dark.html"  "public/publications/$slug.dark.html"
+              # Cover art and self-hosted footage, when the article ships any.
+              # Sibling of the documents so `data-src="/publications/<slug>/…"`
+              # resolves straight out of public/ with no rewrite.
+              if [ -d "$dir/media" ]; then
+                mkdir -p "public/publications/$slug"
+                cp -rf --no-preserve=mode "$dir"/media/. "public/publications/$slug/"
+              fi
             done
+            # The catalogue. It is a source file (entities/publication) rather
+            # than a public/ artefact because public/ is gitignored and the seed
+            # has to be committed for a flake-less `npm run dev` to work — so the
+            # build overwrites the seed in place, right before next build reads it.
+            if [ -f "${blog.packages.${system}.default}/index.json" ]; then
+              cp -f --no-preserve=mode "${blog.packages.${system}.default}/index.json" entities/publication/model/catalogue.json
+            fi
             # The AppShell (THE header — the only one; zones are chromeless and the
             # proxy injects this over their HTML) is generated, never committed:
             # skipping this step must fail `next build` at the manifest import.
@@ -306,7 +320,7 @@
             # and 0555 dirs behind. Heal write bits before touching anything so rm/cp
             # can overwrite — otherwise cp fails with "Permission denied"/"File exists".
             chmod -R u+w "$pub" 2>/dev/null || true
-            mkdir -p "$pub/assets" "$pub/blogs"
+            mkdir -p "$pub/assets" "$pub/publications"
             cp -rL --no-preserve=mode "$repo/frontend/assets/." "$pub/assets/"
             cp -f --no-preserve=mode ${logoSrc} "$pub/assets/logo.svg"
 
@@ -326,18 +340,25 @@
             bl=""
             if [ -d "$repo/../blog" ]; then
               bl="$(nix build "$repo/../blog" --no-link --print-out-paths 2>/dev/null || true)"
-              [ -n "$bl" ] || echo "warn: blog build failed — /blogs will degrade" >&2
+              [ -n "$bl" ] || echo "warn: blog build failed — /publications will degrade" >&2
             else
-              echo "warn: ../blog not checked out — /blogs will degrade" >&2
+              echo "warn: ../blog not checked out — /publications will degrade" >&2
             fi
             if [ -n "$bl" ]; then
               for dir in "$bl"/*/; do
                 [ -d "$dir" ] || continue
                 slug="$(basename "$dir")"
-                [ -e "$dir/main.pdf" ]        && cp -f --no-preserve=mode "$dir/main.pdf"        "$pub/blogs/''${slug}.pdf"
-                [ -e "$dir/main.light.html" ] && cp -f --no-preserve=mode "$dir/main.light.html" "$pub/blogs/''${slug}.light.html"
-                [ -e "$dir/main.dark.html" ]  && cp -f --no-preserve=mode "$dir/main.dark.html"  "$pub/blogs/''${slug}.dark.html"
+                [ -e "$dir/main.pdf" ]        && cp -f --no-preserve=mode "$dir/main.pdf"        "$pub/publications/''${slug}.pdf"
+                [ -e "$dir/main.light.html" ] && cp -f --no-preserve=mode "$dir/main.light.html" "$pub/publications/''${slug}.light.html"
+                [ -e "$dir/main.dark.html" ]  && cp -f --no-preserve=mode "$dir/main.dark.html"  "$pub/publications/''${slug}.dark.html"
+                if [ -d "$dir/media" ]; then
+                  mkdir -p "$pub/publications/''${slug}"
+                  cp -rf --no-preserve=mode "$dir"/media/. "$pub/publications/''${slug}/"
+                fi
               done
+              # Leave the committed seed in place when the blog build predates
+              # the manifest work — a missing catalogue would empty the section.
+              [ -e "$bl/index.json" ] && cp -f --no-preserve=mode "$bl/index.json" "$repo/frontend/entities/publication/model/catalogue.json"
             fi
 
             # Real-estate MFE — served same-origin at /mfe by the host.

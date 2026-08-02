@@ -8,14 +8,16 @@ export const metadata: Metadata = {
   title: "Whitepaper",
   description:
     "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
-  alternates: { canonical: "/whitepaper" },
+  alternates: { canonical: "/publications/whitepaper" },
 };
 
-// The whitepaper is a self-contained static HTML build (whitepaper flake →
-// public/), composed into the page as a *document microfrontend* — no iframe, so
-// it flows under the fixed header with the host's own chrome and scroll. It ships
-// its own complete styles (bare-tag selectors, its own fonts), so it mounts
-// isolated in a shadow root (`isolate`). Dark is the default variant.
+// Filed under /publications with the research it underpins, but it is not a
+// blog-flake article: it has its own flake and lands at public/whitepaper.*, so
+// it keeps a static route of its own rather than resolving through [slug].
+//
+// It ships complete styles (bare-tag selectors, its own fonts), so it mounts
+// isolated in a shadow root (`isolate`) instead of taking the host's prose.
+// That is also why it stays out of the sitemap — see shared/config/site.ts.
 export default function Page() {
   return (
     <DocumentReader

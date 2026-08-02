@@ -45,8 +45,28 @@ const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
   },
-  // The raw flake-built documents in public/ (whitepaper.*.html, blogs/*.html,
-  // *.pdf) duplicate the branded /whitepaper and /blogs/[slug] routes that
+  // /blogs and /whitepaper were separate shelves for the same thing: documents
+  // the fund publishes. They are now one route, so the old paths keep working
+  // forever as 308s — inbound links, the old sitemap and anything already
+  // bookmarked must not break. 308 (not 307) so the method and the SEO signal
+  // both transfer.
+  async redirects() {
+    return [
+      { source: "/blogs", destination: "/publications", permanent: true },
+      {
+        source: "/blogs/:path*",
+        destination: "/publications/:path*",
+        permanent: true,
+      },
+      {
+        source: "/whitepaper",
+        destination: "/publications/whitepaper",
+        permanent: true,
+      },
+    ];
+  },
+  // The raw flake-built documents in public/ (whitepaper.*.html,
+  // publications/*.html, *.pdf) duplicate the branded /publications routes that
   // compose them (shared/mfe RemoteDocument). Keep them fetchable — the routes
   // read/mount them — but out of the index as standalone URLs. Do NOT
   // robots.txt-Disallow instead: a noindex header only works on crawlable URLs.
@@ -54,9 +74,12 @@ const nextConfig: NextConfig = {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex" }];
     return [
       { source: "/whitepaper.:variant(dark|light).html", headers: noindex },
-      { source: "/blogs/:slug.:variant(dark|light).html", headers: noindex },
+      {
+        source: "/publications/:slug.:variant(dark|light).html",
+        headers: noindex,
+      },
       { source: "/whitepaper.pdf", headers: noindex },
-      { source: "/blogs/:slug.pdf", headers: noindex },
+      { source: "/publications/:slug.pdf", headers: noindex },
       // AppShell assets are content-hashed by scripts/build-shell.mts — one
       // fetch, then cached across conductor pages and every zone.
       {
@@ -84,6 +107,19 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Article covers and self-hosted footage. Unlike /assets these ARE
+      // effectively immutable: a dispatch's media is written once by the blog
+      // flake and a correction ships under a new slug, so a year is safe and
+      // keeps the weak VPS out of the video path on repeat visits.
+      {
+        source: "/publications/:slug/:file*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
@@ -92,6 +128,12 @@ const nextConfig: NextConfig = {
     // team portraits get re-encoded all week; a month of on-disk cache means
     // each size is produced once.
     minimumCacheTTL: 2592000,
+    // YouTube-backed dispatches fall back to YouTube's own thumbnail when the
+    // article ships no local poster. Only the thumbnail host — the player is a
+    // click-to-load iframe on youtube-nocookie.com, never an <Image>.
+    remotePatterns: [
+      { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },
+    ],
   },
   // Multi-zone mounts (PATTERNS.md §9): asset/API traffic goes straight to the
   // zone over native rewrites; zone *HTML* goes through the shell-injecting
