@@ -1,5 +1,5 @@
 import { PlateFrame } from "./plate-frame";
-import { PlateStage } from "./plate-stage";
+import { ImageStage } from "./image-stage";
 import { VideoStage } from "./video-plate";
 import { YouTubeStage } from "./youtube-plate";
 import type { MediaPlateCover, MediaPlateProps } from "./types";
@@ -23,8 +23,12 @@ function derivedBadge(cover: MediaPlateCover): string {
  * photo essay and a site video sit in the same column without re-reading as two
  * different components.
  *
- * Server dispatch: `image` ships zero JS; `video` and `youtube` server-render the
- * poster and hand only the stage to a client island.
+ * Server dispatch: the frame, badge and caption rail never enter the client
+ * bundle — each variant hands only its stage to a small island, which exists so
+ * a poster that fails to load collapses to the fallback field instead of leaving
+ * an empty box. (On /publications the whole tree is client-rendered anyway,
+ * because search filters the grid; on the article page and the homepage band the
+ * split is real.)
  */
 export function MediaPlate({
   cover,
@@ -51,7 +55,7 @@ export function MediaPlate({
       ) : cover.type === "youtube" ? (
         <YouTubeStage cover={cover} size={size} />
       ) : (
-        <PlateStage src={cover.src} alt={cover.alt} size={size} />
+        <ImageStage cover={cover} size={size} />
       )}
     </PlateFrame>
   );

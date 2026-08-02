@@ -14,8 +14,16 @@
 // throws at module load.
 import index from "./catalogue.json";
 import type { Cover, Publication, PublicationKind } from "./types";
+import { WHITEPAPER } from "./whitepaper";
 
-const KINDS = new Set<string>(["field-note", "research", "whitepaper"]);
+// Keyed by the union, so adding a kind is a compile error here rather than a
+// build artefact whose new entries are silently dropped at parse time.
+const KIND_SET: Record<PublicationKind, true> = {
+  "field-note": true,
+  research: true,
+  whitepaper: true,
+};
+const isKind = (value: string): value is PublicationKind => value in KIND_SET;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 function text(value: unknown): string | undefined {
@@ -71,13 +79,13 @@ function parsePublication(value: unknown): Publication | undefined {
   const dek = text(p.dek);
   if (!slug || !title || !dek) return undefined;
   if (!date || !ISO_DATE.test(date)) return undefined;
-  if (!kind || !KINDS.has(kind)) return undefined;
+  if (!kind || !isKind(kind)) return undefined;
 
   return {
     slug,
     title,
     date,
-    kind: kind as PublicationKind,
+    kind,
     author: text(p.author),
     role: text(p.role),
     dek,
@@ -93,9 +101,11 @@ function parsePublication(value: unknown): Publication | undefined {
 
 /// Date-descending, so `latestPublications` is a plain prefix and no caller has
 /// to re-sort. ISO dates compare correctly as strings.
-export const PUBLICATIONS: readonly Publication[] = (
-  Array.isArray(index) ? (index as unknown[]) : []
-)
-  .map(parsePublication)
-  .filter((p): p is Publication => p !== undefined)
-  .sort((a, b) => b.date.localeCompare(a.date));
+export const PUBLICATIONS: readonly Publication[] = [
+  ...(Array.isArray(index) ? (index as unknown[]) : [])
+    .map(parsePublication)
+    .filter((p): p is Publication => p !== undefined),
+  // Not blog-produced — see ./whitepaper. Appended rather than seeded so a real
+  // build cannot drop it.
+  WHITEPAPER,
+].sort((a, b) => b.date.localeCompare(a.date));

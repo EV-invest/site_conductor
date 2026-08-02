@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-import { formatPublicationDate, type Publication } from "@/entities/publication";
+import {
+  formatPublicationDate,
+  toPlateCover,
+  type Publication,
+} from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
 import { DocumentCard } from "@/shared/ui/document-card";
 import { MediaPlate } from "@/shared/ui/media-plate";
@@ -10,7 +14,6 @@ import {
   href,
   KIND_LABEL,
   pdfHref,
-  toPlateCover,
 } from "../model/presentation";
 
 /**
@@ -24,9 +27,11 @@ import {
 export function EntryCard({
   publication,
   className,
+  id,
 }: {
   publication: Publication;
   className?: string;
+  id?: string;
 }) {
   const cover = toPlateCover(publication);
   const date = formatPublicationDate(publication.date, "short");
@@ -45,12 +50,13 @@ export function EntryCard({
         pdfHref={pdfHref(publication)}
         cta={ctaFor(publication)}
         className={cn("h-full", className)}
+        id={id}
       />
     );
   }
 
   return (
-    <article className={cn("flex h-full flex-col", className)}>
+    <article id={id} className={cn("flex h-full flex-col", className)}>
       <MediaPlate cover={cover} caption={publication.cover?.caption} />
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] tracking-[0.17em]">

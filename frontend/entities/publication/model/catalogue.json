@@ -10,7 +10,7 @@
     "quote": "We underwrite the district on a spreadsheet and then we live in it for two years. The two views disagree often enough to be worth the rent.",
     "cover": {
       "type": "video",
-      "src": "/publications/quy_nhon_life/media/ridge-walk.mp4",
+      "src": "/publications/quy_nhon_life/ridge-walk.mp4",
       "poster": "/publications/quy_nhon_life/cover.jpg",
       "duration": "08:12",
       "caption": "Ghềnh Ráng ridge, 06:40, looking north over the coast road.",
@@ -81,16 +81,5 @@
     "pages": 39,
     "readingMinutes": 22,
     "category": "Asset Format"
-  },
-  {
-    "slug": "whitepaper",
-    "title": "EV Investment — Fund Whitepaper",
-    "date": "2026-02-01",
-    "kind": "whitepaper",
-    "dek": "Mandate, structure, fee terms and the underwriting standard applied to every asset in the Quy Nhơn coastal programme.",
-    "quote": "The fund buys land and operating estates in one district and states its assumptions in full, including the ones we expect to be wrong.",
-    "pages": 48,
-    "readingMinutes": 26,
-    "category": "Fund"
   }
 ]

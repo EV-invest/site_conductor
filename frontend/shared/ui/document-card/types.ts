@@ -19,4 +19,6 @@ export interface DocumentCardProps {
   /** Defaults to `READ THE REPORT`. */
   cta?: string;
   className?: string;
+  /** Anchor for the index's keyboard-selection scroll target. */
+  id?: string;
 }

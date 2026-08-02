@@ -112,7 +112,11 @@ const nextConfig: NextConfig = {
       // flake and a correction ships under a new slug, so a year is safe and
       // keeps the weak VPS out of the video path on repeat visits.
       {
-        source: "/publications/:slug/:file*",
+        // `:file+`, not `:file*` — the star form makes the whole segment group
+        // optional, so it also matched `/publications/<slug>` itself and pinned
+        // every article page in caches for a year, immutably, defeating its
+        // `dynamic = "force-dynamic"`.
+        source: "/publications/:slug/:file+",
         headers: [
           {
             key: "Cache-Control",

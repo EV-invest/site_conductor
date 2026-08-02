@@ -4,7 +4,7 @@ import { Container } from "@evinvest/uikit";
 import { fieldNotes, formatPublicationDate } from "@/entities/publication";
 import { Reveal } from "@/shared/ui/reveal";
 
-import { toNoteView } from "../model/to-note-view";
+import { toNoteViews } from "../model/to-note-view";
 import { NoteSummary } from "./note-summary";
 
 /**
@@ -16,15 +16,9 @@ import { NoteSummary } from "./note-summary";
  * district can do.
  */
 export function FieldNotes() {
-  const notes = fieldNotes()
-    .map((publication, index) => ({
-      publication,
-      view: toNoteView(publication, index),
-    }))
-    .filter(
-      (entry): entry is { publication: (typeof entry)["publication"]; view: NonNullable<(typeof entry)["view"]> } =>
-        entry.view !== undefined
-    );
+  // Bounded at the source: the band renders a lead, one companion and three
+  // archive lines, and nothing below that is ever read.
+  const notes = toNoteViews(fieldNotes(5));
 
   // Nothing filmed yet is a legitimate state — say nothing rather than render
   // an empty band.
@@ -66,20 +60,11 @@ export function FieldNotes() {
 
         <Reveal delay={0.05} className="mt-14 grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <NoteSummary
-              note={lead.view}
-              publication={lead.publication}
-              eyebrow="Latest dispatch"
-              lead
-            />
+            <NoteSummary note={lead} eyebrow="Latest dispatch" lead />
           </div>
           {second && (
             <div className="flex flex-col gap-10 lg:col-span-4">
-              <NoteSummary
-                note={second.view}
-                publication={second.publication}
-                eyebrow="Previous"
-              />
+              <NoteSummary note={second} eyebrow="Previous" />
               {archive.length > 0 && (
                 <div className="border border-main-mist/10 bg-main-card/50 px-6 pt-5 pb-2">
                   <span className="block font-mono-tech text-[10px] tracking-[0.19em] text-main-accent-t1 uppercase">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Publication } from "@/entities/publication";
 import {
@@ -23,6 +23,13 @@ const getText = (p: Publication) => `${p.dek} ${p.text ?? ""}`;
 const getHref = (p: Publication) => href(p);
 
 const RESULTS_ID = "publication-results";
+const rowId = (slug: string) => `publication-${slug}`;
+
+// Keyboard selection is a roving highlight, not a listbox: the cards stay
+// ordinary links with several interactive descendants each, which `role=option`
+// forbids. So the highlight is styling plus a live region — no ARIA widget
+// semantics we cannot honour.
+const SELECTED = "outline-2 outline-offset-8 outline-main-accent-t1/60";
 
 export function PublicationIndex({
   publications,
@@ -47,8 +54,26 @@ export function PublicationIndex({
     [kind, publications]
   );
 
-  const { query, setQuery, results, selectedIndex, helpOpen, setHelpOpen, inputRef } =
-    usePublicationSearch({ items, getTitle, getText, getHref });
+  const {
+    query,
+    setQuery,
+    results,
+    selectedIndex,
+    setSelectedIndex,
+    helpOpen,
+    setHelpOpen,
+    inputRef,
+  } = usePublicationSearch({ items, getTitle, getText, getHref });
+
+  const selected = selectedIndex === null ? undefined : results[selectedIndex];
+
+  // Arrowing past the fold would otherwise move an off-screen highlight.
+  useEffect(() => {
+    if (!selected) return;
+    document
+      .getElementById(rowId(selected.slug))
+      ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [selected]);
 
   // The lead only earns its extra room in the resting state: once someone is
   // searching or filtering, every result deserves equal weight.
@@ -65,40 +90,62 @@ export function PublicationIndex({
         controlsId={RESULTS_ID}
       />
       <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-        <FilterChips value={kind} onChange={setKind} counts={counts} />
+        <FilterChips
+          value={kind}
+          onChange={next => {
+            // The old index would point into a list that no longer exists.
+            setSelectedIndex(null);
+            setKind(next);
+          }}
+          counts={counts}
+        />
         <ResultCount shown={results.length} total={items.length} />
       </div>
 
-      {results.length === 0 ? (
-        <p className="mt-16 font-light text-main-mist/55" role="status">
-          Nothing matches “{query}”. Clear the search with Esc, or try a place
-          name — most dispatches are titled after one.
-        </p>
-      ) : (
-        <div id={RESULTS_ID} className="mt-14">
-          {showLead && <LeadEntry publication={results[0]} />}
-          <div
-            className={cn(
-              "grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3",
-              showLead && "mt-16"
-            )}
-          >
-            {grid.map((publication, index) => (
-              <EntryCard
-                key={publication.slug}
-                publication={publication}
-                // Keyboard selection is a roving highlight, not a listbox: the
-                // cards stay ordinary links, so this is styling only — no
-                // aria-activedescendant without real option semantics to back it.
-                className={cn(
-                  selectedIndex === index + gridOffset &&
-                    "outline-2 outline-offset-8 outline-main-accent-t1/60"
-                )}
+      {/* The highlight drives Enter, so it has to be announced to anyone who
+          cannot see it. */}
+      <p aria-live="polite" className="sr-only">
+        {selected
+          ? `${selected.title} — ${(selectedIndex ?? 0) + 1} of ${results.length}`
+          : ""}
+      </p>
+
+      <div id={RESULTS_ID} className="mt-14">
+        {results.length === 0 ? (
+          <p className="font-light text-main-mist/55" role="status">
+            {query === ""
+              ? "Nothing published under this filter yet."
+              : `Nothing matches “${query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.`}
+          </p>
+        ) : (
+          <>
+            {showLead && (
+              <LeadEntry
+                publication={results[0]}
+                id={rowId(results[0].slug)}
+                className={cn(selectedIndex === 0 && SELECTED)}
               />
-            ))}
-          </div>
-        </div>
-      )}
+            )}
+            <div
+              className={cn(
+                "grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3",
+                showLead && "mt-16"
+              )}
+            >
+              {grid.map((publication, index) => (
+                <EntryCard
+                  key={publication.slug}
+                  publication={publication}
+                  id={rowId(publication.slug)}
+                  className={cn(
+                    selectedIndex === index + gridOffset && SELECTED
+                  )}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
 
       <ShortcutsDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
     </>

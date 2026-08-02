@@ -6,9 +6,16 @@
  *
  * Order matters and mirrors the original:
  *   1. help dialog open → swallow everything, close on Escape / `?`
- *   2. arrows + Enter → handled whether or not the field has focus
+ *   2. arrows + Enter → ONLY while the field has focus (see below)
  *   3. focus inside an editable → only Escape (clear + blur) is meaningful
  *   4. otherwise the bare shortcuts: `s` `S` `/` focus, `?` help, Escape deselect
+ *
+ * Divergence from the original, and the important one: it handled the arrows and
+ * Enter on `window` regardless of focus. On a page whose results are ordinary
+ * links — with a CTA, a PDF download and a play button inside every card — that
+ * makes Enter dead on every control and kills arrow-key scrolling outright. Both
+ * are ours only while the search input itself holds focus; anywhere else the key
+ * belongs to whatever the user actually focused.
  */
 export interface SearchKeyContext {
   helpOpen: boolean;
@@ -32,12 +39,18 @@ function isEditing(): boolean {
   return ["INPUT", "TEXTAREA", "SELECT"].includes(active.tagName);
 }
 
+function hasSearchFocus(ctx: SearchKeyContext): boolean {
+  return ctx.input !== null && document.activeElement === ctx.input;
+}
+
 /** ArrowUp/ArrowDown: clamp at both ends, never wrap. No selection → index 0. */
 function moveSelection(event: KeyboardEvent, ctx: SearchKeyContext): boolean {
   if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return false;
-  event.preventDefault();
+  if (!hasSearchFocus(ctx)) return false;
   const last = ctx.hrefs.length - 1;
-  if (last < 0) return true;
+  // Nothing to move through: let the keypress scroll the page as usual.
+  if (last < 0) return false;
+  event.preventDefault();
   const current = ctx.selectedIndex;
   if (current === null) ctx.setSelectedIndex(0);
   else if (event.key === "ArrowDown")
@@ -52,15 +65,16 @@ function confirmSelection(
   ctx: SearchKeyContext
 ): boolean {
   if (event.key !== "Enter") return false;
+  if (!hasSearchFocus(ctx)) return false;
   event.preventDefault();
   ctx.pushUrl(ctx.query);
   const { hrefs, selectedIndex } = ctx;
   const href =
-    hrefs.length === 1
-      ? hrefs[0]
-      : selectedIndex === null
-        ? undefined
-        : hrefs[selectedIndex];
+    selectedIndex !== null
+      ? hrefs[selectedIndex]
+      : hrefs.length === 1
+        ? hrefs[0]
+        : undefined;
   if (href) ctx.navigate(href);
   return true;
 }

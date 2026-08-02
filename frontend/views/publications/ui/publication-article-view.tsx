@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { Container } from "@evinvest/uikit";
 
-import { formatPublicationDate, type Publication } from "@/entities/publication";
+import {
+  formatPublicationDate,
+  toPlateCover,
+  type Publication,
+} from "@/entities/publication";
 import { DocumentReader } from "@/shared/ui/document-reader";
 import { MediaPlate } from "@/shared/ui/media-plate";
 
-import { KIND_LABEL, pdfHref, toPlateCover } from "../model/presentation";
+import { KIND_LABEL, pdfHref } from "../model/presentation";
 
 /**
  * An article is a header, at most one cover, and the compiled document.

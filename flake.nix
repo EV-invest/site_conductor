@@ -208,9 +208,11 @@
             cp -f --no-preserve=mode "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
             for dir in ${blog.packages.${system}.default}/*/; do
               slug="$(basename "$dir")"
-              cp -f --no-preserve=mode "$dir/main.pdf"        "public/publications/$slug.pdf"
-              cp -f --no-preserve=mode "$dir/main.light.html" "public/publications/$slug.light.html"
-              cp -f --no-preserve=mode "$dir/main.dark.html"  "public/publications/$slug.dark.html"
+              # Guarded: the blog build can legitimately emit a directory with
+              # no documents in it, and an unguarded cp would fail the image.
+              [ -e "$dir/main.pdf" ]        && cp -f --no-preserve=mode "$dir/main.pdf"        "public/publications/$slug.pdf"
+              [ -e "$dir/main.light.html" ] && cp -f --no-preserve=mode "$dir/main.light.html" "public/publications/$slug.light.html"
+              [ -e "$dir/main.dark.html" ]  && cp -f --no-preserve=mode "$dir/main.dark.html"  "public/publications/$slug.dark.html"
               # Cover art and self-hosted footage, when the article ships any.
               # Sibling of the documents so `data-src="/publications/<slug>/…"`
               # resolves straight out of public/ with no rewrite.
@@ -356,9 +358,12 @@
                   cp -rf --no-preserve=mode "$dir"/media/. "$pub/publications/''${slug}/"
                 fi
               done
-              # Leave the committed seed in place when the blog build predates
-              # the manifest work — a missing catalogue would empty the section.
-              [ -e "$bl/index.json" ] && cp -f --no-preserve=mode "$bl/index.json" "$repo/frontend/entities/publication/model/catalogue.json"
+              # Deliberately NOT copied here. entities/publication/model/catalogue.json
+              # is a tracked source file; rewriting it from the dev shell would
+              # leave every checkout dirty and get the seed clobbered into a
+              # commit by accident. Only the image build (which works on a
+              # sandboxed copy) overwrites it. Run `nix build` to see real
+              # catalogue data locally.
             fi
 
             # Real-estate MFE — served same-origin at /mfe by the host.

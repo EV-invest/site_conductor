@@ -133,7 +133,8 @@ contract is shared with `cabinet`, so keep this in sync with it.
 ### Document remotes — `RemoteDocument`
 
 For remotes that are a self-contained **static HTML document** (the typst-built
-[whitepaper](./app/whitepaper) and [blog](./app/blogs)) rather than a custom-element
+[whitepaper](./app/publications/whitepaper) and
+[publications](./app/publications)) rather than a custom-element
 bundle. The document is addressed by URL (site-relative → read from `public/`;
 absolute → fetched, so a doc service can move to its own origin) and composed into
 the page natively, keeping the host chrome and scroll.
@@ -141,7 +142,7 @@ the page natively, keeping the host chrome and scroll.
 ```tsx
 // research article — no styles of its own: light DOM + host typography (prose),
 // rendered server-side (SSR'd, indexable)
-<RemoteDocument src={`/blogs/${slug}.dark.html`} className="prose prose-invert …" />
+<RemoteDocument src={`/publications/${slug}.dark.html`} className="prose prose-invert …" />
 
 // whitepaper — ships its own complete styles targeting bare tags: isolate it in a
 // shadow root (a small client island; see PATTERNS.md for the React-19/DSD caveat)

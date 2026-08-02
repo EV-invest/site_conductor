@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { formatPublicationDate, type Publication } from "@/entities/publication";
+import { formatPublicationDate } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
 import { MediaPlate } from "@/shared/ui/media-plate";
 
@@ -11,15 +11,14 @@ import type { NoteView } from "../model/to-note-view";
 /// different components.
 export function NoteSummary({
   note,
-  publication,
   lead = false,
   eyebrow,
 }: {
   note: NoteView;
-  publication: Publication;
   lead?: boolean;
   eyebrow: string;
 }) {
+  const { publication } = note;
   return (
     <article className="flex flex-col">
       <div className="flex items-center justify-between gap-4 pb-3.5 font-mono-tech text-[11px] tracking-[0.19em]">

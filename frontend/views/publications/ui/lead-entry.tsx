@@ -1,9 +1,14 @@
 import Link from "next/link";
 
-import { formatPublicationDate, type Publication } from "@/entities/publication";
+import {
+  formatPublicationDate,
+  toPlateCover,
+  type Publication,
+} from "@/entities/publication";
+import { cn } from "@/shared/lib/utils";
 import { MediaPlate } from "@/shared/ui/media-plate";
 
-import { ctaFor, href, KIND_LABEL, toPlateCover } from "../model/presentation";
+import { ctaFor, href, KIND_LABEL } from "../model/presentation";
 import { EntryCard } from "./entry-card";
 
 /**
@@ -12,12 +17,25 @@ import { EntryCard } from "./entry-card";
  * two-column media layout would leave exactly the picture-shaped hole the card
  * species split exists to avoid.
  */
-export function LeadEntry({ publication }: { publication: Publication }) {
+export function LeadEntry({
+  publication,
+  className,
+  id,
+}: {
+  publication: Publication;
+  className?: string;
+  id?: string;
+}) {
   const cover = toPlateCover(publication);
-  if (!cover) return <EntryCard publication={publication} />;
+  if (!cover) {
+    return <EntryCard publication={publication} className={className} id={id} />;
+  }
 
   return (
-    <article className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+    <article
+      id={id}
+      className={cn("grid gap-8 lg:grid-cols-12 lg:gap-10", className)}
+    >
       <div className="lg:col-span-7">
         <MediaPlate
           cover={cover}

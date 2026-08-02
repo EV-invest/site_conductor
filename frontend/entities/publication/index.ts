@@ -6,13 +6,11 @@
 // ask questions (`findPublication`, `fieldNotes`, …) instead of scanning an
 // array, so the storage can move behind these names without touching consumers.
 export type { Cover, Publication, PublicationKind } from "./model/types";
-export { coverPoster, youtubePosterUrl } from "./model/types";
+export { toPlateCover } from "./model/cover-props";
 export {
   allPublications,
   fieldNotes,
   findPublication,
   formatPublicationDate,
-  hasCover,
-  latestPublications,
   publicationsByKind,
 } from "./model/selectors";

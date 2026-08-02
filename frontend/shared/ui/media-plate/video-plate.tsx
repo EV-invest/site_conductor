@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { PlateStage } from "./plate-stage";
 import { PlayControl } from "./play-control";
@@ -20,10 +20,19 @@ export function VideoStage({
 }) {
   const [playing, setPlaying] = useState(false);
   const [posterFailed, setPosterFailed] = useState(false);
+  // The control unmounts when it is pressed, so without this a keyboard user is
+  // dropped onto <body> and has to tab from the top of the page to reach the
+  // player they just started.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (playing) videoRef.current?.focus();
+  }, [playing]);
 
   if (playing) {
     return (
       <video
+        ref={videoRef}
+        tabIndex={-1}
         src={cover.src}
         poster={posterFailed ? undefined : cover.poster}
         autoPlay

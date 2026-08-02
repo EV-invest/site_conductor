@@ -46,20 +46,3 @@ export type Publication = {
   /// so search degrades to title-and-dek matching until a real build has run.
   text?: string;
 };
-
-/// YouTube serves a poster per video id, so a `youtube` cover need not ship a
-/// local one; a hand-authored `poster` still wins where the auto frame is poor.
-export function youtubePosterUrl(videoId: string): string {
-  return `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
-}
-
-export function coverPoster(cover: Cover): string | undefined {
-  switch (cover.type) {
-    case "video":
-      return cover.poster;
-    case "youtube":
-      return cover.poster ?? youtubePosterUrl(cover.videoId);
-    case "image":
-      return cover.src;
-  }
-}

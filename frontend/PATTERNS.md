@@ -206,7 +206,8 @@ transports, picked by what the remote ships:
   it — a pure Server Component, SSR'd and indexable (use for unstyled docs, e.g.
   research articles). `isolate` mounts a **self-styled** doc (its own CSS targets
   bare tags) in a **shadow root** via a small client island, so its styles can't
-  reach the host (use for the whitepaper). `/whitepaper` and `/blogs/[slug]` are
+  reach the host (use for the whitepaper). `/publications/whitepaper` and
+  `/publications/[slug]` are
   the live examples.
 
 Notes that bite:

@@ -1,5 +1,5 @@
 import { PUBLICATIONS } from "./catalogue";
-import type { Cover, Publication, PublicationKind } from "./types";
+import type { Publication, PublicationKind } from "./types";
 
 // `undefined` (not a fallback entry) so an uncatalogued slug is a hard miss the
 // caller must turn into a 404 — never a silently rendered soft-404 (#105).
@@ -17,19 +17,9 @@ export function publicationsByKind(kind: PublicationKind): Publication[] {
   return PUBLICATIONS.filter(p => p.kind === kind);
 }
 
-export function latestPublications(n: number): Publication[] {
-  return PUBLICATIONS.slice(0, n);
-}
-
 export function fieldNotes(n?: number): Publication[] {
   const notes = publicationsByKind("field-note");
   return n === undefined ? notes : notes.slice(0, n);
-}
-
-/// A type predicate rather than a plain boolean so a caller that guards on it
-/// gets `p.cover` narrowed to `Cover` in the branch that renders it.
-export function hasCover(p: Publication): p is Publication & { cover: Cover } {
-  return p.cover !== undefined;
 }
 
 // Pinned to en-GB and UTC rather than the host locale/zone: this formats on the
