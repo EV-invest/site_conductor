@@ -38,7 +38,11 @@ ev_lib::settings! {
 		/// Public origin used to build links inside emails (e.g. "View the role").
 		site_url: String = "https://evinvest.vn",
 		/// PostHog project key for server-side capture. Unset ⇒ analytics no-op.
-		#[required_in("production")]
+		///
+		/// Deliberately NOT `required_in("production")`, unlike `sentry_dsn`: a
+		/// missing error reporter hides failures, while missing product analytics
+		/// only forgoes a metric. That must never be the reason a service refuses
+		/// to boot.
 		posthog_key: Option<String>,
 		posthog_host: Option<String>,
 	}
@@ -154,7 +158,10 @@ mod tests {
 	fn production_requires_the_silent_failure_surface() {
 		assert_eq!(
 			RawSettings::required_var_names("production"),
-			vec!["DATABASE_URL", "SENTRY_DSN", "SMTP_HOST", "SMTP_USERNAME", "SMTP_PASSWORD", "POSTHOG_KEY"]
+			// POSTHOG_KEY is read (it is in the env surface above) but never
+			// required: analytics is a metric, not a safety net, so it must not be
+			// able to keep a service from booting. See the field's comment.
+			vec!["DATABASE_URL", "SENTRY_DSN", "SMTP_HOST", "SMTP_USERNAME", "SMTP_PASSWORD"]
 		);
 		// Locally, only the one thing the process genuinely cannot start without.
 		assert_eq!(RawSettings::required_var_names("development"), vec!["DATABASE_URL"]);
