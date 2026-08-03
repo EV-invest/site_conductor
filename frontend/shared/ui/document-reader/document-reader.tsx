@@ -23,7 +23,8 @@ export interface DocumentReaderProps {
 /**
  * The read/download framework for a `RemoteDocument`-backed page: the doc body
  * plus a PDF-download action mounted into the top bar for the duration of the
- * read. `/whitepaper` and `/blogs/[slug]` both render through this so the two
+ * read. `/publications/whitepaper` and `/publications/[slug]` both render
+ * through this so the two
  * never drift into their own copies of the same read/download interaction.
  */
 export function DocumentReader({

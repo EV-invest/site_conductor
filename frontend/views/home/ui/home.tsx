@@ -1,3 +1,4 @@
+import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
 import { Portfolio } from "./portfolio";
 import { Research } from "./research";
@@ -14,6 +15,7 @@ export function HomeView() {
     <div className="min-h-screen bg-main-black text-main-mist font-sans">
       <HomeStructuredData />
       <Hero />
+      <FieldNotes />
       <Portfolio />
       <Research />
       <Team />

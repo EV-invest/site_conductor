@@ -1,0 +1,85 @@
+[
+  {
+    "slug": "quy_nhon_life",
+    "title": "Living in the District We're Buying",
+    "date": "2026-07-28",
+    "kind": "field-note",
+    "author": "Đặng Minh",
+    "role": "Partner, Quy Nhơn",
+    "dek": "A walk along the Ghềnh Ráng ridge at the hour the construction crews start, from the coast road to the three parcels we hold above it.",
+    "quote": "We underwrite the district on a spreadsheet and then we live in it for two years. The two views disagree often enough to be worth the rent.",
+    "cover": {
+      "type": "video",
+      "src": "/publications/quy_nhon_life/ridge-walk.mp4",
+      "poster": "/publications/quy_nhon_life/cover.jpg",
+      "duration": "08:12",
+      "caption": "Ghềnh Ráng ridge, 06:40, looking north over the coast road.",
+      "alt": "Hillside road above Quy Nhơn bay at dawn, scaffolding on the slope below."
+    },
+    "category": "Field Report"
+  },
+  {
+    "slug": "airport_road_six_months",
+    "title": "The Airport Road, Six Months On",
+    "date": "2026-07-12",
+    "kind": "field-note",
+    "dek": "The Phù Cát link opened in January. We drove it at 07:00 and again at 18:00 to see what the 40-minute transfer time did to the parcels either side of it.",
+    "quote": "Travel time fell as promised. Land within two kilometres of the interchange repriced first, and the frontage plots have yet to follow.",
+    "cover": {
+      "type": "youtube",
+      "videoId": "dQw4w9WgXcQ",
+      "duration": "06:20",
+      "caption": "Phù Cát interchange to the northern beach strip, evening peak.",
+      "alt": "Dashboard view of the new airport road running between rice fields."
+    },
+    "category": "Infrastructure"
+  },
+  {
+    "slug": "fish_market_5am",
+    "title": "Fish Market Economics at 5am",
+    "date": "2026-05-21",
+    "kind": "field-note",
+    "dek": "Fourteen frames from the Hàm Tử landing: who sets the price, who takes the ice, and why the restaurant supply chain we depend on begins three hours before the hotels open.",
+    "cover": {
+      "type": "image",
+      "src": "/publications/fish_market_5am/cover.jpg",
+      "caption": "Hàm Tử landing, 05:10. First auction of the morning catch.",
+      "alt": "Traders sorting crates of fish under work lights on a concrete quay before sunrise."
+    },
+    "frames": 14,
+    "category": "Local Economy"
+  },
+  {
+    "slug": "vietnam_coastal_2026",
+    "title": "Vietnam Coastal Macro Report 2026",
+    "date": "2026-05-01",
+    "kind": "research",
+    "dek": "Capital flows out of the constrained primary markets and into coastal secondary cities: FDI registrations, land-use approvals and domestic wealth formation, 2019–2026.",
+    "quote": "Vietnam's coastal secondary cities are absorbing institutional capital that the primary markets can no longer place, on infrastructure delivery rather than sentiment.",
+    "pages": 62,
+    "readingMinutes": 34,
+    "category": "Macroeconomics"
+  },
+  {
+    "slug": "vietnam_tail_risk",
+    "title": "Vietnam Tail Risk Analysis",
+    "date": "2026-04-01",
+    "kind": "research",
+    "dek": "The four exposures we model against a Vietnam coastal position — credit tightening, currency, typhoon frequency, and single-buyer tourism concentration — and what each costs at the fifth percentile.",
+    "quote": "The binding constraint is not demand but the developer credit channel; every scenario we run degrades through it first.",
+    "pages": 48,
+    "readingMinutes": 27,
+    "category": "Risk"
+  },
+  {
+    "slug": "hospitality_yield_shifts",
+    "title": "Post-Pandemic Hospitality Yield Shifts",
+    "date": "2026-03-01",
+    "kind": "research",
+    "dek": "Operating data from eleven coastal estates: how ADR, occupancy and staffing cost per key moved between 2019 and 2025, and where low-density stock now sits against hotel product.",
+    "quote": "Low-density estates hold rate through the shoulder season; the volume-led hotel format recovers occupancy first and rate last.",
+    "pages": 39,
+    "readingMinutes": 22,
+    "category": "Asset Format"
+  }
+]

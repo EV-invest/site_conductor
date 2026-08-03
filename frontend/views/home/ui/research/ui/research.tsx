@@ -12,58 +12,29 @@ import { Logo } from "@/shared/ui/logo";
 import { Reveal } from "@/shared/ui/reveal";
 import { useAnalytics } from "@/features/analytics";
 
-// Report library. The list (left) and the reading pane (right) both render from
-// this — switching a card just moves the index, and the pane cross-fades.
-// TODO: generalize — hardcoded slug mapping, should come from the blog flake
-const REPORTS = [
-  {
-    cat: "Macroeconomics",
-    title: "Vietnam Coastal Macro Report 2026",
-    paneTitle: "Vietnam Coastal Macro Report 2026",
-    slug: "vietnam_coastal_2026",
-    date: "May 2026",
-    quote:
-      "Vietnam’s coastal secondary cities are outperforming saturated primary markets, driven by domestic wealth expansion and direct FDI.",
-    body: [
-      "Our May 2026 analysis indicates a major shift in capital deployment. As Ho Chi Minh City and Hanoi face regulatory and land availability constraints, institutional real estate capital is rapidly relocating to coastal hubs with active infrastructure development.",
-      "Quy Nhon stands out due to its unique combination of deep-water port access, high-speed rail connectivity, and a local government aggressively pushing for technological and tourism transformation.",
-    ],
-  },
-  {
-    cat: "Urban Planning",
-    title: "Quy Nhon Infrastructure Masterplan & Land Valuation",
-    paneTitle: "Quy Nhon Infrastructure Masterplan",
-    // TODO: generalize — no exact blog article yet; closest match used
-    slug: "vietnam_tail_risk",
-    date: "April 2026",
-    quote:
-      "The expansion of Phu Cat Airport and the Nhon Hoi Economic Zone are creating unprecedented land valuation uplifts in Quy Nhon.",
-    body: [
-      "This report maps the correlation between infrastructure milestones and land pricing. With the airport expansion nearing completion and the new coastal highway fully operational, travel times have decreased by 40%, directly impacting luxury resort occupancies.",
-      "We analyze specific sub-districts poised for the highest capital appreciation over the next 36 months, providing actionable entry points for institutional portfolios.",
-    ],
-  },
-  {
-    cat: "Market Analysis",
-    title: "Post-Pandemic Tourism & Hospitality Yield Shifts",
-    paneTitle: "Post-Pandemic Hospitality Yield Shifts",
-    slug: "hospitality_yield_shifts",
-    date: "March 2026",
-    quote:
-      "Yield structures in hospitality assets are shifting from volume-driven models to exclusive, low-density, high-rate private estates.",
-    body: [
-      "Post-pandemic high-net-worth travelers demand privacy, wellness, and architectural uniqueness. Our research shows that low-density luxury villas in Quy Nhon command a 35% premium in ADR (Average Daily Rate) compared to traditional luxury hotel suites.",
-      "We dissect the operating metrics of leading coastal estates to demonstrate how smart design directly drives superior cash-on-cash yields.",
-    ],
-  },
-];
+// Report library. The list (left) and the reading pane (right) both render
+// from this — switching a card just moves the index, and the pane cross-fades.
+// The data comes from the publication catalogue via the server wrapper in
+// ./research-section, so this section can no longer drift from /publications
+// (it used to keep its own copy, including a slug that pointed at the wrong
+// report).
+export type ResearchReport = {
+  cat: string;
+  title: string;
+  paneTitle: string;
+  slug: string;
+  date: string;
+  quote: string;
+  body: string[];
+};
 
-export function ResearchA() {
+export function ResearchA({ reports }: { reports: ResearchReport[] }) {
+
   const [active, setActive] = useState(0);
   const capture = useAnalytics();
   const router = useRouter();
-  const report = REPORTS[active];
-  const goToReport = () => router.push(`/blogs/${report.slug}`);
+  const report = reports[active];
+  const goToReport = () => router.push(`/publications/${report.slug}`);
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
   //    faint dot-grid texture so it reads as its own "document / library" zone
@@ -102,7 +73,7 @@ export function ResearchA() {
               bottom rule runs under the strip, broken only by the active tab,
               which drops over it (-mb-px) to share the pane's black fill. */}
           <div className="flex items-stretch border-b border-main-mist/10 lg:hidden">
-            {REPORTS.map((r, idx) => {
+            {reports.map((r, idx) => {
               const on = active === idx;
               return (
                 <button
@@ -130,7 +101,7 @@ export function ResearchA() {
 
           {/* Research Selection Menu (desktop card list) */}
           <div className="hidden lg:block lg:col-span-1 space-y-4">
-            {REPORTS.map((r, idx) => (
+            {reports.map((r, idx) => (
               <div
                 key={idx}
                 onClick={() => setActive(idx)}
@@ -227,7 +198,7 @@ export function ResearchA() {
               </div>
               <div className="flex shrink-0 gap-2">
                 <Link
-                  href={`/blogs/${report.slug}`}
+                  href={`/publications/${report.slug}`}
                   className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
                   onClick={() => capture("cta_clicked", { cta: "read_report", report: report.slug })}
                 >
@@ -236,7 +207,7 @@ export function ResearchA() {
                   <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
                 </Link>
                 <a
-                  href={`/blogs/${report.slug}.pdf`}
+                  href={`/publications/${report.slug}.pdf`}
                   download
                   className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
                   onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}

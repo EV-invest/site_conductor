@@ -87,7 +87,7 @@ export const OFFICES: Office[] = [
 // subpage here makes it sitemap-listed and sitelink-eligible with no other
 // change. The homepage in-page sections (#portfolio, #research…) are NOT separate
 // URLs and intentionally not listed; neither are noindexed surfaces
-// (/apps/*). /hiring/[slug] and /blogs/[slug] detail entries
+// (/apps/*). /hiring/[slug] and /publications/[slug] detail entries
 // are added in app/sitemap.ts.
 export type ChangeFrequency =
   | "always"
@@ -108,12 +108,14 @@ export const ROUTES: Route[] = [
   { path: "/", changeFrequency: "monthly", priority: 1 },
   { path: "/team", changeFrequency: "monthly", priority: 0.8 },
   { path: "/hiring", changeFrequency: "weekly", priority: 0.8 },
-  // The research hub: its articles are light-DOM document MFEs read off disk on
-  // the server, so (unlike /whitepaper) the text IS in the SSR HTML.
-  { path: "/blogs", changeFrequency: "monthly", priority: 0.7 },
+  // The publications hub — field notes and research. Its articles are light-DOM
+  // document MFEs read off disk on the server, so (unlike the whitepaper) the
+  // text IS in the SSR HTML.
+  { path: "/publications", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
-  // NB: /whitepaper is intentionally NOT listed. Its body mounts in a shadow root
-  // (a client-side document microfrontend), so the page text isn't in the SSR HTML
-  // and isn't a meaningful indexable target — don't advertise it as one. Making it
-  // SSR-indexable would mean rendering it light-DOM with its self-styles scoped.
+  // NB: /publications/whitepaper is intentionally NOT listed. Its body mounts in
+  // a shadow root (a client-side document microfrontend), so the page text isn't
+  // in the SSR HTML and isn't a meaningful indexable target — don't advertise it
+  // as one. Making it SSR-indexable would mean rendering it light-DOM with its
+  // self-styles scoped.
 ];

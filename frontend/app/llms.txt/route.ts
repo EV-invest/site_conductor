@@ -17,7 +17,7 @@ const body = `# ${SITE.name} (${SITE.alternateName})
 ## Key pages
 - [Portfolio](${SITE.url}/#portfolio): featured developments, target yields and locations.
 - [Investment calculator](${SITE.url}/#calculator): model projected returns.
-- [Research](${SITE.url}/blogs): macro and market reports on Vietnam's coastal real estate.
+- [Publications](${SITE.url}/publications): field notes filmed on the ground plus macro and market reports on Vietnam's coastal real estate.
 - [Team](${SITE.url}/team): leadership and research.
 - [Hiring](${SITE.url}/hiring): open roles across investment, development, and advisory.
 - [Contact](${SITE.url}/contact): reach the fund.
