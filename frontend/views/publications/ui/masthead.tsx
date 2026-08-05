@@ -13,9 +13,11 @@ export function Masthead({
   whitepaperCount: number;
   updatedAt?: string;
 }) {
+  // A zero count is not a fact worth stating — "0 FIELD NOTES" reads as a
+  // section that broke rather than one that has not started.
   const stats = [
-    `${fieldNoteCount} FIELD NOTES`,
-    `${researchCount} REPORTS`,
+    fieldNoteCount > 0 ? `${fieldNoteCount} FIELD NOTES` : null,
+    researchCount > 0 ? `${researchCount} REPORTS` : null,
     whitepaperCount > 0 ? `${whitepaperCount} WHITEPAPER` : null,
     updatedAt
       ? `UPDATED ${formatPublicationDate(updatedAt, "short")}`

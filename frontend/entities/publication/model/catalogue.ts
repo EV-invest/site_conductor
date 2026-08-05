@@ -8,6 +8,13 @@
 // and a clone without the blog input would fail at this static import. Here the
 // seed is tracked, so `npm run dev` works on a fresh checkout with no flake.
 //
+// The seed mirrors real published articles ONLY. It is the fallback the image
+// build uses whenever the blog input carries no catalogue, so anything invented
+// here ships to production: a placeholder entry becomes a live card linking to a
+// page with no document behind it, and a placeholder `videoId` becomes a real
+// third-party video embedded on the fund's site. Add an article to the blog
+// repo instead.
+//
 // Because the file arrives from a build, it is parsed defensively: a bad
 // artefact must degrade, never take the site down. Unusable entries are
 // dropped, an unusable cover demotes its entry to a text entry, and nothing
