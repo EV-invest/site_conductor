@@ -50,10 +50,12 @@ fn main() -> Result<()> {
 		dsn: config.sentry_dsn.clone(),
 		environment: config.app_env.clone(),
 		release: error_monitoring::release_name!().map(|r| r.into_owned()),
-		// Several services share one Sentry project, so this is what tells them
-		// apart in an issue list. Same name as OTEL_SERVICE_NAME, so a Sentry
-		// issue, a trace and a log line agree.
-		service: Some("site-conductor-backend".to_string()),
+		// Naming the service here is the right idea and belongs back as soon as
+		// it can compile: several services share one Sentry project, so without
+		// it they are separable only by pod hostname. `ev_lib::error_monitoring::Config`
+		// has no `service` field in 0.6.7 (dsn / environment / traces_sample_rate
+		// / release), so the field has to land in ev_lib first. Until then OTEL
+		// carries the name and Sentry does not.
 		traces_sample_rate: error_monitoring::Config::traces_sample_rate_for(&config.app_env),
 	});
 
