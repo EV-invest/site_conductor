@@ -1,6 +1,7 @@
 import { preload } from "react-dom";
 
 import { Text, Tier } from "@/shared/ui/text";
+import { Reveal } from "@/shared/ui/motion";
 import { ASSETS } from "@/shared/config/assets";
 import { HeroACanvas } from "./canvas";
 import { HeroACta } from "./cta";
@@ -29,15 +30,27 @@ export function HeroA() {
   );
 }
 
+// The hero's opening sequence, in beats: headline assembles (word stagger,
+// ~0.4s), then the sub-copy, then the CTAs. Each delay starts a little before
+// the previous beat ends so the sequence overlaps rather than marching.
+const COPY_DELAY = 0.35;
+const CTA_DELAY = 0.55;
+
 function HeroACtaAB() {
   return (
-    <HeroACta
-      scrollHint={
-        <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-          Follow the money
-        </span>
-      }
-    />
+    <Reveal
+      onMount
+      delay={CTA_DELAY}
+      className="flex flex-col items-center gap-4"
+    >
+      <HeroACta
+        scrollHint={
+          <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
+            Follow the money
+          </span>
+        }
+      />
+    </Reveal>
   );
 }
 
@@ -45,17 +58,19 @@ function HeroCopy() {
   return (
     <HeroACanvas cta={<HeroACtaAB />}>
       <HeroHeadline />
-      <Tier tier="main">
-        <Text className="max-w-2xl mx-auto mb-12">
-          Invest in Emergent Markets through Vietnam.
-          <br />
-          See why and how to invest directly. China+1 narrative ensures
-          consistently increasing FDI inflows.
-          <br />
-          <strong>Edge</strong>: our visarun branch lets us keep a pulse on
-          regional trends in foreign purchases.
-        </Text>
-      </Tier>
+      <Reveal onMount delay={COPY_DELAY}>
+        <Tier tier="main">
+          <Text className="max-w-2xl mx-auto mb-12">
+            Invest in Emergent Markets through Vietnam.
+            <br />
+            See why and how to invest directly. China+1 narrative ensures
+            consistently increasing FDI inflows.
+            <br />
+            <strong>Edge</strong>: our visarun branch lets us keep a pulse on
+            regional trends in foreign purchases.
+          </Text>
+        </Tier>
+      </Reveal>
     </HeroACanvas>
   );
 }

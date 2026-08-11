@@ -1,4 +1,5 @@
 import { RemoteElement, ShadowDocument } from "@/shared/mfe";
+import { Reveal } from "@/shared/ui/motion";
 import { findMfe } from "@/shared/mfe/registry";
 import { loadDocHtml } from "@/shared/mfe/doc-source";
 
@@ -13,17 +14,23 @@ const SNAPSHOT = "/mfe/portfolio.html";
 export async function Portfolio() {
   const entry = await findMfe("real-estate.overview");
   // The registry is in-repo static data; a missing entry is a broken build.
-  if (!entry) throw new Error("real-estate.overview missing from mfe-registry.json");
+  if (!entry)
+    throw new Error("real-estate.overview missing from mfe-registry.json");
   // Assert the snapshot exists at BUILD time — a missing snapshot is a broken build, not
   // a runtime degradation. `loadDocHtml` (node:fs) throws if it's absent.
   await loadDocHtml(SNAPSHOT);
   return (
     <div id="portfolio">
-      <RemoteElement
-        tag={entry.tag}
-        scriptUrl={entry.scriptUrl}
-        fallback={<ShadowDocument src={SNAPSHOT} />}
-      />
+      {/* `from="none"` on purpose: a transform here would make this element the
+          containing block for any `position: fixed` the remote paints, so the
+          section fades in without moving. */}
+      <Reveal from="none">
+        <RemoteElement
+          tag={entry.tag}
+          scriptUrl={entry.scriptUrl}
+          fallback={<ShadowDocument src={SNAPSHOT} />}
+        />
+      </Reveal>
     </div>
   );
 }
