@@ -38,10 +38,15 @@ const WORD = {
  * element intact as one token, so markup and animation stay independent.
  *
  * Only `opacity`/`transform` animate — no `filter`, which would repaint the
- * whole glyph run each frame at display sizes. Accessibility: the split spans
- * are `aria-hidden` and the container carries the reassembled text as its
- * `aria-label`, so assistive tech reads one sentence rather than a word list.
- * DOM text is unchanged, so crawlers see the headline either way.
+ * whole glyph run each frame at display sizes.
+ *
+ * Accessibility: the split spans are `aria-hidden`, and the sentence is
+ * reassembled into a visually-hidden sibling. It is NOT an `aria-label` on the
+ * wrapper — that wrapper is a bare `span`, which maps to the `generic` role, and
+ * `aria-label` on a generic element is not reliably exposed. With every child
+ * hidden and the label ignored, the heading announces as empty. A real text node
+ * cannot be ignored. DOM text is unchanged either way, so crawlers see the
+ * headline regardless.
  */
 export function SplitText({
   children,
@@ -77,7 +82,6 @@ export function SplitText({
   return (
     <motion.span
       className={className}
-      aria-label={flattenText(children)}
       initial="hidden"
       variants={{
         hidden: {},
@@ -85,6 +89,7 @@ export function SplitText({
       }}
       {...trigger}
     >
+      <span className="sr-only">{flattenText(children)}</span>
       {tokens.map((token, i) =>
         token.kind === "break" ? (
           <br key={i} aria-hidden />
