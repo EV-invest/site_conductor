@@ -191,7 +191,30 @@ const nextConfig: NextConfig = {
         }
       );
     }
-    return { beforeFiles, afterFiles: [], fallback: [] };
+    // ROUTING SPIKE — locale routing without middleware. Every page lives under
+    // app/[locale]/; this maps the unprefixed paths onto the default locale.
+    // It MUST be afterFiles: that runs only when no filesystem route matched, so
+    // /ru/spike (which matches app/[locale]/spike) and the zone mounts
+    // (/cabinet, /rea, /api/*) never reach it. In beforeFiles it would run ahead
+    // of the filesystem and swallow all of them.
+    // MUST be `fallback`, not `afterFiles`. Next's documented order is:
+    // redirects → beforeFiles → filesystem → afterFiles → DYNAMIC ROUTES →
+    // fallback. The whole app/[locale] tree is a dynamic route, so an
+    // afterFiles rule fires before [locale] is ever tried and rewrites
+    // /ru/team into /en/ru/team — a 404. fallback runs last, after dynamic
+    // routes have had their chance, which is the semantics wanted.
+    const fallback = [{ source: "/:path*", destination: "/en/:path*" }];
+    return { beforeFiles, afterFiles: [], fallback };
+  },
+  // Collapses the explicit /en/* form onto the unprefixed one so each page has a
+  // single canonical URL. Cannot loop with the rewrite above: this is external
+  // and evaluated against the incoming request, while the rewrite is internal
+  // and never re-enters the redirect pipeline.
+  async redirects() {
+    return [
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
+      { source: "/en", destination: "/", permanent: true },
+    ];
   },
 };
 
