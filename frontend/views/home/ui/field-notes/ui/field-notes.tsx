@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Container } from "@evinvest/uikit";
 
 import { fieldNotes, formatPublicationDate } from "@/entities/publication";
-import { Reveal } from "@/shared/ui/reveal";
+import { Reveal, SplitText } from "@/shared/ui/motion";
 
 import { toNoteViews } from "../model/to-note-view";
 import { NoteSummary } from "./note-summary";
@@ -39,10 +39,12 @@ export function FieldNotes() {
               From the ground
             </span>
             <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-5xl">
-              Field Notes from{" "}
-              <span className="font-serif italic text-main-accent-t1">
-                Quy Nhơn
-              </span>
+              <SplitText inView>
+                Field Notes from{" "}
+                <span className="font-serif italic text-main-accent-t1">
+                  Quy Nhơn
+                </span>
+              </SplitText>
             </h2>
             <p className="mt-4 leading-relaxed font-light text-main-mist/70">
               Research explains the thesis. Field notes show you the place — our

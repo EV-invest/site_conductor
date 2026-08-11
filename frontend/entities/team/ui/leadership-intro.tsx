@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Text, Tier } from "@/shared/ui/text";
+import { SplitText } from "@/shared/ui/motion";
 import { ASSETS } from "@/shared/config/assets";
 
 // Shared leadership intro — heading + boardroom image. Single source for both
@@ -12,16 +13,18 @@ export function LeadershipIntro({ officeSrc }: { officeSrc?: string }) {
           Leadership
         </span>
         <h2 className="font-serif-display text-3xl font-light text-white sm:text-4xl">
-          Led by{" "}
-          <span className="font-serif italic text-main-accent-t1">
-            Institutional Pioneers
-          </span>
+          <SplitText inView>
+            Led by{" "}
+            <span className="font-serif italic text-main-accent-t1">
+              Institutional Pioneers
+            </span>
+          </SplitText>
         </h2>
         <Tier tier="main">
           <Text className="max-w-xl">
-            Our partners pair hands-on investment, risk-modelling and development
-            experience with on-the-ground execution in Quy Nhon and Da Nang —
-            local presence held to institutional discipline.
+            Our partners pair hands-on investment, risk-modelling and
+            development experience with on-the-ground execution in Quy Nhon and
+            Da Nang — local presence held to institutional discipline.
           </Text>
         </Tier>
       </div>

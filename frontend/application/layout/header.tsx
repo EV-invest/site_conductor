@@ -5,10 +5,13 @@
 // scripts/header-behavior.ts toggles `data-scrolled` /
 // `data-menu-open` on the root, and the markup styles off them with
 // `group-data-[...]/header:` variants — no React state, no hydration.
-//   - The mobile overlay renders inline (a Portal renders nothing under
+//   - The mobile drawer + scrim render inline (a Portal renders nothing under
 //     renderToStaticMarkup), gated by `data-menu-open`. `backdrop-blur` lives on
 //     the inner bar div, not the root: a backdrop-filtered root would become the
-//     containing block for the overlay's `fixed inset-0` and clamp it to the bar.
+//     containing block for their `fixed` boxes and clamp them to the bar.
+//   - All motion here is CSS transitions off those data attributes, never
+//     `motion` — this markup is also stringified into the zone shell, where no
+//     React runtime exists to hydrate it.
 //   - The bar is `fixed` and takes no layout space; the shell CSS pads the zone
 //     document below it via the `--ev-shell-offset` token (build-shell.mts).
 import type { ElementType, ReactNode } from "react";
@@ -21,6 +24,11 @@ export interface HeaderNavItem {
   label: string;
   href: string;
 }
+
+/** Milliseconds before the first drawer row moves — the panel leads, rows follow. */
+const MENU_ENTER_DELAY = 90;
+/** Milliseconds between drawer rows. */
+const MENU_STEP = 45;
 
 export interface BrandHeaderProps {
   nav: readonly HeaderNavItem[];
@@ -63,12 +71,15 @@ export function BrandHeader({
             </div>
           </L>
 
+          {/* The underline is a scaled pseudo-element, not a border: scaling a
+              composited transform costs no layout, and `origin-left` makes it
+              wipe in from the start of the word rather than grow from centre. */}
           <nav className="hidden items-center gap-6 font-mono-tech text-xs uppercase tracking-widest lg:flex">
             {nav.map(item => (
               <L
                 key={item.href}
                 href={item.href}
-                className="text-main-mist/80 transition-colors hover:text-main-accent-t1"
+                className="relative text-main-mist/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-main-accent-t1 after:transition-transform after:duration-300 after:ease-out hover:text-main-accent-t1 hover:after:scale-x-100 focus-visible:text-main-accent-t1 focus-visible:after:scale-x-100"
               >
                 {item.label}
               </L>
@@ -104,21 +115,43 @@ export function BrandHeader({
         </Container>
       </div>
 
-      {/* Below-`lg` navigation: a full-screen opaque overlay with its own close
-          button. Any `<a>`/`<button>` click inside closes it (delegation in
-          header-behavior.ts), so the app-side CTA needs no wiring. `display:
-          none → flex` restarts the `animate-in` enter animation on every open.
-          Layout: close bar → CTA/chip → separator → nav → flex-spacer → signout. */}
+      {/* Scrim. Clicking it closes — `data-menu-toggle` is matched by the
+          delegated handler, so no listener of its own. Kept below the panel and
+          above everything else the page can paint. */}
       <div
+        data-slot="header-scrim"
+        data-menu-toggle="close"
+        aria-hidden
+        className="invisible fixed inset-0 z-[65] bg-main-black/70 opacity-0 backdrop-blur-xs transition-[opacity,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:opacity-100 lg:hidden"
+      />
+
+      {/* Below-`lg` navigation: an aside drawer, not a full-screen takeover.
+          It stays mounted and slides on one composited property, so open/close
+          reverses mid-flight instead of restarting.
+          The property is `translate`, NOT `transform`: Tailwind v4 compiles
+          `translate-x-*` to the standalone `translate` property, so a
+          transition list naming `transform` matches nothing and the panel
+          teleports. Same trap on the rows below.
+          `visibility` is in the transition list on purpose: it is discretely
+          animated, so it flips to visible instantly on open and waits for the
+          slide-out to finish on close — which is also what keeps the closed
+          drawer out of the tab order and the accessibility tree, with no JS.
+          Any `<a>`/`<button>` click inside closes it (delegation in
+          header-behavior.ts), so the app-side CTA needs no wiring. */}
+      <aside
         data-slot="header-mobile-overlay"
-        className="fixed inset-0 z-[70] hidden flex-col bg-main-black duration-200 animate-in fade-in group-data-[menu-open]/header:flex lg:group-data-[menu-open]/header:hidden"
+        aria-label="Site menu"
+        className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-main-mist/10 bg-main-black shadow-2xl shadow-main-black/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
       >
-        <div className="flex h-20 shrink-0 items-center justify-end px-6">
+        <div className="flex h-20 shrink-0 items-center justify-between px-6">
+          <span className="font-mono-tech text-[10px] uppercase tracking-[0.3em] text-main-accent-t1">
+            Menu
+          </span>
           <button
             type="button"
             data-menu-toggle="close"
             aria-label="Close menu"
-            className="flex size-10 items-center justify-center text-white"
+            className="-mr-2 flex size-10 items-center justify-center rounded-lg text-white transition-colors outline-none hover:bg-main-mist/10 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <svg
               className="size-6"
@@ -134,25 +167,27 @@ export function BrandHeader({
           </button>
         </div>
 
-        {(mobileCta ?? cta) && (
-          <div className="px-6 pb-5 pt-1">{mobileCta ?? cta}</div>
-        )}
-
-        <div className="px-6 pb-2">
-          <div className="h-px bg-border" />
-        </div>
-
-        <nav className="flex flex-col px-6 font-mono-tech text-sm uppercase tracking-widest duration-300 ease-out animate-in fade-in slide-in-from-top-4">
-          {nav.map(item => (
+        <nav className="flex flex-col px-6 font-mono-tech text-sm uppercase tracking-widest">
+          {nav.map((item, i) => (
             <L
               key={item.href}
               href={item.href}
-              className="border-b border-main-mist/10 py-4 text-main-mist/80 transition-colors hover:text-main-accent-t1"
+              // The rows arrive a beat behind the panel, one after another. The
+              // delay is inline because it differs per row; on close it plays
+              // in reverse, unseen, behind the drawer already sliding away.
+              style={{
+                transitionDelay: `${MENU_ENTER_DELAY + i * MENU_STEP}ms`,
+              }}
+              className="translate-x-4 border-b border-main-mist/10 py-4 text-main-mist/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-main-accent-t1 focus-visible:text-main-accent-t1 group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
             >
               {item.label}
             </L>
           ))}
         </nav>
+
+        {(mobileCta ?? cta) && (
+          <div className="px-6 pt-6">{mobileCta ?? cta}</div>
+        )}
 
         <div className="flex-1" />
 
@@ -164,7 +199,7 @@ export function BrandHeader({
             // own; header-behavior.ts reveals it only once /api/auth/session
             // confirms a signed-in principal.
             hidden
-            className="flex items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 transition-colors hover:bg-destructive/10"
+            className="flex items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 transition-colors outline-none hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <svg
               className="size-4"
@@ -182,7 +217,7 @@ export function BrandHeader({
             Sign out
           </button>
         </div>
-      </div>
+      </aside>
     </header>
   );
 }

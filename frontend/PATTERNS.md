@@ -310,3 +310,78 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   element remote (§8); an app owning a route subtree with its own navigation →
   zone. A zone's own pages can still mount §8 remotes (the account chip the
   shell injects *is* one).
+
+---
+
+## 10. Motion — three primitives, two engines
+
+Motion on this site is a **design system, not a set of one-off animations**.
+Everything comes from `@/shared/ui/motion`, whose `tokens.ts` owns the curves and
+durations the way `ev/color` owns colour. Never write an easing or a duration
+inline; if a value is missing, add it to the tokens.
+
+### The primitives
+
+| Primitive | Use for | Trigger |
+|---|---|---|
+| `Reveal` | one block arriving | scroll (`whileInView`), or `onMount` above the fold |
+| `Stagger` + `StaggerItem` | a row/grid arriving in sequence | same |
+| `SplitText` | a **display headline** assembling word by word | same, via `inView` |
+
+Rules that are not negotiable:
+
+- **`opacity` and `transform` only.** No `filter`, no `width`/`height`, no `top`.
+  Anything else animates off the compositor and shows up as jank on the hero.
+- **Once.** `viewport={{ once: true }}` is the default and stays that way — a
+  section that re-animates every time it scrolls back into view reads as broken.
+- **`prefers-reduced-motion` collapses movement to a plain fade**, never to
+  nothing: the content still needs to arrive. Every primitive handles this; hand-
+  written motion must call `useReducedMotion()` itself.
+- **`SplitText` is for display type only.** Word-staggering body copy makes it
+  unreadable while it settles. It keeps the reassembled string as the container's
+  `aria-label` and `aria-hidden`s the word spans, so screen readers hear one
+  sentence — do not strip that.
+- **Never wrap a `position: fixed` descendant in a moving `Reveal`.** An animated
+  transform makes the wrapper that descendant's containing block. Use
+  `from="none"` (pure fade) — this is exactly why the portfolio MFE uses it.
+
+### The second engine: the header
+
+`application/layout/header.tsx` and `scripts/header-behavior.ts` may **not** use
+`motion`. That markup is also stringified by `scripts/build-shell.mts` and
+injected into zone documents, where there is no React runtime to hydrate it — so
+its motion is CSS transitions keyed off `data-*` attributes the ~40-line vanilla
+behavior script toggles. Two traps live there:
+
+- **Tailwind v4 compiles `translate-x-*` to the standalone `translate`
+  property, not `transform`.** A `transition-[transform,…]` list silently matches
+  nothing and the element teleports. Name `translate`.
+- **`visibility` belongs in the transition list.** It is discretely animated with
+  `visible` winning any intermediate value, so it shows instantly on open and
+  waits for the slide-out on close — and, being `hidden` at rest, it keeps the
+  closed drawer out of the tab order and the accessibility tree with no `inert`
+  bookkeeping and no JS.
+
+### Crossing the zone boundary
+
+Landing → cabinet is a **full document load** (the cabinet is a route-handler
+proxy; no shared React tree), so the bar's "spanning" cannot be a transition
+between two DOMs. It is a one-shot entrance on the *arriving* document: the shell
+CSS paints the logo and actions at their offset from the first frame, and the
+behavior script flips one attribute (`data-slide-enter`) inside a rAF to
+interpolate off it.
+
+There is deliberately **no reverse animation**. The behavior script is deferred in
+both hosts, so on the landing document the header has already painted at its
+natural position before we could offset it — animating from an offset after that
+is a jump, not an entrance. That jump was the reported "lag". A hard cut is the
+correct behaviour here; do not re-add it without a mechanism that runs before
+first paint.
+
+### Visual tests
+
+`tests/sections.spec.ts` waits for opacity **and** for `document.getAnimations()`
+to have nothing one-shot still running — Playwright's `animations: "disabled"`
+only freezes CSS animations, and `motion` drives these through the WAAPI. Adding
+a reveal to a section needs no test change; adding a *looping* decoration does
+(it is excluded by its infinite iteration count).
