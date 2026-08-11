@@ -32,13 +32,31 @@
       .catch(() => {});
   }
 
+  // The drawer stays mounted and is hidden with `visibility`, which already
+  // takes it out of the tab order and the accessibility tree — so open/close
+  // needs no `inert` or `aria-hidden` bookkeeping. What CSS cannot do is move
+  // focus, so that part is here: into the drawer on open, back to the trigger
+  // on close, or a keyboard user is left focused on a button behind a scrim.
   const setOpen = (open: boolean) => {
+    const toggle = header.querySelector<HTMLElement>(
+      '[data-menu-toggle="open"]'
+    );
     if (open) header.setAttribute("data-menu-open", "");
     else header.removeAttribute("data-menu-open");
     document.body.style.overflow = open ? "hidden" : "";
-    header
-      .querySelector('[data-menu-toggle="open"]')
-      ?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-expanded", String(open));
+
+    if (open)
+      // Next frame: the drawer is `visibility: hidden` until the style change
+      // lands, and focus() on a hidden element is a no-op.
+      requestAnimationFrame(() =>
+        header
+          .querySelector<HTMLElement>(
+            '[data-slot="header-mobile-overlay"] [data-menu-toggle="close"]'
+          )
+          ?.focus()
+      );
+    else if (header.contains(document.activeElement)) toggle?.focus();
   };
 
   header.addEventListener("click", e => {
@@ -76,172 +94,67 @@
       setOpen(false);
   });
 
-  // ── Cabinet ↔ landing transition ──────────────────────────────
-  // Both directions use the Web Animation API — the page fully
-  // reloads across the zone boundary (cabinet is a route-handler
-  // proxy; no shared React tree), so CSS transitions can't bridge
-  // the two DOMs.  A sessionStorage flag tracks direction:
+  // ── Landing → cabinet entry ───────────────────────────────────
+  // Crossing the zone boundary is a full document load (the cabinet
+  // is a route-handler proxy; there is no shared React tree), so the
+  // "spanning" of the bar — logo sliding out to the rail edge, chip
+  // out to the right — cannot be a transition between two DOMs. It
+  // is played as a one-shot entrance on the cabinet document.
   //
-  //   Forward (landing → cabinet): the shell CSS presets the logo
-  //   and actions at their animation-offset positions
-  //   ([data-zone=cabinet] …), so the first paint already shows
-  //   them offset — no flash of the natural position.  The WAAPI
-  //   transitions them to translateX(0) / opacity 1, then sets
-  //   data-slide-enter="done" to suppress the CSS offset.
+  // The shell CSS paints the logo and actions AT the offset from the
+  // first frame (`[data-zone=cabinet] …:not([data-slide-enter])`) and
+  // attaches the transition to `[data-slide-enter=run]`. All this
+  // script does is flip that one attribute inside a rAF: the offset
+  // is already committed, so the transition interpolates off it on
+  // the compositor. Everything the previous version did by hand —
+  // two WAAPI animations, inline style writes, a forced layout to
+  // beat the flash — is what made the motion stutter under load.
   //
-  //   Reverse (cabinet → landing): the landing page has no
-  //   data-zone to key CSS off, so we set the offset via inline
-  //   style + forced layout, then animate to natural.  The forced
-  //   layout collapses the flash window to at most one frame.
+  // There is deliberately NO reverse (cabinet → landing) animation.
+  // This script is deferred in both hosts, so on the landing document
+  // the header has already painted at its natural position by the time
+  // we could offset it; animating from an offset after that is a jump,
+  // not an entrance. A hard cut reads better than a snap.
   //
-  // Falls back to document.referrer when storage is denied.
-  // Respects prefers-reduced-motion: reduce.
+  // `data-slide-enter=run` is terminal: it suppresses the offset for
+  // the rest of the document's life, so intra-cabinet soft navigation
+  // never replays.
   const CABINET_FLAG = "sc_from_cabinet";
+  const parts = [
+    header.querySelector<HTMLElement>('[data-slot="header-logo"]'),
+    header.querySelector<HTMLElement>('[data-slot="header-actions"]'),
+  ].filter((el): el is HTMLElement => el !== null);
 
   if (header.getAttribute("data-zone") === "cabinet") {
-    // We're on a cabinet zone page.  Determine whether this is the
-    // first entry from the conductor (landing) — in which case we
-    // play a one-shot slide-in — or a client-side intra-cabinet
-    // navigation where the header already sits in its cabinet state.
+    // First entry from the conductor, or a reload/soft nav already
+    // inside the cabinet? Only the former gets the entrance.
     let firstEntry = false;
     try {
       if (sessionStorage.getItem(CABINET_FLAG) !== "1") firstEntry = true;
-      // Plant the flag so the next non-zone landing knows where we
-      // came from AND so intra-cabinet SPA navigations don't
-      // re-trigger the forward animation.
       sessionStorage.setItem(CABINET_FLAG, "1");
     } catch {
       // storage denied / full — not critical; skip the animation
     }
 
-    const logo = header.querySelector<HTMLElement>(
-      '[data-slot="header-logo"]'
-    );
-    const actions = header.querySelector<HTMLElement>(
-      '[data-slot="header-actions"]'
-    );
-
-    if (
+    const animate =
       firstEntry &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      // The shell CSS already positions the elements at their
-      // offset via [data-zone=cabinet] rules — no flash, no
-      // fill:backwards snap.  Animate from that offset to natural.
-      const ease = "cubic-bezier(0,0,0.2,1)";
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (logo) {
-        const anim = logo.animate(
-          [
-            { transform: "translateX(1.5rem)", opacity: "0.5" },
-            { transform: "translateX(0)", opacity: "1" },
-          ],
-          { duration: 300, easing: ease, fill: "none" }
-        );
-        anim.onfinish = () => {
-          anim.cancel();
-          logo.setAttribute("data-slide-enter", "done");
-        };
-      }
-
-      if (actions) {
-        const anim = actions.animate(
-          [
-            { transform: "translateX(-1.5rem)", opacity: "0.5" },
-            { transform: "translateX(0)", opacity: "1" },
-          ],
-          { duration: 300, easing: ease, fill: "none" }
-        );
-        anim.onfinish = () => {
-          anim.cancel();
-          actions.setAttribute("data-slide-enter", "done");
-        };
-      }
-    } else {
-      // Skip animation (repeat load or reduced motion) — suppress
-      // the CSS offset immediately so elements sit at their natural
-      // cabinet positions.
-      logo?.setAttribute("data-slide-enter", "done");
-      actions?.setAttribute("data-slide-enter", "done");
-    }
+    // "done" carries no transition, so the offset is dropped in the
+    // same frame with nothing to see.
+    if (!animate)
+      parts.forEach(el => el.setAttribute("data-slide-enter", "done"));
+    else
+      requestAnimationFrame(() =>
+        parts.forEach(el => el.setAttribute("data-slide-enter", "run"))
+      );
   } else {
-    // We're on a conductor-owned page.  Only animate when returning
-    // from cabinet — never on a cold load or internal landing nav.
-    let fromCabinet = false;
+    // Back on a conductor-owned page: clear the flag so the next hop
+    // into the cabinet plays the entrance again.
     try {
-      if (sessionStorage.getItem(CABINET_FLAG) === "1") {
-        sessionStorage.removeItem(CABINET_FLAG);
-        fromCabinet = true;
-      }
+      sessionStorage.removeItem(CABINET_FLAG);
     } catch {
-      // storage denied — try referrer below
-    }
-    if (!fromCabinet) {
-      try {
-        const ref = new URL(document.referrer);
-        if (ref.pathname.startsWith("/cabinet")) fromCabinet = true;
-      } catch {
-        // no / malformed referrer
-      }
-    }
-
-    if (
-      fromCabinet &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      const logo = header.querySelector<HTMLElement>(
-        '[data-slot="header-logo"]'
-      );
-      const actions = header.querySelector<HTMLElement>(
-        '[data-slot="header-actions"]'
-      );
-      const ease = "cubic-bezier(0,0,0.2,1)";
-
-      // Set offset via inline style first, then force layout so the
-      // browser commits the offset before WAAPI interpolation starts.
-      // This prevents the elements from flashing at their natural
-      // landing positions before the slide-in begins.
-      if (logo) {
-        logo.style.transform = "translateX(-1.5rem)";
-        logo.style.opacity = "0.5";
-      }
-      if (actions) {
-        actions.style.transform = "translateX(1.5rem)";
-        actions.style.opacity = "0.5";
-      }
-
-      // Force the inline styles to be resolved before animation.
-      void header.offsetHeight;
-
-      if (logo) {
-        const anim = logo.animate(
-          [
-            { transform: "translateX(-1.5rem)", opacity: "0.5" },
-            { transform: "translateX(0)", opacity: "1" },
-          ],
-          { duration: 300, easing: ease, fill: "none" }
-        );
-        anim.onfinish = () => {
-          anim.cancel();
-          logo.style.transform = "";
-          logo.style.opacity = "";
-        };
-      }
-
-      if (actions) {
-        const anim = actions.animate(
-          [
-            { transform: "translateX(1.5rem)", opacity: "0.5" },
-            { transform: "translateX(0)", opacity: "1" },
-          ],
-          { duration: 300, easing: ease, fill: "none" }
-        );
-        anim.onfinish = () => {
-          anim.cancel();
-          actions.style.transform = "";
-          actions.style.opacity = "";
-        };
-      }
+      // storage denied — the flag was never set either
     }
   }
 })();
