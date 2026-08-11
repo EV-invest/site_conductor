@@ -45,7 +45,7 @@ test.beforeEach(async ({ context, baseURL }) => {
       name: cookieName(key),
       value,
       url: baseURL,
-    })),
+    }))
   );
 });
 
@@ -55,8 +55,9 @@ for (const { name, selector } of SECTIONS) {
       // Block REA's embed bundle so RemoteElement never upgrades and the
       // ShadowDocument snapshot fallback stays put — a deterministic, wasm-timing-
       // independent target. This is exactly what the styled-snapshot fix renders.
-      await page.route(/real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/, r =>
-        r.abort(),
+      await page.route(
+        /real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/,
+        r => r.abort()
       );
     }
     await page.goto("/");
@@ -69,7 +70,10 @@ for (const { name, selector } of SECTIONS) {
     // Playwright's CSS locator pierces open shadow roots, so `#portfolio` matches
     // both the light-DOM wrapper and the snapshot's own `id="portfolio"` inside the
     // shadow. The wrapper is their common ancestor → `.first()` in DOM order.
-    const section = name === "portfolio" ? page.locator(selector).first() : page.locator(selector);
+    const section =
+      name === "portfolio"
+        ? page.locator(selector).first()
+        : page.locator(selector);
     await expect(section).toBeVisible();
 
     if (PIN_TO_TOP.has(name)) {
@@ -89,17 +93,37 @@ for (const { name, selector } of SECTIONS) {
           const root = document.querySelector(sel);
           if (!root) return false;
           return !Array.from(root.querySelectorAll("[style*='opacity']")).some(
-            el => getComputedStyle(el).opacity === "0",
+            el => getComputedStyle(el).opacity === "0"
           );
         },
         selector,
-        { timeout: 15_000 },
+        { timeout: 15_000 }
       )
       .catch(() => {
         throw new Error(
-          `${name}: content never revealed — client bundle likely never hydrated`,
+          `${name}: content never revealed — client bundle likely never hydrated`
         );
       });
+
+    // Opacity reaching 1 is not the same as the motion being over: a staggered
+    // group's last child, or a split headline's last word, can still be sliding
+    // while the first is already opaque. `motion` drives these through the Web
+    // Animations API, so waiting for the document to have nothing running is
+    // exact — Playwright's own `animations: "disabled"` only freezes CSS.
+    // Looping decoration (a spinner, a pulse) never finishes and must not be
+    // waited on — only one-shot entrances count as "still settling".
+    await page.waitForFunction(
+      () =>
+        document
+          .getAnimations()
+          .every(
+            animation =>
+              animation.playState !== "running" ||
+              animation.effect?.getComputedTiming().iterations === Infinity
+          ),
+      undefined,
+      { timeout: 15_000 }
+    );
 
     if (name === "header") {
       // The header CTA is the cabinet-served MFE account chip, present only
