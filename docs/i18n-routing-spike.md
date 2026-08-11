@@ -7,7 +7,8 @@ every other locale under a prefix (`/ru/team`), with every page living under
 **Answer: yes — but not the way it was planned.** The mechanism had to change,
 and one page-level export turned out to be load-bearing.
 
-Verified against Next 16.2.9 (`next dev --webpack`) on branch `fen/i18n-routing`.
+Verified against Next 16.2.9 in **both** `next dev` and a production
+`next build` + `next start`, on branch `fen/i18n-routing-spike`.
 
 ---
 
@@ -88,17 +89,42 @@ against the incoming request, while the rewrite is internal and never re-enters
 the redirect pipeline. Every redirect source is itself `/en`-prefixed, so an
 unprefixed path can never match one.
 
-## Caveats — what this spike does NOT establish
+## Confirmed against a production build
 
-- **Dev only.** Verified with `next dev --webpack`. A production `next build`
-  could not be run here: two failures unrelated to i18n break the build in a
-  fresh worktree (below), and disk was nearly full. `dynamicParams = false` is
-  the one behaviour where dev and build plausibly differ, so **re-confirm the
-  `/team` fall-through against a real `next build` before P2 is called done.**
-- **Turbopack untested.** Turbopack refused this worktree's symlinked
-  `node_modules` ("points out of the filesystem root"), so `--webpack` was used.
-  Rewrite/redirect resolution is handled by the Next server rather than the
-  bundler, so this is very unlikely to differ — but it is untested.
+`dynamicParams = false` was the one behaviour where dev and build could
+plausibly diverge, so the matrix was re-run against a real `next build` +
+`next start`. **It does not diverge** — the scheme behaves identically.
+
+site_conductor itself cannot build in a fresh worktree (see the unrelated
+breakage below), so the production run used an isolated minimal app reproducing
+only the routing shape: `app/[locale]/layout.tsx` (with `dynamicParams = false`
+and `generateStaticParams`), `app/[locale]/page.tsx`, `app/[locale]/spike2/page.tsx`,
+and the same `rewrites()`/`redirects()` config.
+
+Every locale route prerendered as static SSG — no route fell back to dynamic
+rendering, which is what the weak VPS needs:
+
+```
+● /[locale]          → /en  /ru  /vi  /fr  /de
+● /[locale]/spike2   → /en/spike2  /ru/spike2  /vi/spike2  /fr/spike2  /de/spike2
+```
+
+| URL | Production result |
+| --- | --- |
+| `/spike2` | 200, `locale=en` — the ambiguous one-segment case resolves as English |
+| `/ru/spike2` · `/vi/spike2` | 200, `locale=ru` / `vi` |
+| `/` | 200, `locale=en` |
+| `/ru` | 200, `locale=ru` |
+| `/en/spike2` · `/en` | 308 to the unprefixed form |
+| `/vn/spike2` · `/nonsense` | 404 |
+
+## Remaining caveat
+
+**Turbopack untested.** Turbopack refused this worktree's symlinked
+`node_modules` ("points out of the filesystem root"), so `--webpack` was used for
+both dev and build. Rewrite/redirect resolution is handled by the Next server
+rather than the bundler, so this is very unlikely to differ — but it is untested,
+and the real builds run Turbopack.
 
 ## Unrelated breakage found on `origin/main`
 
