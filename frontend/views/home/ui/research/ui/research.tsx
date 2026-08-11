@@ -9,7 +9,7 @@ import { Container } from "@evinvest/uikit";
 import { cn } from "@/shared/lib/utils";
 import { Text, Tier } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
-import { Reveal } from "@/shared/ui/reveal";
+import { Reveal, SplitText } from "@/shared/ui/motion";
 import { useAnalytics } from "@/features/analytics";
 
 // Report library. The list (left) and the reading pane (right) both render
@@ -29,7 +29,6 @@ export type ResearchReport = {
 };
 
 export function ResearchA({ reports }: { reports: ResearchReport[] }) {
-
   const [active, setActive] = useState(0);
   const capture = useAnalytics();
   const router = useRouter();
@@ -50,10 +49,12 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
             Academic Rigor
           </span>
           <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
-            Data-Driven{" "}
-            <span className="italic text-main-accent-t1 font-serif">
-              Research &amp; Insights
-            </span>
+            <SplitText inView>
+              Data-Driven{" "}
+              <span className="italic text-main-accent-t1 font-serif">
+                Research &amp; Insights
+              </span>
+            </SplitText>
           </h2>
           <Tier tier="main">
             <Text className="mt-4">
@@ -138,7 +139,7 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
             tabIndex={0}
             aria-label={`Read full report: ${report.paneTitle}`}
             onClick={goToReport}
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 goToReport();
@@ -177,7 +178,7 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
 
             <motion.div
               layout="position"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
               className="mt-8 pt-6 border-t border-main-mist/10 flex flex-row justify-between items-center gap-3"
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -200,7 +201,12 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                 <Link
                   href={`/publications/${report.slug}`}
                   className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                  onClick={() => capture("cta_clicked", { cta: "read_report", report: report.slug })}
+                  onClick={() =>
+                    capture("cta_clicked", {
+                      cta: "read_report",
+                      report: report.slug,
+                    })
+                  }
                 >
                   <span className="sm:hidden">Read</span>
                   <span className="hidden sm:inline">Read Full Report</span>
@@ -210,7 +216,12 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                   href={`/publications/${report.slug}.pdf`}
                   download
                   className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                  onClick={() => capture("cta_clicked", { cta: "download_report", report: report.slug })}
+                  onClick={() =>
+                    capture("cta_clicked", {
+                      cta: "download_report",
+                      report: report.slug,
+                    })
+                  }
                 >
                   <span className="sm:hidden">Download</span>
                   <span className="hidden sm:inline">Download Full Report</span>
