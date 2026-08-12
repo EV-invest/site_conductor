@@ -4,6 +4,7 @@ import { allPublications, type Publication } from "@/entities/publication";
 
 import { Masthead } from "./masthead";
 import { PublicationIndex } from "./publication-index";
+import { PublicationsStructuredData } from "./publications-structured-data";
 
 /// Full article bodies are the search corpus, and the search runs in the
 /// browser — so the whole corpus crosses the wire. Capped per entry: a few
@@ -30,6 +31,7 @@ export function PublicationsView() {
 
   return (
     <main className="min-h-screen bg-main-black pt-32 pb-28 text-main-mist">
+      <PublicationsStructuredData />
       <Container>
         <Masthead
           fieldNoteCount={counts.fieldNote}

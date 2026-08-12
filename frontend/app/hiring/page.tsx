@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import {
   listVacancies,
   vacancyCacheOptions,
   type VacancySummary,
 } from "@/entities/vacancy";
 import { HiringView } from "@/views/hiring";
+import { pageMetadata } from "@/shared/seo/page-metadata";
 
 // SSG + ISR: the board statically prerenders (the force-cache fetch below makes
 // the vacancy list cacheable) and revalidates hourly, so it loads instantly and
@@ -12,12 +12,12 @@ import { HiringView } from "@/views/hiring";
 // degrades to an empty board (see try/catch); ISR fills it on the next request.
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Hiring",
   description:
     "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
-  alternates: { canonical: "/hiring" },
-};
+  path: "/hiring",
+});
 
 export default async function Page() {
   let vacancies: VacancySummary[] = [];

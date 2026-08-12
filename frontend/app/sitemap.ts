@@ -8,8 +8,15 @@ import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 // static research articles and the live vacancy detail pages, fetched at build
 // so each role is indexable. ISR (not force-static) so newly published roles
 // enter the sitemap without a redeploy; the backend being unreachable degrades
-// to the static routes only. No <lastmod>: we have no real per-URL change
-// dates, and an always-now stamp teaches Google to distrust the field.
+// to the static routes only.
+//
+// <lastmod> is emitted ONLY where a real date exists: the publications, from
+// their own catalogue `date`. The static marketing routes carry none, and
+// neither do the vacancies — the board projection (VacancySummary) has no
+// timestamp, and only VacancyDetail carries `created_at`, which would cost one
+// request per role to read. An always-now stamp on those is exactly what
+// teaches Google to distrust the field, and that would cost us the accurate
+// publication stamps too.
 export const revalidate = 3600;
 
 // Sitemap requires absolute URLs.
@@ -51,6 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter(publication => publication.kind !== "whitepaper")
     .map(publication => ({
       url: abs(`/publications/${publication.slug}`),
+      lastModified: publication.date,
       changeFrequency: "yearly",
       priority: 0.6,
     }));

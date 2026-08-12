@@ -8,6 +8,7 @@ import {
   type VacancyDetail,
 } from "@/entities/vacancy";
 import { VacancyView } from "@/views/vacancy";
+import { pageMetadata } from "@/shared/seo/page-metadata";
 
 // SSG: every role known at build time is prerendered (instant load + static,
 // indexable metadata). `dynamicParams` keeps unknown/just-published slugs
@@ -52,12 +53,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const vacancy = await fetchVacancy(slug);
-  if (!vacancy) return { title: "Role not found" };
-  return {
+  // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
+  // a retired role unindexable even if a streaming boundary pins the status at
+  // 200 and turns the 404 into a soft-404.
+  if (!vacancy) return { title: "Role not found", robots: { index: false } };
+  return pageMetadata({
     title: `${vacancy.title} — Hiring`,
     description: vacancy.summary,
-    alternates: { canonical: `/hiring/${vacancy.slug}` },
-  };
+    path: `/hiring/${vacancy.slug}`,
+  });
 }
 
 export default async function Page({

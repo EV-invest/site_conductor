@@ -2,6 +2,8 @@ import { Container } from "@evinvest/uikit";
 
 import { ContactForm } from "@/features/contact-message";
 
+import { ContactStructuredData } from "./contact-structured-data";
+
 const OFFICES = [
   { city: "Quy Nhơn", line: "Coastal HQ · Bình Định, Vietnam" },
   { city: "Ho Chi Minh City", line: "Investor relations · District 1" },
@@ -26,6 +28,7 @@ function Channel({ label, value }: { label: string; value: string }) {
 export function ContactView() {
   return (
     <div className="min-h-screen bg-main-black text-main-mist">
+      <ContactStructuredData />
       <section className="pt-36 pb-24">
         <Container>
           <div className="grid gap-14 lg:grid-cols-2">

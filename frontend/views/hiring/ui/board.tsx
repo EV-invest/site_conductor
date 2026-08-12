@@ -46,7 +46,9 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
               onChange={e => setQuery(e.target.value)}
               placeholder="Search roles, teams, or locations…"
               aria-label="Search roles"
-              className="w-full rounded-lg border border-white/10 bg-main-card/40 py-3.5 pl-11 pr-4 text-sm text-main-mist placeholder:text-main-mist/30 focus:border-main-accent-t1/40 focus:outline-none"
+              // text-base on phones: under 16px iOS zooms the viewport on
+              // focus (see shared/ui/control.ts). sm: keeps the 14px design.
+              className="w-full rounded-lg border border-white/10 bg-main-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-main-mist placeholder:text-main-mist/30 focus:border-main-accent-t1/40 focus:outline-none"
             />
           </div>
           <span className="hidden whitespace-nowrap font-mono-tech text-[11px] uppercase tracking-[0.2em] text-main-accent-t1 sm:block">

@@ -57,7 +57,9 @@ export function SearchField({
         aria-describedby={describedBy}
         aria-controls={controlsId}
         aria-activedescendant={activeDescendantId}
-        className="min-w-0 flex-1 bg-transparent text-sm text-main-mist outline-none placeholder:text-main-mist/40"
+        // text-base on phones: under 16px iOS zooms the viewport on focus
+        // (see shared/ui/control.ts). sm: keeps the 14px design.
+        className="min-w-0 flex-1 bg-transparent text-base sm:text-sm text-main-mist outline-none placeholder:text-main-mist/40"
       />
       <div
         aria-hidden="true"
