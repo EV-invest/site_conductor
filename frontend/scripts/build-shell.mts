@@ -33,6 +33,7 @@ import tailwindcss from "@tailwindcss/postcss";
 import { BrandHeader } from "../application/layout/header";
 import { NAV_ITEMS } from "../application/layout/nav-items";
 import registry from "../mfe-registry.json";
+import { spanEnterScript } from "./span-enter";
 
 const frontend = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = path.join(frontend, "public/shell");
@@ -56,6 +57,14 @@ const behaviorJs = transformSync(
   readFileSync(path.join(frontend, "scripts/header-behavior.ts"), "utf8"),
   { loader: "ts", minify: true }
 ).code;
+// The span-enter decision, emitted as a real file rather than inlined into the
+// head fragment. Zones serve a strict `script-src 'self' 'nonce-…'` CSP, and an
+// inline script without that per-request nonce is simply blocked — which is
+// exactly what happened the first time this shipped: the CSS arrived, the script
+// never ran, and the bar cut in both directions with nothing in the console
+// unless you went looking. A same-origin file needs no nonce, so the conductor
+// stays out of the cabinet's CSP implementation entirely.
+const spanJs = spanEnterScript("cabinet");
 
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
@@ -63,8 +72,10 @@ const hash = (s: string) =>
   createHash("sha256").update(s).digest("hex").slice(0, 8);
 const cssName = `header.${hash(fragmentCss)}.css`;
 const jsName = `header-behavior.${hash(behaviorJs)}.js`;
+const spanName = `span-enter.${hash(spanJs)}.js`;
 writeFileSync(path.join(outDir, cssName), fragmentCss);
 writeFileSync(path.join(outDir, jsName), behaviorJs);
+writeFileSync(path.join(outDir, spanName), spanJs);
 
 writeFileSync(
   path.join(outDir, "manifest.json"),
@@ -72,6 +83,7 @@ writeFileSync(
     {
       css: `/shell/${cssName}`,
       js: `/shell/${jsName}`,
+      spanJs: `/shell/${spanName}`,
       fragment: `${headerHtml}<script type="module" src="${chip.scriptUrl}"></script>`,
     },
     null,
