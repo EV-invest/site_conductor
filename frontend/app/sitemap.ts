@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
+import { localePath } from "@evinvest/i18n";
 import { SITE, ROUTES } from "@/shared/config/site";
+import { INDEXED_LOCALES } from "@/shared/config/i18n";
 import { ASSETS } from "@/shared/config/assets";
 import { allPublications } from "@/entities/publication";
 import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
@@ -37,13 +39,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: route.path === "/" ? SITE.url : abs(route.path),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
-    // hreflang block stays empty while English-only; lights up automatically
-    // once SITE.locales gains a second entry (see shared/config/site.ts).
-    ...(SITE.locales.length > 1
+    // hreflang, one entry per indexable locale, each pointing at that locale's
+    // OWN url. The previous block mapped every locale to the same href, which
+    // tells Google the languages are interchangeable — worse than omitting it.
+    // Stays absent while only English is indexed: a single-entry hreflang set is
+    // meaningless.
+    ...(INDEXED_LOCALES.length > 1
       ? {
           alternates: {
             languages: Object.fromEntries(
-              SITE.locales.map(l => [l, abs(route.path)])
+              INDEXED_LOCALES.map(l => [l, abs(localePath(l, route.path))])
             ),
           },
         }

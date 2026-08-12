@@ -21,7 +21,7 @@ import { config } from "@/config";
 if (!config.isProduction && typeof window !== "undefined") {
   const darkReaderActive = () =>
     !!document.querySelector(
-      "style.darkreader, [data-darkreader-mode], [data-darkreader-scheme], [data-darkreader-inline-stroke], [data-darkreader-inline-bgcolor], [data-darkreader-inline-color]",
+      "style.darkreader, [data-darkreader-mode], [data-darkreader-scheme], [data-darkreader-inline-stroke], [data-darkreader-inline-bgcolor], [data-darkreader-inline-color]"
     );
 
   const original = console.error;
@@ -33,7 +33,7 @@ if (!config.isProduction && typeof window !== "undefined") {
         noted = true;
         console.info(
           "%cℹ The hydration-mismatch warnings on this page are from the DarkReader browser extension rewriting inline styles before React hydrates — harmless, not an app bug. Disable DarkReader on localhost to silence them.",
-          "color:#9aa0a6",
+          "color:#9aa0a6"
         );
       }
       return;

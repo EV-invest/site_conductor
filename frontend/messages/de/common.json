@@ -1,0 +1,19 @@
+{
+  "nav.portfolio": "Portfolio",
+  "nav.research": "Analysen",
+  "nav.publications": "Publikationen",
+  "nav.team": "Team",
+  "nav.hiring": "Karriere",
+  "nav.contact": "Kontakt",
+  "nav.home": "Startseite",
+  "footer.company": "Unternehmen",
+  "footer.explore": "Entdecken",
+  "footer.calculator": "Investitionsrechner",
+  "footer.fieldNotes": "Notizen & Analysen",
+  "footer.whitepaper": "Whitepaper",
+  "a11y.homeLink": "EV Investment — Startseite",
+  "a11y.openMenu": "Menü öffnen",
+  "a11y.closeMenu": "Menü schließen",
+  "a11y.siteMenu": "Seitenmenü",
+  "a11y.languageSwitcher": "Sprache wählen"
+}
