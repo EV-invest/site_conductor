@@ -16,6 +16,7 @@ import { Buffer } from "node:buffer";
 // it). Statically imported so a build that skips generation fails here, and the
 // standalone output traces it: the per-request cost is one concat.
 import shell from "../public/shell/manifest.json";
+import { spanEnterScript } from "../scripts/span-enter";
 
 const HOP_BY_HOP = [
   "connection",
@@ -29,7 +30,15 @@ const HOP_BY_HOP = [
 ];
 
 // CSS in head → the header paints with the first frame: zero FOUC/CLS.
-const HEAD_INSERT = `<link rel="stylesheet" href="${shell.css}"><script defer src="${shell.js}"></script>`;
+// The span-enter script is inline and NOT deferred, on purpose: it has to stamp
+// the arrival direction on <html> before the first paint, which is the whole
+// mechanism behind the bar spanning out as you enter a zone. Deferring it would
+// put it after the paint it exists to precede. It is ~200 bytes and touches only
+// sessionStorage and one attribute, so it costs nothing to block on.
+const HEAD_INSERT =
+  `<link rel="stylesheet" href="${shell.css}">` +
+  `<script>${spanEnterScript("cabinet")}</script>` +
+  `<script defer src="${shell.js}"></script>`;
 const BODY_INSERT = shell.fragment;
 
 // A zone whose header wants a zone-specific treatment (e.g. the cabinet's

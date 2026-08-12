@@ -9,7 +9,14 @@ import { DevAbPanel } from "@/features/ab-variant";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
 import { config } from "@/config";
 import shell from "@/public/shell/manifest.json";
+import { spanEnterScript } from "@/scripts/span-enter";
 import "@/application/styles/globals.css";
+// Imported here rather than @import-ed from globals.css: Tailwind v4 owns the
+// @import graph in that file and drops a plain relative sheet on the floor —
+// silently, which cost an afternoon. As a module import it is Next's to bundle,
+// and the same file is read verbatim by scripts/build-shell.mts for zones, so
+// both hosts animate identical distances from one source.
+import "@/application/styles/header-span.css";
 
 export { metadata, viewport } from "@/application/metadata";
 
@@ -27,6 +34,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`dark ${fontInter.variable} ${fontPlayfair.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Runs before the first paint — a deferred script would land after the
+            paint it exists to precede, which is precisely why the bar used to
+            snap instead of narrowing on the way back from a zone. Inline and
+            un-deferred for that reason alone; it reads one sessionStorage key
+            and sets one attribute. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: spanEnterScript("site") }}
+        />
+      </head>
       <body>
         {/* The header's one behavior implementation — the same content-hashed
             script the zone proxy injects (BrandHeader ships no React state). */}

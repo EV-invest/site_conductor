@@ -143,10 +143,19 @@ export function BrandHeader({
         aria-label="Site menu"
         className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-main-mist/10 bg-main-black shadow-2xl shadow-main-black/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
       >
-        <div className="flex h-20 shrink-0 items-center justify-between px-6">
-          <span className="font-mono-tech text-[10px] uppercase tracking-[0.3em] text-main-accent-t1">
-            Menu
-          </span>
+        {/* The chip, not a "MENU" label. The label named the panel you were
+            already looking at; the chip says who you are signed in as, which is
+            the one thing this panel could tell you and didn't. It arrives on the
+            same cascade as the rows but ahead of them — identity first, then
+            destinations. `min-w-0` so a long address truncates inside the chip
+            rather than pushing the close button off the edge. */}
+        <div className="flex h-20 shrink-0 items-center justify-between gap-3 px-6">
+          <div
+            style={{ transitionDelay: `${MENU_ENTER_DELAY}ms` }}
+            className="min-w-0 flex-1 translate-x-4 opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
+          >
+            {mobileCta ?? cta}
+          </div>
           <button
             type="button"
             data-menu-toggle="close"
@@ -185,10 +194,6 @@ export function BrandHeader({
           ))}
         </nav>
 
-        {(mobileCta ?? cta) && (
-          <div className="px-6 pt-6">{mobileCta ?? cta}</div>
-        )}
-
         <div className="flex-1" />
 
         <div className="px-6 pb-10">
@@ -199,7 +204,13 @@ export function BrandHeader({
             // own; header-behavior.ts reveals it only once /api/auth/session
             // confirms a signed-in principal.
             hidden
-            className="flex items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 transition-colors outline-none hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring"
+            // Sign-out arrives last and from below, not from the side like the
+            // rows: it is the one destructive control here, and giving it a
+            // different vector stops it reading as the final item in the same
+            // list. `hidden` is what gates it, so the delay only ever plays for
+            // a signed-in visitor.
+            style={{ transitionDelay: `${MENU_ENTER_DELAY + 5 * MENU_STEP}ms` }}
+            className="flex translate-y-2 items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 opacity-0 transition-[opacity,translate,background-color] duration-300 ease-out outline-none hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring group-data-[menu-open]/header:translate-y-0 group-data-[menu-open]/header:opacity-100"
           >
             <svg
               className="size-4"
