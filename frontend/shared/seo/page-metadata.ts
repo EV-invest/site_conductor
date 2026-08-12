@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import {
+  DEFAULT_LOCALE,
+  isLocale,
+  localePath,
+  type Locale,
+} from "@evinvest/i18n";
 import { SITE } from "@/shared/config/site";
 
 // Why every page must call this instead of setting `title` + `description`
@@ -19,12 +25,28 @@ const DEFAULT_IMAGE: PageImage = {
   alt: `${SITE.tagline}. ${SITE.description}`,
 };
 
+// og:locale takes language_TERRITORY, unlike hreflang's bare language code.
+const OG_LOCALES: Record<Locale, string> = {
+  en: "en_US",
+  ru: "ru_RU",
+  vi: "vi_VN",
+  fr: "fr_FR",
+  de: "de_DE",
+};
+
 export type PageMetadataInput = {
   /// Page title WITHOUT the site name — the root `title.template` appends it.
   title: string;
   description: string;
-  /// Root-relative, no trailing slash (e.g. "/publications/vietnam_coastal_2026").
+  /// Locale-FREE, root-relative, no trailing slash (e.g. "/publications/x").
+  /// The locale prefix is applied for you — never pass "/ru/team".
   path: string;
+  /// The rendering locale, straight from the route's `params`. Determines the
+  /// canonical and og:url: `en` is unprefixed, every other locale is `/xx/…`.
+  ///
+  /// Omitting it (or passing an unrecognised string) falls back to the default
+  /// locale, which is right for the routes that live outside app/[locale].
+  locale?: string;
   /// Defaults to the site OG card. Pass a publication cover to give an article
   /// its own preview.
   image?: PageImage;
@@ -41,6 +63,7 @@ export function pageMetadata({
   title,
   description,
   path,
+  locale,
   image = DEFAULT_IMAGE,
   type = "website",
   article,
@@ -49,17 +72,29 @@ export function pageMetadata({
   // string, so mirror the resolved form by hand or social cards lose the brand.
   const resolvedTitle = `${title} | ${SITE.name}`;
 
+  // Self-referencing per locale. A locale-blind canonical is a trap rather than
+  // a live bug today — only `en` is in INDEXED_LOCALES, and the other four are
+  // noindexed by app/[locale]/layout.tsx, so nothing they claim is read. But
+  // shared/config/i18n promises that adding a locale to INDEXED_LOCALES is the
+  // ONE change needed to launch it, and a canonical pointing at the English URL
+  // would make that locale deindex itself the moment it went live — silently.
+  const resolved: Locale = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const url = localePath(resolved, path);
+
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: url },
     openGraph: {
       type,
       siteName: SITE.name,
       title: resolvedTitle,
       description,
-      url: path,
-      locale: "en_US",
+      url,
+      // og:locale wants the underscored territory form ("en_US", "de_DE"), not
+      // the bare hreflang code. Only en has a territory we actually publish
+      // from, so the rest map to the language with its conventional region.
+      locale: OG_LOCALES[resolved],
       images: [
         {
           url: image.url,

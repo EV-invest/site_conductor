@@ -12,12 +12,22 @@ import { pageMetadata } from "@/shared/seo/page-metadata";
 // degrades to an empty board (see try/catch); ISR fills it on the next request.
 export const revalidate = 3600;
 
-export const metadata = pageMetadata({
-  title: "Hiring",
-  description:
-    "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
-  path: "/hiring",
-});
+// generateMetadata only so the canonical carries the locale prefix — see
+// app/[locale]/team/page.tsx.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return pageMetadata({
+    title: "Hiring",
+    description:
+      "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
+    path: "/hiring",
+    locale,
+  });
+}
 
 export default async function Page() {
   let vacancies: VacancySummary[] = [];

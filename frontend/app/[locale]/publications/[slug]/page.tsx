@@ -15,9 +15,9 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const publication = findPublication(slug);
   if (!publication) {
     return { title: "Publication not found", robots: { index: false } };
@@ -28,6 +28,7 @@ export async function generateMetadata({
     title: publication.title,
     description: publication.dek,
     path: `/publications/${slug}`,
+    locale,
     image: coverStill(publication),
     type: "article",
     article: {

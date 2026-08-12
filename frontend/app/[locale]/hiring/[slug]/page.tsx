@@ -49,9 +49,9 @@ const fetchVacancy = cache(
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const vacancy = await fetchVacancy(slug);
   // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
   // a retired role unindexable even if a streaming boundary pins the status at
@@ -61,6 +61,7 @@ export async function generateMetadata({
     title: `${vacancy.title} — Hiring`,
     description: vacancy.summary,
     path: `/hiring/${vacancy.slug}`,
+    locale,
   });
 }
 

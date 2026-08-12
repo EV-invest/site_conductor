@@ -4,12 +4,24 @@ import { DocumentReader } from "@/shared/ui/document-reader";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 import { PageGraph } from "@/shared/seo/page-graph";
 
-export const metadata = pageMetadata({
-  title: "Whitepaper",
-  description:
-    "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
-  path: "/publications/whitepaper",
-});
+const DESCRIPTION =
+  "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.";
+
+// generateMetadata only so the canonical carries the locale prefix — see
+// app/[locale]/team/page.tsx.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return pageMetadata({
+    title: "Whitepaper",
+    description: DESCRIPTION,
+    path: "/publications/whitepaper",
+    locale,
+  });
+}
 
 // Filed under /publications with the research it underpins, but it is not a
 // blog-flake article: it has its own flake and lands at public/whitepaper.*, so
@@ -28,7 +40,7 @@ export default function Page() {
       <PageGraph
         path="/publications/whitepaper"
         name="Whitepaper"
-        description="EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
+        description={DESCRIPTION}
         trail={[
           { name: "Publications", path: "/publications" },
           { name: "Whitepaper", path: "/publications/whitepaper" },
