@@ -150,35 +150,24 @@ async function buildCss(markup: string): Promise<string> {
       ":scope { position: fixed; top: 0; left: 0; z-index: 60; width: 100%; }"
     )
   );
-  // Cabinet-entry offset. On cabinet pages the logo and actions are painted
-  // AT their offset from the first frame — before any JS runs — so there is
-  // never a flash of the natural position. header-behavior.ts then flips
-  // `data-slide-enter` once, and the whole entrance is this CSS:
-  //
-  //   (absent) → offset, no transition   the state the document paints in
-  //   "run"    → natural, transitioned   the entrance
-  //   "done"   → natural, no transition  repeat load / reduced motion
-  //
-  // Putting the transition on the "run" state only is what makes "done"
-  // instantaneous: a blanket `transition` would animate the skip case too.
-  // Both properties are compositor-only, so the entrance costs no layout.
-  scope.append(
-    postcss.parse(`[data-zone="cabinet"] [data-slot="header-logo"]:not([data-slide-enter]) {
-      transform: translateX(1.5rem);
-      opacity: 0.5;
-    }
-    [data-zone="cabinet"] [data-slot="header-actions"]:not([data-slide-enter]) {
-      transform: translateX(-1.5rem);
-      opacity: 0.5;
-    }
-    [data-zone="cabinet"] [data-slide-enter="run"] {
-      transition:
-        transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
-    }`)
-  );
   root.removeAll();
   root.append(...hoisted, scope);
+  // The spanning ⇄ narrowing motion, appended OUTSIDE the @scope wrapper and
+  // deliberately so. @scope prepends an implicit `:scope ` to every selector it
+  // contains, so a rule whose ancestor condition is the header itself — or, as
+  // here, <html> — can never match: it would be asking for that ancestor to sit
+  // *inside* the header. The previous version of this animation lived inside the
+  // scope and was dead code in every zone document for exactly that reason.
+  //
+  // Living outside the scope is safe for these specific rules because every
+  // selector is anchored to a `data-slot` the header owns, so nothing here can
+  // reach a zone's own elements — which is the property @scope exists to
+  // guarantee for the bulk of the sheet.
+  root.append(
+    postcss.parse(
+      readFileSync(path.join(frontend, "application/styles/header-span.css"), "utf8")
+    )
+  );
   // !important: this link is injected before the zone's own stylesheet, whose
   // `--ev-shell-offset: 0px` standalone default would otherwise win on order.
   // The bar is `fixed` (no layout space), so the zone document is padded by its

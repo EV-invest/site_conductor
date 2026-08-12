@@ -94,67 +94,23 @@
       setOpen(false);
   });
 
-  // ── Landing → cabinet entry ───────────────────────────────────
-  // Crossing the zone boundary is a full document load (the cabinet
-  // is a route-handler proxy; there is no shared React tree), so the
-  // "spanning" of the bar — logo sliding out to the rail edge, chip
-  // out to the right — cannot be a transition between two DOMs. It
-  // is played as a one-shot entrance on the cabinet document.
+  // ── Spanning ⇄ narrowing, second half ─────────────────────────
+  // The decision and the starting offset are already done: the inline
+  // head script (scripts/span-enter.ts) stamped `data-span-from` on
+  // <html> before the first paint, and header-span.css painted the
+  // logo and chip at the OTHER zone's position on frame one. All that
+  // is left is to release them, which is one attribute inside a rAF —
+  // the offset is committed, so the transition interpolates off it on
+  // the compositor with no layout and nothing to measure.
   //
-  // The shell CSS paints the logo and actions AT the offset from the
-  // first frame (`[data-zone=cabinet] …:not([data-slide-enter])`) and
-  // attaches the transition to `[data-slide-enter=run]`. All this
-  // script does is flip that one attribute inside a rAF: the offset
-  // is already committed, so the transition interpolates off it on
-  // the compositor. Everything the previous version did by hand —
-  // two WAAPI animations, inline style writes, a forced layout to
-  // beat the flash — is what made the motion stutter under load.
+  // The rAF matters: setting the attribute in the same frame the
+  // offset was applied would collapse both into one style resolution
+  // and there would be no transition at all.
   //
-  // There is deliberately NO reverse (cabinet → landing) animation.
-  // This script is deferred in both hosts, so on the landing document
-  // the header has already painted at its natural position by the time
-  // we could offset it; animating from an offset after that is a jump,
-  // not an entrance. A hard cut reads better than a snap.
-  //
-  // `data-slide-enter=run` is terminal: it suppresses the offset for
-  // the rest of the document's life, so intra-cabinet soft navigation
-  // never replays.
-  const CABINET_FLAG = "sc_from_cabinet";
-  const parts = [
-    header.querySelector<HTMLElement>('[data-slot="header-logo"]'),
-    header.querySelector<HTMLElement>('[data-slot="header-actions"]'),
-  ].filter((el): el is HTMLElement => el !== null);
-
-  if (header.getAttribute("data-zone") === "cabinet") {
-    // First entry from the conductor, or a reload/soft nav already
-    // inside the cabinet? Only the former gets the entrance.
-    let firstEntry = false;
-    try {
-      if (sessionStorage.getItem(CABINET_FLAG) !== "1") firstEntry = true;
-      sessionStorage.setItem(CABINET_FLAG, "1");
-    } catch {
-      // storage denied / full — not critical; skip the animation
-    }
-
-    const animate =
-      firstEntry &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // "done" carries no transition, so the offset is dropped in the
-    // same frame with nothing to see.
-    if (!animate)
-      parts.forEach(el => el.setAttribute("data-slide-enter", "done"));
-    else
-      requestAnimationFrame(() =>
-        parts.forEach(el => el.setAttribute("data-slide-enter", "run"))
-      );
-  } else {
-    // Back on a conductor-owned page: clear the flag so the next hop
-    // into the cabinet plays the entrance again.
-    try {
-      sessionStorage.removeItem(CABINET_FLAG);
-    } catch {
-      // storage denied — the flag was never set either
-    }
-  }
+  // `data-span-run` is terminal. Intra-zone soft navigation never
+  // replays it, and a reload never sets `data-span-from` in the first
+  // place (the head script compares against the zone it recorded).
+  const root = document.documentElement;
+  if (root.hasAttribute("data-span-from"))
+    requestAnimationFrame(() => root.setAttribute("data-span-run", ""));
 })();

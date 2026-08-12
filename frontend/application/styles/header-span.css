@@ -1,0 +1,106 @@
+/* The header spanning ⇄ narrowing motion, and nothing else.
+   ONE source of truth: loaded by globals.css for conductor-owned documents, and
+   read verbatim by scripts/build-shell.mts for the fragment the zone proxy
+   injects. Keep it dependency-free — no Tailwind directives, no @layer — because
+   the shell copy lands in a zone's document alongside that zone's own cascade.
+
+   ── What is being animated ────────────────────────────────────────────────
+   The bar has two geometries, and which one applies is decided by the document,
+   not by state:
+
+     conductor pages   Container is centred and capped   → logo/chip pulled IN
+     [data-zone=cabinet]   max-width:none, 18px/32px pad → logo/chip pushed OUT
+
+   Crossing between them is a full document load — two separate DOMs — so there
+   is no element to transition. The trick is that the DELTA between the two
+   geometries is pure arithmetic on the page tokens, so each document can paint
+   its parts AT the *other* document's position on frame one and then animate to
+   its own. Nothing is measured, and no JS runs before the first paint beyond
+   setting one attribute.
+
+     delta = distance from the viewport edge to the Container's content edge
+           = max(page-px, (100vw - page-max) / 2 + page-px)
+     logo travel    = delta - 18px   (the cabinet's left pad)
+     chip travel    = delta - 32px   (the cabinet's right pad)
+
+   Measured against the real bar: at 1920 the logo sits at 288 on a conductor
+   page and 18 in the cabinet — a 270px move, which is what the formula returns.
+   At 1440 and below the Container stops centring and the travel settles at 30px.
+
+   `--page-max` / `--page-px` are restated here rather than read from the zone's
+   tokens: the offset has to reproduce the CONDUCTOR's geometry, and a zone is
+   free to define those tokens differently (or not at all). The values mirror
+   @evinvest/uikit's tokens.css — 1rem, 1.5rem ≥40rem, 3rem ≥64rem.
+
+   Caveat: 100vw includes the classic scrollbar, while the Container centres
+   inside the scrollbar-inset content box. Where scrollbars take layout space the
+   start point is off by half a gutter — invisible on a 270px move, and it costs
+   nothing to be wrong about, so it is not worth a measurement pass to fix. */
+[data-slot="header"] {
+  --ev-page-max: 90rem;
+  --ev-page-px: 1rem;
+  --ev-span-gutter: max(
+    var(--ev-page-px),
+    (100vw - var(--ev-page-max)) / 2 + var(--ev-page-px)
+  );
+  --ev-span-logo-travel: calc(var(--ev-span-gutter) - 18px);
+  --ev-span-chip-travel: calc(var(--ev-span-gutter) - 32px);
+}
+
+@media (min-width: 640px) {
+  [data-slot="header"] {
+    --ev-page-px: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  [data-slot="header"] {
+    --ev-page-px: 3rem;
+  }
+}
+
+/* Which geometry we ARRIVED FROM, stamped on <html> before first paint by the
+   inline script in app/layout.tsx (conductor) and zone-proxy.ts (zones). The
+   sign is the whole difference between the two directions: arriving in the
+   cabinet, the parts start spread apart and close in; arriving back on the
+   site, they start pulled in and spread out.
+
+   Keyed off <html> and not off the header, because these rules must survive
+   being appended outside the shell's `@scope ([data-slot="header"])` wrapper —
+   inside it, an implicit `:scope ` is prepended to every selector, so an
+   ancestor condition like `[data-zone=cabinet] ...` silently matches nothing.
+   That is exactly why the previous version of this animation never once ran in
+   a real cabinet document. */
+html[data-span-from="site"] [data-slot="header"] {
+  --ev-span-logo: var(--ev-span-logo-travel);
+  --ev-span-chip: calc(-1 * var(--ev-span-chip-travel));
+}
+
+html[data-span-from="cabinet"] [data-slot="header"] {
+  --ev-span-logo: calc(-1 * var(--ev-span-logo-travel));
+  --ev-span-chip: var(--ev-span-chip-travel);
+}
+
+html[data-span-from]:not([data-span-run]) [data-slot="header-logo"] {
+  transform: translateX(var(--ev-span-logo));
+}
+
+html[data-span-from]:not([data-span-run]) [data-slot="header-actions"] {
+  transform: translateX(var(--ev-span-chip));
+}
+
+/* The transition is attached to the run state ONLY. A blanket transition would
+   also animate the skip cases (reload, reduced motion), where the attribute is
+   never set and the parts must simply be where they belong. */
+html[data-span-from][data-span-run]
+  :is([data-slot="header-logo"], [data-slot="header-actions"]) {
+  transform: none;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-span-from] :is([data-slot="header-logo"], [data-slot="header-actions"]) {
+    transform: none;
+    transition: none;
+  }
+}
