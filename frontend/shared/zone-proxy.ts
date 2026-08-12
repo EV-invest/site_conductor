@@ -16,7 +16,6 @@ import { Buffer } from "node:buffer";
 // it). Statically imported so a build that skips generation fails here, and the
 // standalone output traces it: the per-request cost is one concat.
 import shell from "../public/shell/manifest.json";
-import { spanEnterScript } from "../scripts/span-enter";
 
 const HOP_BY_HOP = [
   "connection",
@@ -30,14 +29,22 @@ const HOP_BY_HOP = [
 ];
 
 // CSS in head → the header paints with the first frame: zero FOUC/CLS.
-// The span-enter script is inline and NOT deferred, on purpose: it has to stamp
-// the arrival direction on <html> before the first paint, which is the whole
-// mechanism behind the bar spanning out as you enter a zone. Deferring it would
-// put it after the paint it exists to precede. It is ~200 bytes and touches only
-// sessionStorage and one attribute, so it costs nothing to block on.
+//
+// span-enter is a real file and carries no `defer`, both deliberately. It has to
+// stamp the arrival direction on <html> before the first paint — that is the
+// whole mechanism behind the bar spanning out as you enter a zone — so deferring
+// it would put it after the paint it exists to precede.
+//
+// And it cannot be inline: zones serve `script-src 'self' 'nonce-…'`, so an
+// inline script without that per-request nonce is blocked outright. It was
+// inline when this first shipped, and the result was a feature that looked
+// correct in every local check and did nothing at all in production. A
+// same-origin file is allowed by `'self'` with no nonce, which keeps the
+// conductor out of the cabinet's CSP entirely. It is ~200 bytes, immutable-
+// cached, and on a connection already open for the stylesheet beside it.
 const HEAD_INSERT =
   `<link rel="stylesheet" href="${shell.css}">` +
-  `<script>${spanEnterScript("cabinet")}</script>` +
+  `<script src="${shell.spanJs}"></script>` +
   `<script defer src="${shell.js}"></script>`;
 const BODY_INSERT = shell.fragment;
 
