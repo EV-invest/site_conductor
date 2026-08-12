@@ -95,22 +95,40 @@
   });
 
   // ── Spanning ⇄ narrowing, second half ─────────────────────────
-  // The decision and the starting offset are already done: the inline
-  // head script (scripts/span-enter.ts) stamped `data-span-from` on
-  // <html> before the first paint, and header-span.css painted the
-  // logo and chip at the OTHER zone's position on frame one. All that
-  // is left is to release them, which is one attribute inside a rAF —
-  // the offset is committed, so the transition interpolates off it on
-  // the compositor with no layout and nothing to measure.
+  // The decision and the starting offset are already done: the head
+  // script (scripts/span-enter.ts) stamped `data-span-from` on <html>
+  // before the first paint, and header-span.css painted the logo and
+  // chip at the OTHER zone's position on frame one. All that is left is
+  // to release them, and the transition interpolates off the committed
+  // offset on the compositor.
   //
-  // The rAF matters: setting the attribute in the same frame the
-  // offset was applied would collapse both into one style resolution
-  // and there would be no transition at all.
+  // A transition needs the offset to have been RESOLVED as a style before
+  // it is replaced. If both happen inside one style resolution the browser
+  // has no start value and simply jumps.
   //
-  // `data-span-run` is terminal. Intra-zone soft navigation never
-  // replays it, and a reload never sets `data-span-from` in the first
-  // place (the head script compares against the zone it recorded).
+  // Measured on production: the conductor, where this script loads
+  // `afterInteractive` and the offset was resolved long ago, interpolated
+  // across 24 frames. The cabinet, where the proxy loads it `defer` in the
+  // head and it can run before the first paint, produced two values — 270
+  // and 0. Identical CSS, different load timing.
+  //
+  // So the resolution is forced rather than waited for. Reading offsetWidth
+  // makes the browser flush styles and layout with the offset in place; the
+  // attribute change after it is therefore a second resolution, and the
+  // transition has both ends. One forced reflow on one element, once per
+  // zone crossing — unlike the per-frame layout thrash this animation used
+  // to do, which is what made it stutter in the first place.
+  //
+  // The rAF around it is still worth keeping: it gets off the parser's task
+  // so the flush measures a document that has finished building.
+  //
+  // `data-span-run` is terminal. Intra-zone soft navigation never replays
+  // it, and a reload never sets `data-span-from` in the first place (the
+  // head script compares against the zone it recorded).
   const root = document.documentElement;
   if (root.hasAttribute("data-span-from"))
-    requestAnimationFrame(() => root.setAttribute("data-span-run", ""));
+    requestAnimationFrame(() => {
+      void root.offsetWidth;
+      root.setAttribute("data-span-run", "");
+    });
 })();
