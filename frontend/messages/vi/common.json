@@ -1,0 +1,19 @@
+{
+  "nav.portfolio": "Danh mục đầu tư",
+  "nav.research": "Nghiên cứu",
+  "nav.publications": "Ấn phẩm",
+  "nav.team": "Đội ngũ",
+  "nav.hiring": "Tuyển dụng",
+  "nav.contact": "Liên hệ",
+  "nav.home": "Trang chủ",
+  "footer.company": "Công ty",
+  "footer.explore": "Khám phá",
+  "footer.calculator": "Công cụ tính đầu tư",
+  "footer.fieldNotes": "Ghi chép & Nghiên cứu",
+  "footer.whitepaper": "Sách trắng",
+  "a11y.homeLink": "EV Investment — trang chủ",
+  "a11y.openMenu": "Mở menu",
+  "a11y.closeMenu": "Đóng menu",
+  "a11y.siteMenu": "Menu trang web",
+  "a11y.languageSwitcher": "Chọn ngôn ngữ"
+}

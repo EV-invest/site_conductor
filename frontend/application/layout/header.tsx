@@ -18,12 +18,27 @@ import type { ElementType, ReactNode } from "react";
 import Link from "next/link";
 import { Container, Logo } from "@evinvest/uikit";
 import { HeaderActions } from "@/shared/ui/header-actions";
-import { NAV_ITEMS } from "./nav-items";
+import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { messagesFor } from "@/shared/config/i18n";
+import { NAV_ITEMS, localizeNav } from "./nav-items";
 
 export interface HeaderNavItem {
   label: string;
   href: string;
 }
+
+/** Accessible names for the menu controls, translated by the caller. */
+export interface HeaderMenuLabels {
+  open: string;
+  close: string;
+  menu: string;
+}
+
+const DEFAULT_MENU_LABELS: HeaderMenuLabels = {
+  open: "Open menu",
+  close: "Close menu",
+  menu: "Site menu",
+};
 
 /** Milliseconds before the first drawer row moves — the panel leads, rows follow. */
 const MENU_ENTER_DELAY = 90;
@@ -37,6 +52,13 @@ export interface BrandHeaderProps {
   /** Overlay-specific CTA (e.g. full-width variant); falls back to `cta`. */
   mobileCta?: ReactNode;
   linkComponent?: ElementType;
+  /**
+   * Brand-logo target and its accessible name. Defaulted for the zone fragment,
+   * which renders this header un-localised (scripts/build-shell.mts).
+   */
+  homeHref?: string;
+  homeLabel?: string;
+  menuLabels?: HeaderMenuLabels;
 }
 
 export function BrandHeader({
@@ -44,6 +66,9 @@ export function BrandHeader({
   cta,
   mobileCta,
   linkComponent,
+  homeHref = "/",
+  homeLabel = "EV Investment — home",
+  menuLabels = DEFAULT_MENU_LABELS,
 }: BrandHeaderProps) {
   const L = linkComponent ?? "a";
 
@@ -55,10 +80,10 @@ export function BrandHeader({
       <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md group-data-[zone=cabinet]/header:border-main-mist/10 group-data-[zone=cabinet]/header:bg-main-black group-data-[zone=cabinet]/header:h-[calc(5.5rem+1px)] group-data-[zone=cabinet]/header:py-0">
         <Container className="flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] h-full items-center gap-4 group-data-[zone=cabinet]/header:max-w-none group-data-[zone=cabinet]/header:pl-[18px] group-data-[zone=cabinet]/header:pr-8">
           <L
-            href="/"
+            href={homeHref}
             className="flex items-center gap-3"
             data-slot="header-logo"
-            aria-label="EV Investment — home"
+            aria-label={homeLabel}
           >
             <Logo src="/assets/logo.svg" className="h-10 w-10 text-white" />
             <div className="flex flex-col">
@@ -94,7 +119,7 @@ export function BrandHeader({
             <button
               type="button"
               data-menu-toggle="open"
-              aria-label="Open menu"
+              aria-label={menuLabels.open}
               aria-expanded="false"
               aria-haspopup="menu"
               className="flex size-10 items-center justify-center text-white lg:hidden"
@@ -140,7 +165,7 @@ export function BrandHeader({
           header-behavior.ts), so the app-side CTA needs no wiring. */}
       <aside
         data-slot="header-mobile-overlay"
-        aria-label="Site menu"
+        aria-label={menuLabels.menu}
         className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-main-mist/10 bg-main-black shadow-2xl shadow-main-black/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
       >
         {/* The chip, not a "MENU" label. The label named the panel you were
@@ -159,7 +184,7 @@ export function BrandHeader({
           <button
             type="button"
             data-menu-toggle="close"
-            aria-label="Close menu"
+            aria-label={menuLabels.close}
             className="-mr-2 flex size-10 items-center justify-center rounded-lg text-white transition-colors outline-none hover:bg-main-mist/10 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <svg
@@ -240,13 +265,25 @@ export function BrandHeader({
 export function Header({
   accountSlot,
   mobileAccountSlot,
+  locale,
 }: {
   accountSlot?: ReactNode;
   mobileAccountSlot?: ReactNode;
+  locale: Locale;
 }) {
+  // Server-side translation: this is a Server Component, so it reads the
+  // catalogue directly rather than going through the client-side provider.
+  const t = translator(messagesFor(locale), locale);
   return (
     <BrandHeader
-      nav={NAV_ITEMS}
+      nav={localizeNav(NAV_ITEMS, locale, t)}
+      homeHref={localePath(locale, "/")}
+      homeLabel={t("a11y.homeLink")}
+      menuLabels={{
+        open: t("a11y.openMenu"),
+        close: t("a11y.closeMenu"),
+        menu: t("a11y.siteMenu"),
+      }}
       linkComponent={Link}
       cta={
         <>

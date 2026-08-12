@@ -63,6 +63,13 @@ const nextConfig: NextConfig = {
         destination: "/publications/whitepaper",
         permanent: true,
       },
+      // Collapse the explicit /en/* form onto the unprefixed one so each page has
+      // exactly one canonical URL. Cannot loop with the locale rewrite below:
+      // this is external and matched against the incoming request, while the
+      // rewrite is internal and never re-enters the redirect pipeline. Every
+      // source here is itself /en-prefixed, so an unprefixed path never matches.
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/:path*", destination: "/:path*", permanent: true },
     ];
   },
   // The raw flake-built documents in public/ (whitepaper.*.html,
@@ -191,7 +198,30 @@ const nextConfig: NextConfig = {
         }
       );
     }
-    return { beforeFiles, afterFiles: [], fallback: [] };
+    // Serves the default locale at unprefixed paths, so no indexed English URL
+    // moves and the site still ships no proxy.ts.
+    //
+    // MUST be `fallback`, and this is the one thing that is easy to get wrong
+    // because the broken version half-works. Next's order is:
+    //   redirects → beforeFiles → filesystem → afterFiles → DYNAMIC ROUTES → fallback
+    // `afterFiles` runs before dynamic routes, and the whole app/[locale] tree IS
+    // a dynamic route — so an afterFiles rule fires before [locale] is ever
+    // tried, rewriting /ru/team to /en/ru/team (404) while /team still resolves
+    // and hides the bug. `fallback` runs last, after dynamic routes have had
+    // their chance, which is the semantics actually wanted. Verified on 16.2.9 in
+    // dev and a production build — see docs/i18n-routing-spike.md.
+    //
+    // Inlined rather than `localeRewrites()` from @evinvest/i18n/next — same
+    // reason as the Sentry exception above: this file is loaded as CJS, and the
+    // package is ESM-only, so requiring the subpath dies with
+    // ERR_PACKAGE_PATH_NOT_EXPORTED. The helper is still the source of truth for
+    // app-side code (localeStaticParams in app/[locale]/layout.tsx); only the
+    // config boundary has to restate it.
+    return {
+      beforeFiles,
+      afterFiles: [],
+      fallback: [{ source: "/:path*", destination: "/en/:path*" }],
+    };
   },
 };
 

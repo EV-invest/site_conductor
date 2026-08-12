@@ -1,0 +1,19 @@
+{
+  "nav.portfolio": "Портфель",
+  "nav.research": "Исследования",
+  "nav.publications": "Публикации",
+  "nav.team": "Команда",
+  "nav.hiring": "Вакансии",
+  "nav.contact": "Контакты",
+  "nav.home": "Главная",
+  "footer.company": "Компания",
+  "footer.explore": "Обзор",
+  "footer.calculator": "Инвестиционный калькулятор",
+  "footer.fieldNotes": "Заметки и исследования",
+  "footer.whitepaper": "Белая книга",
+  "a11y.homeLink": "EV Investment — на главную",
+  "a11y.openMenu": "Открыть меню",
+  "a11y.closeMenu": "Закрыть меню",
+  "a11y.siteMenu": "Меню сайта",
+  "a11y.languageSwitcher": "Выбрать язык"
+}
