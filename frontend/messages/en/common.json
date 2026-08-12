@@ -1,0 +1,19 @@
+{
+  "nav.portfolio": "Portfolio",
+  "nav.research": "Research",
+  "nav.publications": "Publications",
+  "nav.team": "Team",
+  "nav.hiring": "Hiring",
+  "nav.contact": "Contact",
+  "nav.home": "Home",
+  "footer.company": "Company",
+  "footer.explore": "Explore",
+  "footer.calculator": "Investment Calculator",
+  "footer.fieldNotes": "Field Notes & Research",
+  "footer.whitepaper": "Whitepaper",
+  "a11y.homeLink": "EV Investment — home",
+  "a11y.openMenu": "Open menu",
+  "a11y.closeMenu": "Close menu",
+  "a11y.siteMenu": "Site menu",
+  "a11y.languageSwitcher": "Choose language"
+}
