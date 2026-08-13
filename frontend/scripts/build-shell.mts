@@ -52,7 +52,23 @@ const headerHtml = renderToStaticMarkup(
   })
 );
 
-const fragmentCss = await buildCss(headerHtml);
+const hash = (s: string | Buffer) =>
+  createHash("sha256").update(s).digest("hex").slice(0, 8);
+
+// The display face, shipped with the fragment. Everything else the header needs
+// comes from the zone's own tokens.css — but Playfair does not: it is conductor-
+// local, bound to `--font-playfair` by next/font on *this* app's <html>. A zone
+// document defines neither the variable nor the @font-face, so the restated
+// `.font-serif-display` below fell through to its literal "Playfair Display"
+// fallback, which no zone loads, and the wordmark rendered in Georgia — the
+// landing's lockup in Playfair, the same lockup on /cabinet in a different face.
+// Only the roman is shipped; the header never sets italic.
+const displayFontFile = readFileSync(
+  path.join(frontend, "application/styles/fonts/Playfair-Variable.woff2")
+);
+const displayFontName = `playfair.${hash(displayFontFile)}.woff2`;
+
+const fragmentCss = await buildCss(headerHtml, displayFontName);
 const behaviorJs = transformSync(
   readFileSync(path.join(frontend, "scripts/header-behavior.ts"), "utf8"),
   { loader: "ts", minify: true }
@@ -68,14 +84,13 @@ const spanJs = spanEnterScript("cabinet");
 
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
-const hash = (s: string) =>
-  createHash("sha256").update(s).digest("hex").slice(0, 8);
 const cssName = `header.${hash(fragmentCss)}.css`;
 const jsName = `header-behavior.${hash(behaviorJs)}.js`;
 const spanName = `span-enter.${hash(spanJs)}.js`;
 writeFileSync(path.join(outDir, cssName), fragmentCss);
 writeFileSync(path.join(outDir, jsName), behaviorJs);
 writeFileSync(path.join(outDir, spanName), spanJs);
+writeFileSync(path.join(outDir, displayFontName), displayFontFile);
 
 writeFileSync(
   path.join(outDir, "manifest.json"),
@@ -84,6 +99,7 @@ writeFileSync(
       css: `/shell/${cssName}`,
       js: `/shell/${jsName}`,
       spanJs: `/shell/${spanName}`,
+      font: `/shell/${displayFontName}`,
       fragment: `${headerHtml}<script type="module" src="${chip.scriptUrl}"></script>`,
     },
     null,
@@ -91,10 +107,13 @@ writeFileSync(
   )
 );
 console.log(
-  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B)`
+  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B), ${displayFontName} (${displayFontFile.length}B)`
 );
 
-async function buildCss(markup: string): Promise<string> {
+async function buildCss(
+  markup: string,
+  displayFontName: string
+): Promise<string> {
   // Tailwind resolves @source relative to the input file; a scratch dir inside
   // the project keeps node_modules import resolution intact.
   const scratch = path.join(frontend, "node_modules/.cache/build-shell");
@@ -109,12 +128,20 @@ async function buildCss(markup: string): Promise<string> {
 
 /* Conductor-global classes the header markup uses (application/styles/
    globals.css) — restated with the tokens' concrete stacks since a zone's CSS
-   need not define them. */
-.font-serif-display {
-  font-family: var(--font-playfair, "Playfair Display"), ui-serif, Georgia, serif;
+   need not define them.
+
+   Wrapped in :where() to hold them at zero specificity. In globals.css these
+   live in a base layer, so a utility on the same element wins; here the layer
+   is flattened (see the layer unwrap below) and the block is appended last,
+   which made it beat the utilities instead. The header wordmark carries both
+   font-serif-display and tracking-wider, so on zones the -0.02em below was
+   overriding the +0.05em it should have had — the landing tracked the lockup
+   out to 0.9px, /cabinet pulled it in to -0.36px, from one flattened layer. */
+:where(.font-serif-display) {
+  font-family: var(--font-playfair, "EV Shell Playfair"), Georgia, ui-serif, serif;
   letter-spacing: -0.02em;
 }
-.font-mono-tech {
+:where(.font-mono-tech) {
   font-family: var(--font-inter, "Inter"), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
@@ -146,6 +173,33 @@ async function buildCss(markup: string): Promise<string> {
   root.walkAtRules("font-face", at => {
     at.remove();
   });
+  // …with one exception, added back after the sweep rather than spared by it:
+  // the display face. The rule above is right about Inter — uikit's tokens.css
+  // ships it and every zone loads it — but Playfair reaches this app through
+  // next/font, not tokens.css, so stripping every face left zones with a
+  // font-family naming a font nobody serves.
+  //
+  // `src` is relative to THIS STYLESHEET, not the document: the fragment is a
+  // `<link href="/shell/header.…css">`, so `./playfair.…woff2` resolves next to
+  // it whatever path the zone document lives at (`/cabinet`, `/rea/...`).
+  // `swap`, not the `optional` next/font uses on the conductor — `optional`
+  // commits to one face for the whole page view, so a cold visit would keep the
+  // Georgia fallback and reopen exactly the mismatch this fixes. The reasoning
+  // for `optional` was a 96px hero reflowing; this is an 18px wordmark, and the
+  // preload beside the stylesheet makes the swap window very short anyway.
+  hoisted.push(
+    postcss
+      .parse(
+        `@font-face {
+  font-family: "EV Shell Playfair";
+  src: url("./${displayFontName}") format("woff2-variations");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}`
+      )
+      .first!.clone()
+  );
   root.walkAtRules(/^(media|supports)$/, at => {
     if (!at.nodes?.length) at.remove();
   });
@@ -177,7 +231,10 @@ async function buildCss(markup: string): Promise<string> {
   // guarantee for the bulk of the sheet.
   root.append(
     postcss.parse(
-      readFileSync(path.join(frontend, "application/styles/header-span.css"), "utf8")
+      readFileSync(
+        path.join(frontend, "application/styles/header-span.css"),
+        "utf8"
+      )
     )
   );
   // !important: this link is injected before the zone's own stylesheet, whose
