@@ -69,6 +69,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  // No `maximumScale: 1` — capping the scale blocks pinch-zoom, which is a
+  // standing Lighthouse accessibility failure and a real barrier for low-vision
+  // readers on a text-heavy research site. The reason it was there — iOS Safari
+  // zooming the viewport when a focused control's text is under 16px — is now
+  // fixed at the cause: every free-text input is `text-base` on phones (see
+  // shared/ui/control.ts), so the zoom never fires and readers keep theirs.
   themeColor: SITE.theme.black,
 };

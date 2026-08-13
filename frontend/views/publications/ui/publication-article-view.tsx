@@ -10,6 +10,7 @@ import { DocumentReader } from "@/shared/ui/document-reader";
 import { MediaPlate } from "@/shared/ui/media-plate";
 
 import { KIND_LABEL, pdfHref } from "../model/presentation";
+import { PublicationStructuredData } from "./publication-structured-data";
 
 /**
  * An article is a header, at most one cover, and the compiled document.
@@ -28,6 +29,7 @@ export function PublicationArticleView({
 
   return (
     <main className="min-h-screen bg-main-black pt-32 text-main-mist">
+      <PublicationStructuredData publication={publication} />
       <Container>
         <header className="mx-auto max-w-3xl">
           <Link
@@ -41,9 +43,11 @@ export function PublicationArticleView({
               <span aria-hidden className="size-[7px] bg-main-accent-t1" />
               {KIND_LABEL[publication.kind]}
             </span>
-            <span className="text-main-mist/40">
+            {/* <time> so the dateline is machine-readable on its own, not only
+                inside the JSON-LD block. */}
+            <time dateTime={publication.date} className="text-main-mist/40">
               {formatPublicationDate(publication.date, "long")}
-            </span>
+            </time>
           </div>
           <h1 className="mt-5 font-serif-display text-4xl leading-tight font-bold text-white sm:text-5xl">
             {publication.title}

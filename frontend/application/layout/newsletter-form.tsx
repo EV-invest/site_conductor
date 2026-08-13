@@ -47,11 +47,13 @@ export function NewsletterForm() {
           type="email"
           placeholder="Institutional Email"
           value={email}
-          onChange={(e) => {
+          onChange={e => {
             setEmail(e.target.value);
             if (status === "error") setStatus("idle");
           }}
-          className="bg-transparent text-xs p-3 w-full focus:outline-none text-white"
+          // text-base on phones: under 16px iOS zooms the viewport on focus
+          // (see shared/ui/control.ts). sm: keeps the 12px footer design.
+          className="bg-transparent text-base sm:text-xs p-3 w-full focus:outline-none text-white"
           disabled={status === "sending"}
         />
         <button

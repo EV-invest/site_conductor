@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { findPublication } from "@/entities/publication";
+import { coverStill, findPublication } from "@/entities/publication";
 import { PublicationArticleView } from "@/views/publications";
+import { pageMetadata } from "@/shared/seo/page-metadata";
 
 // Reading the static doc off disk per request, so the latest flake-copied file
 // is served (the page is cheap: one file read + inject).
@@ -14,18 +15,28 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const publication = findPublication(slug);
   if (!publication) {
     return { title: "Publication not found", robots: { index: false } };
   }
-  return {
+  // og:type=article + the cover as the share image, so a dispatch posted to
+  // LinkedIn or X carries its own art and dateline instead of the site card.
+  return pageMetadata({
     title: publication.title,
     description: publication.dek,
-    alternates: { canonical: `/publications/${slug}` },
-  };
+    path: `/publications/${slug}`,
+    locale,
+    image: coverStill(publication),
+    type: "article",
+    article: {
+      publishedTime: publication.date,
+      authors: publication.author ? [publication.author] : undefined,
+      section: publication.category,
+    },
+  });
 }
 
 export default async function Page({

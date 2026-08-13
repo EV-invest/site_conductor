@@ -18,6 +18,8 @@ const body = `# ${SITE.name} (${SITE.alternateName})
 - [Portfolio](${SITE.url}/#portfolio): featured developments, target yields and locations.
 - [Investment calculator](${SITE.url}/#calculator): model projected returns.
 - [Publications](${SITE.url}/publications): field notes filmed on the ground plus macro and market reports on Vietnam's coastal real estate.
+- [Publications feed](${SITE.url}/publications/feed.xml): RSS of the above, newest first.
+- [Whitepaper](${SITE.url}/publications/whitepaper): the full institutional thesis (also available as a PDF).
 - [Team](${SITE.url}/team): leadership and research.
 - [Hiring](${SITE.url}/hiring): open roles across investment, development, and advisory.
 - [Contact](${SITE.url}/contact): reach the fund.
