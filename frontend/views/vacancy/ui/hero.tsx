@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Container } from "@evinvest/uikit";
+import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
+import { messagesFor } from "@/shared/config/i18n";
 import { ShareButton } from "./share-button";
 
 function Pill({ label, value }: { label: string; value: string }) {
@@ -16,16 +18,23 @@ function Pill({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function VacancyHero({ vacancy }: { vacancy: VacancyDetail }) {
-  const team = vacancyTeamLabel(vacancy.category, vacancy.category_label);
+export function VacancyHero({
+  vacancy,
+  locale,
+}: {
+  vacancy: VacancyDetail;
+  locale: Locale;
+}) {
+  const t = translator(messagesFor(locale), locale);
+  const team = vacancyTeamLabel(vacancy.category, vacancy.category_label, t);
   return (
     <section className="bg-main-black pt-32 pb-10">
       <Container>
         <Link
-          href="/hiring"
+          href={localePath(locale, "/hiring")}
           className="inline-flex items-center gap-2 font-mono-tech text-[11px] uppercase tracking-[0.16em] text-main-mist/45 transition-colors hover:text-main-mist/80"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> All open roles
+          <ArrowLeft className="h-3.5 w-3.5" /> {t("vacancy.back")}
         </Link>
         <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-main-accent-t1">
           {team} · {vacancy.employment_type}
@@ -38,10 +47,16 @@ export function VacancyHero({ vacancy }: { vacancy: VacancyDetail }) {
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2.5">
-          <Pill label="Location" value={vacancy.location} />
-          <Pill label="Type" value={vacancy.employment_type} />
-          <Pill label="Team" value={team} />
-          <Pill label="Compensation" value={vacancy.compensation} />
+          <Pill label={t("vacancy.pill.location")} value={vacancy.location} />
+          <Pill
+            label={t("vacancy.pill.type")}
+            value={vacancy.employment_type}
+          />
+          <Pill label={t("vacancy.pill.team")} value={team} />
+          <Pill
+            label={t("vacancy.pill.compensation")}
+            value={vacancy.compensation}
+          />
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -49,7 +64,7 @@ export function VacancyHero({ vacancy }: { vacancy: VacancyDetail }) {
             href="#apply"
             className="inline-flex items-center rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90"
           >
-            Apply for this role
+            {t("vacancy.applyCta")}
           </a>
           <ShareButton />
         </div>

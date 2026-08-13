@@ -13,12 +13,12 @@ import { TeamStructuredData } from "./team-structured-data";
 export function TeamPageView({ locale }: { locale: Locale }) {
   return (
     <div className="min-h-screen bg-main-black text-main-mist">
-      <TeamStructuredData />
+      <TeamStructuredData locale={locale} />
       <TeamHero locale={locale} />
-      <TeamLeadership />
-      <TeamPhilosophy />
-      <TeamOffices />
-      <TeamJoin />
+      <TeamLeadership locale={locale} />
+      <TeamPhilosophy locale={locale} />
+      <TeamOffices locale={locale} />
+      <TeamJoin locale={locale} />
     </div>
   );
 }

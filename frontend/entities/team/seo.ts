@@ -1,5 +1,8 @@
+import { DEFAULT_LOCALE, translator, type Locale } from "@evinvest/i18n";
+
 import { ldAbs, ldCompact, ldId, ORG_ID } from "@/shared/seo/json-ld";
 import type { JsonLdNode } from "@/shared/seo/json-ld";
+import { messagesFor } from "@/shared/config/i18n";
 
 import { TEAM } from "./model";
 
@@ -20,14 +23,19 @@ export const personId = (name: string) => ldId(`#person-${slug(name)}`);
 
 /// Placeholder rows (names still marked TODO) are excluded: a half-filled
 /// Person node is a worse signal than no node at all.
-export function teamPersonNodes(): JsonLdNode[] {
+///
+/// `locale` decides the language of `jobTitle`/`description` only — the @ids are
+/// derived from the (untranslated) name, so every locale's graph describes the
+/// same entities rather than minting a new person per language.
+export function teamPersonNodes(locale: Locale = DEFAULT_LOCALE): JsonLdNode[] {
+  const t = translator(messagesFor(locale), locale);
   return TEAM.filter(member => !/\btodo\b/i.test(member.name)).map(member =>
     ldCompact({
       "@type": "Person",
       "@id": personId(member.name),
       name: member.name,
-      jobTitle: member.role,
-      description: member.bio,
+      jobTitle: t(member.roleKey),
+      description: t(member.bioKey),
       image: ldAbs(member.photo),
       worksFor: { "@id": ORG_ID },
       // The team page is where each person is described in full, so it is the

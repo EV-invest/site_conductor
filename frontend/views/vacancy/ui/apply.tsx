@@ -1,11 +1,21 @@
 import { Container } from "@evinvest/uikit";
+import { translator, type Locale } from "@evinvest/i18n";
 import { ApplicationForm } from "@/features/job-application";
 import type { VacancyDetail } from "@/entities/vacancy";
+import { messagesFor } from "@/shared/config/i18n";
+import { Accented } from "@/shared/ui/accented";
 import { DashList } from "./dash-list";
 
 /** Closing apply band — reassurance copy beside the role-mode application form
  *  (the universal form with its role block injected). */
-export function VacancyApply({ vacancy }: { vacancy: VacancyDetail }) {
+export function VacancyApply({
+  vacancy,
+  locale,
+}: {
+  vacancy: VacancyDetail;
+  locale: Locale;
+}) {
+  const t = translator(messagesFor(locale), locale);
   return (
     <section id="apply" className="scroll-mt-24 bg-main-black pb-24 pt-8">
       <Container>
@@ -13,26 +23,20 @@ export function VacancyApply({ vacancy }: { vacancy: VacancyDetail }) {
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
-                Apply
+                {t("vacancy.apply.eyebrow")}
               </p>
               <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
-                Send your{" "}
-                <span className="font-serif italic text-main-accent-t1">
-                  application
-                </span>
-                .
+                <Accented text={t("vacancy.apply.title")} />
               </h2>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-main-mist/60">
-                Tell us where you&apos;d fit on the {vacancy.title} role. A few
-                lines is enough — we read every note and reply within about two
-                weeks.
+                {t("vacancy.apply.intro", { role: vacancy.title })}
               </p>
               <div className="mt-6">
                 <DashList
                   items={[
-                    "No cover-letter theatre — your work speaks.",
-                    "You'll hear back either way.",
-                    "Questions first? hiring@evinvest.vn",
+                    t("vacancy.apply.point1"),
+                    t("vacancy.apply.point2"),
+                    t("vacancy.apply.point3"),
                   ]}
                 />
               </div>

@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
+import { useT } from "@evinvest/i18n/react";
 
 export function ShareButton() {
+  const t = useT();
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -21,11 +23,12 @@ export function ShareButton() {
     >
       {copied ? (
         <>
-          <Check className="h-4 w-4 text-main-accent-t1" /> Copied
+          <Check className="h-4 w-4 text-main-accent-t1" />{" "}
+          {t("vacancy.shareCopied")}
         </>
       ) : (
         <>
-          <Share2 className="h-4 w-4" /> Share role
+          <Share2 className="h-4 w-4" /> {t("vacancy.share")}
         </>
       )}
     </button>

@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+
 import {
   listVacancies,
   vacancyCacheOptions,
@@ -29,7 +31,12 @@ export async function generateMetadata({
   });
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   let vacancies: VacancySummary[] = [];
   try {
     // vacancyCacheOptions = force-cache + an explicit fetch TTL (static board,
@@ -42,5 +49,10 @@ export default async function Page() {
     // Backend unreachable — render the page shell with an empty board.
     vacancies = [];
   }
-  return <HiringView vacancies={vacancies} />;
+  return (
+    <HiringView
+      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
+      vacancies={vacancies}
+    />
+  );
 }

@@ -1,3 +1,5 @@
+import type { Locale } from "@evinvest/i18n";
+
 import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
 import { Portfolio } from "./portfolio";
@@ -10,15 +12,15 @@ import { HomeStructuredData } from "./structured-data";
 // section owns its own variant resolution (see hero/ui/hero.tsx,
 // team/ui/team.tsx). Header and Footer are page chrome rendered by the
 // application layout, not page sections.
-export function HomeView() {
+export function HomeView({ locale }: { locale: Locale }) {
   return (
     <div className="min-h-screen bg-main-black text-main-mist font-sans">
-      <HomeStructuredData />
+      <HomeStructuredData locale={locale} />
       <Hero />
       <FieldNotes />
       <Portfolio />
       <Research />
-      <Team />
+      <Team locale={locale} />
     </div>
   );
 }

@@ -1,46 +1,39 @@
 import { LineChart, ShieldCheck, Anchor } from "lucide-react";
 import { Container } from "@evinvest/uikit";
+import { translator, type Locale } from "@evinvest/i18n";
+
+import { messagesFor } from "@/shared/config/i18n";
 import { SectionHead } from "./section-head";
 
+// Icon + catalogue keys; the text itself lives in messages/<locale>/common.json.
 const PRINCIPLES = [
-  {
-    icon: LineChart,
-    title: "Macro-first research",
-    body: "Every position starts from a top-down read of Vietnam's growth, urbanisation and coastal-tourism cycles — not from a single deal.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Technology-driven risk",
-    body: "We build our own risk and research stack — algorithmic modelling and conservative leverage are set before capital is committed, so downside is sized before upside is sold.",
-  },
-  {
-    icon: Anchor,
-    title: "Local roots, institutional standards",
-    body: "On-the-ground presence in Quy Nhon and Da Nang paired with the reporting, governance and transparency international partners expect.",
-  },
+  { icon: LineChart, key: "macro" },
+  { icon: ShieldCheck, key: "risk" },
+  { icon: Anchor, key: "roots" },
 ];
 
-export function TeamPhilosophy() {
+export function TeamPhilosophy({ locale }: { locale: Locale }) {
+  const t = translator(messagesFor(locale), locale);
   return (
     <section className="border-t border-main-mist/10 bg-main-surface py-20">
       <Container className="space-y-12">
-        <SectionHead eyebrow="How we operate">
-          A discipline, not a pitch
+        <SectionHead eyebrow={t("team.philosophy.eyebrow")}>
+          {t("team.philosophy.title")}
         </SectionHead>
         <div className="grid gap-6 md:grid-cols-3">
-          {PRINCIPLES.map(({ icon: Icon, title, body }) => (
+          {PRINCIPLES.map(({ icon: Icon, key }) => (
             <div
-              key={title}
+              key={key}
               className="space-y-4 rounded-xl border border-main-mist/10 bg-main-card p-8"
             >
               <div className="flex size-13 items-center justify-center rounded-full bg-main-mist/5 text-main-accent-t1">
                 <Icon className="size-5" />
               </div>
               <h3 className="font-serif-display text-lg font-bold text-white">
-                {title}
+                {t(`team.philosophy.${key}.title`)}
               </h3>
               <p className="text-sm leading-relaxed text-main-mist/75">
-                {body}
+                {t(`team.philosophy.${key}.body`)}
               </p>
             </div>
           ))}

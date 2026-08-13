@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -68,10 +69,15 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const vacancy = await fetchVacancy(slug);
   if (!vacancy) notFound();
-  return <VacancyView vacancy={vacancy} />;
+  return (
+    <VacancyView
+      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
+      vacancy={vacancy}
+    />
+  );
 }

@@ -114,5 +114,393 @@
   "team.intro": {
     "en": "A partnership of investment, risk and technology specialists building institutional-grade access to Vietnam's premium coastal real estate — on the ground in Quy Nhon and Da Nang.",
     "t": "Un partenariat de spécialistes de l'investissement, du risque et de la technologie, bâtissant un accès de qualité institutionnelle à l'immobilier côtier haut de gamme du Vietnam — présents à Quy Nhon et Da Nang."
+  },
+  "team.leadership.eyebrow": {
+    "en": "Leadership",
+    "t": "Direction"
+  },
+  "team.leadership.title": {
+    "en": "Led by *Institutional Pioneers*",
+    "t": "Menés par des *pionniers institutionnels*"
+  },
+  "team.leadership.intro": {
+    "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
+    "t": "Nos associés allient une expérience concrète de l'investissement, de la modélisation du risque et du développement à une exécution sur le terrain à Quy Nhon et Da Nang — une présence locale tenue à une discipline institutionnelle."
+  },
+  "team.leadership.officeBadge": {
+    "en": "Head Office",
+    "t": "Siège social"
+  },
+  "team.leadership.officeName": {
+    "en": "EV Boardroom • Quy Nhon",
+    "t": "Salle du conseil EV • Quy Nhon"
+  },
+  "team.leadership.photoAlt": {
+    "en": "EV Investment boardroom in Quy Nhon",
+    "t": "Salle du conseil d'EV Investment à Quy Nhon"
+  },
+  "team.philosophy.eyebrow": {
+    "en": "How we operate",
+    "t": "Notre manière d'opérer"
+  },
+  "team.philosophy.title": {
+    "en": "A discipline, not a pitch",
+    "t": "Une discipline, pas un argumentaire"
+  },
+  "team.philosophy.macro.title": {
+    "en": "Macro-first research",
+    "t": "Recherche macro d'abord"
+  },
+  "team.philosophy.macro.body": {
+    "en": "Every position starts from a top-down read of Vietnam's growth, urbanisation and coastal-tourism cycles — not from a single deal.",
+    "t": "Chaque position part d'une lecture descendante de la croissance du Vietnam, de son urbanisation et des cycles du tourisme côtier — jamais d'une opération isolée."
+  },
+  "team.philosophy.risk.title": {
+    "en": "Technology-driven risk",
+    "t": "Risque piloté par la technologie"
+  },
+  "team.philosophy.risk.body": {
+    "en": "We build our own risk and research stack — algorithmic modelling and conservative leverage are set before capital is committed, so downside is sized before upside is sold.",
+    "t": "Nous construisons notre propre socle de risque et de recherche : modélisation algorithmique et effet de levier prudent sont fixés avant tout engagement de capital, de sorte que la baisse est chiffrée avant que la hausse ne soit vendue."
+  },
+  "team.philosophy.roots.title": {
+    "en": "Local roots, institutional standards",
+    "t": "Racines locales, standards institutionnels"
+  },
+  "team.philosophy.roots.body": {
+    "en": "On-the-ground presence in Quy Nhon and Da Nang paired with the reporting, governance and transparency international partners expect.",
+    "t": "Une présence sur le terrain à Quy Nhon et Da Nang, assortie du reporting, de la gouvernance et de la transparence qu'attendent les partenaires internationaux."
+  },
+  "team.offices.eyebrow": {
+    "en": "Presence",
+    "t": "Présence"
+  },
+  "team.offices.title": {
+    "en": "Where we work",
+    "t": "Où nous travaillons"
+  },
+  "team.offices.quynhon": {
+    "en": "Quy Nhon Head Office",
+    "t": "Siège de Quy Nhon"
+  },
+  "team.offices.hcmc": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Bureau de représentation de Hô Chi Minh"
+  },
+  "team.join.eyebrow": {
+    "en": "Get involved",
+    "t": "Nous rejoindre"
+  },
+  "team.join.title": {
+    "en": "Build the fund with us",
+    "t": "Construisez le fonds avec nous"
+  },
+  "team.join.hiring.eyebrow": {
+    "en": "Open position",
+    "t": "Poste ouvert"
+  },
+  "team.join.hiring.title": {
+    "en": "Join Us",
+    "t": "Rejoignez-nous"
+  },
+  "team.join.hiring.body": {
+    "en": "We are always looking for talented analysts and asset managers in Quy Nhon and Da Nang.",
+    "t": "Nous recherchons en permanence des analystes et des gérants d'actifs talentueux à Quy Nhon et Da Nang."
+  },
+  "team.join.hiring.cta": {
+    "en": "Hiring",
+    "t": "Recrutement"
+  },
+  "team.join.ir.eyebrow": {
+    "en": "Investor relations",
+    "t": "Relations investisseurs"
+  },
+  "team.join.ir.title": {
+    "en": "LP Partner Network",
+    "t": "Réseau de partenaires LP"
+  },
+  "team.join.ir.body": {
+    "en": "Talk to us about co-investing in Vietnam's coastal real estate.",
+    "t": "Parlons de co-investissement dans l'immobilier côtier vietnamien."
+  },
+  "team.join.ir.cta": {
+    "en": "IR Contacts",
+    "t": "Contacts IR"
+  },
+  "team.member.ez.role": {
+    "en": "Managing Partner, Co-founder",
+    "t": "Associé gérant, cofondateur"
+  },
+  "team.member.ez.bio": {
+    "en": "Leads investment strategy and capital partnerships, focused on Vietnam's coastal growth corridors in Quy Nhon and Da Nang.",
+    "t": "Dirige la stratégie d'investissement et les partenariats en capital, avec un focus sur les corridors de croissance côtiers du Vietnam à Quy Nhon et Da Nang."
+  },
+  "team.member.vs.role": {
+    "en": "Director of Research & Risk, CTO",
+    "t": "Directeur recherche & risque, CTO"
+  },
+  "team.member.vs.bio": {
+    "en": "Specializes in algorithmically-driven risk assessment and financial modelling. Previously at QuantM Alpha.",
+    "t": "Spécialiste de l'évaluation algorithmique du risque et de la modélisation financière. Précédemment chez QuantM Alpha."
+  },
+  "hiring.hero.eyebrow": {
+    "en": "Hiring · Join the fund",
+    "t": "Recrutement · Rejoignez le fonds"
+  },
+  "hiring.hero.title": {
+    "en": "Build coastal Vietnam's *next decade* with us.",
+    "t": "Construisez avec nous la *prochaine décennie* du littoral vietnamien."
+  },
+  "hiring.hero.intro": {
+    "en": "EV Investment develops premium coastal assets in Quy Nhơn — and we're hiring senior people across investment, development, and client advisory. Find your role below.",
+    "t": "EV Investment développe des actifs côtiers premium à Quy Nhơn — et nous recrutons des profils seniors en investissement, développement et conseil clients. Trouvez votre poste ci-dessous."
+  },
+  "hiring.hero.cta": {
+    "en": "View open roles",
+    "t": "Voir les postes ouverts"
+  },
+  "hiring.hero.stat.roles": {
+    "en": "Open roles",
+    "t": "Postes ouverts"
+  },
+  "hiring.hero.stat.teams": {
+    "en": "Teams hiring",
+    "t": "Équipes qui recrutent"
+  },
+  "hiring.hero.stat.offices": {
+    "en": "Office locations",
+    "t": "Implantations"
+  },
+  "hiring.board.eyebrow": {
+    "en": "Open roles",
+    "t": "Postes ouverts"
+  },
+  "hiring.board.title": {
+    "en": "Where we're *hiring*.",
+    "t": "Où nous *recrutons*."
+  },
+  "hiring.board.search": {
+    "en": "Search roles, teams, or locations…",
+    "t": "Rechercher un poste, une équipe ou un lieu…"
+  },
+  "hiring.board.searchLabel": {
+    "en": "Search roles",
+    "t": "Rechercher des postes"
+  },
+  "hiring.board.count": {
+    "en": "{count, plural, one {# role} other {# roles}}",
+    "t": "{count, plural, one {# poste} many {# postes} other {# postes}}"
+  },
+  "hiring.board.allRoles": {
+    "en": "All roles",
+    "t": "Tous les postes"
+  },
+  "hiring.board.empty": {
+    "en": "No roles match your search.",
+    "t": "Aucun poste ne correspond à votre recherche."
+  },
+  "hiring.board.clear": {
+    "en": "Clear filters",
+    "t": "Effacer les filtres"
+  },
+  "hiring.board.viewRole": {
+    "en": "View role",
+    "t": "Voir le poste"
+  },
+  "hiring.category.all": {
+    "en": "All",
+    "t": "Tous"
+  },
+  "hiring.category.investment": {
+    "en": "Investment",
+    "t": "Investissement"
+  },
+  "hiring.category.development": {
+    "en": "Development",
+    "t": "Développement"
+  },
+  "hiring.category.advisory": {
+    "en": "Advisory",
+    "t": "Conseil"
+  },
+  "hiring.category.operations": {
+    "en": "Operations",
+    "t": "Opérations"
+  },
+  "hiring.team.investment": {
+    "en": "Investment & Research",
+    "t": "Investissement & recherche"
+  },
+  "hiring.team.development": {
+    "en": "Development & Projects",
+    "t": "Développement & projets"
+  },
+  "hiring.team.advisory": {
+    "en": "Client Advisory",
+    "t": "Conseil clients"
+  },
+  "hiring.team.operations": {
+    "en": "Operations",
+    "t": "Opérations"
+  },
+  "hiring.why.eyebrow": {
+    "en": "Why EV",
+    "t": "Pourquoi EV"
+  },
+  "hiring.why.title": {
+    "en": "Why join *now*.",
+    "t": "Pourquoi nous rejoindre *maintenant*."
+  },
+  "hiring.why.focus.title": {
+    "en": "Focus",
+    "t": "Focus"
+  },
+  "hiring.why.focus.body": {
+    "en": "A focused thesis: 100% concentration and expertise in today's most promising emerging market.",
+    "t": "Une thèse concentrée : 100 % de concentration et d'expertise sur le marché émergent le plus prometteur du moment."
+  },
+  "hiring.why.rigor.title": {
+    "en": "Institutional rigor",
+    "t": "Rigueur institutionnelle"
+  },
+  "hiring.why.rigor.body": {
+    "en": "Data-driven research and underwriting on assets you can stand in front of.",
+    "t": "Recherche et souscription fondées sur les données, portant sur des actifs devant lesquels on peut se tenir."
+  },
+  "hiring.why.scale.title": {
+    "en": "Ground-floor scale",
+    "t": "Croissance dès le départ"
+  },
+  "hiring.why.scale.body": {
+    "en": "Join early. Your work compounds into the fund's track record — and your own.",
+    "t": "Rejoignez-nous tôt. Votre travail capitalise dans le track record du fonds — et dans le vôtre."
+  },
+  "hiring.why.upside.title": {
+    "en": "Aligned upside",
+    "t": "Intérêts alignés"
+  },
+  "hiring.why.upside.body": {
+    "en": "Senior contributors share in the carry they help create.",
+    "t": "Les contributeurs seniors participent au carried interest qu'ils contribuent à créer."
+  },
+  "hiring.process.eyebrow": {
+    "en": "How we hire",
+    "t": "Notre processus de recrutement"
+  },
+  "hiring.process.title": {
+    "en": "A short, *honest* process.",
+    "t": "Un processus court et *honnête*."
+  },
+  "hiring.process.intro.title": {
+    "en": "Intro call",
+    "t": "Premier échange"
+  },
+  "hiring.process.intro.body": {
+    "en": "A 30-minute conversation about you and us — no scripts.",
+    "t": "Une conversation de 30 minutes sur vous et sur nous — sans script."
+  },
+  "hiring.process.deep.title": {
+    "en": "Deep dive",
+    "t": "Étude approfondie"
+  },
+  "hiring.process.deep.body": {
+    "en": "A real problem from our actual pipeline — no whiteboard puzzles.",
+    "t": "Un cas réel issu de notre pipeline — pas d'énigmes au tableau."
+  },
+  "hiring.process.meet.title": {
+    "en": "Meet the team",
+    "t": "Rencontre avec l'équipe"
+  },
+  "hiring.process.meet.body": {
+    "en": "Time with the people you'd work beside, in Quy Nhơn or remote.",
+    "t": "Du temps avec celles et ceux à vos côtés, à Quy Nhơn ou à distance."
+  },
+  "hiring.process.offer.title": {
+    "en": "Offer",
+    "t": "Offre"
+  },
+  "hiring.process.offer.body": {
+    "en": "Fast, clear, and senior — usually within two weeks.",
+    "t": "Rapide, claire et senior — généralement sous deux semaines."
+  },
+  "vacancy.back": {
+    "en": "All open roles",
+    "t": "Tous les postes ouverts"
+  },
+  "vacancy.pill.location": {
+    "en": "Location",
+    "t": "Lieu"
+  },
+  "vacancy.pill.type": {
+    "en": "Type",
+    "t": "Type"
+  },
+  "vacancy.pill.team": {
+    "en": "Team",
+    "t": "Équipe"
+  },
+  "vacancy.pill.compensation": {
+    "en": "Compensation",
+    "t": "Rémunération"
+  },
+  "vacancy.applyCta": {
+    "en": "Apply for this role",
+    "t": "Postuler à ce poste"
+  },
+  "vacancy.share": {
+    "en": "Share role",
+    "t": "Partager le poste"
+  },
+  "vacancy.shareCopied": {
+    "en": "Copied",
+    "t": "Copié"
+  },
+  "vacancy.block.about": {
+    "en": "About the role",
+    "t": "À propos du poste"
+  },
+  "vacancy.block.responsibilities": {
+    "en": "What you'll do",
+    "t": "Vos missions"
+  },
+  "vacancy.block.requirements": {
+    "en": "What we're looking for",
+    "t": "Ce que nous recherchons"
+  },
+  "vacancy.block.niceToHave": {
+    "en": "Nice to have",
+    "t": "Un plus"
+  },
+  "vacancy.block.offer": {
+    "en": "What we offer",
+    "t": "Ce que nous offrons"
+  },
+  "vacancy.glance": {
+    "en": "At a glance",
+    "t": "En bref"
+  },
+  "vacancy.apply.eyebrow": {
+    "en": "Apply",
+    "t": "Candidature"
+  },
+  "vacancy.apply.title": {
+    "en": "Send your *application*.",
+    "t": "Envoyez votre *candidature*."
+  },
+  "vacancy.apply.intro": {
+    "en": "Tell us where you'd fit on the {role} role. A few lines is enough — we read every note and reply within about two weeks.",
+    "t": "Dites-nous où vous vous situeriez sur le poste {role}. Quelques lignes suffisent — nous lisons chaque message et répondons sous deux semaines environ."
+  },
+  "vacancy.apply.point1": {
+    "en": "No cover-letter theatre — your work speaks.",
+    "t": "Pas de théâtre de la lettre de motivation — votre travail parle pour vous."
+  },
+  "vacancy.apply.point2": {
+    "en": "You'll hear back either way.",
+    "t": "Vous aurez une réponse dans tous les cas."
+  },
+  "vacancy.apply.point3": {
+    "en": "Questions first? hiring@evinvest.vn",
+    "t": "Des questions d'abord ? hiring@evinvest.vn"
   }
 }

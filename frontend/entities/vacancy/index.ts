@@ -29,24 +29,38 @@ export const vacancyCacheOptions = {
 
 /// Filter facets for the board, mirroring the backend `VacancyCategory`. The
 /// "All" pseudo-facet is UI-only (no category filter sent).
+///
+/// `labelKey` is a catalogue key, not a label: these five facets are chrome the
+/// app owns, so they translate. The vacancies themselves do NOT — title,
+/// summary, location and employment type come from the backend and stay in the
+/// language they were authored in until `vacancy_translations` lands (see
+/// docs/i18n-persisted-content.md).
 export const VACANCY_CATEGORIES = [
-  { key: "all", label: "All" },
-  { key: "investment", label: "Investment" },
-  { key: "development", label: "Development" },
-  { key: "advisory", label: "Advisory" },
-  { key: "operations", label: "Operations" },
+  { key: "all", labelKey: "hiring.category.all" },
+  { key: "investment", labelKey: "hiring.category.investment" },
+  { key: "development", labelKey: "hiring.category.development" },
+  { key: "advisory", labelKey: "hiring.category.advisory" },
+  { key: "operations", labelKey: "hiring.category.operations" },
 ] as const;
 
 export type VacancyCategoryKey = (typeof VACANCY_CATEGORIES)[number]["key"];
 
-/// Richer team labels for the board's category pill (vs. the short filter-chip label).
-const TEAM_LABELS: Record<string, string> = {
-  investment: "Investment & Research",
-  development: "Development & Projects",
-  advisory: "Client Advisory",
-  operations: "Operations",
+/// Richer team labels for the board's category pill (vs. the short filter-chip
+/// label). Returns the *rendered* label, so the caller passes its translator in;
+/// an unrecognised category falls back to the backend's own label, which is the
+/// one string here that cannot be translated ahead of time.
+const TEAM_LABEL_KEYS: Record<string, string> = {
+  investment: "hiring.team.investment",
+  development: "hiring.team.development",
+  advisory: "hiring.team.advisory",
+  operations: "hiring.team.operations",
 };
 
-export function vacancyTeamLabel(category: string, fallback: string): string {
-  return TEAM_LABELS[category] ?? fallback;
+export function vacancyTeamLabel(
+  category: string,
+  fallback: string,
+  t: (key: string) => string
+): string {
+  const key = TEAM_LABEL_KEYS[category];
+  return key ? t(key) : fallback;
 }

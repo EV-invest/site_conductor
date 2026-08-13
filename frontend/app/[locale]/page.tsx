@@ -20,6 +20,11 @@ export async function generateMetadata({
   return { alternates: { canonical: localePath(resolved, "/") } };
 }
 
-export default function Page() {
-  return <HomeView />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return <HomeView locale={isLocale(locale) ? locale : DEFAULT_LOCALE} />;
 }
