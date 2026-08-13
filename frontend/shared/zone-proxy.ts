@@ -42,7 +42,15 @@ const HOP_BY_HOP = [
 // same-origin file is allowed by `'self'` with no nonce, which keeps the
 // conductor out of the cabinet's CSP entirely. It is ~200 bytes, immutable-
 // cached, and on a connection already open for the stylesheet beside it.
+//
+// The display face is preloaded rather than left for the stylesheet to discover:
+// an @font-face `src` is only fetched once the CSS has parsed AND something it
+// styles is laid out, which on a zone is late enough for the wordmark to paint in
+// the Georgia fallback and swap under the reader. `crossorigin` is not optional
+// on a font preload even same-origin — fonts are always fetched in CORS mode, and
+// a preload whose mode differs is discarded and refetched.
 const HEAD_INSERT =
+  `<link rel="preload" as="font" type="font/woff2" crossorigin href="${shell.font}">` +
   `<link rel="stylesheet" href="${shell.css}">` +
   `<script src="${shell.spanJs}"></script>` +
   `<script defer src="${shell.js}"></script>`;
@@ -127,7 +135,9 @@ export async function proxyZone(
   );
   const body =
     isHtml && upstream.body
-      ? upstream.body.pipeThrough(shellInjector(bodyInsertFor(opts?.headerZone)))
+      ? upstream.body.pipeThrough(
+          shellInjector(bodyInsertFor(opts?.headerZone))
+        )
       : upstream.body;
   return new Response(body, {
     status: upstream.status,
