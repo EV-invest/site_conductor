@@ -1,4 +1,8 @@
 import type { Locale, Messages } from "@evinvest/i18n";
+import {
+  resolveCatalogue,
+  type TranslatedCatalogue,
+} from "@evinvest/i18n/policy";
 import en from "@/messages/en/common.json";
 import ru from "@/messages/ru/common.json";
 import vi from "@/messages/vi/common.json";
@@ -9,9 +13,28 @@ import de from "@/messages/de/common.json";
 // is prerendered at build, so there is nothing to defer, and a template import
 // defeats bundling and turns a missing catalogue into a runtime 500 instead of a
 // build error.
-const CATALOGUES: Record<Locale, Messages> = { en, ru, vi, fr, de };
+const AUTHORED: Record<Exclude<Locale, "en">, TranslatedCatalogue> = {
+  ru,
+  vi,
+  fr,
+  de,
+};
 
-export const messagesFor = (locale: Locale): Messages => CATALOGUES[locale];
+// Policy applied once at module scope, not per request. `resolveCatalogue` is
+// pure over static input, so the result is identical for every render — doing it
+// per call would re-validate every plural on every page.
+const RESOLVED = Object.fromEntries(
+  (Object.keys(AUTHORED) as Exclude<Locale, "en">[]).map(locale => [
+    locale,
+    resolveCatalogue(locale, en, AUTHORED[locale]),
+  ])
+);
+
+export const messagesFor = (locale: Locale): Messages =>
+  locale === "en" ? en : (RESOLVED[locale]?.messages ?? en);
+
+/** Per-locale policy outcome — read by `npm run i18n:check`. */
+export const catalogueReport = () => Object.values(RESOLVED);
 
 // Which locales have enough translated copy to be worth indexing.
 //

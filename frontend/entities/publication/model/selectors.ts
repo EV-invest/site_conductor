@@ -1,3 +1,5 @@
+import type { Locale } from "@evinvest/i18n";
+import { availableIn } from "@evinvest/i18n/policy";
 import { PUBLICATIONS } from "./catalogue";
 import type { Publication, PublicationKind } from "./types";
 
@@ -15,6 +17,19 @@ export function allPublications(): readonly Publication[] {
 
 export function publicationsByKind(kind: PublicationKind): Publication[] {
   return PUBLICATIONS.filter(p => p.kind === kind);
+}
+
+// Rule 1.3 of the i18n policy. A publication is compiled once and surfaced
+// everywhere, so an untranslated one would otherwise appear as an English essay
+// under Russian chrome — which teaches the reader the locale is a veneer. Hidden
+// instead. `en` sees everything; a publication declaring no locales is English
+// only, which is every entry authored so far.
+//
+// This is the *opposite* call from vacancies, deliberately: hiding an open role
+// from someone who reads English fine costs a candidate, so that collection uses
+// the "fallback" policy. See docs/i18n-persisted-content.md.
+export function publicationsIn(locale: Locale): readonly Publication[] {
+  return availableIn(locale, PUBLICATIONS, p => p.locales ?? ["en"]);
 }
 
 export function fieldNotes(n?: number): Publication[] {
