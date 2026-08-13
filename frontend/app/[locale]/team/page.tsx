@@ -1,3 +1,4 @@
+import type { Locale } from "@evinvest/i18n";
 import { TeamPageView } from "@/views/team";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -19,6 +20,11 @@ export async function generateMetadata({
   });
 }
 
-export default function Page() {
-  return <TeamPageView />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return <TeamPageView locale={locale as Locale} />;
 }

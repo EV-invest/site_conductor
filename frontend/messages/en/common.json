@@ -15,5 +15,17 @@
   "a11y.openMenu": "Open menu",
   "a11y.closeMenu": "Close menu",
   "a11y.siteMenu": "Site menu",
-  "a11y.languageSwitcher": "Choose language"
+  "a11y.languageSwitcher": "Choose language",
+  "contact.eyebrow": "Contact",
+  "contact.title": "Let's *talk*.",
+  "contact.intro": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
+  "contact.channel.hiring": "Hiring",
+  "contact.channel.investors": "Investors",
+  "contact.office.hq.city": "Quy Nhơn",
+  "contact.office.hq.line": "Coastal HQ · Bình Định, Vietnam",
+  "contact.office.hcmc.city": "Ho Chi Minh City",
+  "contact.office.hcmc.line": "Investor relations · District 1",
+  "team.eyebrow": "Our people",
+  "team.title": "The team behind *EV Investment*",
+  "team.intro": "A partnership of investment, risk and technology specialists building institutional-grade access to Vietnam's premium coastal real estate — on the ground in Quy Nhon and Da Nang."
 }

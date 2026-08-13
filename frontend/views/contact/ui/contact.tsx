@@ -1,12 +1,17 @@
 import { Container } from "@evinvest/uikit";
+import { translator, type Locale } from "@evinvest/i18n";
 
 import { ContactForm } from "@/features/contact-message";
+import { messagesFor } from "@/shared/config/i18n";
+import { Accented } from "@/shared/ui/accented";
 
 import { ContactStructuredData } from "./contact-structured-data";
 
+// Keys, not text: the city name is translated too ("Хошимин"), so the pair has
+// to come out of the catalogue rather than being interpolated around it.
 const OFFICES = [
-  { city: "Quy Nhơn", line: "Coastal HQ · Bình Định, Vietnam" },
-  { city: "Ho Chi Minh City", line: "Investor relations · District 1" },
+  { city: "contact.office.hq.city", line: "contact.office.hq.line" },
+  { city: "contact.office.hcmc.city", line: "contact.office.hcmc.line" },
 ];
 
 function Channel({ label, value }: { label: string; value: string }) {
@@ -25,7 +30,8 @@ function Channel({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function ContactView() {
+export function ContactView({ locale }: { locale: Locale }) {
+  const t = translator(messagesFor(locale), locale);
   return (
     <div className="min-h-screen bg-main-black text-main-mist">
       <ContactStructuredData />
@@ -34,31 +40,32 @@ export function ContactView() {
           <div className="grid gap-14 lg:grid-cols-2">
             <div>
               <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
-                Contact
+                {t("contact.eyebrow")}
               </p>
               <h1 className="font-serif-display text-4xl font-light text-white sm:text-5xl">
-                Let&apos;s{" "}
-                <span className="font-serif italic text-main-accent-t1">
-                  talk
-                </span>
-                .
+                <Accented text={t("contact.title")} />
               </h1>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-main-mist/60 sm:text-base">
-                Questions about a role, an investment, or one of our coastal
-                developments? Send a note and a person — not a bot — will reply.
+                {t("contact.intro")}
               </p>
               <div className="mt-9 flex flex-wrap gap-10">
-                <Channel label="Hiring" value="hiring@evinvest.vn" />
-                <Channel label="Investors" value="invest@evinvest.vn" />
+                <Channel
+                  label={t("contact.channel.hiring")}
+                  value="hiring@evinvest.vn"
+                />
+                <Channel
+                  label={t("contact.channel.investors")}
+                  value="invest@evinvest.vn"
+                />
               </div>
               <div className="mt-10 grid gap-6 border-t border-white/[0.06] pt-8 sm:grid-cols-2">
                 {OFFICES.map(office => (
                   <div key={office.city}>
                     <p className="font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/60">
-                      {office.city}
+                      {t(office.city)}
                     </p>
                     <p className="mt-1 text-sm text-main-mist/45">
-                      {office.line}
+                      {t(office.line)}
                     </p>
                   </div>
                 ))}
