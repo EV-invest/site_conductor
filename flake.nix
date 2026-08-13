@@ -194,6 +194,11 @@
             # the 37x32 the design lays out, for retina.
             ${pkgs.librsvg}/bin/rsvg-convert --width=74 --height=64 --format=png -o public/assets/email-logo.png ${logoSrc}
             cp -rL --no-preserve=mode ${real_estate_allocation.packages.${system}.embeds}/. public/mfe/
+            # Release wasm keeps std's panic locations, which spell out the rust
+            # toolchain's store path — Nix reads that as a runtime reference and
+            # dragged the whole ~500 MB toolchain closure into the image. Rewrite is
+            # equal-length and the strings are browser-console diagnostics only.
+            ${pkgs.nukeReferences}/bin/nuke-refs public/mfe/*.wasm
             # § component-MFE snapshot contract: REA must emit the drift-proof fallback.
             # `loadDocHtml` enforces it at prerender too; this is the clearer failure.
             test -f public/mfe/portfolio.html
@@ -236,7 +241,10 @@
             mkdir -p $out
             cp -r .next/standalone/. $out/
             cp -r .next/static $out/.next/static
-            cp -r public $out/public
+            # merge, don't nest: standalone already traced its own copy of public/,
+            # so `cp -r public $out/public` landed a second one at $out/public/public.
+            mkdir -p $out/public
+            cp -rf --no-preserve=mode public/. $out/public/
             runHook postInstall
           '';
           dontNpmInstall = true;
