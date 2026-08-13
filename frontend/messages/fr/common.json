@@ -1,19 +1,70 @@
 {
-  "nav.portfolio": "Portefeuille",
-  "nav.research": "Recherche",
-  "nav.publications": "Publications",
-  "nav.team": "Équipe",
-  "nav.hiring": "Carrières",
-  "nav.contact": "Contact",
-  "nav.home": "Accueil",
-  "footer.company": "Société",
-  "footer.explore": "Explorer",
-  "footer.calculator": "Simulateur d'investissement",
-  "footer.fieldNotes": "Notes de terrain & Recherche",
-  "footer.whitepaper": "Livre blanc",
-  "a11y.homeLink": "EV Investment — accueil",
-  "a11y.openMenu": "Ouvrir le menu",
-  "a11y.closeMenu": "Fermer le menu",
-  "a11y.siteMenu": "Menu du site",
-  "a11y.languageSwitcher": "Choisir la langue"
+  "nav.portfolio": {
+    "en": "Portfolio",
+    "t": "Portefeuille"
+  },
+  "nav.research": {
+    "en": "Research",
+    "t": "Recherche"
+  },
+  "nav.publications": {
+    "en": "Publications",
+    "t": "Publications"
+  },
+  "nav.team": {
+    "en": "Team",
+    "t": "Équipe"
+  },
+  "nav.hiring": {
+    "en": "Hiring",
+    "t": "Carrières"
+  },
+  "nav.contact": {
+    "en": "Contact",
+    "t": "Contact"
+  },
+  "nav.home": {
+    "en": "Home",
+    "t": "Accueil"
+  },
+  "footer.company": {
+    "en": "Company",
+    "t": "Société"
+  },
+  "footer.explore": {
+    "en": "Explore",
+    "t": "Explorer"
+  },
+  "footer.calculator": {
+    "en": "Investment Calculator",
+    "t": "Simulateur d'investissement"
+  },
+  "footer.fieldNotes": {
+    "en": "Field Notes & Research",
+    "t": "Notes de terrain & Recherche"
+  },
+  "footer.whitepaper": {
+    "en": "Whitepaper",
+    "t": "Livre blanc"
+  },
+  "a11y.homeLink": {
+    "en": "EV Investment — home",
+    "t": "EV Investment — accueil"
+  },
+  "a11y.openMenu": {
+    "en": "Open menu",
+    "t": "Ouvrir le menu"
+  },
+  "a11y.closeMenu": {
+    "en": "Close menu",
+    "t": "Fermer le menu"
+  },
+  "a11y.siteMenu": {
+    "en": "Site menu",
+    "t": "Menu du site"
+  },
+  "a11y.languageSwitcher": {
+    "en": "Choose language",
+    "t": "Choisir la langue"
+  }
 }

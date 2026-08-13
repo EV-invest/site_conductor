@@ -1,19 +1,70 @@
 {
-  "nav.portfolio": "Портфель",
-  "nav.research": "Исследования",
-  "nav.publications": "Публикации",
-  "nav.team": "Команда",
-  "nav.hiring": "Вакансии",
-  "nav.contact": "Контакты",
-  "nav.home": "Главная",
-  "footer.company": "Компания",
-  "footer.explore": "Обзор",
-  "footer.calculator": "Инвестиционный калькулятор",
-  "footer.fieldNotes": "Заметки и исследования",
-  "footer.whitepaper": "Белая книга",
-  "a11y.homeLink": "EV Investment — на главную",
-  "a11y.openMenu": "Открыть меню",
-  "a11y.closeMenu": "Закрыть меню",
-  "a11y.siteMenu": "Меню сайта",
-  "a11y.languageSwitcher": "Выбрать язык"
+  "nav.portfolio": {
+    "en": "Portfolio",
+    "t": "Портфель"
+  },
+  "nav.research": {
+    "en": "Research",
+    "t": "Исследования"
+  },
+  "nav.publications": {
+    "en": "Publications",
+    "t": "Публикации"
+  },
+  "nav.team": {
+    "en": "Team",
+    "t": "Команда"
+  },
+  "nav.hiring": {
+    "en": "Hiring",
+    "t": "Вакансии"
+  },
+  "nav.contact": {
+    "en": "Contact",
+    "t": "Контакты"
+  },
+  "nav.home": {
+    "en": "Home",
+    "t": "Главная"
+  },
+  "footer.company": {
+    "en": "Company",
+    "t": "Компания"
+  },
+  "footer.explore": {
+    "en": "Explore",
+    "t": "Обзор"
+  },
+  "footer.calculator": {
+    "en": "Investment Calculator",
+    "t": "Инвестиционный калькулятор"
+  },
+  "footer.fieldNotes": {
+    "en": "Field Notes & Research",
+    "t": "Заметки и исследования"
+  },
+  "footer.whitepaper": {
+    "en": "Whitepaper",
+    "t": "Белая книга"
+  },
+  "a11y.homeLink": {
+    "en": "EV Investment — home",
+    "t": "EV Investment — на главную"
+  },
+  "a11y.openMenu": {
+    "en": "Open menu",
+    "t": "Открыть меню"
+  },
+  "a11y.closeMenu": {
+    "en": "Close menu",
+    "t": "Закрыть меню"
+  },
+  "a11y.siteMenu": {
+    "en": "Site menu",
+    "t": "Меню сайта"
+  },
+  "a11y.languageSwitcher": {
+    "en": "Choose language",
+    "t": "Выбрать язык"
+  }
 }

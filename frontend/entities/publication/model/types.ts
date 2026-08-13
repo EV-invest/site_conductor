@@ -1,3 +1,5 @@
+import type { Locale } from "@evinvest/i18n";
+
 export type PublicationKind = "field-note" | "research" | "whitepaper";
 
 export type Cover =
@@ -21,6 +23,12 @@ export type Cover =
 
 export type Publication = {
   slug: string;
+  /// Locales this publication has actually been translated into, English
+  /// included. Rule 1.3 of the i18n policy: compiled content with no translation
+  /// for the reader's locale is *hidden*, not served in English under localised
+  /// chrome — see `availableIn` in `@evinvest/i18n/policy`. Absent means English
+  /// only, which is the correct default for everything authored so far.
+  locales?: readonly Locale[];
   title: string;
   /// ISO 8601 calendar date, e.g. "2026-07-28". Sorting and formatting both
   /// depend on this shape — see `formatPublicationDate`.
