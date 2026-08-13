@@ -1,4 +1,5 @@
 import { preload } from "react-dom";
+import { translator, type Locale } from "@evinvest/i18n";
 
 import { Text, Tier } from "@/shared/ui/text";
 import { Reveal } from "@/shared/ui/motion";
@@ -7,11 +8,12 @@ import { HeroACanvas } from "./canvas";
 import { HeroACta } from "./cta";
 import { HeroAStats } from "./stats";
 import { HeroHeadline } from "./headline";
+import { messagesFor } from "@/shared/config/i18n";
 
 /**
  * Variant A — scroll-zoom metaphor. Server Component.
  */
-export function HeroA() {
+export function HeroA({ locale }: { locale: Locale }) {
   // The canvas paints this as a CSS `background-image`, which the preload
   // scanner cannot see — it is only discovered once styles resolve, well after
   // the font preloads have claimed the connection. Hoisting a real preload link
@@ -23,9 +25,9 @@ export function HeroA() {
       id="hero"
       className="relative h-screen flex flex-col justify-center items-center overflow-hidden z-10"
     >
-      <HeroCopy />
+      <HeroCopy locale={locale} />
 
-      <HeroAStats />
+      <HeroAStats locale={locale} />
     </section>
   );
 }
@@ -36,7 +38,8 @@ export function HeroA() {
 const COPY_DELAY = 0.35;
 const CTA_DELAY = 0.55;
 
-function HeroACtaAB() {
+function HeroACtaAB({ locale }: { locale: Locale }) {
+  const t = translator(messagesFor(locale), locale);
   return (
     <Reveal
       onMount
@@ -46,7 +49,7 @@ function HeroACtaAB() {
       <HeroACta
         scrollHint={
           <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-            Follow the money
+            {t("home.hero.scrollHint")}
           </span>
         }
       />
@@ -54,20 +57,20 @@ function HeroACtaAB() {
   );
 }
 
-function HeroCopy() {
+function HeroCopy({ locale }: { locale: Locale }) {
+  const t = translator(messagesFor(locale), locale);
   return (
-    <HeroACanvas cta={<HeroACtaAB />}>
-      <HeroHeadline />
+    <HeroACanvas cta={<HeroACtaAB locale={locale} />}>
+      <HeroHeadline locale={locale} />
       <Reveal onMount delay={COPY_DELAY}>
         <Tier tier="main">
           <Text className="max-w-2xl mx-auto mb-12">
-            Invest in Emergent Markets through Vietnam.
+            {t("home.hero.copy.line1")}
             <br />
-            See why and how to invest directly. China+1 narrative ensures
-            consistently increasing FDI inflows.
+            {t("home.hero.copy.line2")}
             <br />
-            <strong>Edge</strong>: our visarun branch lets us keep a pulse on
-            regional trends in foreign purchases.
+            <strong>{t("home.hero.copy.edgeLabel")}</strong>:{" "}
+            {t("home.hero.copy.edge")}
           </Text>
         </Tier>
       </Reveal>

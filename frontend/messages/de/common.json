@@ -502,5 +502,301 @@
   "vacancy.apply.point3": {
     "en": "Questions first? hiring@evinvest.vn",
     "t": "Vorab Fragen? hiring@evinvest.vn"
+  },
+  "home.hero.headline.a": {
+    "en": "Invest in *China+1*\nThrough *Vietnam*",
+    "t": "Investieren in *China+1*\nüber *Vietnam*"
+  },
+  "home.hero.headline.b": {
+    "en": "Invest in *Vietnam*\nThrough Institutional Vision.",
+    "t": "Investieren in *Vietnam*\nmit institutionellem Weitblick."
+  },
+  "home.hero.copy.line1": {
+    "en": "Invest in Emergent Markets through Vietnam.",
+    "t": "Investieren Sie über Vietnam in Schwellenmärkte."
+  },
+  "home.hero.copy.line2": {
+    "en": "See why and how to invest directly. China+1 narrative ensures consistently increasing FDI inflows.",
+    "t": "Erfahren Sie, warum und wie Sie direkt investieren. Die China+1-Dynamik sorgt für stetig steigende Direktinvestitionen."
+  },
+  "home.hero.copy.edgeLabel": {
+    "en": "Edge",
+    "t": "Unser Vorteil"
+  },
+  "home.hero.copy.edge": {
+    "en": "our visarun branch lets us keep a pulse on regional trends in foreign purchases.",
+    "t": "unser Visa-Run-Zweig hält uns am Puls regionaler Trends bei ausländischen Käufen."
+  },
+  "home.hero.scrollHint": {
+    "en": "Follow the money",
+    "t": "Folgen Sie dem Geld"
+  },
+  "home.hero.cta.explore": {
+    "en": "Explore Assets",
+    "t": "Objekte ansehen"
+  },
+  "home.hero.cta.whitepaper": {
+    "en": "Whitepaper",
+    "t": "Whitepaper"
+  },
+  "home.hero.stat.targetIrr": {
+    "en": "Target IRR",
+    "t": "Ziel-IRR"
+  },
+  "home.hero.stat.specialization": {
+    "en": "Specialization",
+    "t": "Spezialisierung"
+  },
+  "home.hero.stat.specializationValue": {
+    "en": "Rentals",
+    "t": "Vermietung"
+  },
+  "home.hero.stat.currentCity": {
+    "en": "Current Target City",
+    "t": "Aktuelle Zielstadt"
+  },
+  "home.hero.stat.aumCap": {
+    "en": "AUM hard cap",
+    "t": "Harte AUM-Obergrenze"
+  },
+  "home.hero.b.eyebrow": {
+    "en": "Institutional Real Estate • Quy Nhon",
+    "t": "Institutionelle Immobilien • Quy Nhon"
+  },
+  "home.hero.b.headline": {
+    "en": "Invest in *Quy Nhon*\nThrough Institutional Vision.",
+    "t": "Investieren in *Quy Nhon*\nmit institutionellem Weitblick."
+  },
+  "home.hero.b.copy": {
+    "en": "EV Investment bridges the gap between premium coastal real estate development and sophisticated investors. Experience high-yield real estate assets in Vietnam's fastest-growing coastal hub.",
+    "t": "EV Investment verbindet die Entwicklung hochwertiger Küstenimmobilien mit professionellen Investoren. Erhalten Sie Zugang zu renditestarken Objekten in Vietnams am schnellsten wachsendem Küstenzentrum."
+  },
+  "home.hero.b.aum": {
+    "en": "AUM Under Advisory",
+    "t": "Beratene Vermögenswerte"
+  },
+  "home.hero.b.coastline": {
+    "en": "Coastline",
+    "t": "Küstenlinie"
+  },
+  "home.hero.b.photoAlt": {
+    "en": "Quy Nhon coastal development",
+    "t": "Küstenbebauung in Quy Nhon"
+  },
+  "home.fieldNotes.eyebrow": {
+    "en": "From the ground",
+    "t": "Direkt vor Ort"
+  },
+  "home.fieldNotes.title": {
+    "en": "Field Notes from *Quy Nhơn*",
+    "t": "Feldnotizen aus *Quy Nhơn*"
+  },
+  "home.fieldNotes.intro": {
+    "en": "Research explains the thesis. Field notes show you the place — our people on the ground, filming the districts we underwrite, the roads being built, and what daily life actually costs.",
+    "t": "Research erklärt die These. Feldnotizen zeigen den Ort selbst — unsere Leute vor Ort filmen die Viertel, die wir prüfen, die entstehenden Straßen und was das tägliche Leben wirklich kostet."
+  },
+  "home.fieldNotes.all": {
+    "en": "All field notes",
+    "t": "Alle Feldnotizen"
+  },
+  "home.fieldNotes.latest": {
+    "en": "Latest dispatch",
+    "t": "Neuester Bericht"
+  },
+  "home.fieldNotes.previous": {
+    "en": "Previous",
+    "t": "Vorheriger"
+  },
+  "home.fieldNotes.more": {
+    "en": "More from the field",
+    "t": "Mehr aus dem Feld"
+  },
+  "home.research.eyebrow": {
+    "en": "Academic Rigor",
+    "t": "Akademische Strenge"
+  },
+  "home.research.title": {
+    "en": "Data-Driven *Research & Insights*",
+    "t": "Datengetriebene *Analysen & Erkenntnisse*"
+  },
+  "home.research.intro": {
+    "en": "We believe in deep macroeconomic analysis. Our research team produces exhaustive monthly reports on Vietnam’s economic landscape, urbanization trends, and Quy Nhon’s real estate cycles.",
+    "t": "Wir setzen auf tiefe makroökonomische Analyse. Unser Research-Team veröffentlicht monatlich ausführliche Berichte zu Vietnams Wirtschaftslage, Urbanisierungstrends und den Immobilienzyklen von Quy Nhon."
+  },
+  "home.research.read": {
+    "en": "Read",
+    "t": "Lesen"
+  },
+  "home.research.readFull": {
+    "en": "Read Full Report",
+    "t": "Vollständigen Bericht lesen"
+  },
+  "home.research.download": {
+    "en": "Download",
+    "t": "Herunterladen"
+  },
+  "home.research.downloadFull": {
+    "en": "Download Full Report",
+    "t": "Vollständigen Bericht herunterladen"
+  },
+  "home.research.department": {
+    "en": "EV Research Department",
+    "t": "EV Research-Abteilung"
+  },
+  "home.research.leadAuthor": {
+    "en": "Lead Author: Dr. Nguyen An, Chief Economist",
+    "t": "Hauptautor: Dr. Nguyen An, Chefökonom"
+  },
+  "home.research.readAria": {
+    "en": "Read full report: {title}",
+    "t": "Vollständigen Bericht lesen: {title}"
+  },
+  "home.team.placeholder.hiring.sub": {
+    "en": "Investment Analyst",
+    "t": "Investment-Analyst"
+  },
+  "home.team.placeholder.ir.sub": {
+    "en": "Investor Relations (IR)",
+    "t": "Investor Relations (IR)"
+  },
+  "publications.eyebrow": {
+    "en": "EV Investment · Publications",
+    "t": "EV Investment · Publikationen"
+  },
+  "publications.title": {
+    "en": "Field Notes *& Research*",
+    "t": "Feldnotizen *& Research*"
+  },
+  "publications.intro": {
+    "en": "Three kinds of evidence. Research is the desk work — macro models, land sweeps, yield decomposition, published as citable PDFs. Field notes are the ground truth: our people filming the districts we underwrite. The whitepaper is the standing document behind both.",
+    "t": "Drei Arten von Belegen. Research ist die Schreibtischarbeit — Makromodelle, Flächenscreenings, Renditezerlegung, veröffentlicht als zitierfähige PDFs. Feldnotizen sind die Realität vor Ort: unsere Leute filmen die Viertel, die wir prüfen. Das Whitepaper ist das Grundlagendokument hinter beidem."
+  },
+  "publications.stat.fieldNotes": {
+    "en": "{count, plural, one {# FIELD NOTE} other {# FIELD NOTES}}",
+    "t": "{count, plural, one {# FELDNOTIZ} other {# FELDNOTIZEN}}"
+  },
+  "publications.stat.reports": {
+    "en": "{count, plural, one {# REPORT} other {# REPORTS}}",
+    "t": "{count, plural, one {# BERICHT} other {# BERICHTE}}"
+  },
+  "publications.stat.whitepapers": {
+    "en": "{count, plural, one {# WHITEPAPER} other {# WHITEPAPERS}}",
+    "t": "{count, plural, one {# WHITEPAPER} other {# WHITEPAPER}}"
+  },
+  "publications.stat.updated": {
+    "en": "UPDATED {date}",
+    "t": "AKTUALISIERT {date}"
+  },
+  "publications.filter.aria": {
+    "en": "Filter publications by kind",
+    "t": "Publikationen nach Art filtern"
+  },
+  "publications.filter.all": {
+    "en": "ALL",
+    "t": "ALLE"
+  },
+  "publications.kind.fieldNote": {
+    "en": "FIELD NOTE",
+    "t": "FELDNOTIZ"
+  },
+  "publications.kind.fieldNotes": {
+    "en": "FIELD NOTES",
+    "t": "FELDNOTIZEN"
+  },
+  "publications.kind.research": {
+    "en": "RESEARCH",
+    "t": "RESEARCH"
+  },
+  "publications.kind.whitepaper": {
+    "en": "WHITEPAPER",
+    "t": "WHITEPAPER"
+  },
+  "publications.cta.watchNote": {
+    "en": "WATCH THE NOTE",
+    "t": "NOTIZ ANSEHEN"
+  },
+  "publications.cta.readNote": {
+    "en": "READ THE NOTE",
+    "t": "NOTIZ LESEN"
+  },
+  "publications.cta.readReport": {
+    "en": "READ THE REPORT",
+    "t": "BERICHT LESEN"
+  },
+  "publications.cta.readWhitepaper": {
+    "en": "READ THE WHITEPAPER",
+    "t": "WHITEPAPER LESEN"
+  },
+  "publications.latestDispatch": {
+    "en": "LATEST DISPATCH",
+    "t": "NEUESTER BERICHT"
+  },
+  "publications.plate": {
+    "en": "Plate {n}",
+    "t": "Tafel {n}"
+  },
+  "publications.search.label": {
+    "en": "Search publications",
+    "t": "Publikationen durchsuchen"
+  },
+  "publications.search.placeholder": {
+    "en": "Search titles and full text…",
+    "t": "Titel und Volltext durchsuchen…"
+  },
+  "publications.results.none": {
+    "en": "No matches",
+    "t": "Keine Treffer"
+  },
+  "publications.results.showing": {
+    "en": "Showing 1–{shown} of {total}",
+    "t": "Zeige 1–{shown} von {total}"
+  },
+  "publications.announce": {
+    "en": "{title} — {position} of {total}",
+    "t": "{title} — {position} von {total}"
+  },
+  "publications.empty.filter": {
+    "en": "Nothing published under this filter yet.",
+    "t": "Unter diesem Filter ist noch nichts veröffentlicht."
+  },
+  "publications.empty.search": {
+    "en": "Nothing matches “{query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.",
+    "t": "Keine Treffer für „{query}“. Leeren Sie die Suche mit Esc oder versuchen Sie einen Ortsnamen — die meisten Berichte sind nach einem benannt."
+  },
+  "publications.shortcut.focus": {
+    "en": "Focus the search field",
+    "t": "Zum Suchfeld springen"
+  },
+  "publications.shortcut.move": {
+    "en": "Move through the results",
+    "t": "Durch die Ergebnisse blättern"
+  },
+  "publications.shortcut.open": {
+    "en": "Open the selected result",
+    "t": "Ausgewähltes Ergebnis öffnen"
+  },
+  "publications.shortcut.clear": {
+    "en": "Clear the search and unfocus",
+    "t": "Suche leeren und Fokus verlassen"
+  },
+  "publications.shortcut.toggle": {
+    "en": "Toggle this dialog",
+    "t": "Diesen Dialog ein- oder ausblenden"
+  },
+  "publications.allPublications": {
+    "en": "All publications",
+    "t": "Alle Publikationen"
+  },
+  "publications.unavailable": {
+    "en": "This publication isn’t available right now —",
+    "t": "Diese Publikation ist derzeit nicht verfügbar —"
+  },
+  "publications.downloadPdf": {
+    "en": "download the PDF",
+    "t": "PDF herunterladen"
+  },
+  "publications.shortcuts.title": {
+    "en": "Keyboard shortcuts",
+    "t": "Tastenkürzel"
   }
 }

@@ -1,14 +1,18 @@
 import { Container } from "@evinvest/uikit";
+import { translator, type Locale } from "@evinvest/i18n";
 import { Text, Tier } from "@/shared/ui/text";
 import { HeroBCta } from "./cta";
 import { BoardroomImage } from "./boardroom";
+import { messagesFor } from "@/shared/config/i18n";
+import { Accented } from "@/shared/ui/accented";
 
 /**
  * Variant B — calmer editorial split: left-aligned headline + CTA, framed image
  * on the right. No scroll-zoom (the A/B differentiator), so it reads as a
  * content-first hero. Server Component; the only client island is {@link HeroBCta}.
  */
-export function HeroB() {
+export function HeroB({ locale }: { locale: Locale }) {
+  const t = translator(messagesFor(locale), locale);
   return (
     <section
       id="hero"
@@ -20,24 +24,18 @@ export function HeroB() {
         {/* Left: editorial copy */}
         <div className="space-y-8">
           <span className="block text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase">
-            Institutional Real Estate • Quy Nhon
+            {t("home.hero.b.eyebrow")}
           </span>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif-display font-light text-white leading-[1.05]">
-            Invest in{" "}
-            <span className="italic text-main-accent-t1 font-serif">
-              Quy Nhon
-            </span>
-            <br />
-            Through Institutional Vision.
+            <Accented
+              text={t("home.hero.b.headline")}
+              className="italic text-main-accent-t1 font-serif"
+            />
           </h1>
 
           <Tier tier="main">
-            <Text className="max-w-xl">
-              EV Investment bridges the gap between premium coastal real estate
-              development and sophisticated investors. Experience high-yield real
-              estate assets in Vietnam&apos;s fastest-growing coastal hub.
-            </Text>
+            <Text className="max-w-xl">{t("home.hero.b.copy")}</Text>
           </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
@@ -48,7 +46,7 @@ export function HeroB() {
                 variant="secondary"
                 className="text-[10px] font-mono-tech uppercase tracking-widest mb-1"
               >
-                Target IRR
+                {t("home.hero.stat.targetIrr")}
               </Text>
               <p className="text-2xl sm:text-3xl font-serif-display text-main-accent-t3 font-bold">
                 22.4% +
@@ -58,7 +56,7 @@ export function HeroB() {
         </div>
 
         {/* Right: framed image */}
-        <BoardroomImage />
+        <BoardroomImage locale={locale} />
       </Container>
     </section>
   );

@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ArrowUpRight, BookOpen } from "lucide-react";
 import { Container } from "@evinvest/uikit";
+import { localePath, type Locale } from "@evinvest/i18n";
+import { useT } from "@evinvest/i18n/react";
 import { cn } from "@/shared/lib/utils";
 import { Text, Tier } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal, SplitText } from "@/shared/ui/motion";
+import { Accented } from "@/shared/ui/accented";
 import { useAnalytics } from "@/features/analytics";
 
 // Report library. The list (left) and the reading pane (right) both render
@@ -28,12 +31,20 @@ export type ResearchReport = {
   body: string[];
 };
 
-export function ResearchA({ reports }: { reports: ResearchReport[] }) {
+export function ResearchA({
+  reports,
+  locale,
+}: {
+  reports: ResearchReport[];
+  locale: Locale;
+}) {
+  const t = useT();
   const [active, setActive] = useState(0);
   const capture = useAnalytics();
   const router = useRouter();
   const report = reports[active];
-  const goToReport = () => router.push(`/publications/${report.slug}`);
+  const goToReport = () =>
+    router.push(localePath(locale, `/publications/${report.slug}`));
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
   //    faint dot-grid texture so it reads as its own "document / library" zone
@@ -46,22 +57,18 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
       <Container className="relative z-10">
         <Reveal className="max-w-3xl mb-16">
           <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block mb-3">
-            Academic Rigor
+            {t("home.research.eyebrow")}
           </span>
           <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
             <SplitText inView>
-              Data-Driven{" "}
-              <span className="italic text-main-accent-t1 font-serif">
-                Research &amp; Insights
-              </span>
+              <Accented
+                text={t("home.research.title")}
+                className="italic text-main-accent-t1 font-serif"
+              />
             </SplitText>
           </h2>
           <Tier tier="main">
-            <Text className="mt-4">
-              We believe in deep macroeconomic analysis. Our research team
-              produces exhaustive monthly reports on Vietnam’s economic
-              landscape, urbanization trends, and Quy Nhon’s real estate cycles.
-            </Text>
+            <Text className="mt-4">{t("home.research.intro")}</Text>
           </Tier>
         </Reveal>
 
@@ -122,7 +129,8 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                 <div className="flex justify-between items-center font-mono-tech text-[10px] text-main-mist/40">
                   <span>{r.date}</span>
                   <span className="flex items-center gap-1">
-                    Read <ChevronRight className="w-3 h-3" />
+                    {t("home.research.read")}{" "}
+                    <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -137,7 +145,9 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
             transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
             role="link"
             tabIndex={0}
-            aria-label={`Read full report: ${report.paneTitle}`}
+            aria-label={t("home.research.readAria", {
+              title: report.paneTitle,
+            })}
             onClick={goToReport}
             onKeyDown={e => {
               if (e.key === "Enter" || e.key === " ") {
@@ -187,19 +197,19 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-white truncate">
-                    EV Research Department
+                    {t("home.research.department")}
                   </p>
                   <Text
                     variant="secondary"
                     className="text-[10px] font-mono-tech truncate hidden sm:block"
                   >
-                    Lead Author: Dr. Nguyen An, Chief Economist
+                    {t("home.research.leadAuthor")}
                   </Text>
                 </div>
               </div>
               <div className="flex shrink-0 gap-2">
                 <Link
-                  href={`/publications/${report.slug}`}
+                  href={localePath(locale, `/publications/${report.slug}`)}
                   className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
                   onClick={() =>
                     capture("cta_clicked", {
@@ -208,8 +218,10 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                     })
                   }
                 >
-                  <span className="sm:hidden">Read</span>
-                  <span className="hidden sm:inline">Read Full Report</span>
+                  <span className="sm:hidden">{t("home.research.read")}</span>
+                  <span className="hidden sm:inline">
+                    {t("home.research.readFull")}
+                  </span>
                   <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
                 </Link>
                 <a
@@ -223,8 +235,12 @@ export function ResearchA({ reports }: { reports: ResearchReport[] }) {
                     })
                   }
                 >
-                  <span className="sm:hidden">Download</span>
-                  <span className="hidden sm:inline">Download Full Report</span>
+                  <span className="sm:hidden">
+                    {t("home.research.download")}
+                  </span>
+                  <span className="hidden sm:inline">
+                    {t("home.research.downloadFull")}
+                  </span>
                   <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
                 </a>
               </div>

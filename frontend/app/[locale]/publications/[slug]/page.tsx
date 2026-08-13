@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -42,10 +43,15 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const publication = findPublication(slug);
   if (!publication) notFound();
-  return <PublicationArticleView publication={publication} />;
+  return (
+    <PublicationArticleView
+      publication={publication}
+      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
+    />
+  );
 }

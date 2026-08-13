@@ -502,5 +502,301 @@
   "vacancy.apply.point3": {
     "en": "Questions first? hiring@evinvest.vn",
     "t": "Có câu hỏi trước? hiring@evinvest.vn"
+  },
+  "home.hero.headline.a": {
+    "en": "Invest in *China+1*\nThrough *Vietnam*",
+    "t": "Đầu tư vào *Trung Quốc+1*\nthông qua *Việt Nam*"
+  },
+  "home.hero.headline.b": {
+    "en": "Invest in *Vietnam*\nThrough Institutional Vision.",
+    "t": "Đầu tư vào *Việt Nam*\nvới tầm nhìn tổ chức."
+  },
+  "home.hero.copy.line1": {
+    "en": "Invest in Emergent Markets through Vietnam.",
+    "t": "Đầu tư vào các thị trường mới nổi thông qua Việt Nam."
+  },
+  "home.hero.copy.line2": {
+    "en": "See why and how to invest directly. China+1 narrative ensures consistently increasing FDI inflows.",
+    "t": "Tìm hiểu vì sao và cách đầu tư trực tiếp. Xu hướng Trung Quốc+1 bảo đảm dòng vốn FDI tăng đều đặn."
+  },
+  "home.hero.copy.edgeLabel": {
+    "en": "Edge",
+    "t": "Lợi thế"
+  },
+  "home.hero.copy.edge": {
+    "en": "our visarun branch lets us keep a pulse on regional trends in foreign purchases.",
+    "t": "mảng visa-run của chúng tôi giúp nắm bắt xu hướng mua bất động sản của người nước ngoài trong khu vực."
+  },
+  "home.hero.scrollHint": {
+    "en": "Follow the money",
+    "t": "Lần theo dòng tiền"
+  },
+  "home.hero.cta.explore": {
+    "en": "Explore Assets",
+    "t": "Khám phá tài sản"
+  },
+  "home.hero.cta.whitepaper": {
+    "en": "Whitepaper",
+    "t": "Sách trắng"
+  },
+  "home.hero.stat.targetIrr": {
+    "en": "Target IRR",
+    "t": "IRR mục tiêu"
+  },
+  "home.hero.stat.specialization": {
+    "en": "Specialization",
+    "t": "Chuyên môn"
+  },
+  "home.hero.stat.specializationValue": {
+    "en": "Rentals",
+    "t": "Cho thuê"
+  },
+  "home.hero.stat.currentCity": {
+    "en": "Current Target City",
+    "t": "Thành phố mục tiêu hiện tại"
+  },
+  "home.hero.stat.aumCap": {
+    "en": "AUM hard cap",
+    "t": "Trần AUM"
+  },
+  "home.hero.b.eyebrow": {
+    "en": "Institutional Real Estate • Quy Nhon",
+    "t": "Bất động sản tổ chức • Quy Nhơn"
+  },
+  "home.hero.b.headline": {
+    "en": "Invest in *Quy Nhon*\nThrough Institutional Vision.",
+    "t": "Đầu tư vào *Quy Nhơn*\nvới tầm nhìn tổ chức."
+  },
+  "home.hero.b.copy": {
+    "en": "EV Investment bridges the gap between premium coastal real estate development and sophisticated investors. Experience high-yield real estate assets in Vietnam's fastest-growing coastal hub.",
+    "t": "EV Investment kết nối hoạt động phát triển bất động sản ven biển cao cấp với các nhà đầu tư chuyên nghiệp. Tiếp cận những tài sản sinh lợi cao tại trung tâm ven biển tăng trưởng nhanh nhất Việt Nam."
+  },
+  "home.hero.b.aum": {
+    "en": "AUM Under Advisory",
+    "t": "Tài sản tư vấn quản lý"
+  },
+  "home.hero.b.coastline": {
+    "en": "Coastline",
+    "t": "Đường bờ biển"
+  },
+  "home.hero.b.photoAlt": {
+    "en": "Quy Nhon coastal development",
+    "t": "Dự án ven biển tại Quy Nhơn"
+  },
+  "home.fieldNotes.eyebrow": {
+    "en": "From the ground",
+    "t": "Từ thực địa"
+  },
+  "home.fieldNotes.title": {
+    "en": "Field Notes from *Quy Nhơn*",
+    "t": "Ghi chép thực địa từ *Quy Nhơn*"
+  },
+  "home.fieldNotes.intro": {
+    "en": "Research explains the thesis. Field notes show you the place — our people on the ground, filming the districts we underwrite, the roads being built, and what daily life actually costs.",
+    "t": "Nghiên cứu giải thích luận điểm. Ghi chép thực địa cho bạn thấy chính nơi đó — đội ngũ của chúng tôi quay lại các khu vực đang thẩm định, những con đường đang xây và chi phí sinh hoạt thực tế."
+  },
+  "home.fieldNotes.all": {
+    "en": "All field notes",
+    "t": "Tất cả ghi chép thực địa"
+  },
+  "home.fieldNotes.latest": {
+    "en": "Latest dispatch",
+    "t": "Bản tin mới nhất"
+  },
+  "home.fieldNotes.previous": {
+    "en": "Previous",
+    "t": "Trước đó"
+  },
+  "home.fieldNotes.more": {
+    "en": "More from the field",
+    "t": "Thêm từ thực địa"
+  },
+  "home.research.eyebrow": {
+    "en": "Academic Rigor",
+    "t": "Chuẩn mực học thuật"
+  },
+  "home.research.title": {
+    "en": "Data-Driven *Research & Insights*",
+    "t": "*Nghiên cứu & phân tích* dựa trên dữ liệu"
+  },
+  "home.research.intro": {
+    "en": "We believe in deep macroeconomic analysis. Our research team produces exhaustive monthly reports on Vietnam’s economic landscape, urbanization trends, and Quy Nhon’s real estate cycles.",
+    "t": "Chúng tôi tin vào phân tích vĩ mô chuyên sâu. Đội ngũ nghiên cứu công bố báo cáo hằng tháng đầy đủ về bức tranh kinh tế Việt Nam, xu hướng đô thị hóa và chu kỳ bất động sản Quy Nhơn."
+  },
+  "home.research.read": {
+    "en": "Read",
+    "t": "Đọc"
+  },
+  "home.research.readFull": {
+    "en": "Read Full Report",
+    "t": "Đọc toàn bộ báo cáo"
+  },
+  "home.research.download": {
+    "en": "Download",
+    "t": "Tải về"
+  },
+  "home.research.downloadFull": {
+    "en": "Download Full Report",
+    "t": "Tải toàn bộ báo cáo"
+  },
+  "home.research.department": {
+    "en": "EV Research Department",
+    "t": "Bộ phận Nghiên cứu EV"
+  },
+  "home.research.leadAuthor": {
+    "en": "Lead Author: Dr. Nguyen An, Chief Economist",
+    "t": "Tác giả chính: TS. Nguyễn An, Kinh tế trưởng"
+  },
+  "home.research.readAria": {
+    "en": "Read full report: {title}",
+    "t": "Đọc toàn bộ báo cáo: {title}"
+  },
+  "home.team.placeholder.hiring.sub": {
+    "en": "Investment Analyst",
+    "t": "Chuyên viên phân tích đầu tư"
+  },
+  "home.team.placeholder.ir.sub": {
+    "en": "Investor Relations (IR)",
+    "t": "Quan hệ nhà đầu tư (IR)"
+  },
+  "publications.eyebrow": {
+    "en": "EV Investment · Publications",
+    "t": "EV Investment · Ấn phẩm"
+  },
+  "publications.title": {
+    "en": "Field Notes *& Research*",
+    "t": "Ghi chép thực địa *& nghiên cứu*"
+  },
+  "publications.intro": {
+    "en": "Three kinds of evidence. Research is the desk work — macro models, land sweeps, yield decomposition, published as citable PDFs. Field notes are the ground truth: our people filming the districts we underwrite. The whitepaper is the standing document behind both.",
+    "t": "Ba loại bằng chứng. Nghiên cứu là công việc bàn giấy — mô hình vĩ mô, khảo sát quỹ đất, phân tách lợi suất, công bố dưới dạng PDF có thể trích dẫn. Ghi chép thực địa là thực tế tại chỗ: đội ngũ của chúng tôi quay lại các khu vực đang thẩm định. Sách trắng là tài liệu nền tảng cho cả hai."
+  },
+  "publications.stat.fieldNotes": {
+    "en": "{count, plural, one {# FIELD NOTE} other {# FIELD NOTES}}",
+    "t": "{count, plural, other {# GHI CHÉP THỰC ĐỊA}}"
+  },
+  "publications.stat.reports": {
+    "en": "{count, plural, one {# REPORT} other {# REPORTS}}",
+    "t": "{count, plural, other {# BÁO CÁO}}"
+  },
+  "publications.stat.whitepapers": {
+    "en": "{count, plural, one {# WHITEPAPER} other {# WHITEPAPERS}}",
+    "t": "{count, plural, other {# SÁCH TRẮNG}}"
+  },
+  "publications.stat.updated": {
+    "en": "UPDATED {date}",
+    "t": "CẬP NHẬT {date}"
+  },
+  "publications.filter.aria": {
+    "en": "Filter publications by kind",
+    "t": "Lọc ấn phẩm theo loại"
+  },
+  "publications.filter.all": {
+    "en": "ALL",
+    "t": "TẤT CẢ"
+  },
+  "publications.kind.fieldNote": {
+    "en": "FIELD NOTE",
+    "t": "GHI CHÉP THỰC ĐỊA"
+  },
+  "publications.kind.fieldNotes": {
+    "en": "FIELD NOTES",
+    "t": "GHI CHÉP THỰC ĐỊA"
+  },
+  "publications.kind.research": {
+    "en": "RESEARCH",
+    "t": "NGHIÊN CỨU"
+  },
+  "publications.kind.whitepaper": {
+    "en": "WHITEPAPER",
+    "t": "SÁCH TRẮNG"
+  },
+  "publications.cta.watchNote": {
+    "en": "WATCH THE NOTE",
+    "t": "XEM GHI CHÉP"
+  },
+  "publications.cta.readNote": {
+    "en": "READ THE NOTE",
+    "t": "ĐỌC GHI CHÉP"
+  },
+  "publications.cta.readReport": {
+    "en": "READ THE REPORT",
+    "t": "ĐỌC BÁO CÁO"
+  },
+  "publications.cta.readWhitepaper": {
+    "en": "READ THE WHITEPAPER",
+    "t": "ĐỌC SÁCH TRẮNG"
+  },
+  "publications.latestDispatch": {
+    "en": "LATEST DISPATCH",
+    "t": "BẢN TIN MỚI NHẤT"
+  },
+  "publications.plate": {
+    "en": "Plate {n}",
+    "t": "Hình {n}"
+  },
+  "publications.search.label": {
+    "en": "Search publications",
+    "t": "Tìm kiếm ấn phẩm"
+  },
+  "publications.search.placeholder": {
+    "en": "Search titles and full text…",
+    "t": "Tìm theo tiêu đề và toàn văn…"
+  },
+  "publications.results.none": {
+    "en": "No matches",
+    "t": "Không có kết quả"
+  },
+  "publications.results.showing": {
+    "en": "Showing 1–{shown} of {total}",
+    "t": "Hiển thị 1–{shown} trong {total}"
+  },
+  "publications.announce": {
+    "en": "{title} — {position} of {total}",
+    "t": "{title} — {position} trong {total}"
+  },
+  "publications.empty.filter": {
+    "en": "Nothing published under this filter yet.",
+    "t": "Chưa có ấn phẩm nào theo bộ lọc này."
+  },
+  "publications.empty.search": {
+    "en": "Nothing matches “{query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.",
+    "t": "Không có kết quả cho “{query}”. Nhấn Esc để xóa tìm kiếm, hoặc thử một địa danh — phần lớn bản tin được đặt tên theo địa danh."
+  },
+  "publications.shortcut.focus": {
+    "en": "Focus the search field",
+    "t": "Chuyển tới ô tìm kiếm"
+  },
+  "publications.shortcut.move": {
+    "en": "Move through the results",
+    "t": "Di chuyển giữa các kết quả"
+  },
+  "publications.shortcut.open": {
+    "en": "Open the selected result",
+    "t": "Mở kết quả đã chọn"
+  },
+  "publications.shortcut.clear": {
+    "en": "Clear the search and unfocus",
+    "t": "Xóa tìm kiếm và bỏ chọn ô nhập"
+  },
+  "publications.shortcut.toggle": {
+    "en": "Toggle this dialog",
+    "t": "Bật/tắt hộp thoại này"
+  },
+  "publications.allPublications": {
+    "en": "All publications",
+    "t": "Tất cả ấn phẩm"
+  },
+  "publications.unavailable": {
+    "en": "This publication isn’t available right now —",
+    "t": "Ấn phẩm này hiện chưa khả dụng —"
+  },
+  "publications.downloadPdf": {
+    "en": "download the PDF",
+    "t": "tải PDF"
+  },
+  "publications.shortcuts.title": {
+    "en": "Keyboard shortcuts",
+    "t": "Phím tắt"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
+import { useT } from "@evinvest/i18n/react";
 import { Kbd, KbdCaption } from "./kbd";
 import { RESULT_COUNT_ID } from "./result-count";
 
@@ -32,8 +33,9 @@ export function SearchField({
   activeDescendantId,
   controlsId,
   id = SEARCH_INPUT_ID,
-  label = "Search publications",
+  label,
 }: SearchFieldProps) {
+  const t = useT();
   return (
     <div className="flex items-center gap-3 border border-main-mist/18 bg-main-black/60 px-4 py-3">
       <span
@@ -43,7 +45,7 @@ export function SearchField({
         ⌕
       </span>
       <label htmlFor={id} className="sr-only">
-        {label}
+        {label ?? t("publications.search.label")}
       </label>
       <input
         id={id}
@@ -51,7 +53,7 @@ export function SearchField({
         type="search"
         value={value}
         onChange={event => onChange(event.target.value)}
-        placeholder="Search titles and full text…"
+        placeholder={t("publications.search.placeholder")}
         autoComplete="off"
         spellCheck={false}
         aria-describedby={describedBy}

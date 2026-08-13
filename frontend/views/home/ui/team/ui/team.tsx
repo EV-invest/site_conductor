@@ -7,7 +7,7 @@ import { ExperimentTracker } from "@/features/ab-variant";
 import { ASSETS } from "@/shared/config/assets";
 import { TEAM, MemberCard, LeadershipIntro } from "@/entities/team";
 import { PlaceholderCard } from "./shared/cards";
-import { PLACEHOLDER_CARDS, TeamPlaceholders } from "./shared/placeholders";
+import { placeholderCards, TeamPlaceholders } from "./shared/placeholders";
 
 // Homepage Team section. Server Component; client islands are
 // {@link MobileCarousel} (swipe), the motion wrappers, and the
@@ -53,8 +53,8 @@ export async function Team({ locale }: { locale: Locale }) {
                 <MemberCard member={member} locale={locale} shade={shade} />
               </StaggerItem>
             ))}
-            {PLACEHOLDER_CARDS.map(card => (
-              <StaggerItem key={card.title}>
+            {placeholderCards(locale).map(card => (
+              <StaggerItem key={card.href}>
                 <PlaceholderCard {...card} />
               </StaggerItem>
             ))}
@@ -63,7 +63,7 @@ export async function Team({ locale }: { locale: Locale }) {
           <Reveal className="sm:hidden">
             <MobileCarousel>
               {cards}
-              <TeamPlaceholders />
+              <TeamPlaceholders locale={locale} />
             </MobileCarousel>
           </Reveal>
         </ExperimentTracker>

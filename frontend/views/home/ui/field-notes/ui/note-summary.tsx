@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { localePath, type Locale } from "@evinvest/i18n";
 
 import { formatPublicationDate } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
@@ -13,10 +14,12 @@ export function NoteSummary({
   note,
   lead = false,
   eyebrow,
+  locale,
 }: {
   note: NoteView;
   lead?: boolean;
   eyebrow: string;
+  locale: Locale;
 }) {
   const { publication } = note;
   return (
@@ -28,7 +31,9 @@ export function NoteSummary({
             lead ? "text-main-accent-t1" : "text-main-mist/40"
           )}
         >
-          {lead && <span aria-hidden className="size-[7px] bg-main-accent-t1" />}
+          {lead && (
+            <span aria-hidden className="size-[7px] bg-main-accent-t1" />
+          )}
           {eyebrow}
         </span>
         <span className="text-main-mist/40">
@@ -63,7 +68,7 @@ export function NoteSummary({
           </span>
         )}
         <Link
-          href={note.href}
+          href={localePath(locale, note.href)}
           className="font-mono-tech text-[11px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
         >
           {note.cta} →

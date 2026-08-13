@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
@@ -8,13 +9,9 @@ import {
 import { cn } from "@/shared/lib/utils";
 import { DocumentCard } from "@/shared/ui/document-card";
 import { MediaPlate } from "@/shared/ui/media-plate";
+import { messagesFor } from "@/shared/config/i18n";
 
-import {
-  ctaFor,
-  href,
-  KIND_LABEL,
-  pdfHref,
-} from "../model/presentation";
+import { ctaFor, href, kindLabel, pdfHref } from "../model/presentation";
 
 /**
  * One entry in the index, in whichever of the two card species fits it.
@@ -28,27 +25,30 @@ export function EntryCard({
   publication,
   className,
   id,
+  locale,
 }: {
   publication: Publication;
   className?: string;
   id?: string;
+  locale: Locale;
 }) {
+  const t = translator(messagesFor(locale), locale);
   const cover = toPlateCover(publication);
   const date = formatPublicationDate(publication.date, "short");
 
   if (!cover) {
     return (
       <DocumentCard
-        kind={KIND_LABEL[publication.kind]}
+        kind={kindLabel(publication.kind, t)}
         date={date}
         title={publication.title}
         quote={publication.quote}
         excerpt={publication.dek}
         pages={publication.pages}
         readingMinutes={publication.readingMinutes}
-        href={href(publication)}
+        href={localePath(locale, href(publication))}
         pdfHref={pdfHref(publication)}
-        cta={ctaFor(publication)}
+        cta={ctaFor(publication, t)}
         className={cn("h-full", className)}
         id={id}
       />
@@ -61,7 +61,7 @@ export function EntryCard({
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] tracking-[0.17em]">
           <span className="text-main-accent-t1">
-            {KIND_LABEL[publication.kind]}
+            {kindLabel(publication.kind, t)}
           </span>
           <span className="text-main-mist/40">{date}</span>
         </div>
@@ -73,10 +73,10 @@ export function EntryCard({
         </p>
         <div className="mt-4 border-t border-main-mist/10 pt-4">
           <Link
-            href={href(publication)}
+            href={localePath(locale, href(publication))}
             className="font-mono-tech text-[10px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
           >
-            {ctaFor(publication)} →
+            {ctaFor(publication, t)} →
           </Link>
         </div>
       </div>

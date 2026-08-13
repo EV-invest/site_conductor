@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useT } from "@evinvest/i18n/react";
 import { Kbd } from "./kbd";
 
 const TITLE_ID = "publication-search-shortcuts-title";
 
-const BINDINGS: ReadonlyArray<{ keys: string[]; description: string }> = [
-  { keys: ["S", "/"], description: "Focus the search field" },
-  { keys: ["↑", "↓"], description: "Move through the results" },
-  { keys: ["Enter"], description: "Open the selected result" },
-  { keys: ["Esc"], description: "Clear the search and unfocus" },
-  { keys: ["?"], description: "Toggle this dialog" },
+// The key caps are literal keyboard legends, not prose — they do not translate.
+const BINDINGS: ReadonlyArray<{ keys: string[]; descriptionKey: string }> = [
+  { keys: ["S", "/"], descriptionKey: "publications.shortcut.focus" },
+  { keys: ["↑", "↓"], descriptionKey: "publications.shortcut.move" },
+  { keys: ["Enter"], descriptionKey: "publications.shortcut.open" },
+  { keys: ["Esc"], descriptionKey: "publications.shortcut.clear" },
+  { keys: ["?"], descriptionKey: "publications.shortcut.toggle" },
 ];
 
 export interface ShortcutsDialogProps {
@@ -23,6 +25,7 @@ export interface ShortcutsDialogProps {
  * containment and the Escape gesture. Also dismissible by backdrop click.
  */
 export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
+  const t = useT();
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -49,12 +52,12 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
           id={TITLE_ID}
           className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1"
         >
-          Keyboard shortcuts
+          {t("publications.shortcuts.title")}
         </h2>
         <dl className="mt-4 space-y-3">
           {BINDINGS.map(binding => (
             <div
-              key={binding.description}
+              key={binding.descriptionKey}
               className="flex items-center justify-between gap-4"
             >
               <dt className="flex shrink-0 items-center gap-1.5">
@@ -63,7 +66,7 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
                 ))}
               </dt>
               <dd className="text-right text-sm text-main-mist/70">
-                {binding.description}
+                {t(binding.descriptionKey)}
               </dd>
             </div>
           ))}

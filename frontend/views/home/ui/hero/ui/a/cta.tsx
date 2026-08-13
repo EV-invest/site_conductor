@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
+import { useT } from "@evinvest/i18n/react";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**
@@ -16,19 +17,22 @@ import { useExperimentEvent } from "@/features/ab-variant";
  */
 export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
   const track = useExperimentEvent();
+  const t = useT();
   return (
     <>
       <div className="flex flex-row items-center gap-4">
         <Button
           className="bg-main-mist text-main-brand hover:bg-main-accent-t1 hover:text-main-black hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
           onClick={() =>
-            track("cta_clicked", { cta: "explore_assets" }, (fire) => {
+            track("cta_clicked", { cta: "explore_assets" }, fire => {
               fire();
-              document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" });
+              document
+                .getElementById("portfolio")
+                ?.scrollIntoView({ behavior: "smooth" });
             })
           }
         >
-          Explore Assets <ArrowRight className="w-4 h-4 ml-2" />
+          {t("home.hero.cta.explore")} <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
 
         <Button
@@ -37,7 +41,8 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
           onClick={() => track("cta_clicked", { cta: "whitepaper" })}
         >
           <Link href="/publications/whitepaper">
-            Whitepaper <FileText className="w-4 h-4 ml-2" />
+            {t("home.hero.cta.whitepaper")}{" "}
+            <FileText className="w-4 h-4 ml-2" />
           </Link>
         </Button>
       </div>
@@ -48,4 +53,3 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
     </>
   );
 }
-
