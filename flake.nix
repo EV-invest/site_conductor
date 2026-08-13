@@ -613,14 +613,18 @@
           '';
         };
 
-        # ── bump latest remote vX.Y.Z tag and push: `.#publish major|minor|patch` ──
+        # ── bump latest remote vX.Y.Z tag and push: `.#publish major|minor|patch [note]` ──
         runPublish = pkgs.writeShellApplication {
           name = "publish";
           runtimeInputs = with pkgs; [ git ];
           text = ''
                         part="''${1:-}"
-                        case "$part" in major|minor|patch) ;; *) echo "usage: nix run .#publish -- major|minor|patch" >&2; exit 1 ;; esac
+                        case "$part" in major|minor|patch) ;; *) echo "usage: nix run .#publish -- major|minor|patch [release note]" >&2; exit 1 ;; esac
                         [ -z "$(git status --porcelain)" ] || { echo "uncommitted changes — commit or stash first" >&2; exit 1; }
+                        # Everything after the bump part is the release note, so
+                        # `.#publish patch "fixed the thing"` needs no quoting gymnastics.
+                        shift
+                        note="$*"
 
                         git fetch --tags --force origin >/dev/null 2>&1
                         last="$(git tag -l 'v*' --sort=-v:refname | head -n1)"
@@ -635,7 +639,22 @@
                         esac
                         next="v$ma.$mi.$pa"
                         echo "$last → $next"
-                        git tag "$next"
+                        # Annotated (-a), never lightweight. Every tag this repo carries is
+                        # an annotated object with a tagger and a message; `git describe`
+                        # — which the footer build version reads — prefers annotated tags
+                        # and only falls back to lightweight ones under --tags; and a
+                        # lightweight tag has nowhere to put a release note at all.
+                        #
+                        # Plain `git tag` quietly produced the wrong kind for 31 releases.
+                        # It went unnoticed because the push below names the tag
+                        # explicitly, so it did reach the remote — unlike the sibling bug
+                        # in lib, where `push --follow-tags` silently refused to send
+                        # lightweight tags and the releases simply never appeared.
+                        if [ -n "$note" ]; then
+                          printf '%s\n\n%s\n' "$next" "$note" | git tag -a "$next" -F -
+                        else
+                          git tag -a "$next" -m "$next"
+                        fi
                         git push origin "$next"
           '';
         };
@@ -670,7 +689,7 @@
             gen-api = { program = "${runGenApi}/bin/run-gen-api"; about = "regenerate openapi.json + the TS client"; };
             test = { program = "${runTest}/bin/run-test"; about = "frontend typecheck + Playwright visual regression"; };
             accept-test = { program = "${runAcceptTest}/bin/accept-test"; about = "accept new screenshots (all, or `-- <names>`)"; };
-            publish = { program = "${runPublish}/bin/publish"; about = "bump latest remote vX.Y.Z tag (major|minor|patch) + push"; };
+            publish = { program = "${runPublish}/bin/publish"; about = "bump latest remote vX.Y.Z tag (major|minor|patch [note]) + push"; };
             help = { program = "${runHelp}/bin/help"; about = "print this list"; };
           };
       in
