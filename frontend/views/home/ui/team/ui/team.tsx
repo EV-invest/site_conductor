@@ -1,4 +1,5 @@
 import { Container } from "@evinvest/uikit";
+import type { Locale } from "@evinvest/i18n";
 import { MobileCarousel } from "@/shared/ui/carousel";
 import { Reveal, Stagger, StaggerItem } from "@/shared/ui/motion";
 import { getVariant } from "@/features/ab-variant/get-variant";
@@ -17,11 +18,16 @@ import { PLACEHOLDER_CARDS, TeamPlaceholders } from "./shared/placeholders";
 // Motion: the intro reveals as one block, then the 4-up grid deals its cards in
 // sequence. The mobile carousel reveals whole — staggering slides the reader
 // can't see yet would just delay the first one.
-export async function Team() {
+export async function Team({ locale }: { locale: Locale }) {
   const shadeVariant = await getVariant("team_bio_shade");
   const shade = shadeVariant === "b" ? "shadow" : "gradient";
   const cards = TEAM.map(member => (
-    <MemberCard key={member.name} member={member} shade={shade} />
+    <MemberCard
+      key={member.name}
+      member={member}
+      locale={locale}
+      shade={shade}
+    />
   ));
 
   const officeVariant = await getVariant("team_office");
@@ -35,7 +41,7 @@ export async function Team() {
       <Container className="space-y-16">
         <ExperimentTracker experiment="team_office" variant={officeVariant}>
           <Reveal>
-            <LeadershipIntro officeSrc={officeSrc} />
+            <LeadershipIntro locale={locale} officeSrc={officeSrc} />
           </Reveal>
         </ExperimentTracker>
 
@@ -44,7 +50,7 @@ export async function Team() {
           <Stagger className="hidden gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {TEAM.map(member => (
               <StaggerItem key={member.name}>
-                <MemberCard member={member} shade={shade} />
+                <MemberCard member={member} locale={locale} shade={shade} />
               </StaggerItem>
             ))}
             {PLACEHOLDER_CARDS.map(card => (

@@ -1,3 +1,6 @@
+import { translator, type Locale } from "@evinvest/i18n";
+
+import { messagesFor } from "@/shared/config/i18n";
 import { OFFICES } from "@/shared/config/site";
 import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
 import { PageGraph } from "@/shared/seo/page-graph";
@@ -72,7 +75,8 @@ function description(vacancy: VacancyDetail): string {
   ].join("");
 }
 
-function jobPostingNode(vacancy: VacancyDetail): JsonLdNode {
+function jobPostingNode(vacancy: VacancyDetail, locale: Locale): JsonLdNode {
+  const t = translator(messagesFor(locale), locale);
   const path = `/hiring/${vacancy.slug}`;
   return ldCompact({
     "@type": "JobPosting",
@@ -87,7 +91,8 @@ function jobPostingNode(vacancy: VacancyDetail): JsonLdNode {
     jobLocation: jobLocation(vacancy.location),
     occupationalCategory: vacancyTeamLabel(
       vacancy.category,
-      vacancy.category_label
+      vacancy.category_label,
+      t
     ),
     identifier: {
       "@type": "PropertyValue",
@@ -104,7 +109,13 @@ function jobPostingNode(vacancy: VacancyDetail): JsonLdNode {
   });
 }
 
-export function VacancyStructuredData({ vacancy }: { vacancy: VacancyDetail }) {
+export function VacancyStructuredData({
+  vacancy,
+  locale,
+}: {
+  vacancy: VacancyDetail;
+  locale: Locale;
+}) {
   const path = `/hiring/${vacancy.slug}`;
 
   // PageGraph supplies the Organization node that `hiringOrganization` resolves
@@ -118,7 +129,7 @@ export function VacancyStructuredData({ vacancy }: { vacancy: VacancyDetail }) {
         { name: "Hiring", path: "/hiring" },
         { name: vacancy.title, path },
       ]}
-      nodes={[jobPostingNode(vacancy)]}
+      nodes={[jobPostingNode(vacancy, locale)]}
     />
   );
 }

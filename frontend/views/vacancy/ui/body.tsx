@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Container } from "@evinvest/uikit";
+import { translator, type Locale } from "@evinvest/i18n";
 import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
+import { messagesFor } from "@/shared/config/i18n";
 import { DashList } from "./dash-list";
 
 function Block({ title, children }: { title: string; children: ReactNode }) {
@@ -39,35 +41,42 @@ function GlanceRow({
   );
 }
 
-export function VacancyBody({ vacancy }: { vacancy: VacancyDetail }) {
-  const team = vacancyTeamLabel(vacancy.category, vacancy.category_label);
+export function VacancyBody({
+  vacancy,
+  locale,
+}: {
+  vacancy: VacancyDetail;
+  locale: Locale;
+}) {
+  const t = translator(messagesFor(locale), locale);
+  const team = vacancyTeamLabel(vacancy.category, vacancy.category_label, t);
   return (
     <section className="bg-main-black py-12">
       <Container>
         <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
           <div className="space-y-10">
-            <Block title="About the role">
+            <Block title={t("vacancy.block.about")}>
               <p className="text-sm leading-relaxed text-main-mist/65 sm:text-base">
                 {vacancy.about}
               </p>
             </Block>
             {vacancy.responsibilities.length > 0 && (
-              <Block title="What you'll do">
+              <Block title={t("vacancy.block.responsibilities")}>
                 <DashList items={vacancy.responsibilities} />
               </Block>
             )}
             {vacancy.requirements.length > 0 && (
-              <Block title="What we're looking for">
+              <Block title={t("vacancy.block.requirements")}>
                 <DashList items={vacancy.requirements} />
               </Block>
             )}
             {vacancy.nice_to_have.length > 0 && (
-              <Block title="Nice to have">
+              <Block title={t("vacancy.block.niceToHave")}>
                 <DashList items={vacancy.nice_to_have} />
               </Block>
             )}
             {vacancy.offer.length > 0 && (
-              <Block title="What we offer">
+              <Block title={t("vacancy.block.offer")}>
                 <DashList items={vacancy.offer} />
               </Block>
             )}
@@ -76,14 +85,20 @@ export function VacancyBody({ vacancy }: { vacancy: VacancyDetail }) {
           <aside className="h-fit lg:sticky lg:top-28">
             <div className="rounded-2xl border border-white/[0.07] bg-main-card/40 p-6">
               <p className="mb-4 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
-                At a glance
+                {t("vacancy.glance")}
               </p>
               <dl className="space-y-3">
-                <GlanceRow label="Team" value={team} />
-                <GlanceRow label="Location" value={vacancy.location} />
-                <GlanceRow label="Type" value={vacancy.employment_type} />
+                <GlanceRow label={t("vacancy.pill.team")} value={team} />
                 <GlanceRow
-                  label="Compensation"
+                  label={t("vacancy.pill.location")}
+                  value={vacancy.location}
+                />
+                <GlanceRow
+                  label={t("vacancy.pill.type")}
+                  value={vacancy.employment_type}
+                />
+                <GlanceRow
+                  label={t("vacancy.pill.compensation")}
                   value={vacancy.compensation}
                   accent
                 />
@@ -92,7 +107,7 @@ export function VacancyBody({ vacancy }: { vacancy: VacancyDetail }) {
                 href="#apply"
                 className="mt-6 block rounded-md bg-main-accent-t1 px-6 py-3 text-center font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90"
               >
-                Apply for this role
+                {t("vacancy.applyCta")}
               </a>
             </div>
           </aside>

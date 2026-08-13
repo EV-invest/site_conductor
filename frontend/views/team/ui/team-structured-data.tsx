@@ -1,3 +1,5 @@
+import type { Locale } from "@evinvest/i18n";
+
 import { teamPersonNodes } from "@/entities/team";
 import { PageGraph } from "@/shared/seo/page-graph";
 import { ORG_ID } from "@/shared/seo/json-ld";
@@ -11,8 +13,8 @@ const DESCRIPTION =
 // same Person @ids (see entities/team/seo), so the two pages reinforce one set
 // of entities instead of competing. AboutPage (not a bare WebPage) is what tells
 // Google the page is *about* the organization rather than merely mentioning it.
-export function TeamStructuredData() {
-  const people = teamPersonNodes();
+export function TeamStructuredData({ locale }: { locale: Locale }) {
+  const people = teamPersonNodes(locale);
   const refs = people.map(person => ({ "@id": person["@id"] }));
 
   return (

@@ -1,3 +1,5 @@
+import type { Locale } from "@evinvest/i18n";
+
 import { SITE, OFFICES } from "@/shared/config/site";
 import { teamPersonNodes } from "@/entities/team";
 import { officeNode, postalAddressNode } from "@/shared/seo/office";
@@ -22,9 +24,9 @@ import {
 // articles and the job postings emit nodes that must resolve to these exact
 // same entities.
 
-function homeGraph(): JsonLdNode {
+function homeGraph(locale: Locale): JsonLdNode {
   const offices = OFFICES.map(officeNode);
-  const people = teamPersonNodes();
+  const people = teamPersonNodes(locale);
   const hq = OFFICES[0];
 
   const organization = ldCompact({
@@ -84,6 +86,6 @@ function homeGraph(): JsonLdNode {
   };
 }
 
-export function HomeStructuredData() {
-  return <JsonLd data={homeGraph()} />;
+export function HomeStructuredData({ locale }: { locale: Locale }) {
+  return <JsonLd data={homeGraph(locale)} />;
 }

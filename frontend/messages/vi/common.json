@@ -114,5 +114,393 @@
   "team.intro": {
     "en": "A partnership of investment, risk and technology specialists building institutional-grade access to Vietnam's premium coastal real estate — on the ground in Quy Nhon and Da Nang.",
     "t": "Sự hợp tác của các chuyên gia đầu tư, rủi ro và công nghệ, xây dựng khả năng tiếp cận đạt chuẩn tổ chức tới bất động sản ven biển cao cấp của Việt Nam — hiện diện tại Quy Nhơn và Đà Nẵng."
+  },
+  "team.leadership.eyebrow": {
+    "en": "Leadership",
+    "t": "Ban lãnh đạo"
+  },
+  "team.leadership.title": {
+    "en": "Led by *Institutional Pioneers*",
+    "t": "Dẫn dắt bởi *những người tiên phong tổ chức*"
+  },
+  "team.leadership.intro": {
+    "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
+    "t": "Các đối tác của chúng tôi kết hợp kinh nghiệm thực tiễn về đầu tư, mô hình hóa rủi ro và phát triển dự án với việc triển khai tại chỗ ở Quy Nhơn và Đà Nẵng — hiện diện địa phương theo chuẩn mực tổ chức."
+  },
+  "team.leadership.officeBadge": {
+    "en": "Head Office",
+    "t": "Trụ sở chính"
+  },
+  "team.leadership.officeName": {
+    "en": "EV Boardroom • Quy Nhon",
+    "t": "Phòng họp EV • Quy Nhơn"
+  },
+  "team.leadership.photoAlt": {
+    "en": "EV Investment boardroom in Quy Nhon",
+    "t": "Phòng họp của EV Investment tại Quy Nhơn"
+  },
+  "team.philosophy.eyebrow": {
+    "en": "How we operate",
+    "t": "Cách chúng tôi vận hành"
+  },
+  "team.philosophy.title": {
+    "en": "A discipline, not a pitch",
+    "t": "Một kỷ luật, không phải một bài chào mời"
+  },
+  "team.philosophy.macro.title": {
+    "en": "Macro-first research",
+    "t": "Nghiên cứu từ vĩ mô"
+  },
+  "team.philosophy.macro.body": {
+    "en": "Every position starts from a top-down read of Vietnam's growth, urbanisation and coastal-tourism cycles — not from a single deal.",
+    "t": "Mỗi vị thế đều bắt đầu từ góc nhìn tổng thể về tăng trưởng, đô thị hóa và chu kỳ du lịch ven biển của Việt Nam — chứ không từ một thương vụ đơn lẻ."
+  },
+  "team.philosophy.risk.title": {
+    "en": "Technology-driven risk",
+    "t": "Quản trị rủi ro bằng công nghệ"
+  },
+  "team.philosophy.risk.body": {
+    "en": "We build our own risk and research stack — algorithmic modelling and conservative leverage are set before capital is committed, so downside is sized before upside is sold.",
+    "t": "Chúng tôi tự xây dựng hệ thống rủi ro và nghiên cứu — mô hình thuật toán và đòn bẩy thận trọng được thiết lập trước khi giải ngân, nên rủi ro được định lượng trước khi lợi nhuận được chào bán."
+  },
+  "team.philosophy.roots.title": {
+    "en": "Local roots, institutional standards",
+    "t": "Gốc rễ địa phương, chuẩn mực tổ chức"
+  },
+  "team.philosophy.roots.body": {
+    "en": "On-the-ground presence in Quy Nhon and Da Nang paired with the reporting, governance and transparency international partners expect.",
+    "t": "Hiện diện trực tiếp tại Quy Nhơn và Đà Nẵng, đi cùng chế độ báo cáo, quản trị và minh bạch mà các đối tác quốc tế mong đợi."
+  },
+  "team.offices.eyebrow": {
+    "en": "Presence",
+    "t": "Hiện diện"
+  },
+  "team.offices.title": {
+    "en": "Where we work",
+    "t": "Nơi chúng tôi làm việc"
+  },
+  "team.offices.quynhon": {
+    "en": "Quy Nhon Head Office",
+    "t": "Trụ sở chính Quy Nhơn"
+  },
+  "team.offices.hcmc": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Văn phòng đại diện TP. Hồ Chí Minh"
+  },
+  "team.join.eyebrow": {
+    "en": "Get involved",
+    "t": "Tham gia cùng chúng tôi"
+  },
+  "team.join.title": {
+    "en": "Build the fund with us",
+    "t": "Cùng chúng tôi xây dựng quỹ"
+  },
+  "team.join.hiring.eyebrow": {
+    "en": "Open position",
+    "t": "Vị trí đang tuyển"
+  },
+  "team.join.hiring.title": {
+    "en": "Join Us",
+    "t": "Gia nhập cùng chúng tôi"
+  },
+  "team.join.hiring.body": {
+    "en": "We are always looking for talented analysts and asset managers in Quy Nhon and Da Nang.",
+    "t": "Chúng tôi luôn tìm kiếm các chuyên viên phân tích và quản lý tài sản tài năng tại Quy Nhơn và Đà Nẵng."
+  },
+  "team.join.hiring.cta": {
+    "en": "Hiring",
+    "t": "Tuyển dụng"
+  },
+  "team.join.ir.eyebrow": {
+    "en": "Investor relations",
+    "t": "Quan hệ nhà đầu tư"
+  },
+  "team.join.ir.title": {
+    "en": "LP Partner Network",
+    "t": "Mạng lưới đối tác LP"
+  },
+  "team.join.ir.body": {
+    "en": "Talk to us about co-investing in Vietnam's coastal real estate.",
+    "t": "Trao đổi với chúng tôi về việc đồng đầu tư vào bất động sản ven biển Việt Nam."
+  },
+  "team.join.ir.cta": {
+    "en": "IR Contacts",
+    "t": "Liên hệ IR"
+  },
+  "team.member.ez.role": {
+    "en": "Managing Partner, Co-founder",
+    "t": "Đối tác điều hành, Đồng sáng lập"
+  },
+  "team.member.ez.bio": {
+    "en": "Leads investment strategy and capital partnerships, focused on Vietnam's coastal growth corridors in Quy Nhon and Da Nang.",
+    "t": "Phụ trách chiến lược đầu tư và quan hệ đối tác vốn, tập trung vào các hành lang tăng trưởng ven biển của Việt Nam tại Quy Nhơn và Đà Nẵng."
+  },
+  "team.member.vs.role": {
+    "en": "Director of Research & Risk, CTO",
+    "t": "Giám đốc Nghiên cứu & Rủi ro, CTO"
+  },
+  "team.member.vs.bio": {
+    "en": "Specializes in algorithmically-driven risk assessment and financial modelling. Previously at QuantM Alpha.",
+    "t": "Chuyên về đánh giá rủi ro bằng thuật toán và mô hình hóa tài chính. Trước đây công tác tại QuantM Alpha."
+  },
+  "hiring.hero.eyebrow": {
+    "en": "Hiring · Join the fund",
+    "t": "Tuyển dụng · Gia nhập quỹ"
+  },
+  "hiring.hero.title": {
+    "en": "Build coastal Vietnam's *next decade* with us.",
+    "t": "Cùng chúng tôi kiến tạo *thập kỷ tới* của vùng ven biển Việt Nam."
+  },
+  "hiring.hero.intro": {
+    "en": "EV Investment develops premium coastal assets in Quy Nhơn — and we're hiring senior people across investment, development, and client advisory. Find your role below.",
+    "t": "EV Investment phát triển các tài sản ven biển cao cấp tại Quy Nhơn — và chúng tôi đang tuyển nhân sự cấp cao cho các mảng đầu tư, phát triển dự án và tư vấn khách hàng. Hãy tìm vị trí của bạn bên dưới."
+  },
+  "hiring.hero.cta": {
+    "en": "View open roles",
+    "t": "Xem vị trí đang tuyển"
+  },
+  "hiring.hero.stat.roles": {
+    "en": "Open roles",
+    "t": "Vị trí đang tuyển"
+  },
+  "hiring.hero.stat.teams": {
+    "en": "Teams hiring",
+    "t": "Nhóm đang tuyển"
+  },
+  "hiring.hero.stat.offices": {
+    "en": "Office locations",
+    "t": "Địa điểm văn phòng"
+  },
+  "hiring.board.eyebrow": {
+    "en": "Open roles",
+    "t": "Vị trí đang tuyển"
+  },
+  "hiring.board.title": {
+    "en": "Where we're *hiring*.",
+    "t": "Nơi chúng tôi đang *tuyển dụng*."
+  },
+  "hiring.board.search": {
+    "en": "Search roles, teams, or locations…",
+    "t": "Tìm theo vị trí, nhóm hoặc địa điểm…"
+  },
+  "hiring.board.searchLabel": {
+    "en": "Search roles",
+    "t": "Tìm kiếm vị trí"
+  },
+  "hiring.board.count": {
+    "en": "{count, plural, one {# role} other {# roles}}",
+    "t": "{count, plural, other {# vị trí}}"
+  },
+  "hiring.board.allRoles": {
+    "en": "All roles",
+    "t": "Tất cả vị trí"
+  },
+  "hiring.board.empty": {
+    "en": "No roles match your search.",
+    "t": "Không có vị trí nào khớp với tìm kiếm của bạn."
+  },
+  "hiring.board.clear": {
+    "en": "Clear filters",
+    "t": "Xóa bộ lọc"
+  },
+  "hiring.board.viewRole": {
+    "en": "View role",
+    "t": "Xem vị trí"
+  },
+  "hiring.category.all": {
+    "en": "All",
+    "t": "Tất cả"
+  },
+  "hiring.category.investment": {
+    "en": "Investment",
+    "t": "Đầu tư"
+  },
+  "hiring.category.development": {
+    "en": "Development",
+    "t": "Phát triển dự án"
+  },
+  "hiring.category.advisory": {
+    "en": "Advisory",
+    "t": "Tư vấn"
+  },
+  "hiring.category.operations": {
+    "en": "Operations",
+    "t": "Vận hành"
+  },
+  "hiring.team.investment": {
+    "en": "Investment & Research",
+    "t": "Đầu tư & Nghiên cứu"
+  },
+  "hiring.team.development": {
+    "en": "Development & Projects",
+    "t": "Phát triển & Dự án"
+  },
+  "hiring.team.advisory": {
+    "en": "Client Advisory",
+    "t": "Tư vấn khách hàng"
+  },
+  "hiring.team.operations": {
+    "en": "Operations",
+    "t": "Vận hành"
+  },
+  "hiring.why.eyebrow": {
+    "en": "Why EV",
+    "t": "Vì sao chọn EV"
+  },
+  "hiring.why.title": {
+    "en": "Why join *now*.",
+    "t": "Vì sao nên gia nhập *ngay lúc này*."
+  },
+  "hiring.why.focus.title": {
+    "en": "Focus",
+    "t": "Tập trung"
+  },
+  "hiring.why.focus.body": {
+    "en": "A focused thesis: 100% concentration and expertise in today's most promising emerging market.",
+    "t": "Một luận điểm tập trung: 100% sự tập trung và chuyên môn vào thị trường mới nổi triển vọng nhất hiện nay."
+  },
+  "hiring.why.rigor.title": {
+    "en": "Institutional rigor",
+    "t": "Sự chặt chẽ của tổ chức"
+  },
+  "hiring.why.rigor.body": {
+    "en": "Data-driven research and underwriting on assets you can stand in front of.",
+    "t": "Nghiên cứu và thẩm định dựa trên dữ liệu, cho những tài sản bạn có thể đứng trước tận mắt."
+  },
+  "hiring.why.scale.title": {
+    "en": "Ground-floor scale",
+    "t": "Quy mô từ những ngày đầu"
+  },
+  "hiring.why.scale.body": {
+    "en": "Join early. Your work compounds into the fund's track record — and your own.",
+    "t": "Gia nhập sớm. Công việc của bạn tích lũy vào thành tích của quỹ — và của chính bạn."
+  },
+  "hiring.why.upside.title": {
+    "en": "Aligned upside",
+    "t": "Lợi ích song hành"
+  },
+  "hiring.why.upside.body": {
+    "en": "Senior contributors share in the carry they help create.",
+    "t": "Các nhân sự cấp cao được chia phần lợi nhuận mà chính họ góp phần tạo ra."
+  },
+  "hiring.process.eyebrow": {
+    "en": "How we hire",
+    "t": "Cách chúng tôi tuyển dụng"
+  },
+  "hiring.process.title": {
+    "en": "A short, *honest* process.",
+    "t": "Một quy trình ngắn gọn và *trung thực*."
+  },
+  "hiring.process.intro.title": {
+    "en": "Intro call",
+    "t": "Cuộc gọi làm quen"
+  },
+  "hiring.process.intro.body": {
+    "en": "A 30-minute conversation about you and us — no scripts.",
+    "t": "Cuộc trò chuyện 30 phút về bạn và về chúng tôi — không kịch bản."
+  },
+  "hiring.process.deep.title": {
+    "en": "Deep dive",
+    "t": "Đi sâu chuyên môn"
+  },
+  "hiring.process.deep.body": {
+    "en": "A real problem from our actual pipeline — no whiteboard puzzles.",
+    "t": "Một bài toán thực tế từ danh mục hiện tại của chúng tôi — không có câu đố trên bảng trắng."
+  },
+  "hiring.process.meet.title": {
+    "en": "Meet the team",
+    "t": "Gặp gỡ đội ngũ"
+  },
+  "hiring.process.meet.body": {
+    "en": "Time with the people you'd work beside, in Quy Nhơn or remote.",
+    "t": "Thời gian với những người bạn sẽ làm việc cùng, tại Quy Nhơn hoặc từ xa."
+  },
+  "hiring.process.offer.title": {
+    "en": "Offer",
+    "t": "Đề nghị tuyển dụng"
+  },
+  "hiring.process.offer.body": {
+    "en": "Fast, clear, and senior — usually within two weeks.",
+    "t": "Nhanh chóng, rõ ràng và ở cấp cao — thường trong vòng hai tuần."
+  },
+  "vacancy.back": {
+    "en": "All open roles",
+    "t": "Tất cả vị trí đang tuyển"
+  },
+  "vacancy.pill.location": {
+    "en": "Location",
+    "t": "Địa điểm"
+  },
+  "vacancy.pill.type": {
+    "en": "Type",
+    "t": "Hình thức"
+  },
+  "vacancy.pill.team": {
+    "en": "Team",
+    "t": "Nhóm"
+  },
+  "vacancy.pill.compensation": {
+    "en": "Compensation",
+    "t": "Mức lương"
+  },
+  "vacancy.applyCta": {
+    "en": "Apply for this role",
+    "t": "Ứng tuyển vị trí này"
+  },
+  "vacancy.share": {
+    "en": "Share role",
+    "t": "Chia sẻ vị trí"
+  },
+  "vacancy.shareCopied": {
+    "en": "Copied",
+    "t": "Đã sao chép"
+  },
+  "vacancy.block.about": {
+    "en": "About the role",
+    "t": "Về vị trí này"
+  },
+  "vacancy.block.responsibilities": {
+    "en": "What you'll do",
+    "t": "Công việc của bạn"
+  },
+  "vacancy.block.requirements": {
+    "en": "What we're looking for",
+    "t": "Điều chúng tôi tìm kiếm"
+  },
+  "vacancy.block.niceToHave": {
+    "en": "Nice to have",
+    "t": "Điểm cộng"
+  },
+  "vacancy.block.offer": {
+    "en": "What we offer",
+    "t": "Chúng tôi mang lại"
+  },
+  "vacancy.glance": {
+    "en": "At a glance",
+    "t": "Tổng quan"
+  },
+  "vacancy.apply.eyebrow": {
+    "en": "Apply",
+    "t": "Ứng tuyển"
+  },
+  "vacancy.apply.title": {
+    "en": "Send your *application*.",
+    "t": "Gửi *hồ sơ ứng tuyển* của bạn."
+  },
+  "vacancy.apply.intro": {
+    "en": "Tell us where you'd fit on the {role} role. A few lines is enough — we read every note and reply within about two weeks.",
+    "t": "Hãy cho chúng tôi biết bạn phù hợp ở đâu với vị trí {role}. Vài dòng là đủ — chúng tôi đọc mọi thư và phản hồi trong khoảng hai tuần."
+  },
+  "vacancy.apply.point1": {
+    "en": "No cover-letter theatre — your work speaks.",
+    "t": "Không cần thư xin việc hoa mỹ — công việc của bạn tự nói lên tất cả."
+  },
+  "vacancy.apply.point2": {
+    "en": "You'll hear back either way.",
+    "t": "Chúng tôi sẽ phản hồi dù kết quả thế nào."
+  },
+  "vacancy.apply.point3": {
+    "en": "Questions first? hiring@evinvest.vn",
+    "t": "Có câu hỏi trước? hiring@evinvest.vn"
   }
 }
