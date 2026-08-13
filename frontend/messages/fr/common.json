@@ -66,5 +66,53 @@
   "a11y.languageSwitcher": {
     "en": "Choose language",
     "t": "Choisir la langue"
+  },
+  "contact.eyebrow": {
+    "en": "Contact",
+    "t": "Contact"
+  },
+  "contact.title": {
+    "en": "Let's *talk*.",
+    "t": "*Parlons*-en."
+  },
+  "contact.intro": {
+    "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
+    "t": "Des questions sur un poste, un investissement ou l'un de nos projets côtiers ? Écrivez-nous : une personne — pas un robot — vous répondra."
+  },
+  "contact.channel.hiring": {
+    "en": "Hiring",
+    "t": "Recrutement"
+  },
+  "contact.channel.investors": {
+    "en": "Investors",
+    "t": "Investisseurs"
+  },
+  "contact.office.hq.city": {
+    "en": "Quy Nhơn",
+    "t": "Quy Nhơn"
+  },
+  "contact.office.hq.line": {
+    "en": "Coastal HQ · Bình Định, Vietnam",
+    "t": "Siège côtier · Bình Định, Vietnam"
+  },
+  "contact.office.hcmc.city": {
+    "en": "Ho Chi Minh City",
+    "t": "Hô Chi Minh-Ville"
+  },
+  "contact.office.hcmc.line": {
+    "en": "Investor relations · District 1",
+    "t": "Relations investisseurs · District 1"
+  },
+  "team.eyebrow": {
+    "en": "Our people",
+    "t": "Nos équipes"
+  },
+  "team.title": {
+    "en": "The team behind *EV Investment*",
+    "t": "L'équipe derrière *EV Investment*"
+  },
+  "team.intro": {
+    "en": "A partnership of investment, risk and technology specialists building institutional-grade access to Vietnam's premium coastal real estate — on the ground in Quy Nhon and Da Nang.",
+    "t": "Un partenariat de spécialistes de l'investissement, du risque et de la technologie, bâtissant un accès de qualité institutionnelle à l'immobilier côtier haut de gamme du Vietnam — présents à Quy Nhon et Da Nang."
   }
 }

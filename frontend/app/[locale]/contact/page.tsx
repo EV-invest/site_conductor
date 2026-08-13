@@ -1,3 +1,4 @@
+import type { Locale } from "@evinvest/i18n";
 import { ContactView } from "@/views/contact";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -18,6 +19,11 @@ export async function generateMetadata({
   });
 }
 
-export default function Page() {
-  return <ContactView />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return <ContactView locale={locale as Locale} />;
 }

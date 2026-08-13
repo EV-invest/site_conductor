@@ -66,5 +66,53 @@
   "a11y.languageSwitcher": {
     "en": "Choose language",
     "t": "Выбрать язык"
+  },
+  "contact.eyebrow": {
+    "en": "Contact",
+    "t": "Контакты"
+  },
+  "contact.title": {
+    "en": "Let's *talk*.",
+    "t": "Давайте *поговорим*."
+  },
+  "contact.intro": {
+    "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
+    "t": "Вопросы о вакансии, инвестициях или одном из наших прибрежных проектов? Напишите нам — ответит человек, а не бот."
+  },
+  "contact.channel.hiring": {
+    "en": "Hiring",
+    "t": "Вакансии"
+  },
+  "contact.channel.investors": {
+    "en": "Investors",
+    "t": "Инвесторам"
+  },
+  "contact.office.hq.city": {
+    "en": "Quy Nhơn",
+    "t": "Куинён"
+  },
+  "contact.office.hq.line": {
+    "en": "Coastal HQ · Bình Định, Vietnam",
+    "t": "Прибрежный головной офис · Биньдинь, Вьетнам"
+  },
+  "contact.office.hcmc.city": {
+    "en": "Ho Chi Minh City",
+    "t": "Хошимин"
+  },
+  "contact.office.hcmc.line": {
+    "en": "Investor relations · District 1",
+    "t": "Отношения с инвесторами · Район 1"
+  },
+  "team.eyebrow": {
+    "en": "Our people",
+    "t": "Наша команда"
+  },
+  "team.title": {
+    "en": "The team behind *EV Investment*",
+    "t": "Команда *EV Investment*"
+  },
+  "team.intro": {
+    "en": "A partnership of investment, risk and technology specialists building institutional-grade access to Vietnam's premium coastal real estate — on the ground in Quy Nhon and Da Nang.",
+    "t": "Партнёрство специалистов по инвестициям, рискам и технологиям, создающее институциональный доступ к премиальной прибрежной недвижимости Вьетнама — с присутствием в Куинёне и Дананге."
   }
 }
