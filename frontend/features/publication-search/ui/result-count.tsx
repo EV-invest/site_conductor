@@ -1,4 +1,8 @@
+"use client";
+
 /** Default id — `SearchField` points `aria-describedby` here. */
+import { useT } from "@evinvest/i18n/react";
+
 export const RESULT_COUNT_ID = "publication-search-count";
 
 export interface ResultCountProps {
@@ -18,13 +22,16 @@ export function ResultCount({
   total,
   id = RESULT_COUNT_ID,
 }: ResultCountProps) {
+  const t = useT();
   return (
     <p
       id={id}
       aria-live="polite"
       className="font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/40"
     >
-      {shown === 0 ? "No matches" : `Showing 1–${shown} of ${total}`}
+      {shown === 0
+        ? t("publications.results.none")
+        : t("publications.results.showing", { shown, total })}
     </p>
   );
 }

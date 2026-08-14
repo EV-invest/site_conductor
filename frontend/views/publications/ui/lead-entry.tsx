@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
@@ -7,8 +8,9 @@ import {
 } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
 import { MediaPlate } from "@/shared/ui/media-plate";
+import { messagesFor } from "@/shared/config/i18n";
 
-import { ctaFor, href, KIND_LABEL } from "../model/presentation";
+import { ctaFor, href, kindLabel } from "../model/presentation";
 import { EntryCard } from "./entry-card";
 
 /**
@@ -21,14 +23,24 @@ export function LeadEntry({
   publication,
   className,
   id,
+  locale,
 }: {
   publication: Publication;
   className?: string;
   id?: string;
+  locale: Locale;
 }) {
+  const t = translator(messagesFor(locale), locale);
   const cover = toPlateCover(publication);
   if (!cover) {
-    return <EntryCard publication={publication} className={className} id={id} />;
+    return (
+      <EntryCard
+        publication={publication}
+        className={className}
+        id={id}
+        locale={locale}
+      />
+    );
   }
 
   return (
@@ -41,14 +53,14 @@ export function LeadEntry({
           cover={cover}
           size="wide"
           caption={publication.cover?.caption}
-          plateLabel="Plate 01"
+          plateLabel={t("publications.plate", { n: "01" })}
         />
       </div>
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
           <span className="flex items-center gap-2.5 text-main-accent-t1">
             <span aria-hidden className="size-[7px] bg-main-accent-t1" />
-            LATEST DISPATCH
+            {t("publications.latestDispatch")}
           </span>
           <span className="text-main-mist/40">
             {formatPublicationDate(publication.date, "long")}
@@ -68,13 +80,13 @@ export function LeadEntry({
             </span>
           )}
           <Link
-            href={href(publication)}
+            href={localePath(locale, href(publication))}
             className="inline-flex items-center gap-2 bg-main-accent-t1 px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-main-black transition-colors hover:bg-main-mist hover:text-main-brand"
           >
-            {ctaFor(publication)} →
+            {ctaFor(publication, t)} →
           </Link>
         </div>
-        <span className="sr-only">{KIND_LABEL[publication.kind]}</span>
+        <span className="sr-only">{kindLabel(publication.kind, t)}</span>
       </div>
     </article>
   );

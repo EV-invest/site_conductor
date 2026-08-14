@@ -1,15 +1,17 @@
 "use client";
 
+import { useT } from "@evinvest/i18n/react";
+
 import type { PublicationKind } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
 
 export type KindFilter = PublicationKind | "all";
 
-const CHIPS: { value: KindFilter; label: string }[] = [
-  { value: "all", label: "ALL" },
-  { value: "field-note", label: "FIELD NOTES" },
-  { value: "research", label: "RESEARCH" },
-  { value: "whitepaper", label: "WHITEPAPER" },
+const CHIPS: { value: KindFilter; labelKey: string }[] = [
+  { value: "all", labelKey: "publications.filter.all" },
+  { value: "field-note", labelKey: "publications.kind.fieldNotes" },
+  { value: "research", labelKey: "publications.kind.research" },
+  { value: "whitepaper", labelKey: "publications.kind.whitepaper" },
 ];
 
 export function FilterChips({
@@ -21,10 +23,11 @@ export function FilterChips({
   onChange: (next: KindFilter) => void;
   counts: Record<KindFilter, number>;
 }) {
+  const t = useT();
   return (
     <div
       role="group"
-      aria-label="Filter publications by kind"
+      aria-label={t("publications.filter.aria")}
       className="flex flex-wrap gap-2"
     >
       {CHIPS.map(chip => {
@@ -46,7 +49,7 @@ export function FilterChips({
               empty && "cursor-not-allowed opacity-35 hover:border-main-mist/16"
             )}
           >
-            {chip.label}
+            {t(chip.labelKey)}
           </button>
         );
       })}

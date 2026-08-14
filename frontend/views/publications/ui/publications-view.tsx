@@ -1,4 +1,5 @@
 import { Container } from "@evinvest/uikit";
+import type { Locale } from "@evinvest/i18n";
 
 import { allPublications, type Publication } from "@/entities/publication";
 
@@ -21,7 +22,7 @@ function forClient(publication: Publication): Publication {
   return { ...publication, text: text.slice(0, SEARCH_TEXT_BUDGET) };
 }
 
-export function PublicationsView() {
+export function PublicationsView({ locale }: { locale: Locale }) {
   const publications = allPublications();
   const counts = {
     fieldNote: publications.filter(p => p.kind === "field-note").length,
@@ -34,13 +35,17 @@ export function PublicationsView() {
       <PublicationsStructuredData />
       <Container>
         <Masthead
+          locale={locale}
           fieldNoteCount={counts.fieldNote}
           researchCount={counts.research}
           whitepaperCount={counts.whitepaper}
           updatedAt={publications[0]?.date}
         />
         <div className="mt-10">
-          <PublicationIndex publications={publications.map(forClient)} />
+          <PublicationIndex
+            publications={publications.map(forClient)}
+            locale={locale}
+          />
         </div>
       </Container>
     </main>

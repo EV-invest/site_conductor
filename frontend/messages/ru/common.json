@@ -502,5 +502,301 @@
   "vacancy.apply.point3": {
     "en": "Questions first? hiring@evinvest.vn",
     "t": "Есть вопросы? hiring@evinvest.vn"
+  },
+  "home.hero.headline.a": {
+    "en": "Invest in *China+1*\nThrough *Vietnam*",
+    "t": "Инвестируйте в *«Китай+1»*\nчерез *Вьетнам*"
+  },
+  "home.hero.headline.b": {
+    "en": "Invest in *Vietnam*\nThrough Institutional Vision.",
+    "t": "Инвестируйте во *Вьетнам*\nс институциональным подходом."
+  },
+  "home.hero.copy.line1": {
+    "en": "Invest in Emergent Markets through Vietnam.",
+    "t": "Инвестируйте в развивающиеся рынки через Вьетнам."
+  },
+  "home.hero.copy.line2": {
+    "en": "See why and how to invest directly. China+1 narrative ensures consistently increasing FDI inflows.",
+    "t": "Узнайте, почему и как инвестировать напрямую. Стратегия «Китай+1» обеспечивает устойчивый рост притока прямых иностранных инвестиций."
+  },
+  "home.hero.copy.edgeLabel": {
+    "en": "Edge",
+    "t": "Преимущество"
+  },
+  "home.hero.copy.edge": {
+    "en": "our visarun branch lets us keep a pulse on regional trends in foreign purchases.",
+    "t": "наше визаранное направление позволяет держать руку на пульсе региональных тенденций в зарубежных покупках."
+  },
+  "home.hero.scrollHint": {
+    "en": "Follow the money",
+    "t": "Следуйте за деньгами"
+  },
+  "home.hero.cta.explore": {
+    "en": "Explore Assets",
+    "t": "Смотреть активы"
+  },
+  "home.hero.cta.whitepaper": {
+    "en": "Whitepaper",
+    "t": "Whitepaper"
+  },
+  "home.hero.stat.targetIrr": {
+    "en": "Target IRR",
+    "t": "Целевая IRR"
+  },
+  "home.hero.stat.specialization": {
+    "en": "Specialization",
+    "t": "Специализация"
+  },
+  "home.hero.stat.specializationValue": {
+    "en": "Rentals",
+    "t": "Аренда"
+  },
+  "home.hero.stat.currentCity": {
+    "en": "Current Target City",
+    "t": "Текущий целевой город"
+  },
+  "home.hero.stat.aumCap": {
+    "en": "AUM hard cap",
+    "t": "Жёсткий лимит AUM"
+  },
+  "home.hero.b.eyebrow": {
+    "en": "Institutional Real Estate • Quy Nhon",
+    "t": "Институциональная недвижимость • Куинён"
+  },
+  "home.hero.b.headline": {
+    "en": "Invest in *Quy Nhon*\nThrough Institutional Vision.",
+    "t": "Инвестируйте в *Куинён*\nс институциональным подходом."
+  },
+  "home.hero.b.copy": {
+    "en": "EV Investment bridges the gap between premium coastal real estate development and sophisticated investors. Experience high-yield real estate assets in Vietnam's fastest-growing coastal hub.",
+    "t": "EV Investment соединяет девелопмент премиальной прибрежной недвижимости с квалифицированными инвесторами. Получите доступ к высокодоходным объектам в самом быстрорастущем прибрежном центре Вьетнама."
+  },
+  "home.hero.b.aum": {
+    "en": "AUM Under Advisory",
+    "t": "Активы под управлением"
+  },
+  "home.hero.b.coastline": {
+    "en": "Coastline",
+    "t": "Береговая линия"
+  },
+  "home.hero.b.photoAlt": {
+    "en": "Quy Nhon coastal development",
+    "t": "Прибрежная застройка в Куинёне"
+  },
+  "home.fieldNotes.eyebrow": {
+    "en": "From the ground",
+    "t": "С места событий"
+  },
+  "home.fieldNotes.title": {
+    "en": "Field Notes from *Quy Nhơn*",
+    "t": "Полевые заметки из *Куинёна*"
+  },
+  "home.fieldNotes.intro": {
+    "en": "Research explains the thesis. Field notes show you the place — our people on the ground, filming the districts we underwrite, the roads being built, and what daily life actually costs.",
+    "t": "Исследования объясняют тезис. Полевые заметки показывают само место: наши люди снимают районы, которые мы оцениваем, строящиеся дороги и то, сколько на самом деле стоит повседневная жизнь."
+  },
+  "home.fieldNotes.all": {
+    "en": "All field notes",
+    "t": "Все полевые заметки"
+  },
+  "home.fieldNotes.latest": {
+    "en": "Latest dispatch",
+    "t": "Последний репортаж"
+  },
+  "home.fieldNotes.previous": {
+    "en": "Previous",
+    "t": "Предыдущий"
+  },
+  "home.fieldNotes.more": {
+    "en": "More from the field",
+    "t": "Ещё с места событий"
+  },
+  "home.research.eyebrow": {
+    "en": "Academic Rigor",
+    "t": "Академическая строгость"
+  },
+  "home.research.title": {
+    "en": "Data-Driven *Research & Insights*",
+    "t": "*Исследования и аналитика* на данных"
+  },
+  "home.research.intro": {
+    "en": "We believe in deep macroeconomic analysis. Our research team produces exhaustive monthly reports on Vietnam’s economic landscape, urbanization trends, and Quy Nhon’s real estate cycles.",
+    "t": "Мы верим в глубокий макроэкономический анализ. Наша исследовательская команда ежемесячно готовит подробные отчёты об экономике Вьетнама, тенденциях урбанизации и циклах рынка недвижимости Куинёна."
+  },
+  "home.research.read": {
+    "en": "Read",
+    "t": "Читать"
+  },
+  "home.research.readFull": {
+    "en": "Read Full Report",
+    "t": "Читать отчёт целиком"
+  },
+  "home.research.download": {
+    "en": "Download",
+    "t": "Скачать"
+  },
+  "home.research.downloadFull": {
+    "en": "Download Full Report",
+    "t": "Скачать отчёт целиком"
+  },
+  "home.research.department": {
+    "en": "EV Research Department",
+    "t": "Исследовательский отдел EV"
+  },
+  "home.research.leadAuthor": {
+    "en": "Lead Author: Dr. Nguyen An, Chief Economist",
+    "t": "Ведущий автор: д-р Нгуен Ан, главный экономист"
+  },
+  "home.research.readAria": {
+    "en": "Read full report: {title}",
+    "t": "Читать отчёт целиком: {title}"
+  },
+  "home.team.placeholder.hiring.sub": {
+    "en": "Investment Analyst",
+    "t": "Инвестиционный аналитик"
+  },
+  "home.team.placeholder.ir.sub": {
+    "en": "Investor Relations (IR)",
+    "t": "Отношения с инвесторами (IR)"
+  },
+  "publications.eyebrow": {
+    "en": "EV Investment · Publications",
+    "t": "EV Investment · Публикации"
+  },
+  "publications.title": {
+    "en": "Field Notes *& Research*",
+    "t": "Полевые заметки *и исследования*"
+  },
+  "publications.intro": {
+    "en": "Three kinds of evidence. Research is the desk work — macro models, land sweeps, yield decomposition, published as citable PDFs. Field notes are the ground truth: our people filming the districts we underwrite. The whitepaper is the standing document behind both.",
+    "t": "Три вида доказательств. Исследования — кабинетная работа: макромодели, обследования земли, разложение доходности, публикуемые в виде цитируемых PDF. Полевые заметки — реальность на месте: наши сотрудники снимают районы, которые мы оцениваем. Whitepaper — постоянный документ, стоящий за тем и другим."
+  },
+  "publications.stat.fieldNotes": {
+    "en": "{count, plural, one {# FIELD NOTE} other {# FIELD NOTES}}",
+    "t": "{count, plural, one {# ПОЛЕВАЯ ЗАМЕТКА} few {# ПОЛЕВЫЕ ЗАМЕТКИ} many {# ПОЛЕВЫХ ЗАМЕТОК} other {# ПОЛЕВЫЕ ЗАМЕТКИ}}"
+  },
+  "publications.stat.reports": {
+    "en": "{count, plural, one {# REPORT} other {# REPORTS}}",
+    "t": "{count, plural, one {# ОТЧЁТ} few {# ОТЧЁТА} many {# ОТЧЁТОВ} other {# ОТЧЁТА}}"
+  },
+  "publications.stat.whitepapers": {
+    "en": "{count, plural, one {# WHITEPAPER} other {# WHITEPAPERS}}",
+    "t": "{count, plural, one {# WHITEPAPER} few {# WHITEPAPER} many {# WHITEPAPER} other {# WHITEPAPER}}"
+  },
+  "publications.stat.updated": {
+    "en": "UPDATED {date}",
+    "t": "ОБНОВЛЕНО {date}"
+  },
+  "publications.filter.aria": {
+    "en": "Filter publications by kind",
+    "t": "Фильтровать публикации по типу"
+  },
+  "publications.filter.all": {
+    "en": "ALL",
+    "t": "ВСЕ"
+  },
+  "publications.kind.fieldNote": {
+    "en": "FIELD NOTE",
+    "t": "ПОЛЕВАЯ ЗАМЕТКА"
+  },
+  "publications.kind.fieldNotes": {
+    "en": "FIELD NOTES",
+    "t": "ПОЛЕВЫЕ ЗАМЕТКИ"
+  },
+  "publications.kind.research": {
+    "en": "RESEARCH",
+    "t": "ИССЛЕДОВАНИЯ"
+  },
+  "publications.kind.whitepaper": {
+    "en": "WHITEPAPER",
+    "t": "WHITEPAPER"
+  },
+  "publications.cta.watchNote": {
+    "en": "WATCH THE NOTE",
+    "t": "СМОТРЕТЬ ЗАМЕТКУ"
+  },
+  "publications.cta.readNote": {
+    "en": "READ THE NOTE",
+    "t": "ЧИТАТЬ ЗАМЕТКУ"
+  },
+  "publications.cta.readReport": {
+    "en": "READ THE REPORT",
+    "t": "ЧИТАТЬ ОТЧЁТ"
+  },
+  "publications.cta.readWhitepaper": {
+    "en": "READ THE WHITEPAPER",
+    "t": "ЧИТАТЬ WHITEPAPER"
+  },
+  "publications.latestDispatch": {
+    "en": "LATEST DISPATCH",
+    "t": "ПОСЛЕДНИЙ РЕПОРТАЖ"
+  },
+  "publications.plate": {
+    "en": "Plate {n}",
+    "t": "Илл. {n}"
+  },
+  "publications.search.label": {
+    "en": "Search publications",
+    "t": "Поиск по публикациям"
+  },
+  "publications.search.placeholder": {
+    "en": "Search titles and full text…",
+    "t": "Поиск по заголовкам и полному тексту…"
+  },
+  "publications.results.none": {
+    "en": "No matches",
+    "t": "Совпадений нет"
+  },
+  "publications.results.showing": {
+    "en": "Showing 1–{shown} of {total}",
+    "t": "Показано 1–{shown} из {total}"
+  },
+  "publications.announce": {
+    "en": "{title} — {position} of {total}",
+    "t": "{title} — {position} из {total}"
+  },
+  "publications.empty.filter": {
+    "en": "Nothing published under this filter yet.",
+    "t": "По этому фильтру пока ничего не опубликовано."
+  },
+  "publications.empty.search": {
+    "en": "Nothing matches “{query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.",
+    "t": "Ничего не найдено по запросу «{query}». Очистите поиск клавишей Esc или попробуйте название места — большинство репортажей названы именно так."
+  },
+  "publications.shortcut.focus": {
+    "en": "Focus the search field",
+    "t": "Перейти к полю поиска"
+  },
+  "publications.shortcut.move": {
+    "en": "Move through the results",
+    "t": "Перемещаться по результатам"
+  },
+  "publications.shortcut.open": {
+    "en": "Open the selected result",
+    "t": "Открыть выбранный результат"
+  },
+  "publications.shortcut.clear": {
+    "en": "Clear the search and unfocus",
+    "t": "Очистить поиск и снять фокус"
+  },
+  "publications.shortcut.toggle": {
+    "en": "Toggle this dialog",
+    "t": "Показать или скрыть это окно"
+  },
+  "publications.allPublications": {
+    "en": "All publications",
+    "t": "Все публикации"
+  },
+  "publications.unavailable": {
+    "en": "This publication isn’t available right now —",
+    "t": "Эта публикация сейчас недоступна —"
+  },
+  "publications.downloadPdf": {
+    "en": "download the PDF",
+    "t": "скачать PDF"
+  },
+  "publications.shortcuts.title": {
+    "en": "Keyboard shortcuts",
+    "t": "Горячие клавиши"
   }
 }

@@ -1,3 +1,5 @@
+import { type Locale } from "@evinvest/i18n";
+
 import {
   formatPublicationDate,
   publicationsByKind,
@@ -13,7 +15,7 @@ import { ResearchA, type ResearchReport } from "./research";
  * component, so anything it imports is bundled — importing the entity there
  * would ship every publication's full search text to the homepage.
  */
-export function Research() {
+export function Research({ locale }: { locale: Locale }) {
   const reports: ResearchReport[] = publicationsByKind("research").map(
     publication => ({
       cat: publication.category ?? "Research",
@@ -30,5 +32,5 @@ export function Research() {
   );
 
   if (reports.length === 0) return null;
-  return <ResearchA reports={reports} />;
+  return <ResearchA reports={reports} locale={locale} />;
 }

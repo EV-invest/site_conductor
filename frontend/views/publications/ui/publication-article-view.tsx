@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@evinvest/uikit";
+import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
@@ -8,8 +9,9 @@ import {
 } from "@/entities/publication";
 import { DocumentReader } from "@/shared/ui/document-reader";
 import { MediaPlate } from "@/shared/ui/media-plate";
+import { messagesFor } from "@/shared/config/i18n";
 
-import { KIND_LABEL, pdfHref } from "../model/presentation";
+import { kindLabel, pdfHref } from "../model/presentation";
 import { PublicationStructuredData } from "./publication-structured-data";
 
 /**
@@ -22,9 +24,12 @@ import { PublicationStructuredData } from "./publication-structured-data";
  */
 export function PublicationArticleView({
   publication,
+  locale,
 }: {
   publication: Publication;
+  locale: Locale;
 }) {
+  const t = translator(messagesFor(locale), locale);
   const cover = toPlateCover(publication);
 
   return (
@@ -33,15 +38,15 @@ export function PublicationArticleView({
       <Container>
         <header className="mx-auto max-w-3xl">
           <Link
-            href="/publications"
+            href={localePath(locale, "/publications")}
             className="font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/45 transition-colors hover:text-main-mist"
           >
-            ← All publications
+            ← {t("publications.allPublications")}
           </Link>
           <div className="mt-8 flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
             <span className="flex items-center gap-2.5 text-main-accent-t1">
               <span aria-hidden className="size-[7px] bg-main-accent-t1" />
-              {KIND_LABEL[publication.kind]}
+              {kindLabel(publication.kind, t)}
             </span>
             {/* <time> so the dateline is machine-readable on its own, not only
                 inside the JSON-LD block. */}
@@ -69,7 +74,7 @@ export function PublicationArticleView({
               cover={cover}
               size="wide"
               caption={publication.cover?.caption}
-              plateLabel="Plate 01"
+              plateLabel={t("publications.plate", { n: "01" })}
               className="mx-auto"
             />
           </div>
@@ -83,12 +88,12 @@ export function PublicationArticleView({
         bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-main-accent-t1 prose-strong:text-main-mist"
         fallback={
           <p className="mx-auto max-w-3xl px-6 py-16 text-main-mist/60">
-            This publication isn’t available right now —{" "}
+            {t("publications.unavailable")}{" "}
             <a
               href={pdfHref(publication)}
               className="text-main-accent-t1 underline"
             >
-              download the PDF
+              {t("publications.downloadPdf")}
             </a>
             .
           </p>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
+import { useT } from "@evinvest/i18n/react";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**
@@ -11,18 +12,21 @@ import { useExperimentEvent } from "@/features/ab-variant";
  */
 export function HeroBCta({ className }: { className?: string }) {
   const track = useExperimentEvent();
+  const t = useT();
   return (
     <div className="flex flex-row items-center gap-4">
       <Button
         className={className}
         onClick={() =>
-          track("cta_clicked", { cta: "explore_assets" }, (fire) => {
+          track("cta_clicked", { cta: "explore_assets" }, fire => {
             fire();
-            document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("portfolio")
+              ?.scrollIntoView({ behavior: "smooth" });
           })
         }
       >
-        Explore Assets <ArrowRight className="w-4 h-4 ml-2" />
+        {t("home.hero.cta.explore")} <ArrowRight className="w-4 h-4 ml-2" />
       </Button>
 
       <Button
@@ -31,7 +35,7 @@ export function HeroBCta({ className }: { className?: string }) {
         onClick={() => track("cta_clicked", { cta: "whitepaper" })}
       >
         <Link href="/publications/whitepaper">
-          Whitepaper <FileText className="w-4 h-4 ml-2" />
+          {t("home.hero.cta.whitepaper")} <FileText className="w-4 h-4 ml-2" />
         </Link>
       </Button>
     </div>

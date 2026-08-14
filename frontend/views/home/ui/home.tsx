@@ -16,10 +16,10 @@ export function HomeView({ locale }: { locale: Locale }) {
   return (
     <div className="min-h-screen bg-main-black text-main-mist font-sans">
       <HomeStructuredData locale={locale} />
-      <Hero />
-      <FieldNotes />
+      <Hero locale={locale} />
+      <FieldNotes locale={locale} />
       <Portfolio />
-      <Research />
+      <Research locale={locale} />
       <Team locale={locale} />
     </div>
   );

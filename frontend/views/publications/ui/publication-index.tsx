@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { Locale } from "@evinvest/i18n";
+import { useT } from "@evinvest/i18n/react";
 
 import type { Publication } from "@/entities/publication";
 import {
@@ -33,9 +35,12 @@ const SELECTED = "outline-2 outline-offset-8 outline-main-accent-t1/60";
 
 export function PublicationIndex({
   publications,
+  locale,
 }: {
   publications: Publication[];
+  locale: Locale;
 }) {
+  const t = useT();
   const [kind, setKind] = useState<KindFilter>("all");
 
   const counts = useMemo(
@@ -106,7 +111,11 @@ export function PublicationIndex({
           cannot see it. */}
       <p aria-live="polite" className="sr-only">
         {selected
-          ? `${selected.title} — ${(selectedIndex ?? 0) + 1} of ${results.length}`
+          ? t("publications.announce", {
+              title: selected.title,
+              position: (selectedIndex ?? 0) + 1,
+              total: results.length,
+            })
           : ""}
       </p>
 
@@ -114,14 +123,15 @@ export function PublicationIndex({
         {results.length === 0 ? (
           <p className="font-light text-main-mist/55" role="status">
             {query === ""
-              ? "Nothing published under this filter yet."
-              : `Nothing matches “${query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.`}
+              ? t("publications.empty.filter")
+              : t("publications.empty.search", { query })}
           </p>
         ) : (
           <>
             {showLead && (
               <LeadEntry
                 publication={results[0]}
+                locale={locale}
                 id={rowId(results[0].slug)}
                 className={cn(selectedIndex === 0 && SELECTED)}
               />
@@ -134,6 +144,7 @@ export function PublicationIndex({
             >
               {grid.map((publication, index) => (
                 <EntryCard
+                  locale={locale}
                   key={publication.slug}
                   publication={publication}
                   id={rowId(publication.slug)}

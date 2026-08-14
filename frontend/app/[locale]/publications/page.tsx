@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
 import { PublicationsView } from "@/views/publications";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -32,6 +33,13 @@ export async function generateMetadata({
   };
 }
 
-export default function Page() {
-  return <PublicationsView />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return (
+    <PublicationsView locale={isLocale(locale) ? locale : DEFAULT_LOCALE} />
+  );
 }
