@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
+import { messagesFor } from "@/shared/config/i18n";
 import type { Locale } from "@evinvest/i18n";
 import { ContactView } from "@/views/contact";
 import { pageMetadata } from "@/shared/seo/page-metadata";
@@ -10,10 +12,13 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // Titles and descriptions are what a reader sees in the browser tab and in a
+  // shared link — the one place the page's language shows before its body does.
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const t = translator(messagesFor(resolved), resolved);
   return pageMetadata({
-    title: "Contact",
-    description:
-      "Get in touch with EV Investment — hiring, investment, and our coastal developments in Quy Nhơn, Vietnam.",
+    title: t("meta.contact.title"),
+    description: t("meta.contact.description"),
     path: "/contact",
     locale,
   });

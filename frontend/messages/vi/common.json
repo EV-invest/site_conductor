@@ -798,5 +798,45 @@
   "publications.shortcuts.title": {
     "en": "Keyboard shortcuts",
     "t": "Phím tắt"
+  },
+  "meta.team.title": {
+    "en": "Team",
+    "t": "Đội ngũ"
+  },
+  "meta.team.description": {
+    "en": "The cross-border investment, risk and development team behind EV Investment — a Quy Nhơn–based fund building institutional access to Vietnam's premium coastal real estate.",
+    "t": "Đội ngũ đầu tư xuyên biên giới, quản trị rủi ro và phát triển dự án đứng sau EV Investment — quỹ đặt tại Quy Nhơn, xây dựng kênh tiếp cận bất động sản ven biển cao cấp của Việt Nam theo chuẩn tổ chức."
+  },
+  "meta.hiring.title": {
+    "en": "Hiring",
+    "t": "Tuyển dụng"
+  },
+  "meta.hiring.description": {
+    "en": "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
+    "t": "Gia nhập EV Investment — các vị trí cấp cao về đầu tư, phát triển dự án và tư vấn khách hàng cho những dự án ven biển cao cấp tại Quy Nhơn, Việt Nam."
+  },
+  "meta.contact.title": {
+    "en": "Contact",
+    "t": "Liên hệ"
+  },
+  "meta.contact.description": {
+    "en": "Get in touch with EV Investment — hiring, investment, and our coastal developments in Quy Nhơn, Vietnam.",
+    "t": "Liên hệ với EV Investment — tuyển dụng, đầu tư và các dự án ven biển của chúng tôi tại Quy Nhơn, Việt Nam."
+  },
+  "meta.publications.title": {
+    "en": "Field Notes & Research",
+    "t": "Ghi chép thực địa & nghiên cứu"
+  },
+  "meta.publications.description": {
+    "en": "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate.",
+    "t": "Ấn phẩm của EV Investment — ghi chép thực địa quay tại Quy Nhơn và nghiên cứu theo chuẩn tổ chức về bất động sản ven biển Việt Nam."
+  },
+  "meta.whitepaper.title": {
+    "en": "Whitepaper",
+    "t": "Sách trắng"
+  },
+  "meta.whitepaper.description": {
+    "en": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
+    "t": "Sách trắng của EV Investment — luận điểm đầu tư theo chuẩn tổ chức về bất động sản ven biển tại Quy Nhơn, Việt Nam."
   }
 }
