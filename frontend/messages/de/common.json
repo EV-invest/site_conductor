@@ -798,5 +798,45 @@
   "publications.shortcuts.title": {
     "en": "Keyboard shortcuts",
     "t": "Tastenkürzel"
+  },
+  "meta.team.title": {
+    "en": "Team",
+    "t": "Team"
+  },
+  "meta.team.description": {
+    "en": "The cross-border investment, risk and development team behind EV Investment — a Quy Nhơn–based fund building institutional access to Vietnam's premium coastal real estate.",
+    "t": "Das Team für grenzüberschreitende Investments, Risiko und Projektentwicklung hinter EV Investment — ein Fonds aus Quy Nhơn, der institutionellen Zugang zu Vietnams hochwertigen Küstenimmobilien schafft."
+  },
+  "meta.hiring.title": {
+    "en": "Hiring",
+    "t": "Karriere"
+  },
+  "meta.hiring.description": {
+    "en": "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
+    "t": "Werden Sie Teil von EV Investment — Senior-Positionen in Investment, Projektentwicklung und Kundenberatung für hochwertige Küstenprojekte in Quy Nhơn, Vietnam."
+  },
+  "meta.contact.title": {
+    "en": "Contact",
+    "t": "Kontakt"
+  },
+  "meta.contact.description": {
+    "en": "Get in touch with EV Investment — hiring, investment, and our coastal developments in Quy Nhơn, Vietnam.",
+    "t": "Kontaktieren Sie EV Investment — Karriere, Investment und unsere Küstenprojekte in Quy Nhơn, Vietnam."
+  },
+  "meta.publications.title": {
+    "en": "Field Notes & Research",
+    "t": "Feldnotizen & Research"
+  },
+  "meta.publications.description": {
+    "en": "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate.",
+    "t": "Publikationen von EV Investment — in Quy Nhơn gefilmte Feldnotizen und institutionelles Research zu Vietnams Küstenimmobilien."
+  },
+  "meta.whitepaper.title": {
+    "en": "Whitepaper",
+    "t": "Whitepaper"
+  },
+  "meta.whitepaper.description": {
+    "en": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
+    "t": "EV Investment Whitepaper — unsere institutionelle These zu Küstenimmobilien in Quy Nhơn, Vietnam."
   }
 }

@@ -1,4 +1,5 @@
-import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+import { messagesFor } from "@/shared/config/i18n";
+import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
 import { PublicationsView } from "@/views/publications";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -10,10 +11,13 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // Titles and descriptions are what a reader sees in the browser tab and in a
+  // shared link — the one place the page's language shows before its body does.
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const t = translator(messagesFor(resolved), resolved);
   const base = pageMetadata({
-    title: "Field Notes & Research",
-    description:
-      "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate.",
+    title: t("meta.publications.title"),
+    description: t("meta.publications.description"),
     path: "/publications",
     locale,
   });

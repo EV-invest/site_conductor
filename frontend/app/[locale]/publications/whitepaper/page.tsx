@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
+import { messagesFor } from "@/shared/config/i18n";
 import { Container } from "@evinvest/uikit";
 
 import { DocumentReader } from "@/shared/ui/document-reader";
@@ -15,9 +17,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const t = translator(messagesFor(resolved), resolved);
   return pageMetadata({
-    title: "Whitepaper",
-    description: DESCRIPTION,
+    title: t("meta.whitepaper.title"),
+    description: t("meta.whitepaper.description"),
     path: "/publications/whitepaper",
     locale,
   });

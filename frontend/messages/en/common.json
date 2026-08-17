@@ -198,5 +198,15 @@
   "publications.allPublications": "All publications",
   "publications.unavailable": "This publication isn’t available right now —",
   "publications.downloadPdf": "download the PDF",
-  "publications.shortcuts.title": "Keyboard shortcuts"
+  "publications.shortcuts.title": "Keyboard shortcuts",
+  "meta.team.title": "Team",
+  "meta.team.description": "The cross-border investment, risk and development team behind EV Investment — a Quy Nhơn–based fund building institutional access to Vietnam's premium coastal real estate.",
+  "meta.hiring.title": "Hiring",
+  "meta.hiring.description": "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam.",
+  "meta.contact.title": "Contact",
+  "meta.contact.description": "Get in touch with EV Investment — hiring, investment, and our coastal developments in Quy Nhơn, Vietnam.",
+  "meta.publications.title": "Field Notes & Research",
+  "meta.publications.description": "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate.",
+  "meta.whitepaper.title": "Whitepaper",
+  "meta.whitepaper.description": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
 }
