@@ -838,5 +838,17 @@
   "meta.whitepaper.description": {
     "en": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
     "t": "Sách trắng của EV Investment — luận điểm đầu tư theo chuẩn tổ chức về bất động sản ven biển tại Quy Nhơn, Việt Nam."
+  },
+  "vacancy.untranslated": {
+    "en": "Shown in English — this role hasn't been translated into your language yet.",
+    "t": "Hiển thị bằng tiếng Anh — vị trí này chưa được dịch sang ngôn ngữ của bạn."
+  },
+  "meta.vacancy.title": {
+    "en": "{title} — Hiring",
+    "t": "{title} — Tuyển dụng"
+  },
+  "publications.documentInEnglish": {
+    "en": "This summary is translated; the report itself is in English.",
+    "t": "Phần tóm tắt này đã được dịch; bản báo cáo là tiếng Anh."
   }
 }

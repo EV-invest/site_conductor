@@ -208,5 +208,8 @@
   "meta.publications.title": "Field Notes & Research",
   "meta.publications.description": "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate.",
   "meta.whitepaper.title": "Whitepaper",
-  "meta.whitepaper.description": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
+  "meta.whitepaper.description": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
+  "vacancy.untranslated": "Shown in English — this role hasn't been translated into your language yet.",
+  "meta.vacancy.title": "{title} — Hiring",
+  "publications.documentInEnglish": "This summary is translated; the report itself is in English."
 }

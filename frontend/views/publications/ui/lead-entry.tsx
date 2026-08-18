@@ -63,7 +63,7 @@ export function LeadEntry({
             {t("publications.latestDispatch")}
           </span>
           <span className="text-main-mist/40">
-            {formatPublicationDate(publication.date, "long")}
+            {formatPublicationDate(publication.date, "long", locale)}
           </span>
         </div>
         <h2 className="mt-5 font-serif-display text-3xl leading-tight font-bold text-white sm:text-4xl">

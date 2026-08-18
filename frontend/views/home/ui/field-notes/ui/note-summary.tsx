@@ -37,7 +37,7 @@ export function NoteSummary({
           {eyebrow}
         </span>
         <span className="text-main-mist/40">
-          {formatPublicationDate(publication.date, "long")}
+          {formatPublicationDate(publication.date, "long", locale)}
         </span>
       </div>
 

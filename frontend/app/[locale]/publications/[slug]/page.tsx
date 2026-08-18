@@ -19,7 +19,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const publication = findPublication(slug);
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const publication = findPublication(slug, resolved);
   if (!publication) {
     return { title: "Publication not found", robots: { index: false } };
   }
@@ -46,12 +47,8 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const publication = findPublication(slug);
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const publication = findPublication(slug, resolved);
   if (!publication) notFound();
-  return (
-    <PublicationArticleView
-      publication={publication}
-      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
-    />
-  );
+  return <PublicationArticleView publication={publication} locale={resolved} />;
 }

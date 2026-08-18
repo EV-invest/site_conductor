@@ -22,7 +22,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   // Bounded at the source: the band renders a lead, one companion and three
   // archive lines, and nothing below that is ever read.
-  const notes = toNoteViews(fieldNotes(5), t);
+  const notes = toNoteViews(fieldNotes(locale, 5), t);
 
   // Nothing filmed yet is a legitimate state — say nothing rather than render
   // an empty band.
@@ -94,7 +94,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
                           className="flex gap-4 text-sm text-main-mist/80 transition-colors hover:text-main-mist"
                         >
                           <span className="w-14 shrink-0 font-mono-tech text-[10px] text-main-mist/35">
-                            {formatPublicationDate(publication.date, "short")}
+                            {formatPublicationDate(publication.date, "short", locale)}
                           </span>
                           {publication.title}
                         </Link>

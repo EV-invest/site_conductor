@@ -3,6 +3,7 @@ import { Container } from "@evinvest/uikit";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
+  hasTranslatedDocument,
   formatPublicationDate,
   toPlateCover,
   type Publication,
@@ -51,7 +52,7 @@ export function PublicationArticleView({
             {/* <time> so the dateline is machine-readable on its own, not only
                 inside the JSON-LD block. */}
             <time dateTime={publication.date} className="text-main-mist/40">
-              {formatPublicationDate(publication.date, "long")}
+              {formatPublicationDate(publication.date, "long", locale)}
             </time>
           </div>
           <h1 className="mt-5 font-serif-display text-4xl leading-tight font-bold text-white sm:text-5xl">
@@ -80,6 +81,22 @@ export function PublicationArticleView({
           </div>
         )}
       </Container>
+
+      {/* Sits exactly at the seam: everything above is translated card copy,
+          everything below is the compiled report, which is English. Saying so
+          here is what keeps the translated heading from implying a translated
+          document — and it disappears on its own once the blog build publishes
+          a translated document and declares it in `locales`. */}
+      {!hasTranslatedDocument(publication, locale) && (
+        <Container>
+          <p
+            role="note"
+            className="mx-auto mt-12 max-w-3xl border-t border-main-mist/12 pt-5 text-xs text-main-mist/55"
+          >
+            {t("publications.documentInEnglish")}
+          </p>
+        </Container>
+      )}
 
       <DocumentReader
         title={publication.title}

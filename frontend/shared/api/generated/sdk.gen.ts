@@ -23,6 +23,9 @@ import type {
   ListVacanciesData,
   ListVacanciesErrors,
   ListVacanciesResponses,
+  SubscribeNewsletterData,
+  SubscribeNewsletterErrors,
+  SubscribeNewsletterResponses,
 } from "./types.gen";
 
 export type Options<
@@ -99,7 +102,30 @@ export const health = <ThrowOnError extends boolean = false>(
   });
 
 /**
- * `GET /vacancies?category=&q=` — the searchable board.
+ * `POST /newsletter` — subscribe to the newsletter.
+ */
+export const subscribeNewsletter = <ThrowOnError extends boolean = false>(
+  options: Options<SubscribeNewsletterData, ThrowOnError>
+): RequestResult<
+  SubscribeNewsletterResponses,
+  SubscribeNewsletterErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    SubscribeNewsletterResponses,
+    SubscribeNewsletterErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/newsletter",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * `GET /vacancies?category=&q=&locale=` — the searchable board.
  */
 export const listVacancies = <ThrowOnError extends boolean = false>(
   options?: Options<ListVacanciesData, ThrowOnError>

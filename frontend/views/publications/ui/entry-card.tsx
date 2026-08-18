@@ -34,7 +34,7 @@ export function EntryCard({
 }) {
   const t = translator(messagesFor(locale), locale);
   const cover = toPlateCover(publication);
-  const date = formatPublicationDate(publication.date, "short");
+  const date = formatPublicationDate(publication.date, "short", locale);
 
   if (!cover) {
     return (

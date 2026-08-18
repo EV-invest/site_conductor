@@ -50,12 +50,13 @@ fn main() -> Result<()> {
 		dsn: config.sentry_dsn.clone(),
 		environment: config.app_env.clone(),
 		release: error_monitoring::release_name!().map(|r| r.into_owned()),
-		// Naming the service here is the right idea and belongs back as soon as
-		// it can compile: several services share one Sentry project, so without
-		// it they are separable only by pod hostname. `ev_lib::error_monitoring::Config`
-		// has no `service` field in 0.6.7 (dsn / environment / traces_sample_rate
-		// / release), so the field has to land in ev_lib first. Until then OTEL
-		// carries the name and Sentry does not.
+		// Several services share one Sentry project (a project is a DSN), so
+		// without this they are separable only by pod hostname. Read from the
+		// same variable OTEL uses rather than repeating the literal, so an issue
+		// and its trace cannot disagree about which service they came from — the
+		// deployment sets it (`site-conductor-backend`); unset leaves events
+		// untagged, which is the honest answer when nothing named the service.
+		service: std::env::var("OTEL_SERVICE_NAME").ok().filter(|s| !s.trim().is_empty()),
 		traces_sample_rate: error_monitoring::Config::traces_sample_rate_for(&config.app_env),
 	});
 

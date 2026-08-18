@@ -41,22 +41,24 @@ export default async function Page({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
   let vacancies: VacancySummary[] = [];
   try {
     // vacancyCacheOptions = force-cache + an explicit fetch TTL (static board,
     // hourly refresh). The generated client passes a Request object, which
     // segment revalidate alone won't make cacheable or expire, so both the
     // cache opt-in and the TTL ride on the fetch itself.
-    const { data } = await listVacancies(vacancyCacheOptions);
+    //
+    // `locale` is part of the URL, so each language gets its own cache entry
+    // rather than five locales sharing whichever one warmed the cache first.
+    const { data } = await listVacancies({
+      ...vacancyCacheOptions,
+      query: { locale: resolved },
+    });
     vacancies = data ?? [];
   } catch {
     // Backend unreachable — render the page shell with an empty board.
     vacancies = [];
   }
-  return (
-    <HiringView
-      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
-      vacancies={vacancies}
-    />
-  );
+  return <HiringView locale={resolved} vacancies={vacancies} />;
 }

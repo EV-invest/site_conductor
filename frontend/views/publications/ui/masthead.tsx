@@ -36,7 +36,7 @@ export function Masthead({
       : null,
     updatedAt
       ? t("publications.stat.updated", {
-          date: formatPublicationDate(updatedAt, "short"),
+          date: formatPublicationDate(updatedAt, "short", locale),
         })
       : null,
   ].filter(Boolean);

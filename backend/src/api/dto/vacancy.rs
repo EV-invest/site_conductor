@@ -1,4 +1,4 @@
-use domain::model::vacancy::Vacancy;
+use domain::model::vacancy::LocalizedVacancy;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
@@ -16,11 +16,22 @@ pub struct VacancySummary {
 	pub location: String,
 	pub employment_type: String,
 	pub summary: String,
+	/// The locale that was asked for — echoed so a cached response is never
+	/// mistaken for a different language's.
+	pub locale: String,
+	/// `false` ⇒ the text above is canonical English, either because no
+	/// translation exists for this locale or because the one that does is stale.
+	/// The caller cannot distinguish the two, and should not: both mean the same
+	/// thing to a reader. Mark it; never imply a translation that is not there.
+	pub translated: bool,
 }
 
-impl From<&Vacancy> for VacancySummary {
-	fn from(v: &Vacancy) -> Self {
+impl From<&LocalizedVacancy> for VacancySummary {
+	fn from(l: &LocalizedVacancy) -> Self {
+		let v = &l.vacancy;
 		Self {
+			locale: l.locale.code().to_string(),
+			translated: l.translated,
 			id: v.id.raw(),
 			slug: v.slug.as_str().to_string(),
 			title: v.title.clone(),
@@ -54,11 +65,20 @@ pub struct VacancyDetail {
 	pub compensation: String,
 	#[schema(value_type = String, format = DateTime)]
 	pub created_at: String,
+	/// See [`VacancySummary::locale`].
+	pub locale: String,
+	/// See [`VacancySummary::translated`].
+	pub translated: bool,
 }
 
-impl From<Vacancy> for VacancyDetail {
-	fn from(v: Vacancy) -> Self {
+impl From<LocalizedVacancy> for VacancyDetail {
+	fn from(l: LocalizedVacancy) -> Self {
+		let locale = l.locale.code().to_string();
+		let translated = l.translated;
+		let v = l.vacancy;
 		Self {
+			locale,
+			translated,
 			id: v.id.raw(),
 			slug: v.slug.as_str().to_string(),
 			category: v.category.as_str().to_string(),
@@ -84,6 +104,19 @@ impl From<Vacancy> for VacancyDetail {
 pub struct ListVacanciesQuery {
 	/// Filter by discipline (`investment` | `development` | `advisory` | `operations`).
 	pub category: Option<String>,
-	/// Free-text search over title and summary.
+	/// Free-text search over title and summary, in whichever language the role
+	/// is being served in.
 	pub q: Option<String>,
+	/// Reader's locale (`en` | `ru` | `vi` | `fr` | `de`). Absent or
+	/// unrecognised means `en`, matching `splitLocalePath` on the front end —
+	/// an unknown value is a reader we cannot place, not an error worth a 400.
+	pub locale: Option<String>,
+}
+
+/// The detail route takes the same locale parameter and nothing else.
+#[derive(Debug, Deserialize, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct VacancyQuery {
+	/// See [`ListVacanciesQuery::locale`].
+	pub locale: Option<String>,
 }
