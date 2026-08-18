@@ -5,7 +5,7 @@ import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { fieldNotes, formatPublicationDate } from "@/entities/publication";
 import { Reveal, SplitText } from "@/shared/ui/motion";
 import { messagesFor } from "@/shared/config/i18n";
-import { Accented } from "@/shared/ui/accented";
+import { accented } from "@/shared/ui/accented";
 
 import { toNoteViews } from "../model/to-note-view";
 import { NoteSummary } from "./note-summary";
@@ -44,7 +44,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
             </span>
             <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-5xl">
               <SplitText inView>
-                <Accented text={t("home.fieldNotes.title")} />
+                {accented({ text: t("home.fieldNotes.title") })}
               </SplitText>
             </h2>
             <p className="mt-4 leading-relaxed font-light text-main-mist/70">

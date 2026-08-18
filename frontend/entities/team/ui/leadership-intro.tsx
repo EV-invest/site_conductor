@@ -4,7 +4,7 @@ import { Text, Tier } from "@/shared/ui/text";
 import { SplitText } from "@/shared/ui/motion";
 import { ASSETS } from "@/shared/config/assets";
 import { messagesFor } from "@/shared/config/i18n";
-import { Accented } from "@/shared/ui/accented";
+import { accented } from "@/shared/ui/accented";
 
 // Shared leadership intro — heading + boardroom image. Single source for both
 // the homepage Team section and the /team page, so the copy never drifts.
@@ -24,7 +24,7 @@ export function LeadershipIntro({
         </span>
         <h2 className="font-serif-display text-3xl font-light text-white sm:text-4xl">
           <SplitText inView>
-            <Accented text={t("team.leadership.title")} />
+            {accented({ text: t("team.leadership.title") })}
           </SplitText>
         </h2>
         <Tier tier="main">
