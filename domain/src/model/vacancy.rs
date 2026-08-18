@@ -1,3 +1,4 @@
+use ev_lib::i18n::Locale;
 use jiff::Timestamp;
 use serde::{Deserialize, Serialize};
 
@@ -130,4 +131,92 @@ impl Entity for Vacancy {
 
 impl AggregateRoot for Vacancy {
 	const NAME: &'static str = "vacancy";
+}
+
+/// The reader-facing half of a vacancy, in one target language.
+///
+/// Deliberately *not* every field. `slug` is the role's address — one job has
+/// one URL in every language, or a share link stops resolving and the search
+/// engines see five roles where there is one. `category` is a filter key, and is
+/// already translated as a catalogue string on the front end, where the chips
+/// live. `compensation` is a closed enum with one variant. `published` and
+/// `created_at` are not language at all. Translating any of them would give one
+/// role a second identity.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct VacancyTranslation {
+	pub title: String,
+	pub location: String,
+	pub employment_type: String,
+	pub summary: String,
+	pub about: String,
+	pub responsibilities: Vec<String>,
+	pub requirements: Vec<String>,
+	pub nice_to_have: Vec<String>,
+	pub offer: Vec<String>,
+	pub screening_question: String,
+}
+
+impl Vacancy {
+	/// Overlay a translation, replacing every reader-facing field at once.
+	///
+	/// All-or-nothing on purpose: the digest that gates this covers the whole
+	/// English row (see `vacancy_source_digest` in the migration), so a
+	/// translation is either current or it is not. Merging field-by-field would
+	/// invent a third state — half-translated — that nothing downstream, and no
+	/// reader, can make sense of.
+	#[must_use]
+	pub fn with_translation(mut self, t: VacancyTranslation) -> Self {
+		self.title = t.title;
+		self.location = t.location;
+		self.employment_type = t.employment_type;
+		self.summary = t.summary;
+		self.about = t.about;
+		self.responsibilities = t.responsibilities;
+		self.requirements = t.requirements;
+		self.nice_to_have = t.nice_to_have;
+		self.offer = t.offer;
+		self.screening_question = t.screening_question;
+		self
+	}
+}
+
+/// A vacancy as it will actually be served, plus what the resolver did.
+///
+/// `translated` is reported rather than inferred: a caller cannot recover it by
+/// comparing `locale` to anything, because a role can be requested in Russian
+/// and served in English — that is rule 1.3's `fallback`, the deliberate
+/// exception this collection makes (hiding an open role from someone who reads
+/// English fine costs a candidate). The front end needs the flag to mark the
+/// text honestly instead of implying a translation exists.
+///
+/// `translated == false` covers both "no row for this locale" and "the row is
+/// stale". The caller cannot tell them apart, and should not: both mean the text
+/// below is canonical English.
+///
+/// Not `Serialize`: the wire shape is the API's `VacancyDetail`/`VacancySummary`,
+/// and `ev_lib::i18n::Locale` is deliberately dependency-free (no serde), so
+/// deriving it here would mean either a newtype or pulling serde into the
+/// library for one field. The DTO already renders the locale as its `code()`.
+#[derive(Clone, Debug)]
+pub struct LocalizedVacancy {
+	pub vacancy: Vacancy,
+	/// The locale that was *asked for*, not necessarily the one served.
+	pub locale: Locale,
+	pub translated: bool,
+}
+
+impl LocalizedVacancy {
+	/// English, as authored — rule 1.1's canonical form.
+	pub fn canonical(vacancy: Vacancy, locale: Locale) -> Self {
+		Self { vacancy, locale, translated: false }
+	}
+
+	/// A vacancy with a current translation applied.
+	pub fn translated(vacancy: Vacancy, locale: Locale, t: VacancyTranslation) -> Self {
+		Self {
+			vacancy: vacancy.with_translation(t),
+			locale,
+			translated: true,
+		}
+	}
 }

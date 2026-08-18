@@ -3,8 +3,9 @@ use std::sync::Arc;
 use domain::{
 	architecture::AggregateRoot,
 	error::DomainError,
-	model::vacancy::{Slug, Vacancy},
+	model::vacancy::{LocalizedVacancy, Slug, Vacancy},
 };
+use ev_lib::i18n::Locale;
 
 use crate::domain::port::vacancy_repository::{VacancyFilter, VacancyRepository};
 
@@ -18,12 +19,12 @@ impl VacancyService {
 		Self { repository }
 	}
 
-	pub async fn list(&self, filter: VacancyFilter) -> Result<Vec<Vacancy>, DomainError> {
-		self.repository.list(filter).await
+	pub async fn list(&self, filter: VacancyFilter, locale: Locale) -> Result<Vec<LocalizedVacancy>, DomainError> {
+		self.repository.list(filter, locale).await
 	}
 
-	pub async fn get_by_slug(&self, slug: &Slug) -> Result<Vacancy, DomainError> {
-		self.repository.find_by_slug(slug).await?.ok_or_else(|| DomainError::NotFound {
+	pub async fn get_by_slug(&self, slug: &Slug, locale: Locale) -> Result<LocalizedVacancy, DomainError> {
+		self.repository.find_by_slug(slug, locale).await?.ok_or_else(|| DomainError::NotFound {
 			entity: Vacancy::NAME,
 			id: slug.as_str().to_string(),
 		})
