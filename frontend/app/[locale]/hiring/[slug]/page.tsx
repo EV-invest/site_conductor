@@ -1,4 +1,5 @@
-import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, isLocale, translator, type Locale } from "@evinvest/i18n";
+import { messagesFor } from "@/shared/config/i18n";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -30,10 +31,15 @@ export async function generateStaticParams() {
 // Deduped within a request, so generateMetadata and the page share one fetch.
 // `null` means a genuine 404 (role missing); a network/5xx failure throws so the
 // 500 boundary (app/error.tsx) renders instead of a misleading "not found".
+// Keyed on (slug, locale), not slug alone: `cache` dedupes on its arguments, so
+// a slug-only key would let whichever locale rendered first answer for all five
+// — a Russian reader served the French copy of a role. The locale has to be an
+// argument for the memo to be correct, not just for the request to be.
 const fetchVacancy = cache(
-  async (slug: string): Promise<VacancyDetail | null> => {
+  async (slug: string, locale: Locale): Promise<VacancyDetail | null> => {
     const { data, response } = await getVacancy({
       path: { slug },
+      query: { locale },
       // ISR: on-demand (non-prebuilt) roles cache for an hour (the TTL rides
       // on the fetch itself — see vacancyCacheOptions) instead of re-fetching
       // every request. Prebuilt params bake at build.
@@ -42,7 +48,7 @@ const fetchVacancy = cache(
     if (data) return data;
     if (response?.status === 404) return null;
     throw new Error(
-      `Failed to load vacancy "${slug}" (${response ? `status ${response.status}` : "network error"})`
+      `Failed to load vacancy "${slug}" in ${locale} (${response ? `status ${response.status}` : "network error"})`
     );
   }
 );
@@ -53,13 +59,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const vacancy = await fetchVacancy(slug);
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const vacancy = await fetchVacancy(slug, resolved);
   // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
   // a retired role unindexable even if a streaming boundary pins the status at
   // 200 and turns the 404 into a soft-404.
   if (!vacancy) return { title: "Role not found", robots: { index: false } };
+  // The suffix is a catalogue string: the title and summary now arrive already
+  // translated, so an English " — Hiring" welded onto them would be the only
+  // untranslated words in the browser tab.
+  const t = translator(messagesFor(resolved), resolved);
   return pageMetadata({
-    title: `${vacancy.title} — Hiring`,
+    title: t("meta.vacancy.title", { title: vacancy.title }),
     description: vacancy.summary,
     path: `/hiring/${vacancy.slug}`,
     locale,
@@ -72,12 +83,8 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const vacancy = await fetchVacancy(slug);
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const vacancy = await fetchVacancy(slug, resolved);
   if (!vacancy) notFound();
-  return (
-    <VacancyView
-      locale={isLocale(locale) ? locale : DEFAULT_LOCALE}
-      vacancy={vacancy}
-    />
-  );
+  return <VacancyView locale={resolved} vacancy={vacancy} />;
 }

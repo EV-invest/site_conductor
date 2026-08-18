@@ -35,6 +35,15 @@ export type CreateContactRequest = {
   name: string;
 };
 
+export type SubscribeNewsletterAccepted = {
+  id: string;
+  status: string;
+};
+
+export type SubscribeNewsletterRequest = {
+  email: string;
+};
+
 /**
  * Full role for the detail page template.
  */
@@ -49,6 +58,10 @@ export type VacancyDetail = {
   created_at: string;
   employment_type: string;
   id: string;
+  /**
+   * See [`VacancySummary::locale`].
+   */
+  locale: string;
   location: string;
   nice_to_have: Array<string>;
   offer: Array<string>;
@@ -58,6 +71,10 @@ export type VacancyDetail = {
   slug: string;
   summary: string;
   title: string;
+  /**
+   * See [`VacancySummary::translated`].
+   */
+  translated: boolean;
 };
 
 /**
@@ -74,10 +91,22 @@ export type VacancySummary = {
   category_label: string;
   employment_type: string;
   id: string;
+  /**
+   * The locale that was asked for — echoed so a cached response is never
+   * mistaken for a different language's.
+   */
+  locale: string;
   location: string;
   slug: string;
   summary: string;
   title: string;
+  /**
+   * `false` ⇒ the text above is canonical English, either because no
+   * translation exists for this locale or because the one that does is stale.
+   * The caller cannot distinguish the two, and should not: both mean the same
+   * thing to a reader. Mark it; never imply a translation that is not there.
+   */
+  translated: boolean;
 };
 
 export type CreateApplicationData = {
@@ -146,6 +175,34 @@ export type HealthResponses = {
   200: unknown;
 };
 
+export type SubscribeNewsletterData = {
+  body: SubscribeNewsletterRequest;
+  path?: never;
+  query?: never;
+  url: "/api/v1/newsletter";
+};
+
+export type SubscribeNewsletterErrors = {
+  /**
+   * Validation failed
+   */
+  400: unknown;
+  /**
+   * Already subscribed
+   */
+  409: unknown;
+};
+
+export type SubscribeNewsletterResponses = {
+  /**
+   * Subscribed
+   */
+  202: SubscribeNewsletterAccepted;
+};
+
+export type SubscribeNewsletterResponse =
+  SubscribeNewsletterResponses[keyof SubscribeNewsletterResponses];
+
 export type ListVacanciesData = {
   body?: never;
   path?: never;
@@ -155,9 +212,16 @@ export type ListVacanciesData = {
      */
     category?: string;
     /**
-     * Free-text search over title and summary.
+     * Free-text search over title and summary, in whichever language the role
+     * is being served in.
      */
     q?: string;
+    /**
+     * Reader's locale (`en` | `ru` | `vi` | `fr` | `de`). Absent or
+     * unrecognised means `en`, matching `splitLocalePath` on the front end —
+     * an unknown value is a reader we cannot place, not an error worth a 400.
+     */
+    locale?: string;
   };
   url: "/api/v1/vacancies";
 };
@@ -187,7 +251,12 @@ export type GetVacancyData = {
      */
     slug: string;
   };
-  query?: never;
+  query?: {
+    /**
+     * See [`ListVacanciesQuery::locale`].
+     */
+    locale?: string;
+  };
   url: "/api/v1/vacancies/{slug}";
 };
 

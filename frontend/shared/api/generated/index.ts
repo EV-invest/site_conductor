@@ -7,6 +7,7 @@ export {
   health,
   listVacancies,
   type Options,
+  subscribeNewsletter,
 } from "./sdk.gen";
 export type {
   ApplicationAccepted,
@@ -32,6 +33,12 @@ export type {
   ListVacanciesErrors,
   ListVacanciesResponse,
   ListVacanciesResponses,
+  SubscribeNewsletterAccepted,
+  SubscribeNewsletterData,
+  SubscribeNewsletterErrors,
+  SubscribeNewsletterRequest,
+  SubscribeNewsletterResponse,
+  SubscribeNewsletterResponses,
   VacancyDetail,
   VacancySummary,
 } from "./types.gen";

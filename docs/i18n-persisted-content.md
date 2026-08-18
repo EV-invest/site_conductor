@@ -113,19 +113,36 @@ Absent or unrecognised `locale` means `en`, matching `splitLocalePath`.
 
 ## Migration path
 
-1. Create the table (no data). Everything is `translated: false`; the site
-   behaves exactly as today, in every locale.
-2. Add the resolver to the vacancy repository, plus the `?locale=` query param
-   and the two response fields. Still no behaviour change without rows.
-3. Backfill translations per locale as they are produced. Each insert computes
-   `source_digest` from the English row at that moment.
+1. ~~Create the table (no data).~~ **Done** — `0005_vacancy_translations.sql`.
+2. ~~Add the resolver, the `?locale=` query param and the two response
+   fields.~~ **Done.** The digest comparison is a *join predicate*, not
+   application code (see `LOCALIZED_FROM` in the Postgres repository), so a
+   stale translation cannot reach a reader by any path — there is no branch to
+   forget. English needs no special case: the `CHECK` forbids an `'en'` row, so
+   binding `'en'` matches nothing and falls through the same way an untranslated
+   role does.
+3. ~~Backfill translations per locale.~~ **Done for all seven roles in all four
+   locales** — `0006_seed_vacancy_translations.sql`. Every insert computes
+   `source_digest` from the live English row via `vacancy_source_digest(v.*)`
+   rather than hard-coding a hash, so a translation cannot be recorded against
+   English that has already moved.
 4. A vacancy edit invalidates its translations by construction — the digest stops
    matching and English is served until a translator catches up. Nothing to
-   remember, which is the point.
+   remember, which is the point. *Verified end to end: editing the English
+   summary flips that role to `translated: false` and leaves the other six
+   alone; reverting the edit restores the translation.*
+
+The shipped translations are machine-produced and reviewed for structure, not
+native-speaker copy. They are safe to serve — a reader gets either a current
+translation or the English — but `INDEXED_LOCALES` should stay `["en"]` until a
+native speaker has passed over them, because indexing is the point at which a
+rough translation starts representing the fund to strangers.
 
 An admin surface for step 3 is out of scope here; until it exists, translations
 land by migration, the same way vacancies are seeded today
-(`0002_seed_vacancies.sql`).
+(`0002_seed_vacancies.sql`). That is also why re-running `0006` does **not**
+refresh a stale row: the file records what was translated, and changed English
+needs a new translation, not a recomputed digest over text nobody re-read.
 
 ## What this does not solve
 

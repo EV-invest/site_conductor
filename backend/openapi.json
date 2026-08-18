@@ -95,12 +95,49 @@
         }
       }
     },
+    "/api/v1/newsletter": {
+      "post": {
+        "tags": [
+          "newsletter"
+        ],
+        "summary": "`POST /newsletter` — subscribe to the newsletter.",
+        "operationId": "subscribe_newsletter",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeNewsletterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Subscribed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscribeNewsletterAccepted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "409": {
+            "description": "Already subscribed"
+          }
+        }
+      }
+    },
     "/api/v1/vacancies": {
       "get": {
         "tags": [
           "vacancies"
         ],
-        "summary": "`GET /vacancies?category=&q=` — the searchable board.",
+        "summary": "`GET /vacancies?category=&q=&locale=` — the searchable board.",
         "operationId": "list_vacancies",
         "parameters": [
           {
@@ -115,7 +152,16 @@
           {
             "name": "q",
             "in": "query",
-            "description": "Free-text search over title and summary.",
+            "description": "Free-text search over title and summary, in whichever language the role\nis being served in.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "description": "Reader's locale (`en` | `ru` | `vi` | `fr` | `de`). Absent or\nunrecognised means `en`, matching `splitLocalePath` on the front end —\nan unknown value is a reader we cannot place, not an error worth a 400.",
             "required": false,
             "schema": {
               "type": "string"
@@ -155,6 +201,15 @@
             "in": "path",
             "description": "Role slug, e.g. investment-analyst",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "description": "See [`ListVacanciesQuery::locale`].",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -295,6 +350,35 @@
           }
         }
       },
+      "SubscribeNewsletterAccepted": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "SubscribeNewsletterRequest": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "investor@example.com",
+            "maxLength": 254
+          }
+        }
+      },
       "VacancyDetail": {
         "type": "object",
         "description": "Full role for the detail page template.",
@@ -314,7 +398,9 @@
           "offer",
           "screening_question",
           "compensation",
-          "created_at"
+          "created_at",
+          "locale",
+          "translated"
         ],
         "properties": {
           "about": {
@@ -340,6 +426,10 @@
           "id": {
             "type": "string",
             "format": "uuid"
+          },
+          "locale": {
+            "type": "string",
+            "description": "See [`VacancySummary::locale`]."
           },
           "location": {
             "type": "string"
@@ -379,6 +469,10 @@
           },
           "title": {
             "type": "string"
+          },
+          "translated": {
+            "type": "boolean",
+            "description": "See [`VacancySummary::translated`]."
           }
         }
       },
@@ -393,7 +487,9 @@
           "category_label",
           "location",
           "employment_type",
-          "summary"
+          "summary",
+          "locale",
+          "translated"
         ],
         "properties": {
           "category": {
@@ -411,6 +507,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "locale": {
+            "type": "string",
+            "description": "The locale that was asked for — echoed so a cached response is never\nmistaken for a different language's."
+          },
           "location": {
             "type": "string"
           },
@@ -422,6 +522,10 @@
           },
           "title": {
             "type": "string"
+          },
+          "translated": {
+            "type": "boolean",
+            "description": "`false` ⇒ the text above is canonical English, either because no\ntranslation exists for this locale or because the one that does is stale.\nThe caller cannot distinguish the two, and should not: both mean the same\nthing to a reader. Mark it; never imply a translation that is not there."
           }
         }
       }
@@ -439,6 +543,10 @@
     {
       "name": "contact",
       "description": "Contact messages"
+    },
+    {
+      "name": "newsletter",
+      "description": "Newsletter subscriptions"
     },
     {
       "name": "health",

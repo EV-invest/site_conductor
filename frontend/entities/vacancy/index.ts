@@ -31,10 +31,11 @@ export const vacancyCacheOptions = {
 /// "All" pseudo-facet is UI-only (no category filter sent).
 ///
 /// `labelKey` is a catalogue key, not a label: these five facets are chrome the
-/// app owns, so they translate. The vacancies themselves do NOT — title,
-/// summary, location and employment type come from the backend and stay in the
-/// language they were authored in until `vacancy_translations` lands (see
-/// docs/i18n-persisted-content.md).
+/// app owns, so they translate here. The vacancies themselves are translated by
+/// the *backend* — pass `query: { locale }` and the role arrives already resolved,
+/// with a `translated` flag saying whether it is the translation or the English
+/// (see docs/i18n-persisted-content.md). `category` deliberately stays a stable
+/// key on the wire and is translated here, where the chips are.
 export const VACANCY_CATEGORIES = [
   { key: "all", labelKey: "hiring.category.all" },
   { key: "investment", labelKey: "hiring.category.investment" },
