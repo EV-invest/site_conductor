@@ -80,11 +80,9 @@ export async function generateMetadata({
   // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
   // a retired role unindexable even if a streaming boundary pins the status at
   // 200 and turns the 404 into a soft-404.
-  if (!vacancy) return { title: "Role not found", robots: { index: false } };
-  // The suffix is a catalogue string: the title and summary now arrive already
-  // translated, so an English " — Hiring" welded onto them would be the only
-  // untranslated words in the browser tab.
   const t = translator(messagesFor(resolved), resolved);
+  if (!vacancy)
+    return { title: t("meta.vacancy.notFound"), robots: { index: false } };
   return pageMetadata({
     title: t("meta.vacancy.title", { title: vacancy.title }),
     description: vacancy.summary,

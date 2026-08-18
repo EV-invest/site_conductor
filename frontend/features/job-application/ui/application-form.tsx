@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@evinvest/i18n/react";
 import { LIMITS } from "@/shared/lib/validation";
 import { SentPanel } from "@/shared/ui/sent-panel";
 import { TextField } from "@/shared/ui/text-field";
@@ -17,21 +18,24 @@ import {
  * application. Reused by the hiring board (general) and the role page (role).
  */
 export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
-  const { fields, edit, checked, toggle, errors, status, errorMsg, submit } =
+  const t = useT();
+  const { fields, edit, checked, toggle, errors, status, errorKey, submit } =
     useApplicationForm(vacancy);
+  // Field errors arrive as catalogue keys (shared/lib/validation.ts); LIMITS is
+  // the value bag the max-length messages interpolate.
+  const fe = (key?: string) => (key ? t(key, LIMITS) : undefined);
+  const firstName = fields.name.trim().split(" ")[0];
 
   if (status === "sent") {
     return (
       <SentPanel
         title={
-          <>
-            Thanks{fields.name ? `, ${fields.name.split(" ")[0]}` : ""} —
-            we&apos;ve got it.
-          </>
+          firstName
+            ? t("apply.form.sent.titleNamed", { name: firstName })
+            : t("apply.form.sent.title")
         }
       >
-        Your application has reached our team. We read every one and will be in
-        touch.
+        {t("apply.form.sent.body")}
       </SentPanel>
     );
   }
@@ -46,31 +50,31 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
 
       <div className="space-y-4">
         <TextField
-          label="Your name"
+          label={t("form.name.label")}
           value={fields.name}
           onChange={edit("name")}
-          error={errors.name}
+          error={fe(errors.name)}
           maxLength={LIMITS.name}
           required
-          placeholder="Jane Doe"
+          placeholder={t("form.name.placeholder")}
         />
         <TextField
-          label="Email"
+          label={t("form.email.label")}
           type="email"
           value={fields.email}
           onChange={edit("email")}
-          error={errors.email}
+          error={fe(errors.email)}
           maxLength={LIMITS.email}
           required
-          placeholder="jane@fund.com"
+          placeholder={t("apply.form.email.placeholder")}
         />
         <TextField
-          label="Portfolio or LinkedIn (optional)"
+          label={t("apply.form.portfolio.label")}
           value={fields.portfolio}
           onChange={edit("portfolio")}
-          error={errors.portfolio}
+          error={fe(errors.portfolio)}
           maxLength={LIMITS.portfolioUrl}
-          placeholder="https://…"
+          placeholder={t("apply.form.portfolio.placeholder")}
         />
         {vacancy && (
           <RoleBlock
@@ -81,24 +85,24 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
             onToggle={toggle}
             screeningValue={fields.screening}
             onScreeningChange={edit("screening")}
-            screeningError={errors.screening}
+            screeningError={fe(errors.screening)}
           />
         )}
         <TextField
-          label="Where you'd fit"
+          label={t("apply.form.message.label")}
           rows={4}
           value={fields.message}
           onChange={edit("message")}
-          error={errors.message}
+          error={fe(errors.message)}
           maxLength={LIMITS.message}
           required
-          placeholder="A few lines on what you'd want to own, and why EV…"
+          placeholder={t("apply.form.message.placeholder")}
         />
       </div>
 
-      {status === "error" && (
+      {status === "error" && errorKey && (
         <p role="alert" className="mt-3 text-xs text-destructive">
-          {errorMsg}
+          {t(errorKey)}
         </p>
       )}
 

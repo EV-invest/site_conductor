@@ -1,22 +1,28 @@
+"use client";
+
 import { Send } from "lucide-react";
+import { useT } from "@evinvest/i18n/react";
 
 /** Letterhead heading above the application fields. */
 export function FormHeader({ roleTitle }: { roleTitle?: string }) {
+  const t = useT();
   return (
     <>
       <div className="mb-5 flex items-center justify-between">
         <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
-          Open application
+          {t("apply.form.eyebrow")}
         </span>
         <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
-          {roleTitle ? `Role · ${roleTitle}` : "Form · EV-Hiring"}
+          {roleTitle
+            ? t("apply.form.roleTag", { title: roleTitle })
+            : t("apply.form.formTag")}
         </span>
       </div>
       <h3 className="font-serif-display text-2xl text-white">
-        Tell us where you fit.
+        {t("apply.form.heading")}
       </h3>
       <p className="mb-5 mt-1 text-sm text-main-mist/55">
-        A few lines is enough — we read every note.
+        {t("apply.form.intro")}
       </p>
     </>
   );
@@ -24,6 +30,7 @@ export function FormHeader({ roleTitle }: { roleTitle?: string }) {
 
 /** Submit button + reply-window footnote. */
 export function FormFooter({ sending }: { sending: boolean }) {
+  const t = useT();
   return (
     <>
       <button
@@ -33,15 +40,15 @@ export function FormFooter({ sending }: { sending: boolean }) {
         className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
       >
         {sending ? (
-          "Sending…"
+          t("form.sending")
         ) : (
           <>
-            Send application <Send className="h-4 w-4" />
+            {t("apply.form.submit")} <Send className="h-4 w-4" />
           </>
         )}
       </button>
       <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-main-mist/35">
-        Reply within ~2 weeks · Quy Nhơn · HCMC
+        {t("apply.form.footnote")}
       </p>
     </>
   );

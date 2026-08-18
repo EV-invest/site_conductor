@@ -13,21 +13,26 @@ export const LIMITS = {
 /** Code-point count — the backend counts chars, not UTF-16 units. */
 export const charLength = (value: string) => [...value].length;
 
+// The refinement "messages" are catalogue keys, not prose. A zod message is
+// produced where no translator exists (module scope, shared by two forms) and
+// read where one does, so the form looks the key up at render — see the `fe`
+// helper in each form. The max-length keys interpolate `LIMITS`, which is
+// passed as the value bag, so a limit change moves the copy with it.
 export const nameField = z
   .string()
   .trim()
-  .refine(v => charLength(v) >= 2, "Name must be at least 2 characters.")
+  .refine(v => charLength(v) >= 2, "validation.name.min")
   .refine(
     v => charLength(v) <= LIMITS.name,
-    `Name must be ${LIMITS.name} characters or fewer.`
+    "validation.name.max"
   )
   .refine(
     v => /^[\p{Alphabetic} .'-]*$/u.test(v),
-    "Use letters, spaces, and . ' - only."
+    "validation.name.charset"
   )
   .refine(
     v => (v.match(/\p{Alphabetic}/gu) ?? []).length >= 2,
-    "Name must contain at least 2 letters."
+    "validation.name.letters"
   );
 
 export const emailField = z
@@ -35,17 +40,17 @@ export const emailField = z
   .trim()
   .pipe(
     z
-      .email("Enter a valid email address.")
-      .max(LIMITS.email, `Email must be ${LIMITS.email} characters or fewer.`)
+      .email("validation.email.invalid")
+      .max(LIMITS.email, "validation.email.max")
   );
 
 export const messageField = z
   .string()
   .trim()
-  .refine(v => v.length > 0, "Please write a message.")
+  .refine(v => v.length > 0, "validation.message.required")
   .refine(
     v => charLength(v) <= LIMITS.message,
-    `Message must be ${LIMITS.message} characters or fewer.`
+    "validation.message.max"
   );
 
 export type FieldErrors<T> = Partial<Record<keyof T & string, string>>;

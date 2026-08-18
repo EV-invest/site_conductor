@@ -914,5 +914,197 @@
   "publications.documentInEnglish": {
     "en": "This summary is translated; the report itself is in English.",
     "t": "Diese Zusammenfassung ist übersetzt; der Bericht selbst ist auf Englisch."
+  },
+  "form.name.label": {
+    "en": "Your name",
+    "t": "Ihr Name"
+  },
+  "form.name.placeholder": {
+    "en": "Jane Doe",
+    "t": "Erika Mustermann"
+  },
+  "form.email.label": {
+    "en": "Email",
+    "t": "E-Mail"
+  },
+  "form.sending": {
+    "en": "Sending…",
+    "t": "Wird gesendet…"
+  },
+  "form.submitError": {
+    "en": "Something went wrong. Please try again.",
+    "t": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+  },
+  "form.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Netzwerkfehler — bitte erneut versuchen."
+  },
+  "validation.name.min": {
+    "en": "Name must be at least 2 characters.",
+    "t": "Der Name muss mindestens 2 Zeichen lang sein."
+  },
+  "validation.name.max": {
+    "en": "Name must be {name} characters or fewer.",
+    "t": "Der Name darf höchstens {name} Zeichen lang sein."
+  },
+  "validation.name.charset": {
+    "en": "Use letters, spaces, and . ' - only.",
+    "t": "Nur Buchstaben, Leerzeichen und . ' - verwenden."
+  },
+  "validation.name.letters": {
+    "en": "Name must contain at least 2 letters.",
+    "t": "Der Name muss mindestens 2 Buchstaben enthalten."
+  },
+  "validation.email.invalid": {
+    "en": "Enter a valid email address.",
+    "t": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+  },
+  "validation.email.max": {
+    "en": "Email must be {email} characters or fewer.",
+    "t": "Die E-Mail-Adresse darf höchstens {email} Zeichen lang sein."
+  },
+  "validation.message.required": {
+    "en": "Please write a message.",
+    "t": "Bitte schreiben Sie eine Nachricht."
+  },
+  "validation.message.max": {
+    "en": "Message must be {message} characters or fewer.",
+    "t": "Die Nachricht darf höchstens {message} Zeichen lang sein."
+  },
+  "validation.url.max": {
+    "en": "Link must be {portfolioUrl} characters or fewer.",
+    "t": "Der Link darf höchstens {portfolioUrl} Zeichen lang sein."
+  },
+  "validation.url.invalid": {
+    "en": "Enter a full link starting with http:// or https://.",
+    "t": "Geben Sie einen vollständigen Link ein, der mit http:// oder https:// beginnt."
+  },
+  "validation.screening.max": {
+    "en": "Answer must be {screeningAnswer} characters or fewer.",
+    "t": "Die Antwort darf höchstens {screeningAnswer} Zeichen lang sein."
+  },
+  "contact.form.email.placeholder": {
+    "en": "jane@example.com",
+    "t": "erika@example.com"
+  },
+  "contact.form.message.label": {
+    "en": "Message",
+    "t": "Nachricht"
+  },
+  "contact.form.message.placeholder": {
+    "en": "How can we help?",
+    "t": "Wie können wir helfen?"
+  },
+  "contact.form.submit": {
+    "en": "Send message",
+    "t": "Nachricht senden"
+  },
+  "contact.form.sent.title": {
+    "en": "Thanks — message received.",
+    "t": "Danke — Nachricht erhalten."
+  },
+  "contact.form.sent.titleNamed": {
+    "en": "Thanks, {name} — message received.",
+    "t": "Danke, {name} — Nachricht erhalten."
+  },
+  "contact.form.sent.body": {
+    "en": "We'll reply personally, usually within two business days.",
+    "t": "Wir antworten persönlich, in der Regel innerhalb von zwei Werktagen."
+  },
+  "apply.form.email.placeholder": {
+    "en": "jane@fund.com",
+    "t": "erika@fund.com"
+  },
+  "apply.form.portfolio.label": {
+    "en": "Portfolio or LinkedIn (optional)",
+    "t": "Portfolio oder LinkedIn (optional)"
+  },
+  "apply.form.portfolio.placeholder": {
+    "en": "https://…",
+    "t": "https://…"
+  },
+  "apply.form.message.label": {
+    "en": "Where you'd fit",
+    "t": "Wo Sie hineinpassen"
+  },
+  "apply.form.message.placeholder": {
+    "en": "A few lines on what you'd want to own, and why EV…",
+    "t": "Ein paar Zeilen dazu, wofür Sie Verantwortung übernehmen möchten und warum EV…"
+  },
+  "apply.form.submit": {
+    "en": "Send application",
+    "t": "Bewerbung senden"
+  },
+  "apply.form.sent.title": {
+    "en": "Thanks — we've got it.",
+    "t": "Danke — wir haben sie erhalten."
+  },
+  "apply.form.sent.titleNamed": {
+    "en": "Thanks, {name} — we've got it.",
+    "t": "Danke, {name} — wir haben sie erhalten."
+  },
+  "apply.form.sent.body": {
+    "en": "Your application has reached our team. We read every one and will be in touch.",
+    "t": "Ihre Bewerbung hat unser Team erreicht. Wir lesen jede einzelne und melden uns."
+  },
+  "apply.form.eyebrow": {
+    "en": "Open application",
+    "t": "Initiativbewerbung"
+  },
+  "apply.form.roleTag": {
+    "en": "Role · {title}",
+    "t": "Position · {title}"
+  },
+  "apply.form.formTag": {
+    "en": "Form · EV-Hiring",
+    "t": "Formular · EV-Hiring"
+  },
+  "apply.form.heading": {
+    "en": "Tell us where you fit.",
+    "t": "Sagen Sie uns, wo Sie hineinpassen."
+  },
+  "apply.form.intro": {
+    "en": "A few lines is enough — we read every note.",
+    "t": "Ein paar Zeilen genügen — wir lesen jede Nachricht."
+  },
+  "apply.form.footnote": {
+    "en": "Reply within ~2 weeks · Quy Nhơn · HCMC",
+    "t": "Antwort in ca. 2 Wochen · Quy Nhơn · HCMC"
+  },
+  "apply.role.eyebrow": {
+    "en": "For this role · {title}",
+    "t": "Für diese Position · {title}"
+  },
+  "apply.role.which": {
+    "en": "Which of these describe you?",
+    "t": "Was davon trifft auf Sie zu?"
+  },
+  "apply.role.screeningPlaceholder": {
+    "en": "A few lines…",
+    "t": "Ein paar Zeilen…"
+  },
+  "document.downloadAria": {
+    "en": "Download {title} as PDF",
+    "t": "{title} als PDF herunterladen"
+  },
+  "whitepaper.title": {
+    "en": "EV Investment Whitepaper",
+    "t": "EV Investment Whitepaper"
+  },
+  "whitepaper.name": {
+    "en": "Whitepaper",
+    "t": "Whitepaper"
+  },
+  "whitepaper.loading": {
+    "en": "Loading the whitepaper… if it doesn't appear,",
+    "t": "Whitepaper wird geladen… falls es nicht erscheint,"
+  },
+  "meta.vacancy.notFound": {
+    "en": "Role not found",
+    "t": "Position nicht gefunden"
+  },
+  "meta.publication.notFound": {
+    "en": "Publication not found",
+    "t": "Publikation nicht gefunden"
   }
 }

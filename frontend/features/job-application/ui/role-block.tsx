@@ -1,3 +1,6 @@
+"use client";
+
+import { useT } from "@evinvest/i18n/react";
 import { LIMITS } from "@/shared/lib/validation";
 import { TextField } from "@/shared/ui/text-field";
 
@@ -27,15 +30,16 @@ export function RoleBlock({
   onScreeningChange,
   screeningError,
 }: RoleBlockProps) {
+  const t = useT();
   return (
     <div className="rounded-lg border-l-2 border-main-accent-t1/60 bg-main-accent-t1/[0.04] py-4 pl-4 pr-3">
       <p className="mb-3 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
-        For this role · {title}
+        {t("apply.role.eyebrow", { title })}
       </p>
       {requirements.length > 0 && (
         <>
           <p className="mb-2.5 text-xs text-main-mist/70">
-            Which of these describe you?
+            {t("apply.role.which")}
           </p>
           <div className="mb-4 space-y-2.5">
             {requirements.map(requirement => (
@@ -62,7 +66,7 @@ export function RoleBlock({
         onChange={onScreeningChange}
         error={screeningError}
         maxLength={LIMITS.screeningAnswer}
-        placeholder="A few lines…"
+        placeholder={t("apply.role.screeningPlaceholder")}
       />
     </div>
   );
