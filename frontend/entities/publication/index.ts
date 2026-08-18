@@ -9,9 +9,13 @@ export type { Cover, Publication, PublicationKind } from "./model/types";
 export { coverStill, toPlateCover } from "./model/cover-props";
 export {
   allPublications,
-  publicationsIn,
+  publicationsFor,
   fieldNotes,
   findPublication,
   formatPublicationDate,
   publicationsByKind,
 } from "./model/selectors";
+export {
+  hasTranslatedDocument,
+  localizePublication,
+} from "./model/translations";

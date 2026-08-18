@@ -846,5 +846,9 @@
   "meta.vacancy.title": {
     "en": "{title} — Hiring",
     "t": "{title} — Вакансии"
+  },
+  "publications.documentInEnglish": {
+    "en": "This summary is translated; the report itself is in English.",
+    "t": "Это резюме переведено; сам отчёт — на английском языке."
   }
 }

@@ -16,13 +16,13 @@ import { ResearchA, type ResearchReport } from "./research";
  * would ship every publication's full search text to the homepage.
  */
 export function Research({ locale }: { locale: Locale }) {
-  const reports: ResearchReport[] = publicationsByKind("research").map(
+  const reports: ResearchReport[] = publicationsByKind("research", locale).map(
     publication => ({
       cat: publication.category ?? "Research",
       title: publication.title,
       paneTitle: publication.title,
       slug: publication.slug,
-      date: formatPublicationDate(publication.date, "long"),
+      date: formatPublicationDate(publication.date, "long", locale),
       quote: publication.quote ?? publication.dek,
       // The dek is the report's own summary. The section used to carry two
       // hand-written paragraphs per report that existed nowhere else and drifted

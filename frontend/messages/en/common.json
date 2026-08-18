@@ -210,5 +210,6 @@
   "meta.whitepaper.title": "Whitepaper",
   "meta.whitepaper.description": "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.",
   "vacancy.untranslated": "Shown in English — this role hasn't been translated into your language yet.",
-  "meta.vacancy.title": "{title} — Hiring"
+  "meta.vacancy.title": "{title} — Hiring",
+  "publications.documentInEnglish": "This summary is translated; the report itself is in English."
 }

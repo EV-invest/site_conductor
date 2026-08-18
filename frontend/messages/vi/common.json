@@ -846,5 +846,9 @@
   "meta.vacancy.title": {
     "en": "{title} — Hiring",
     "t": "{title} — Tuyển dụng"
+  },
+  "publications.documentInEnglish": {
+    "en": "This summary is translated; the report itself is in English.",
+    "t": "Phần tóm tắt này đã được dịch; bản báo cáo là tiếng Anh."
   }
 }

@@ -846,5 +846,9 @@
   "meta.vacancy.title": {
     "en": "{title} — Hiring",
     "t": "{title} — Karriere"
+  },
+  "publications.documentInEnglish": {
+    "en": "This summary is translated; the report itself is in English.",
+    "t": "Diese Zusammenfassung ist übersetzt; der Bericht selbst ist auf Englisch."
   }
 }

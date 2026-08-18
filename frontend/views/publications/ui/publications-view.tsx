@@ -1,7 +1,7 @@
 import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 
-import { allPublications, type Publication } from "@/entities/publication";
+import { publicationsFor, type Publication } from "@/entities/publication";
 
 import { Masthead } from "./masthead";
 import { PublicationIndex } from "./publication-index";
@@ -23,7 +23,7 @@ function forClient(publication: Publication): Publication {
 }
 
 export function PublicationsView({ locale }: { locale: Locale }) {
-  const publications = allPublications();
+  const publications = publicationsFor(locale);
   const counts = {
     fieldNote: publications.filter(p => p.kind === "field-note").length,
     research: publications.filter(p => p.kind === "research").length,
