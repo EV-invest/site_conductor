@@ -1,6 +1,10 @@
+/** Why a subscribe attempt failed. The UI translates these; the entity must
+ * not return prose, or the footer would answer a /ru/ reader in English. */
+export type SubscribeError = "duplicate" | "server" | "network";
+
 export type SubscribeResult =
   | { ok: true; id: string }
-  | { ok: false; error: string };
+  | { ok: false; error: SubscribeError };
 
 /** POST /api/v1/newsletter — subscribe an email to the newsletter. */
 export async function subscribeToNewsletter(email: string): Promise<SubscribeResult> {
@@ -11,15 +15,14 @@ export async function subscribeToNewsletter(email: string): Promise<SubscribeRes
       body: JSON.stringify({ email }),
     });
     if (res.status === 409) {
-      return { ok: false, error: "You're already on the list." };
+      return { ok: false, error: "duplicate" };
     }
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      return { ok: false, error: (body as { error?: string }).error ?? "Something went wrong — please try again." };
+      return { ok: false, error: "server" };
     }
     const body = (await res.json()) as { id: string };
     return { ok: true, id: body.id };
   } catch {
-    return { ok: false, error: "Network error — please try again." };
+    return { ok: false, error: "network" };
   }
 }

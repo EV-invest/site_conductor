@@ -47,6 +47,70 @@
     "en": "Whitepaper",
     "t": "Sách trắng"
   },
+  "footer.description": {
+    "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
+    "t": "EV Investment là quỹ tư vấn bất động sản và quản lý đầu tư đã đăng ký, chuyên về các dự án ven biển cao cấp tại Quy Nhơn, tỉnh Bình Định, Việt Nam."
+  },
+  "footer.tagline": {
+    "en": "Quy Nhon Fund",
+    "t": "Quỹ Quy Nhơn"
+  },
+  "footer.office.hq.name": {
+    "en": "Quy Nhon Head Office",
+    "t": "Trụ sở chính Quy Nhơn"
+  },
+  "footer.office.hq.address": {
+    "en": "102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City, Vietnam",
+    "t": "102 đường An Dương Vương, phường Nguyễn Văn Cừ, thành phố Quy Nhơn, Việt Nam"
+  },
+  "footer.office.hcmc.name": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Văn phòng đại diện TP. Hồ Chí Minh"
+  },
+  "footer.office.hcmc.address": {
+    "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
+    "t": "Deutsches Haus, 33 đại lộ Lê Duẩn, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy Policy",
+    "t": "Chính sách bảo mật"
+  },
+  "footer.legal.terms": {
+    "en": "Terms of Service",
+    "t": "Điều khoản dịch vụ"
+  },
+  "footer.newsletter.blurb": {
+    "en": "Subscribe, to receive our macro reports",
+    "t": "Đăng ký để nhận các báo cáo vĩ mô của chúng tôi"
+  },
+  "footer.newsletter.placeholder": {
+    "en": "Institutional Email",
+    "t": "Email tổ chức"
+  },
+  "footer.newsletter.join": {
+    "en": "Join",
+    "t": "Đăng ký"
+  },
+  "footer.newsletter.success": {
+    "en": "You're on the list — welcome.",
+    "t": "Bạn đã có trong danh sách — chào mừng."
+  },
+  "footer.newsletter.invalidEmail": {
+    "en": "Enter a valid email address.",
+    "t": "Vui lòng nhập địa chỉ email hợp lệ."
+  },
+  "footer.newsletter.duplicate": {
+    "en": "You're already on the list.",
+    "t": "Bạn đã có trong danh sách rồi."
+  },
+  "footer.newsletter.error": {
+    "en": "Something went wrong — please try again.",
+    "t": "Đã có lỗi xảy ra — vui lòng thử lại."
+  },
+  "footer.newsletter.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Lỗi kết nối — vui lòng thử lại."
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — trang chủ"

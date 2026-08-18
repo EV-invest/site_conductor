@@ -47,6 +47,70 @@
     "en": "Whitepaper",
     "t": "Whitepaper"
   },
+  "footer.description": {
+    "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
+    "t": "EV Investment ist ein registrierter Fonds für Immobilienberatung und Investmentmanagement mit Schwerpunkt auf hochwertigen Küstenprojekten in Quy Nhon, Provinz Binh Dinh, Vietnam."
+  },
+  "footer.tagline": {
+    "en": "Quy Nhon Fund",
+    "t": "Quy-Nhon-Fonds"
+  },
+  "footer.office.hq.name": {
+    "en": "Quy Nhon Head Office",
+    "t": "Hauptsitz Quy Nhon"
+  },
+  "footer.office.hq.address": {
+    "en": "102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City, Vietnam",
+    "t": "An Duong Vuong Str. 102, Bezirk Nguyen Van Cu, Quy Nhon, Vietnam"
+  },
+  "footer.office.hcmc.name": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Repräsentanz Ho-Chi-Minh-Stadt"
+  },
+  "footer.office.hcmc.address": {
+    "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
+    "t": "Deutsches Haus, Le Duan Blvd. 33, Distrikt 1, Ho-Chi-Minh-Stadt, Vietnam"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy Policy",
+    "t": "Datenschutzerklärung"
+  },
+  "footer.legal.terms": {
+    "en": "Terms of Service",
+    "t": "Nutzungsbedingungen"
+  },
+  "footer.newsletter.blurb": {
+    "en": "Subscribe, to receive our macro reports",
+    "t": "Abonnieren Sie, um unsere Makroberichte zu erhalten"
+  },
+  "footer.newsletter.placeholder": {
+    "en": "Institutional Email",
+    "t": "Institutionelle E-Mail"
+  },
+  "footer.newsletter.join": {
+    "en": "Join",
+    "t": "Abonnieren"
+  },
+  "footer.newsletter.success": {
+    "en": "You're on the list — welcome.",
+    "t": "Sie stehen auf der Liste — willkommen."
+  },
+  "footer.newsletter.invalidEmail": {
+    "en": "Enter a valid email address.",
+    "t": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+  },
+  "footer.newsletter.duplicate": {
+    "en": "You're already on the list.",
+    "t": "Sie stehen bereits auf der Liste."
+  },
+  "footer.newsletter.error": {
+    "en": "Something went wrong — please try again.",
+    "t": "Etwas ist schiefgelaufen — bitte erneut versuchen."
+  },
+  "footer.newsletter.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Netzwerkfehler — bitte erneut versuchen."
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — Startseite"

@@ -26,9 +26,30 @@ export function Footer() {
     heading: t(column.key),
     links: localizeNav(column.links, locale, t),
   }));
+  // The uikit Footer defaults every one of these to English. Left unset they
+  // are what a /ru/ reader still reads in English beside a translated sitemap,
+  // so each one is passed explicitly. The "Offices" and "Newsletter" column
+  // headings and the copyright line are baked into @evinvest/uikit with no prop
+  // to override them — they need a uikit release, see issue notes.
+  const offices = [
+    { name: t("footer.office.hq.name"), address: t("footer.office.hq.address") },
+    {
+      name: t("footer.office.hcmc.name"),
+      address: t("footer.office.hcmc.address"),
+    },
+  ];
+  const legalLinks = [
+    { label: t("footer.legal.privacy"), href: "#hero" },
+    { label: t("footer.legal.terms"), href: "#hero" },
+  ];
   return (
     <BrandFooter
       nav={nav}
+      description={t("footer.description")}
+      tagline={t("footer.tagline")}
+      offices={offices}
+      legalLinks={legalLinks}
+      newsletterBlurb={t("footer.newsletter.blurb")}
       linkComponent={Link}
       newsletter={<NewsletterForm />}
       version={version}
