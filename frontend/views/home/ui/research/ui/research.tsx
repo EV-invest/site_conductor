@@ -12,7 +12,7 @@ import { cn } from "@/shared/lib/utils";
 import { Text, Tier } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
 import { Reveal, SplitText } from "@/shared/ui/motion";
-import { Accented } from "@/shared/ui/accented";
+import { accented } from "@/shared/ui/accented";
 import { useAnalytics } from "@/features/analytics";
 
 // Report library. The list (left) and the reading pane (right) both render
@@ -61,10 +61,10 @@ export function ResearchA({
           </span>
           <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
             <SplitText inView>
-              <Accented
-                text={t("home.research.title")}
-                className="italic text-main-accent-t1 font-serif"
-              />
+              {accented({
+                text: t("home.research.title"),
+                className: "italic text-main-accent-t1 font-serif",
+              })}
             </SplitText>
           </h2>
           <Tier tier="main">

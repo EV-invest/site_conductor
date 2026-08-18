@@ -4,7 +4,7 @@ import { getVariant } from "@/features/ab-variant/get-variant";
 import { ExperimentTracker, match } from "@/features/ab-variant";
 import { SplitText } from "@/shared/ui/motion";
 import { messagesFor } from "@/shared/config/i18n";
-import { Accented } from "@/shared/ui/accented";
+import { accented } from "@/shared/ui/accented";
 
 const H1 =
   "text-4xl sm:text-6xl md:text-8xl font-serif-display font-light text-white leading-tight mb-6";
@@ -38,7 +38,7 @@ function HeadlineB({ locale }: { locale: Locale }) {
   return (
     <h1 className={H1}>
       <SplitText>
-        <Accented text={t("home.hero.headline.b")} classNames={TONES} />
+        {accented({ text: t("home.hero.headline.b"), classNames: TONES })}
       </SplitText>
     </h1>
   );
@@ -49,7 +49,7 @@ function HeadlineA({ locale }: { locale: Locale }) {
   return (
     <h1 className={H1}>
       <SplitText>
-        <Accented text={t("home.hero.headline.a")} classNames={TONES} />
+        {accented({ text: t("home.hero.headline.a"), classNames: TONES })}
       </SplitText>
     </h1>
   );
