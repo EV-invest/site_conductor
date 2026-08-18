@@ -100,6 +100,10 @@ export function PublicationArticleView({
 
       <DocumentReader
         title={publication.title}
+        downloadLabel={t("publications.downloadPdf")}
+        downloadAriaLabel={t("document.downloadAria", {
+          title: publication.title,
+        })}
         htmlSrc={`/publications/${publication.slug}.dark.html`}
         pdfSrc={pdfHref(publication)}
         bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-main-accent-t1 prose-strong:text-main-mist"

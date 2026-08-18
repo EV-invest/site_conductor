@@ -6,9 +6,6 @@ import { DocumentReader } from "@/shared/ui/document-reader";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 import { PageGraph } from "@/shared/seo/page-graph";
 
-const DESCRIPTION =
-  "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam.";
-
 // generateMetadata only so the canonical carries the locale prefix — see
 // app/[locale]/team/page.tsx.
 export async function generateMetadata({
@@ -34,7 +31,14 @@ export async function generateMetadata({
 // It ships complete styles (bare-tag selectors, its own fonts), so it mounts
 // isolated in a shadow root (`isolate`) instead of taking the host's prose.
 // That is also why it stays out of the sitemap — see shared/config/site.ts.
-export default function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
+  const t = translator(messagesFor(resolved), resolved);
   return (
     <>
       {/* The body is shadow-mounted and so unreadable to a crawler (which is
@@ -43,23 +47,27 @@ export default function Page() {
           than leaving a blank in the site's structure. */}
       <PageGraph
         path="/publications/whitepaper"
-        name="Whitepaper"
-        description={DESCRIPTION}
+        name={t("whitepaper.name")}
+        description={t("meta.whitepaper.description")}
         trail={[
-          { name: "Publications", path: "/publications" },
-          { name: "Whitepaper", path: "/publications/whitepaper" },
+          { name: t("nav.publications"), path: "/publications" },
+          { name: t("whitepaper.name"), path: "/publications/whitepaper" },
         ]}
       />
       <DocumentReader
-        title="EV Investment Whitepaper"
+        title={t("whitepaper.title")}
+        downloadLabel={t("publications.downloadPdf")}
+        downloadAriaLabel={t("document.downloadAria", {
+          title: t("whitepaper.title"),
+        })}
         htmlSrc="/whitepaper.dark.html"
         pdfSrc="/whitepaper.pdf"
         isolate
         fallback={
           <Container className="py-24 text-main-mist/60">
-            Loading the whitepaper… if it doesn’t appear,{" "}
+            {t("whitepaper.loading")}{" "}
             <a href="/whitepaper.pdf" className="text-main-accent-t1 underline">
-              download the PDF
+              {t("publications.downloadPdf")}
             </a>
             .
           </Container>

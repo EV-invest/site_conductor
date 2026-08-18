@@ -1,6 +1,5 @@
 import { type FormEvent, useState } from "react";
 import { createContact } from "@/entities/contact";
-import { extractApiError } from "@/shared/api";
 import { type ContactErrors, validateContact } from "../model/validation";
 
 export type Status = "idle" | "sending" | "sent" | "error";
@@ -10,7 +9,10 @@ export function useContactForm() {
   const [fields, setFields] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  // A key, not a sentence: the backend answers in English, so a submit failure
+  // is reported through the catalogue instead of relayed verbatim. The precise
+  // cases are already covered by the inline per-field errors.
+  const [errorKey, setErrorKey] = useState<string | null>(null);
 
   const edit = (field: keyof typeof fields) => (value: string) => {
     setFields(prev => ({ ...prev, [field]: value }));
@@ -29,16 +31,16 @@ export function useContactForm() {
     try {
       const { data, error } = await createContact({ body: result.data });
       if (error || !data) {
-        setErrorMsg(extractApiError(error));
+        setErrorKey("form.submitError");
         setStatus("error");
         return;
       }
       setStatus("sent");
     } catch {
-      setErrorMsg("Network error — please try again.");
+      setErrorKey("form.networkError");
       setStatus("error");
     }
   }
 
-  return { fields, edit, errors, status, errorMsg, submit };
+  return { fields, edit, errors, status, errorKey, submit };
 }

@@ -18,6 +18,11 @@ export interface DocumentReaderProps {
   bodyClassName?: string;
   /** Shown in place of the doc if its build can't be loaded. Defaults to a PDF-download note. */
   fallback?: ReactNode;
+  /** Tooltip on the download action. Passed in, not looked up: `shared/` has no
+   * translator of its own, and the two callers already hold one. */
+  downloadLabel?: string;
+  /** Accessible name for the download action; `{title}` is substituted by the caller. */
+  downloadAriaLabel?: string;
 }
 
 /**
@@ -34,6 +39,8 @@ export function DocumentReader({
   isolate = false,
   bodyClassName,
   fallback,
+  downloadLabel,
+  downloadAriaLabel,
 }: DocumentReaderProps) {
   return (
     <main className="mt-24 min-h-[60vh]">
@@ -45,8 +52,8 @@ export function DocumentReader({
         <a
           href={pdfSrc}
           download
-          aria-label={`Download ${title} as PDF`}
-          title="Download PDF"
+          aria-label={downloadAriaLabel ?? `Download ${title} as PDF`}
+          title={downloadLabel ?? "Download PDF"}
           className="inline-flex shrink-0 items-center border border-main-accent-t1/30 p-2 text-main-accent-t1 transition-colors hover:border-main-accent-t1 hover:text-main-mist"
         >
           <FileDown className="size-4" />

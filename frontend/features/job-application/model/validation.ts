@@ -25,11 +25,11 @@ const portfolioField = z
   .trim()
   .refine(
     v => charLength(v) <= LIMITS.portfolioUrl,
-    `Link must be ${LIMITS.portfolioUrl} characters or fewer.`
+    "validation.url.max"
   )
   .refine(
     v => v === "" || (!/[\s\p{Cc}]/u.test(v) && hasHttpHost(v)),
-    "Enter a full link starting with http:// or https://."
+    "validation.url.invalid"
   );
 
 const screeningField = z
@@ -37,7 +37,7 @@ const screeningField = z
   .trim()
   .refine(
     v => charLength(v) <= LIMITS.screeningAnswer,
-    `Answer must be ${LIMITS.screeningAnswer} characters or fewer.`
+    "validation.screening.max"
   );
 
 export const applicationSchema = z.object({

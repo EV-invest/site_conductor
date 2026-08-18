@@ -47,6 +47,70 @@
     "en": "Whitepaper",
     "t": "Белая книга"
   },
+  "footer.description": {
+    "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
+    "t": "EV Investment — зарегистрированный фонд консультирования и управления инвестициями в недвижимость, специализирующийся на премиальных прибрежных проектах в Куинёне, провинция Биньдинь, Вьетнам."
+  },
+  "footer.tagline": {
+    "en": "Quy Nhon Fund",
+    "t": "Фонд Куинёна"
+  },
+  "footer.office.hq.name": {
+    "en": "Quy Nhon Head Office",
+    "t": "Головной офис в Куинёне"
+  },
+  "footer.office.hq.address": {
+    "en": "102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City, Vietnam",
+    "t": "ул. Ан Зыонг Выонг, 102, квартал Нгуен Ван Кы, Куинён, Вьетнам"
+  },
+  "footer.office.hcmc.name": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Представительство в Хошимине"
+  },
+  "footer.office.hcmc.address": {
+    "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
+    "t": "Deutsches Haus, бул. Ле Зуан, 33, Район 1, Хошимин, Вьетнам"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy Policy",
+    "t": "Политика конфиденциальности"
+  },
+  "footer.legal.terms": {
+    "en": "Terms of Service",
+    "t": "Условия использования"
+  },
+  "footer.newsletter.blurb": {
+    "en": "Subscribe, to receive our macro reports",
+    "t": "Подпишитесь, чтобы получать наши макроотчёты"
+  },
+  "footer.newsletter.placeholder": {
+    "en": "Institutional Email",
+    "t": "Институциональный e-mail"
+  },
+  "footer.newsletter.join": {
+    "en": "Join",
+    "t": "Подписаться"
+  },
+  "footer.newsletter.success": {
+    "en": "You're on the list — welcome.",
+    "t": "Вы в списке — добро пожаловать."
+  },
+  "footer.newsletter.invalidEmail": {
+    "en": "Enter a valid email address.",
+    "t": "Введите корректный адрес электронной почты."
+  },
+  "footer.newsletter.duplicate": {
+    "en": "You're already on the list.",
+    "t": "Вы уже в списке."
+  },
+  "footer.newsletter.error": {
+    "en": "Something went wrong — please try again.",
+    "t": "Что-то пошло не так — попробуйте ещё раз."
+  },
+  "footer.newsletter.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Ошибка сети — попробуйте ещё раз."
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — на главную"
@@ -850,5 +914,197 @@
   "publications.documentInEnglish": {
     "en": "This summary is translated; the report itself is in English.",
     "t": "Это резюме переведено; сам отчёт — на английском языке."
+  },
+  "form.name.label": {
+    "en": "Your name",
+    "t": "Ваше имя"
+  },
+  "form.name.placeholder": {
+    "en": "Jane Doe",
+    "t": "Иван Иванов"
+  },
+  "form.email.label": {
+    "en": "Email",
+    "t": "Электронная почта"
+  },
+  "form.sending": {
+    "en": "Sending…",
+    "t": "Отправляем…"
+  },
+  "form.submitError": {
+    "en": "Something went wrong. Please try again.",
+    "t": "Что-то пошло не так. Попробуйте ещё раз."
+  },
+  "form.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Ошибка сети — попробуйте ещё раз."
+  },
+  "validation.name.min": {
+    "en": "Name must be at least 2 characters.",
+    "t": "Имя должно содержать не менее 2 символов."
+  },
+  "validation.name.max": {
+    "en": "Name must be {name} characters or fewer.",
+    "t": "Имя должно быть не длиннее {name} символов."
+  },
+  "validation.name.charset": {
+    "en": "Use letters, spaces, and . ' - only.",
+    "t": "Используйте только буквы, пробелы и . ' -"
+  },
+  "validation.name.letters": {
+    "en": "Name must contain at least 2 letters.",
+    "t": "Имя должно содержать не менее 2 букв."
+  },
+  "validation.email.invalid": {
+    "en": "Enter a valid email address.",
+    "t": "Введите корректный адрес электронной почты."
+  },
+  "validation.email.max": {
+    "en": "Email must be {email} characters or fewer.",
+    "t": "Адрес должен быть не длиннее {email} символов."
+  },
+  "validation.message.required": {
+    "en": "Please write a message.",
+    "t": "Пожалуйста, напишите сообщение."
+  },
+  "validation.message.max": {
+    "en": "Message must be {message} characters or fewer.",
+    "t": "Сообщение должно быть не длиннее {message} символов."
+  },
+  "validation.url.max": {
+    "en": "Link must be {portfolioUrl} characters or fewer.",
+    "t": "Ссылка должна быть не длиннее {portfolioUrl} символов."
+  },
+  "validation.url.invalid": {
+    "en": "Enter a full link starting with http:// or https://.",
+    "t": "Введите полную ссылку, начинающуюся с http:// или https://."
+  },
+  "validation.screening.max": {
+    "en": "Answer must be {screeningAnswer} characters or fewer.",
+    "t": "Ответ должен быть не длиннее {screeningAnswer} символов."
+  },
+  "contact.form.email.placeholder": {
+    "en": "jane@example.com",
+    "t": "ivan@example.com"
+  },
+  "contact.form.message.label": {
+    "en": "Message",
+    "t": "Сообщение"
+  },
+  "contact.form.message.placeholder": {
+    "en": "How can we help?",
+    "t": "Чем мы можем помочь?"
+  },
+  "contact.form.submit": {
+    "en": "Send message",
+    "t": "Отправить сообщение"
+  },
+  "contact.form.sent.title": {
+    "en": "Thanks — message received.",
+    "t": "Спасибо — сообщение получено."
+  },
+  "contact.form.sent.titleNamed": {
+    "en": "Thanks, {name} — message received.",
+    "t": "Спасибо, {name}, — сообщение получено."
+  },
+  "contact.form.sent.body": {
+    "en": "We'll reply personally, usually within two business days.",
+    "t": "Мы ответим лично, обычно в течение двух рабочих дней."
+  },
+  "apply.form.email.placeholder": {
+    "en": "jane@fund.com",
+    "t": "ivan@fund.com"
+  },
+  "apply.form.portfolio.label": {
+    "en": "Portfolio or LinkedIn (optional)",
+    "t": "Портфолио или LinkedIn (необязательно)"
+  },
+  "apply.form.portfolio.placeholder": {
+    "en": "https://…",
+    "t": "https://…"
+  },
+  "apply.form.message.label": {
+    "en": "Where you'd fit",
+    "t": "Где вы видите себя"
+  },
+  "apply.form.message.placeholder": {
+    "en": "A few lines on what you'd want to own, and why EV…",
+    "t": "Несколько строк о том, за что вы хотели бы отвечать и почему EV…"
+  },
+  "apply.form.submit": {
+    "en": "Send application",
+    "t": "Отправить заявку"
+  },
+  "apply.form.sent.title": {
+    "en": "Thanks — we've got it.",
+    "t": "Спасибо — мы всё получили."
+  },
+  "apply.form.sent.titleNamed": {
+    "en": "Thanks, {name} — we've got it.",
+    "t": "Спасибо, {name}, — мы всё получили."
+  },
+  "apply.form.sent.body": {
+    "en": "Your application has reached our team. We read every one and will be in touch.",
+    "t": "Ваша заявка дошла до команды. Мы читаем каждую и обязательно свяжемся с вами."
+  },
+  "apply.form.eyebrow": {
+    "en": "Open application",
+    "t": "Открытая заявка"
+  },
+  "apply.form.roleTag": {
+    "en": "Role · {title}",
+    "t": "Вакансия · {title}"
+  },
+  "apply.form.formTag": {
+    "en": "Form · EV-Hiring",
+    "t": "Форма · EV-Hiring"
+  },
+  "apply.form.heading": {
+    "en": "Tell us where you fit.",
+    "t": "Расскажите, где вы видите себя."
+  },
+  "apply.form.intro": {
+    "en": "A few lines is enough — we read every note.",
+    "t": "Достаточно нескольких строк — мы читаем каждое письмо."
+  },
+  "apply.form.footnote": {
+    "en": "Reply within ~2 weeks · Quy Nhơn · HCMC",
+    "t": "Ответ примерно за 2 недели · Куинён · Хошимин"
+  },
+  "apply.role.eyebrow": {
+    "en": "For this role · {title}",
+    "t": "Для этой вакансии · {title}"
+  },
+  "apply.role.which": {
+    "en": "Which of these describe you?",
+    "t": "Что из этого про вас?"
+  },
+  "apply.role.screeningPlaceholder": {
+    "en": "A few lines…",
+    "t": "Несколько строк…"
+  },
+  "document.downloadAria": {
+    "en": "Download {title} as PDF",
+    "t": "Скачать «{title}» в PDF"
+  },
+  "whitepaper.title": {
+    "en": "EV Investment Whitepaper",
+    "t": "Белая книга EV Investment"
+  },
+  "whitepaper.name": {
+    "en": "Whitepaper",
+    "t": "Белая книга"
+  },
+  "whitepaper.loading": {
+    "en": "Loading the whitepaper… if it doesn't appear,",
+    "t": "Загружаем белую книгу… если она не появилась,"
+  },
+  "meta.vacancy.notFound": {
+    "en": "Role not found",
+    "t": "Вакансия не найдена"
+  },
+  "meta.publication.notFound": {
+    "en": "Publication not found",
+    "t": "Публикация не найдена"
   }
 }

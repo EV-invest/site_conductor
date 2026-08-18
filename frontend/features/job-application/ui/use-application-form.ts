@@ -1,6 +1,5 @@
 import { type FormEvent, useState } from "react";
 import { createApplication } from "@/entities/job-application";
-import { extractApiError } from "@/shared/api";
 import {
   type ApplicationErrors,
   validateApplication,
@@ -29,7 +28,8 @@ export function useApplicationForm(vacancy?: VacancyContext) {
   const [checked, setChecked] = useState<Set<string>>(new Set());
   const [errors, setErrors] = useState<ApplicationErrors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  // A key, not a sentence — see the note in the contact form's hook.
+  const [errorKey, setErrorKey] = useState<string | null>(null);
 
   const edit = (field: keyof typeof EMPTY) => (value: string) => {
     setFields(prev => ({ ...prev, [field]: value }));
@@ -67,16 +67,16 @@ export function useApplicationForm(vacancy?: VacancyContext) {
         },
       });
       if (error || !data) {
-        setErrorMsg(extractApiError(error));
+        setErrorKey("form.submitError");
         setStatus("error");
         return;
       }
       setStatus("sent");
     } catch {
-      setErrorMsg("Network error — please try again.");
+      setErrorKey("form.networkError");
       setStatus("error");
     }
   }
 
-  return { fields, edit, checked, toggle, errors, status, errorMsg, submit };
+  return { fields, edit, checked, toggle, errors, status, errorKey, submit };
 }

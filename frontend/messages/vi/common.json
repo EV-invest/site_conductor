@@ -47,6 +47,70 @@
     "en": "Whitepaper",
     "t": "Sách trắng"
   },
+  "footer.description": {
+    "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
+    "t": "EV Investment là quỹ tư vấn bất động sản và quản lý đầu tư đã đăng ký, chuyên về các dự án ven biển cao cấp tại Quy Nhơn, tỉnh Bình Định, Việt Nam."
+  },
+  "footer.tagline": {
+    "en": "Quy Nhon Fund",
+    "t": "Quỹ Quy Nhơn"
+  },
+  "footer.office.hq.name": {
+    "en": "Quy Nhon Head Office",
+    "t": "Trụ sở chính Quy Nhơn"
+  },
+  "footer.office.hq.address": {
+    "en": "102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City, Vietnam",
+    "t": "102 đường An Dương Vương, phường Nguyễn Văn Cừ, thành phố Quy Nhơn, Việt Nam"
+  },
+  "footer.office.hcmc.name": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Văn phòng đại diện TP. Hồ Chí Minh"
+  },
+  "footer.office.hcmc.address": {
+    "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
+    "t": "Deutsches Haus, 33 đại lộ Lê Duẩn, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy Policy",
+    "t": "Chính sách bảo mật"
+  },
+  "footer.legal.terms": {
+    "en": "Terms of Service",
+    "t": "Điều khoản dịch vụ"
+  },
+  "footer.newsletter.blurb": {
+    "en": "Subscribe, to receive our macro reports",
+    "t": "Đăng ký để nhận các báo cáo vĩ mô của chúng tôi"
+  },
+  "footer.newsletter.placeholder": {
+    "en": "Institutional Email",
+    "t": "Email tổ chức"
+  },
+  "footer.newsletter.join": {
+    "en": "Join",
+    "t": "Đăng ký"
+  },
+  "footer.newsletter.success": {
+    "en": "You're on the list — welcome.",
+    "t": "Bạn đã có trong danh sách — chào mừng."
+  },
+  "footer.newsletter.invalidEmail": {
+    "en": "Enter a valid email address.",
+    "t": "Vui lòng nhập địa chỉ email hợp lệ."
+  },
+  "footer.newsletter.duplicate": {
+    "en": "You're already on the list.",
+    "t": "Bạn đã có trong danh sách rồi."
+  },
+  "footer.newsletter.error": {
+    "en": "Something went wrong — please try again.",
+    "t": "Đã có lỗi xảy ra — vui lòng thử lại."
+  },
+  "footer.newsletter.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Lỗi kết nối — vui lòng thử lại."
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — trang chủ"
@@ -850,5 +914,197 @@
   "publications.documentInEnglish": {
     "en": "This summary is translated; the report itself is in English.",
     "t": "Phần tóm tắt này đã được dịch; bản báo cáo là tiếng Anh."
+  },
+  "form.name.label": {
+    "en": "Your name",
+    "t": "Họ và tên của bạn"
+  },
+  "form.name.placeholder": {
+    "en": "Jane Doe",
+    "t": "Nguyễn Văn A"
+  },
+  "form.email.label": {
+    "en": "Email",
+    "t": "Email"
+  },
+  "form.sending": {
+    "en": "Sending…",
+    "t": "Đang gửi…"
+  },
+  "form.submitError": {
+    "en": "Something went wrong. Please try again.",
+    "t": "Đã có lỗi xảy ra. Vui lòng thử lại."
+  },
+  "form.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Lỗi kết nối — vui lòng thử lại."
+  },
+  "validation.name.min": {
+    "en": "Name must be at least 2 characters.",
+    "t": "Tên phải có ít nhất 2 ký tự."
+  },
+  "validation.name.max": {
+    "en": "Name must be {name} characters or fewer.",
+    "t": "Tên không được vượt quá {name} ký tự."
+  },
+  "validation.name.charset": {
+    "en": "Use letters, spaces, and . ' - only.",
+    "t": "Chỉ dùng chữ cái, khoảng trắng và . ' -"
+  },
+  "validation.name.letters": {
+    "en": "Name must contain at least 2 letters.",
+    "t": "Tên phải chứa ít nhất 2 chữ cái."
+  },
+  "validation.email.invalid": {
+    "en": "Enter a valid email address.",
+    "t": "Vui lòng nhập địa chỉ email hợp lệ."
+  },
+  "validation.email.max": {
+    "en": "Email must be {email} characters or fewer.",
+    "t": "Email không được vượt quá {email} ký tự."
+  },
+  "validation.message.required": {
+    "en": "Please write a message.",
+    "t": "Vui lòng viết nội dung tin nhắn."
+  },
+  "validation.message.max": {
+    "en": "Message must be {message} characters or fewer.",
+    "t": "Tin nhắn không được vượt quá {message} ký tự."
+  },
+  "validation.url.max": {
+    "en": "Link must be {portfolioUrl} characters or fewer.",
+    "t": "Đường dẫn không được vượt quá {portfolioUrl} ký tự."
+  },
+  "validation.url.invalid": {
+    "en": "Enter a full link starting with http:// or https://.",
+    "t": "Nhập đường dẫn đầy đủ bắt đầu bằng http:// hoặc https://."
+  },
+  "validation.screening.max": {
+    "en": "Answer must be {screeningAnswer} characters or fewer.",
+    "t": "Câu trả lời không được vượt quá {screeningAnswer} ký tự."
+  },
+  "contact.form.email.placeholder": {
+    "en": "jane@example.com",
+    "t": "an@example.com"
+  },
+  "contact.form.message.label": {
+    "en": "Message",
+    "t": "Tin nhắn"
+  },
+  "contact.form.message.placeholder": {
+    "en": "How can we help?",
+    "t": "Chúng tôi có thể giúp gì cho bạn?"
+  },
+  "contact.form.submit": {
+    "en": "Send message",
+    "t": "Gửi tin nhắn"
+  },
+  "contact.form.sent.title": {
+    "en": "Thanks — message received.",
+    "t": "Cảm ơn bạn — chúng tôi đã nhận được tin nhắn."
+  },
+  "contact.form.sent.titleNamed": {
+    "en": "Thanks, {name} — message received.",
+    "t": "Cảm ơn {name} — chúng tôi đã nhận được tin nhắn."
+  },
+  "contact.form.sent.body": {
+    "en": "We'll reply personally, usually within two business days.",
+    "t": "Chúng tôi sẽ trả lời trực tiếp, thường trong vòng hai ngày làm việc."
+  },
+  "apply.form.email.placeholder": {
+    "en": "jane@fund.com",
+    "t": "an@fund.com"
+  },
+  "apply.form.portfolio.label": {
+    "en": "Portfolio or LinkedIn (optional)",
+    "t": "Portfolio hoặc LinkedIn (không bắt buộc)"
+  },
+  "apply.form.portfolio.placeholder": {
+    "en": "https://…",
+    "t": "https://…"
+  },
+  "apply.form.message.label": {
+    "en": "Where you'd fit",
+    "t": "Bạn phù hợp ở đâu"
+  },
+  "apply.form.message.placeholder": {
+    "en": "A few lines on what you'd want to own, and why EV…",
+    "t": "Vài dòng về việc bạn muốn phụ trách điều gì, và vì sao chọn EV…"
+  },
+  "apply.form.submit": {
+    "en": "Send application",
+    "t": "Gửi hồ sơ"
+  },
+  "apply.form.sent.title": {
+    "en": "Thanks — we've got it.",
+    "t": "Cảm ơn bạn — chúng tôi đã nhận được."
+  },
+  "apply.form.sent.titleNamed": {
+    "en": "Thanks, {name} — we've got it.",
+    "t": "Cảm ơn {name} — chúng tôi đã nhận được."
+  },
+  "apply.form.sent.body": {
+    "en": "Your application has reached our team. We read every one and will be in touch.",
+    "t": "Hồ sơ của bạn đã đến với đội ngũ của chúng tôi. Chúng tôi đọc từng hồ sơ và sẽ liên hệ lại."
+  },
+  "apply.form.eyebrow": {
+    "en": "Open application",
+    "t": "Ứng tuyển tự do"
+  },
+  "apply.form.roleTag": {
+    "en": "Role · {title}",
+    "t": "Vị trí · {title}"
+  },
+  "apply.form.formTag": {
+    "en": "Form · EV-Hiring",
+    "t": "Biểu mẫu · EV-Hiring"
+  },
+  "apply.form.heading": {
+    "en": "Tell us where you fit.",
+    "t": "Hãy cho chúng tôi biết bạn phù hợp ở đâu."
+  },
+  "apply.form.intro": {
+    "en": "A few lines is enough — we read every note.",
+    "t": "Chỉ vài dòng là đủ — chúng tôi đọc mọi lời nhắn."
+  },
+  "apply.form.footnote": {
+    "en": "Reply within ~2 weeks · Quy Nhơn · HCMC",
+    "t": "Phản hồi trong khoảng 2 tuần · Quy Nhơn · TP.HCM"
+  },
+  "apply.role.eyebrow": {
+    "en": "For this role · {title}",
+    "t": "Cho vị trí này · {title}"
+  },
+  "apply.role.which": {
+    "en": "Which of these describe you?",
+    "t": "Điều nào dưới đây đúng với bạn?"
+  },
+  "apply.role.screeningPlaceholder": {
+    "en": "A few lines…",
+    "t": "Vài dòng…"
+  },
+  "document.downloadAria": {
+    "en": "Download {title} as PDF",
+    "t": "Tải {title} dưới dạng PDF"
+  },
+  "whitepaper.title": {
+    "en": "EV Investment Whitepaper",
+    "t": "Whitepaper của EV Investment"
+  },
+  "whitepaper.name": {
+    "en": "Whitepaper",
+    "t": "Whitepaper"
+  },
+  "whitepaper.loading": {
+    "en": "Loading the whitepaper… if it doesn't appear,",
+    "t": "Đang tải whitepaper… nếu không hiển thị,"
+  },
+  "meta.vacancy.notFound": {
+    "en": "Role not found",
+    "t": "Không tìm thấy vị trí"
+  },
+  "meta.publication.notFound": {
+    "en": "Publication not found",
+    "t": "Không tìm thấy ấn phẩm"
   }
 }

@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, isLocale, translator, type Locale } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, isLocale, LOCALES, translator, type Locale } from "@evinvest/i18n";
 import { messagesFor } from "@/shared/config/i18n";
 import { cache } from "react";
 import type { Metadata } from "next";
@@ -18,10 +18,26 @@ import { pageMetadata } from "@/shared/seo/page-metadata";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
+// Every (locale, slug) pair, not just the slugs.
+//
+// `app/[locale]/layout.tsx` declares `dynamicParams = false` — load-bearing, so
+// `/team` is declined by `[locale]` and falls through to the fallback rewrite
+// (docs/i18n-routing-spike.md). The cost is that a route under `[locale]` is
+// only reachable if its params were actually enumerated, and a child returning
+// `{ slug }` alone never names the locale it belongs to. That produced no valid
+// path for this route at all: every `/{locale}/hiring/{slug}` fell straight
+// through to Next's *default* 404 — not this segment's `not-found.tsx`, which is
+// what a real missing role renders. `/hiring` kept working the whole time
+// (`[locale]` is its only dynamic segment), which is what made it look like a
+// backend problem when the API was answering 200 all along.
+//
+// So the cross product is spelled out here. `publications/[slug]` sidesteps the
+// same trap from the other end, with `dynamic = "force-dynamic"`.
 export async function generateStaticParams() {
   try {
     const { data } = await listVacancies();
-    return (data ?? []).map(vacancy => ({ slug: vacancy.slug }));
+    const slugs = (data ?? []).map(vacancy => vacancy.slug);
+    return LOCALES.flatMap(locale => slugs.map(slug => ({ locale, slug })));
   } catch {
     // Backend unreachable at build — fall back to fully on-demand rendering.
     return [];
@@ -64,11 +80,9 @@ export async function generateMetadata({
   // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
   // a retired role unindexable even if a streaming boundary pins the status at
   // 200 and turns the 404 into a soft-404.
-  if (!vacancy) return { title: "Role not found", robots: { index: false } };
-  // The suffix is a catalogue string: the title and summary now arrive already
-  // translated, so an English " — Hiring" welded onto them would be the only
-  // untranslated words in the browser tab.
   const t = translator(messagesFor(resolved), resolved);
+  if (!vacancy)
+    return { title: t("meta.vacancy.notFound"), robots: { index: false } };
   return pageMetadata({
     title: t("meta.vacancy.title", { title: vacancy.title }),
     description: vacancy.summary,

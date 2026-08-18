@@ -47,6 +47,70 @@
     "en": "Whitepaper",
     "t": "Livre blanc"
   },
+  "footer.description": {
+    "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
+    "t": "EV Investment est un fonds agréé de conseil immobilier et de gestion d'investissements, spécialisé dans les programmes côtiers haut de gamme à Quy Nhon, province de Binh Dinh, au Vietnam."
+  },
+  "footer.tagline": {
+    "en": "Quy Nhon Fund",
+    "t": "Fonds de Quy Nhon"
+  },
+  "footer.office.hq.name": {
+    "en": "Quy Nhon Head Office",
+    "t": "Siège de Quy Nhon"
+  },
+  "footer.office.hq.address": {
+    "en": "102 An Duong Vuong St, Nguyen Van Cu Ward, Quy Nhon City, Vietnam",
+    "t": "102 rue An Duong Vuong, quartier Nguyen Van Cu, Quy Nhon, Vietnam"
+  },
+  "footer.office.hcmc.name": {
+    "en": "Ho Chi Minh Representative",
+    "t": "Bureau de représentation de Hô Chi Minh"
+  },
+  "footer.office.hcmc.address": {
+    "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
+    "t": "Deutsches Haus, 33 boulevard Le Duan, District 1, Hô Chi Minh-Ville, Vietnam"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy Policy",
+    "t": "Politique de confidentialité"
+  },
+  "footer.legal.terms": {
+    "en": "Terms of Service",
+    "t": "Conditions d'utilisation"
+  },
+  "footer.newsletter.blurb": {
+    "en": "Subscribe, to receive our macro reports",
+    "t": "Abonnez-vous pour recevoir nos rapports macroéconomiques"
+  },
+  "footer.newsletter.placeholder": {
+    "en": "Institutional Email",
+    "t": "E-mail institutionnel"
+  },
+  "footer.newsletter.join": {
+    "en": "Join",
+    "t": "S'abonner"
+  },
+  "footer.newsletter.success": {
+    "en": "You're on the list — welcome.",
+    "t": "Vous êtes inscrit — bienvenue."
+  },
+  "footer.newsletter.invalidEmail": {
+    "en": "Enter a valid email address.",
+    "t": "Saisissez une adresse e-mail valide."
+  },
+  "footer.newsletter.duplicate": {
+    "en": "You're already on the list.",
+    "t": "Vous êtes déjà inscrit."
+  },
+  "footer.newsletter.error": {
+    "en": "Something went wrong — please try again.",
+    "t": "Une erreur est survenue — veuillez réessayer."
+  },
+  "footer.newsletter.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Erreur réseau — veuillez réessayer."
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — accueil"
@@ -850,5 +914,197 @@
   "publications.documentInEnglish": {
     "en": "This summary is translated; the report itself is in English.",
     "t": "Ce résumé est traduit ; le rapport lui-même est en anglais."
+  },
+  "form.name.label": {
+    "en": "Your name",
+    "t": "Votre nom"
+  },
+  "form.name.placeholder": {
+    "en": "Jane Doe",
+    "t": "Jean Dupont"
+  },
+  "form.email.label": {
+    "en": "Email",
+    "t": "E-mail"
+  },
+  "form.sending": {
+    "en": "Sending…",
+    "t": "Envoi…"
+  },
+  "form.submitError": {
+    "en": "Something went wrong. Please try again.",
+    "t": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "form.networkError": {
+    "en": "Network error — please try again.",
+    "t": "Erreur réseau — veuillez réessayer."
+  },
+  "validation.name.min": {
+    "en": "Name must be at least 2 characters.",
+    "t": "Le nom doit comporter au moins 2 caractères."
+  },
+  "validation.name.max": {
+    "en": "Name must be {name} characters or fewer.",
+    "t": "Le nom ne doit pas dépasser {name} caractères."
+  },
+  "validation.name.charset": {
+    "en": "Use letters, spaces, and . ' - only.",
+    "t": "Utilisez uniquement des lettres, des espaces et . ' -"
+  },
+  "validation.name.letters": {
+    "en": "Name must contain at least 2 letters.",
+    "t": "Le nom doit contenir au moins 2 lettres."
+  },
+  "validation.email.invalid": {
+    "en": "Enter a valid email address.",
+    "t": "Saisissez une adresse e-mail valide."
+  },
+  "validation.email.max": {
+    "en": "Email must be {email} characters or fewer.",
+    "t": "L'adresse ne doit pas dépasser {email} caractères."
+  },
+  "validation.message.required": {
+    "en": "Please write a message.",
+    "t": "Veuillez écrire un message."
+  },
+  "validation.message.max": {
+    "en": "Message must be {message} characters or fewer.",
+    "t": "Le message ne doit pas dépasser {message} caractères."
+  },
+  "validation.url.max": {
+    "en": "Link must be {portfolioUrl} characters or fewer.",
+    "t": "Le lien ne doit pas dépasser {portfolioUrl} caractères."
+  },
+  "validation.url.invalid": {
+    "en": "Enter a full link starting with http:// or https://.",
+    "t": "Saisissez un lien complet commençant par http:// ou https://."
+  },
+  "validation.screening.max": {
+    "en": "Answer must be {screeningAnswer} characters or fewer.",
+    "t": "La réponse ne doit pas dépasser {screeningAnswer} caractères."
+  },
+  "contact.form.email.placeholder": {
+    "en": "jane@example.com",
+    "t": "jean@example.com"
+  },
+  "contact.form.message.label": {
+    "en": "Message",
+    "t": "Message"
+  },
+  "contact.form.message.placeholder": {
+    "en": "How can we help?",
+    "t": "Comment pouvons-nous vous aider ?"
+  },
+  "contact.form.submit": {
+    "en": "Send message",
+    "t": "Envoyer le message"
+  },
+  "contact.form.sent.title": {
+    "en": "Thanks — message received.",
+    "t": "Merci — message bien reçu."
+  },
+  "contact.form.sent.titleNamed": {
+    "en": "Thanks, {name} — message received.",
+    "t": "Merci, {name} — message bien reçu."
+  },
+  "contact.form.sent.body": {
+    "en": "We'll reply personally, usually within two business days.",
+    "t": "Nous répondrons personnellement, généralement sous deux jours ouvrés."
+  },
+  "apply.form.email.placeholder": {
+    "en": "jane@fund.com",
+    "t": "jean@fund.com"
+  },
+  "apply.form.portfolio.label": {
+    "en": "Portfolio or LinkedIn (optional)",
+    "t": "Portfolio ou LinkedIn (facultatif)"
+  },
+  "apply.form.portfolio.placeholder": {
+    "en": "https://…",
+    "t": "https://…"
+  },
+  "apply.form.message.label": {
+    "en": "Where you'd fit",
+    "t": "Où vous vous situez"
+  },
+  "apply.form.message.placeholder": {
+    "en": "A few lines on what you'd want to own, and why EV…",
+    "t": "Quelques lignes sur ce que vous aimeriez prendre en charge, et pourquoi EV…"
+  },
+  "apply.form.submit": {
+    "en": "Send application",
+    "t": "Envoyer la candidature"
+  },
+  "apply.form.sent.title": {
+    "en": "Thanks — we've got it.",
+    "t": "Merci — nous l'avons bien reçue."
+  },
+  "apply.form.sent.titleNamed": {
+    "en": "Thanks, {name} — we've got it.",
+    "t": "Merci, {name} — nous l'avons bien reçue."
+  },
+  "apply.form.sent.body": {
+    "en": "Your application has reached our team. We read every one and will be in touch.",
+    "t": "Votre candidature est parvenue à notre équipe. Nous les lisons toutes et reviendrons vers vous."
+  },
+  "apply.form.eyebrow": {
+    "en": "Open application",
+    "t": "Candidature spontanée"
+  },
+  "apply.form.roleTag": {
+    "en": "Role · {title}",
+    "t": "Poste · {title}"
+  },
+  "apply.form.formTag": {
+    "en": "Form · EV-Hiring",
+    "t": "Formulaire · EV-Hiring"
+  },
+  "apply.form.heading": {
+    "en": "Tell us where you fit.",
+    "t": "Dites-nous où vous vous situez."
+  },
+  "apply.form.intro": {
+    "en": "A few lines is enough — we read every note.",
+    "t": "Quelques lignes suffisent — nous lisons chaque message."
+  },
+  "apply.form.footnote": {
+    "en": "Reply within ~2 weeks · Quy Nhơn · HCMC",
+    "t": "Réponse sous ~2 semaines · Quy Nhơn · HCMV"
+  },
+  "apply.role.eyebrow": {
+    "en": "For this role · {title}",
+    "t": "Pour ce poste · {title}"
+  },
+  "apply.role.which": {
+    "en": "Which of these describe you?",
+    "t": "Lesquels vous correspondent ?"
+  },
+  "apply.role.screeningPlaceholder": {
+    "en": "A few lines…",
+    "t": "Quelques lignes…"
+  },
+  "document.downloadAria": {
+    "en": "Download {title} as PDF",
+    "t": "Télécharger {title} en PDF"
+  },
+  "whitepaper.title": {
+    "en": "EV Investment Whitepaper",
+    "t": "Livre blanc EV Investment"
+  },
+  "whitepaper.name": {
+    "en": "Whitepaper",
+    "t": "Livre blanc"
+  },
+  "whitepaper.loading": {
+    "en": "Loading the whitepaper… if it doesn't appear,",
+    "t": "Chargement du livre blanc… s'il n'apparaît pas,"
+  },
+  "meta.vacancy.notFound": {
+    "en": "Role not found",
+    "t": "Poste introuvable"
+  },
+  "meta.publication.notFound": {
+    "en": "Publication not found",
+    "t": "Publication introuvable"
   }
 }
