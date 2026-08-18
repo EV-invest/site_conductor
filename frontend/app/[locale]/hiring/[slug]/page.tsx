@@ -1,48 +1,31 @@
-import { DEFAULT_LOCALE, isLocale, LOCALES, translator, type Locale } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, isLocale, translator, type Locale } from "@evinvest/i18n";
 import { messagesFor } from "@/shared/config/i18n";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getVacancy,
-  listVacancies,
   vacancyCacheOptions,
   type VacancyDetail,
 } from "@/entities/vacancy";
 import { VacancyView } from "@/views/vacancy";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
-// SSG: every role known at build time is prerendered (instant load + static,
-// indexable metadata). `dynamicParams` keeps unknown/just-published slugs
-// working — they render on demand behind loading.tsx, then ISR-cache for an hour.
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-// Every (locale, slug) pair, not just the slugs.
+// Rendered per request, not prerendered.
 //
-// `app/[locale]/layout.tsx` declares `dynamicParams = false` — load-bearing, so
-// `/team` is declined by `[locale]` and falls through to the fallback rewrite
-// (docs/i18n-routing-spike.md). The cost is that a route under `[locale]` is
-// only reachable if its params were actually enumerated, and a child returning
-// `{ slug }` alone never names the locale it belongs to. That produced no valid
-// path for this route at all: every `/{locale}/hiring/{slug}` fell straight
-// through to Next's *default* 404 — not this segment's `not-found.tsx`, which is
-// what a real missing role renders. `/hiring` kept working the whole time
-// (`[locale]` is its only dynamic segment), which is what made it look like a
-// backend problem when the API was answering 200 all along.
+// The obvious shape — `generateStaticParams` over the vacancy list — cannot work
+// in this deployment: the container is built by Nix in a sandbox with no network,
+// so `listVacancies()` hits its catch and returns `[]`. Zero paths get enumerated,
+// and because `app/[locale]/layout.tsx` declares `dynamicParams = false` (which is
+// load-bearing for the fallback rewrite), an unenumerated `(locale, slug)` is
+// *declined* rather than rendered on demand — a `dynamicParams = true` here does
+// not override it. That is what made every role 404 in every locale.
 //
-// So the cross product is spelled out here. `publications/[slug]` sidesteps the
-// same trap from the other end, with `dynamic = "force-dynamic"`.
-export async function generateStaticParams() {
-  try {
-    const { data } = await listVacancies();
-    const slugs = (data ?? []).map(vacancy => vacancy.slug);
-    return LOCALES.flatMap(locale => slugs.map(slug => ({ locale, slug })));
-  } catch {
-    // Backend unreachable at build — fall back to fully on-demand rendering.
-    return [];
-  }
-}
+// So this route opts out of static generation entirely, exactly as
+// `publications/[slug]` already does. Freshness costs nothing: the TTL rides on
+// the fetch itself (`vacancyCacheOptions`), so the backend still sees at most one
+// request an hour per role, not one per visitor.
+export const dynamic = "force-dynamic";
 
 // Deduped within a request, so generateMetadata and the page share one fetch.
 // `null` means a genuine 404 (role missing); a network/5xx failure throws so the
