@@ -55,5 +55,3 @@ pub async fn get_vacancy(State(state): State<AppState>, Path(slug): Path<String>
 fn locale_of(raw: Option<&str>) -> Locale {
 	raw.and_then(Locale::parse).unwrap_or(DEFAULT_LOCALE)
 }
-
-

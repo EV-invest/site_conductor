@@ -47,4 +47,3 @@ pub fn spawn(vars: Vec<String>) {
 fn reader(dir: PathBuf) -> impl FnMut(&str) -> Option<String> {
 	move |var| fs::read_to_string(dir.join(var)).ok().map(|value| value.trim_end_matches('\n').to_string())
 }
-
