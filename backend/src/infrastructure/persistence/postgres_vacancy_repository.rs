@@ -26,7 +26,9 @@ const COLUMNS: &str = "id, slug, title, category, location, employment_type, sum
 /// English needs no special case either. `vacancy_translations` has a CHECK
 /// forbidding an `'en'` row — English is the row in `vacancies`, not a
 /// translation of it — so binding `'en'` matches nothing and falls through the
-/// same branch as an untranslated role.
+/// same branch as an untranslated role. Note that the `translated` column below
+/// is therefore false for English; `LocalizedVacancy::canonical` is what turns
+/// that back into true, because an English reader is not missing a translation.
 const LOCALIZED_COLUMNS: &str = "v.id, v.slug, v.title, v.category, v.location, v.employment_type, v.summary, v.about, \
 	 v.responsibilities, v.requirements, v.nice_to_have, v.offer, v.screening_question, v.compensation, v.published, v.created_at, \
 	 t.title AS t_title, t.location AS t_location, t.employment_type AS t_employment_type, t.summary AS t_summary, t.about AS t_about, \
