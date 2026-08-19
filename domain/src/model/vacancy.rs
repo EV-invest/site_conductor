@@ -191,7 +191,9 @@ impl Vacancy {
 ///
 /// `translated == false` covers both "no row for this locale" and "the row is
 /// stale". The caller cannot tell them apart, and should not: both mean the text
-/// below is canonical English.
+/// below is canonical English *and* the reader asked for something else. A
+/// request for English is always `true`, because English is what English asks
+/// for; see [`LocalizedVacancy::canonical`].
 ///
 /// Not `Serialize`: the wire shape is the API's `VacancyDetail`/`VacancySummary`,
 /// and `ev_lib::i18n::Locale` is deliberately dependency-free (no serde), so
@@ -207,8 +209,16 @@ pub struct LocalizedVacancy {
 
 impl LocalizedVacancy {
 	/// English, as authored — rule 1.1's canonical form.
+	///
+	/// `translated` answers "is the reader getting the language they asked for",
+	/// so an English *request* arriving here is translated: nothing is missing.
+	/// `vacancy_translations` has a CHECK forbidding an `'en'` row — English is
+	/// the row in `vacancies`, not a translation of it — so English can only ever
+	/// reach this constructor, and reporting `false` for it told the front end to
+	/// apologise to an English reader for the absence of English. Only a
+	/// non-English request landing here is the fallback worth announcing.
 	pub fn canonical(vacancy: Vacancy, locale: Locale) -> Self {
-		Self { vacancy, locale, translated: false }
+		Self { vacancy, locale, translated: locale == Locale::En }
 	}
 
 	/// A vacancy with a current translation applied.
@@ -218,5 +228,71 @@ impl LocalizedVacancy {
 			locale,
 			translated: true,
 		}
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	fn sample() -> Vacancy {
+		Vacancy {
+			id: VacancyId::new(),
+			slug: Slug::parse("investment-analyst").expect("valid slug"),
+			title: "Investment Analyst".to_string(),
+			category: VacancyCategory::Investment,
+			location: "Quy Nhơn".to_string(),
+			employment_type: "Full-time".to_string(),
+			summary: "Underwrite coastal acquisitions.".to_string(),
+			about: "About the role.".to_string(),
+			responsibilities: vec!["Model deals.".to_string()],
+			requirements: vec!["Working English.".to_string()],
+			nice_to_have: vec![],
+			offer: vec![],
+			screening_question: "Why this fund?".to_string(),
+			compensation: Compensation::Negotiable,
+			published: true,
+			created_at: Timestamp::UNIX_EPOCH,
+		}
+	}
+
+	/// The front end renders "shown in English" from `translated`, so English
+	/// reporting `false` apologised to English readers for the absence of
+	/// English — on every English role page, the one place it can never be true.
+	#[test]
+	fn english_is_never_reported_as_untranslated() {
+		let served = LocalizedVacancy::canonical(sample(), Locale::En);
+		assert!(served.translated);
+	}
+
+	/// The flag still has to fire for the fallback it exists to announce.
+	#[test]
+	fn other_locales_falling_back_are_reported_untranslated() {
+		for locale in [Locale::Ru, Locale::Vi, Locale::Fr, Locale::De] {
+			let served = LocalizedVacancy::canonical(sample(), locale);
+			assert!(!served.translated, "{locale:?} should read as a fallback");
+		}
+	}
+
+	/// An applied translation is translated in every locale, English included —
+	/// unreachable through the repository's CHECK, but the constructor must not
+	/// depend on that to be correct.
+	#[test]
+	fn an_applied_translation_always_reads_as_translated() {
+		let t = VacancyTranslation {
+			title: "Аналитик".to_string(),
+			location: "Куинён".to_string(),
+			employment_type: "Полная занятость".to_string(),
+			summary: "Оценка прибрежных активов.".to_string(),
+			about: "О роли.".to_string(),
+			responsibilities: vec!["Моделировать сделки.".to_string()],
+			requirements: vec!["Рабочий английский.".to_string()],
+			nice_to_have: vec![],
+			offer: vec![],
+			screening_question: "Почему этот фонд?".to_string(),
+		};
+		let served = LocalizedVacancy::translated(sample(), Locale::Ru, t);
+		assert!(served.translated);
+		assert_eq!(served.vacancy.title, "Аналитик");
 	}
 }

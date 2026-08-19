@@ -1,4 +1,4 @@
-import { Container } from "@evinvest/uikit";
+import { Languages } from "lucide-react";
 import { translator, type Locale } from "@evinvest/i18n";
 
 import { messagesFor } from "@/shared/config/i18n";
@@ -20,17 +20,28 @@ import { messagesFor } from "@/shared/config/i18n";
  * Driven by the backend's `translated` flag, which is false both when no
  * translation exists and when the one that does is stale (its `source_digest`
  * no longer matches the English row). The two are not distinguished on purpose —
- * they mean the same thing to a reader.
+ * they mean the same thing to a reader. A request for English is `true`: English
+ * readers are not told that English is missing.
+ *
+ * Rendered INSIDE the hero's container, not as a band above it. The header is
+ * `fixed` and takes no layout space, so anything the page puts at the very top
+ * of the document paints underneath it; the hero's `pt-32` is what clears the
+ * bar, and this note has to sit behind that padding to be visible at all. It
+ * reads better there too — an aside attached to the role, in the same column as
+ * the title it qualifies, rather than a system bar bolted to the viewport.
  */
 export function UntranslatedNotice({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <div className="border-b border-white/[0.06] bg-white/[0.02]">
-      <Container>
-        <p role="note" className="py-3 text-xs text-main-mist/55">
-          {t("vacancy.untranslated")}
-        </p>
-      </Container>
-    </div>
+    <p
+      role="note"
+      className="mt-7 flex max-w-xl items-start gap-2.5 rounded-lg border border-white/10 bg-main-card/40 px-3.5 py-2.5 text-xs leading-relaxed text-main-mist/60"
+    >
+      <Languages
+        aria-hidden
+        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-main-accent-t1/70"
+      />
+      <span>{t("vacancy.untranslated")}</span>
+    </p>
   );
 }

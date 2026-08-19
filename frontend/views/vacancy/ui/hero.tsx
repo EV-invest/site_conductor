@@ -5,6 +5,7 @@ import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
 import { messagesFor } from "@/shared/config/i18n";
 import { ShareButton } from "./share-button";
+import { UntranslatedNotice } from "./untranslated-notice";
 
 function Pill({ label, value }: { label: string; value: string }) {
   return (
@@ -36,6 +37,7 @@ export function VacancyHero({
         >
           <ArrowLeft className="h-3.5 w-3.5" /> {t("vacancy.back")}
         </Link>
+        {!vacancy.translated && <UntranslatedNotice locale={locale} />}
         <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-main-accent-t1">
           {team} · {vacancy.employment_type}
         </p>
