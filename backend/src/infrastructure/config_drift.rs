@@ -19,10 +19,6 @@ const MOUNT_VAR: &str = "SETTINGS_DRIFT_MOUNT";
 /// anything faster only adds log volume.
 const INTERVAL: Duration = Duration::from_secs(300);
 
-fn reader(dir: PathBuf) -> impl FnMut(&str) -> Option<String> {
-	move |var| fs::read_to_string(dir.join(var)).ok().map(|value| value.trim_end_matches('\n').to_string())
-}
-
 /// Start watching, if the deployment asked for it. Returns without spawning
 /// anything when `SETTINGS_DRIFT_MOUNT` is unset or does not exist, so the same
 /// binary runs unchanged on a laptop.
@@ -47,4 +43,7 @@ pub fn spawn(vars: Vec<String>) {
 			}
 		}
 	});
+}
+fn reader(dir: PathBuf) -> impl FnMut(&str) -> Option<String> {
+	move |var| fs::read_to_string(dir.join(var)).ok().map(|value| value.trim_end_matches('\n').to_string())
 }

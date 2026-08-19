@@ -14,14 +14,6 @@ use crate::{
 	domain::port::vacancy_repository::VacancyFilter,
 };
 
-/// An unrecognised or absent `locale` resolves to English rather than a 400.
-/// This parameter comes off a URL path segment the reader can edit, and the
-/// right answer to "I cannot place you" is the canonical language, not an error
-/// page — the same call `splitLocalePath` makes on the front end.
-fn locale_of(raw: Option<&str>) -> Locale {
-	raw.and_then(Locale::parse).unwrap_or(DEFAULT_LOCALE)
-}
-
 /// `GET /vacancies?category=&q=&locale=` — the searchable board.
 #[utoipa::path(
 	get,
@@ -43,7 +35,6 @@ pub async fn list_vacancies(State(state): State<AppState>, Query(query): Query<L
 	let vacancies = state.vacancies.list(filter, locale_of(query.locale.as_deref())).await?;
 	Ok(Json(vacancies.iter().map(VacancySummary::from).collect()))
 }
-
 /// `GET /vacancies/{slug}` — one role for the detail-page template.
 #[utoipa::path(
 	get,
@@ -56,4 +47,11 @@ pub async fn get_vacancy(State(state): State<AppState>, Path(slug): Path<String>
 	let slug = Slug::parse(slug)?;
 	let vacancy = state.vacancies.get_by_slug(&slug, locale_of(query.locale.as_deref())).await?;
 	Ok(Json(VacancyDetail::from(vacancy)))
+}
+/// An unrecognised or absent `locale` resolves to English rather than a 400.
+/// This parameter comes off a URL path segment the reader can edit, and the
+/// right answer to "I cannot place you" is the canonical language, not an error
+/// page — the same call `splitLocalePath` makes on the front end.
+fn locale_of(raw: Option<&str>) -> Locale {
+	raw.and_then(Locale::parse).unwrap_or(DEFAULT_LOCALE)
 }

@@ -120,6 +120,29 @@ pub struct Vacancy {
 	pub published: bool,
 	pub created_at: Timestamp,
 }
+impl Vacancy {
+	/// Overlay a translation, replacing every reader-facing field at once.
+	///
+	/// All-or-nothing on purpose: the digest that gates this covers the whole
+	/// English row (see `vacancy_source_digest` in the migration), so a
+	/// translation is either current or it is not. Merging field-by-field would
+	/// invent a third state — half-translated — that nothing downstream, and no
+	/// reader, can make sense of.
+	#[must_use]
+	pub fn with_translation(mut self, t: VacancyTranslation) -> Self {
+		self.title = t.title;
+		self.location = t.location;
+		self.employment_type = t.employment_type;
+		self.summary = t.summary;
+		self.about = t.about;
+		self.responsibilities = t.responsibilities;
+		self.requirements = t.requirements;
+		self.nice_to_have = t.nice_to_have;
+		self.offer = t.offer;
+		self.screening_question = t.screening_question;
+		self
+	}
+}
 
 impl Entity for Vacancy {
 	type Id = VacancyId;
@@ -154,30 +177,6 @@ pub struct VacancyTranslation {
 	pub nice_to_have: Vec<String>,
 	pub offer: Vec<String>,
 	pub screening_question: String,
-}
-
-impl Vacancy {
-	/// Overlay a translation, replacing every reader-facing field at once.
-	///
-	/// All-or-nothing on purpose: the digest that gates this covers the whole
-	/// English row (see `vacancy_source_digest` in the migration), so a
-	/// translation is either current or it is not. Merging field-by-field would
-	/// invent a third state — half-translated — that nothing downstream, and no
-	/// reader, can make sense of.
-	#[must_use]
-	pub fn with_translation(mut self, t: VacancyTranslation) -> Self {
-		self.title = t.title;
-		self.location = t.location;
-		self.employment_type = t.employment_type;
-		self.summary = t.summary;
-		self.about = t.about;
-		self.responsibilities = t.responsibilities;
-		self.requirements = t.requirements;
-		self.nice_to_have = t.nice_to_have;
-		self.offer = t.offer;
-		self.screening_question = t.screening_question;
-		self
-	}
 }
 
 /// A vacancy as it will actually be served, plus what the resolver did.
