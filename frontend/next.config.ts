@@ -44,6 +44,13 @@ const nextConfig: NextConfig = {
   // `forbidden.tsx` / `unauthorized.tsx` file conventions (still experimental).
   experimental: {
     authInterrupts: true,
+    // Enables `app/global-not-found.tsx` — the 404 for URLs that matched no
+    // route. Required, not cosmetic: the root layout is `app/[locale]/layout.tsx`,
+    // so an unrouted URL has no layout to render a nested `not-found.tsx` inside
+    // and Next serves its built-in black 404 instead. Without this flag the file
+    // is silently ignored (next-app-loader gates resolving it on the flag) and
+    // the built-in page comes back.
+    globalNotFound: true,
   },
   // /blogs and /whitepaper were separate shelves for the same thing: documents
   // the fund publishes. They are now one route, so the old paths keep working
