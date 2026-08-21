@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 import { isIndexed } from "@/shared/config/i18n";
 import { metadata as baseMetadata } from "@/application/metadata";
 import { SiteDocument } from "@/application/layout";
+import { serverErrorCopy } from "@/views/status";
+import { StatusCopyProvider } from "@/shared/ui/status-copy";
 
 export { viewport } from "@/application/metadata";
 
@@ -67,5 +69,14 @@ export default async function RootLayout({
   // status pages) can statically render. A/B pages opt into dynamic rendering
   // where it's actually needed: each tested section awaits `getVariant`, which
   // reads the `ab_*` cookie (next/headers) and dynamizes that route on its own.
-  return <SiteDocument locale={locale}>{children}</SiteDocument>;
+  // The 500 boundary is a Client Component by Next's rule, so its copy is
+  // resolved here — where the locale is known — and carried down as ~6 strings
+  // rather than shipping the catalogues to the browser.
+  return (
+    <SiteDocument locale={locale}>
+      <StatusCopyProvider copy={serverErrorCopy(locale)}>
+        {children}
+      </StatusCopyProvider>
+    </SiteDocument>
+  );
 }

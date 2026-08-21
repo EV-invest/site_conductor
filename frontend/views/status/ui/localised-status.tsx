@@ -4,23 +4,31 @@ import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { messagesFor } from "@/shared/config/i18n";
 
 /**
- * The 404 / 403 surfaces, in the reader's language.
+ * The 404 / 403 / 401 surfaces, in the reader's language.
  *
- * The uikit's ready-made `NotFound` / `Forbidden` bake their copy in, which is
- * why these pages were English under Russian chrome — a reader who had navigated
- * the whole site in their own language met an English apology at the one moment
- * the site was already failing them. `StatusScreen` is the same component
- * underneath and takes every string as a prop, so this needs no uikit release.
+ * The uikit's ready-made `NotFound` / `Forbidden` / `ServerError` bake their copy
+ * in, which is why these pages were English under Russian chrome — a reader who
+ * had navigated the whole site in their own language met an English apology at
+ * the one moment the site was already failing them. `StatusScreen` is the same
+ * component underneath and takes every string as a prop, so this needs no uikit
+ * release.
+ *
+ * 401 has no uikit page at all: `authInterrupts` gives Next both `forbidden()`
+ * and `unauthorized()`, and only the former had a file. An `unauthorized()` call
+ * would have fallen through to the generic error boundary.
  *
  * Server-rendered on purpose. The catalogues are ~176 KB across five locales;
- * reading the locale on the client would mean shipping all of them to render a
- * page nobody wants to be on. `next/root-params` is what makes that avoidable —
- * see the note on the pages themselves.
+ * reading the locale on the client would ship all of them to render a page
+ * nobody wants to be on. The 500 cannot use this — Next requires `error.tsx` to
+ * be a Client Component — and takes its copy from `StatusCopyProvider` instead.
  */
-type StatusKind = "notFound" | "forbidden";
+type StatusKind = "notFound" | "forbidden" | "unauthorized";
 
-const ACCENT = { notFound: "teal", forbidden: "gold" } as const;
-const CODE = { notFound: "404", forbidden: "403" } as const;
+const ACCENT = { notFound: "teal", forbidden: "gold", unauthorized: "gold" } as const;
+const CODE = { notFound: "404", forbidden: "403", unauthorized: "401" } as const;
+
+/** Shell-owned auth entry point; not a `[locale]` route, so no `localePath`. */
+const SIGN_IN_HREF = "/api/auth/login";
 
 export function LocalisedStatus({
   kind,
@@ -30,6 +38,16 @@ export function LocalisedStatus({
   locale: Locale;
 }) {
   const t = translator(messagesFor(locale), locale);
+  const secondary =
+    kind === "unauthorized"
+      ? { label: t("status.signIn"), href: SIGN_IN_HREF }
+      : {
+          label:
+            kind === "forbidden"
+              ? t("status.requestAccess")
+              : t("status.contactTeam"),
+          href: localePath(locale, "/contact"),
+        };
   return (
     <StatusScreen
       accent={ACCENT[kind]}
@@ -44,14 +62,7 @@ export function LocalisedStatus({
           href: localePath(locale, "/"),
           leadingArrow: true,
         },
-        {
-          label:
-            kind === "forbidden"
-              ? t("status.requestAccess")
-              : t("status.contactTeam"),
-          href: localePath(locale, "/contact"),
-          variant: "outline",
-        },
+        { ...secondary, variant: "outline" },
       ]}
     />
   );

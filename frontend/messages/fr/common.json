@@ -1150,5 +1150,45 @@
   "status.requestAccess": {
     "en": "Request access",
     "t": "Demander l'accès"
+  },
+  "status.serverError.eyebrow": {
+    "en": "Server error",
+    "t": "Erreur serveur"
+  },
+  "status.serverError.headlineLead": {
+    "en": "Our systems are ",
+    "t": "Nos systèmes se "
+  },
+  "status.serverError.headlineAccent": {
+    "en": "recalibrating",
+    "t": "recalibrent"
+  },
+  "status.serverError.subtext": {
+    "en": "Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment.",
+    "t": "Quelque chose a cédé de notre côté — pas du vôtre. Nous avons été alertés et rétablissons le service. Réessayez dans un instant."
+  },
+  "status.unauthorized.eyebrow": {
+    "en": "Sign-in required",
+    "t": "Connexion requise"
+  },
+  "status.unauthorized.headlineLead": {
+    "en": "This deck is ",
+    "t": "Ce pont est "
+  },
+  "status.unauthorized.headlineAccent": {
+    "en": "crew only",
+    "t": "réservé à l'équipage"
+  },
+  "status.unauthorized.subtext": {
+    "en": "You need to be signed in to view this page. Sign in and we'll bring you right back.",
+    "t": "Vous devez être connecté pour consulter cette page. Connectez-vous et nous vous y ramenons aussitôt."
+  },
+  "status.tryAgain": {
+    "en": "Try again",
+    "t": "Réessayer"
+  },
+  "status.signIn": {
+    "en": "Sign in",
+    "t": "Se connecter"
   }
 }

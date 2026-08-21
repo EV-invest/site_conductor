@@ -1150,5 +1150,45 @@
   "status.requestAccess": {
     "en": "Request access",
     "t": "Запросить доступ"
+  },
+  "status.serverError.eyebrow": {
+    "en": "Server error",
+    "t": "Ошибка сервера"
+  },
+  "status.serverError.headlineLead": {
+    "en": "Our systems are ",
+    "t": "Наши системы "
+  },
+  "status.serverError.headlineAccent": {
+    "en": "recalibrating",
+    "t": "перенастраиваются"
+  },
+  "status.serverError.subtext": {
+    "en": "Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment.",
+    "t": "Что-то сломалось на нашей стороне — не на вашей. Мы уже знаем об этом и восстанавливаем работу. Попробуйте через минуту."
+  },
+  "status.unauthorized.eyebrow": {
+    "en": "Sign-in required",
+    "t": "Требуется вход"
+  },
+  "status.unauthorized.headlineLead": {
+    "en": "This deck is ",
+    "t": "Эта палуба — "
+  },
+  "status.unauthorized.headlineAccent": {
+    "en": "crew only",
+    "t": "только для экипажа"
+  },
+  "status.unauthorized.subtext": {
+    "en": "You need to be signed in to view this page. Sign in and we'll bring you right back.",
+    "t": "Чтобы открыть эту страницу, нужно войти. Войдите — и мы вернём вас сюда же."
+  },
+  "status.tryAgain": {
+    "en": "Try again",
+    "t": "Попробовать снова"
+  },
+  "status.signIn": {
+    "en": "Sign in",
+    "t": "Войти"
   }
 }
