@@ -1150,5 +1150,45 @@
   "status.requestAccess": {
     "en": "Request access",
     "t": "Zugang anfragen"
+  },
+  "status.serverError.eyebrow": {
+    "en": "Server error",
+    "t": "Serverfehler"
+  },
+  "status.serverError.headlineLead": {
+    "en": "Our systems are ",
+    "t": "Unsere Systeme "
+  },
+  "status.serverError.headlineAccent": {
+    "en": "recalibrating",
+    "t": "justieren nach"
+  },
+  "status.serverError.subtext": {
+    "en": "Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment.",
+    "t": "Auf unserer Seite ist etwas ausgefallen — nicht auf Ihrer. Wir sind alarmiert und stellen den Dienst wieder her. Bitte versuchen Sie es gleich erneut."
+  },
+  "status.unauthorized.eyebrow": {
+    "en": "Sign-in required",
+    "t": "Anmeldung erforderlich"
+  },
+  "status.unauthorized.headlineLead": {
+    "en": "This deck is ",
+    "t": "Dieses Deck ist "
+  },
+  "status.unauthorized.headlineAccent": {
+    "en": "crew only",
+    "t": "nur für die Crew"
+  },
+  "status.unauthorized.subtext": {
+    "en": "You need to be signed in to view this page. Sign in and we'll bring you right back.",
+    "t": "Sie müssen angemeldet sein, um diese Seite zu sehen. Melden Sie sich an — wir bringen Sie direkt zurück."
+  },
+  "status.tryAgain": {
+    "en": "Try again",
+    "t": "Erneut versuchen"
+  },
+  "status.signIn": {
+    "en": "Sign in",
+    "t": "Anmelden"
   }
 }

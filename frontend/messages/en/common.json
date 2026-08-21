@@ -286,5 +286,15 @@
   "status.forbidden.subtext": "You don't have the credentials to view this page. If you believe you should, our team can open the right doors.",
   "status.backHome": "Back to home",
   "status.contactTeam": "Contact the team",
-  "status.requestAccess": "Request access"
+  "status.requestAccess": "Request access",
+  "status.serverError.eyebrow": "Server error",
+  "status.serverError.headlineLead": "Our systems are ",
+  "status.serverError.headlineAccent": "recalibrating",
+  "status.serverError.subtext": "Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment.",
+  "status.unauthorized.eyebrow": "Sign-in required",
+  "status.unauthorized.headlineLead": "This deck is ",
+  "status.unauthorized.headlineAccent": "crew only",
+  "status.unauthorized.subtext": "You need to be signed in to view this page. Sign in and we'll bring you right back.",
+  "status.tryAgain": "Try again",
+  "status.signIn": "Sign in"
 }
