@@ -1106,5 +1106,49 @@
   "meta.publication.notFound": {
     "en": "Publication not found",
     "t": "Không tìm thấy ấn phẩm"
+  },
+  "status.notFound.eyebrow": {
+    "en": "Page not found",
+    "t": "Không tìm thấy trang"
+  },
+  "status.notFound.headlineLead": {
+    "en": "You've reached ",
+    "t": "Bạn đã ra tới "
+  },
+  "status.notFound.headlineAccent": {
+    "en": "open water",
+    "t": "vùng biển khơi"
+  },
+  "status.notFound.subtext": {
+    "en": "The page you're looking for has drifted off our coastline — moved, renamed, or never charted. Let's get you back to shore.",
+    "t": "Trang bạn tìm đã trôi khỏi bờ biển của chúng tôi — được chuyển đi, đổi tên, hoặc chưa từng có trên hải đồ. Hãy để chúng tôi đưa bạn về bờ."
+  },
+  "status.forbidden.eyebrow": {
+    "en": "Access forbidden",
+    "t": "Truy cập bị từ chối"
+  },
+  "status.forbidden.headlineLead": {
+    "en": "This harbour is ",
+    "t": "Bến cảng này là "
+  },
+  "status.forbidden.headlineAccent": {
+    "en": "private",
+    "t": "riêng tư"
+  },
+  "status.forbidden.subtext": {
+    "en": "You don't have the credentials to view this page. If you believe you should, our team can open the right doors.",
+    "t": "Bạn không có quyền xem trang này. Nếu bạn cho rằng mình nên có, đội ngũ của chúng tôi có thể mở đúng cánh cửa."
+  },
+  "status.backHome": {
+    "en": "Back to home",
+    "t": "Về trang chủ"
+  },
+  "status.contactTeam": {
+    "en": "Contact the team",
+    "t": "Liên hệ đội ngũ"
+  },
+  "status.requestAccess": {
+    "en": "Request access",
+    "t": "Yêu cầu quyền truy cập"
   }
 }
