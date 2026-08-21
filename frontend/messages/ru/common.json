@@ -1106,5 +1106,49 @@
   "meta.publication.notFound": {
     "en": "Publication not found",
     "t": "Публикация не найдена"
+  },
+  "status.notFound.eyebrow": {
+    "en": "Page not found",
+    "t": "Страница не найдена"
+  },
+  "status.notFound.headlineLead": {
+    "en": "You've reached ",
+    "t": "Вы вышли в "
+  },
+  "status.notFound.headlineAccent": {
+    "en": "open water",
+    "t": "открытое море"
+  },
+  "status.notFound.subtext": {
+    "en": "The page you're looking for has drifted off our coastline — moved, renamed, or never charted. Let's get you back to shore.",
+    "t": "Страницу, которую вы ищете, унесло от нашего побережья — её перенесли, переименовали или никогда не наносили на карту. Вернём вас на берег."
+  },
+  "status.forbidden.eyebrow": {
+    "en": "Access forbidden",
+    "t": "Доступ закрыт"
+  },
+  "status.forbidden.headlineLead": {
+    "en": "This harbour is ",
+    "t": "Эта гавань — "
+  },
+  "status.forbidden.headlineAccent": {
+    "en": "private",
+    "t": "частная"
+  },
+  "status.forbidden.subtext": {
+    "en": "You don't have the credentials to view this page. If you believe you should, our team can open the right doors.",
+    "t": "У вас нет прав для просмотра этой страницы. Если вы считаете, что это ошибка, наша команда откроет нужные двери."
+  },
+  "status.backHome": {
+    "en": "Back to home",
+    "t": "На главную"
+  },
+  "status.contactTeam": {
+    "en": "Contact the team",
+    "t": "Связаться с командой"
+  },
+  "status.requestAccess": {
+    "en": "Request access",
+    "t": "Запросить доступ"
   }
 }

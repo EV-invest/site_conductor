@@ -275,5 +275,16 @@
   "whitepaper.name": "Whitepaper",
   "whitepaper.loading": "Loading the whitepaper… if it doesn't appear,",
   "meta.vacancy.notFound": "Role not found",
-  "meta.publication.notFound": "Publication not found"
+  "meta.publication.notFound": "Publication not found",
+  "status.notFound.eyebrow": "Page not found",
+  "status.notFound.headlineLead": "You've reached ",
+  "status.notFound.headlineAccent": "open water",
+  "status.notFound.subtext": "The page you're looking for has drifted off our coastline — moved, renamed, or never charted. Let's get you back to shore.",
+  "status.forbidden.eyebrow": "Access forbidden",
+  "status.forbidden.headlineLead": "This harbour is ",
+  "status.forbidden.headlineAccent": "private",
+  "status.forbidden.subtext": "You don't have the credentials to view this page. If you believe you should, our team can open the right doors.",
+  "status.backHome": "Back to home",
+  "status.contactTeam": "Contact the team",
+  "status.requestAccess": "Request access"
 }

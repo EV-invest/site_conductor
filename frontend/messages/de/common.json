@@ -1106,5 +1106,49 @@
   "meta.publication.notFound": {
     "en": "Publication not found",
     "t": "Publikation nicht gefunden"
+  },
+  "status.notFound.eyebrow": {
+    "en": "Page not found",
+    "t": "Seite nicht gefunden"
+  },
+  "status.notFound.headlineLead": {
+    "en": "You've reached ",
+    "t": "Sie sind auf "
+  },
+  "status.notFound.headlineAccent": {
+    "en": "open water",
+    "t": "offener See"
+  },
+  "status.notFound.subtext": {
+    "en": "The page you're looking for has drifted off our coastline — moved, renamed, or never charted. Let's get you back to shore.",
+    "t": "Die gesuchte Seite ist von unserer Küste abgetrieben — verschoben, umbenannt oder nie verzeichnet. Bringen wir Sie zurück an Land."
+  },
+  "status.forbidden.eyebrow": {
+    "en": "Access forbidden",
+    "t": "Zugriff verweigert"
+  },
+  "status.forbidden.headlineLead": {
+    "en": "This harbour is ",
+    "t": "Dieser Hafen ist "
+  },
+  "status.forbidden.headlineAccent": {
+    "en": "private",
+    "t": "privat"
+  },
+  "status.forbidden.subtext": {
+    "en": "You don't have the credentials to view this page. If you believe you should, our team can open the right doors.",
+    "t": "Ihnen fehlen die Berechtigungen für diese Seite. Sollte das ein Irrtum sein, öffnet unser Team Ihnen die richtigen Türen."
+  },
+  "status.backHome": {
+    "en": "Back to home",
+    "t": "Zurück zur Startseite"
+  },
+  "status.contactTeam": {
+    "en": "Contact the team",
+    "t": "Team kontaktieren"
+  },
+  "status.requestAccess": {
+    "en": "Request access",
+    "t": "Zugang anfragen"
   }
 }
