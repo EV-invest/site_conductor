@@ -81,8 +81,27 @@ const nextConfig: NextConfig = {
       // this is external and matched against the incoming request, while the
       // rewrite is internal and never re-enters the redirect pipeline. Every
       // source here is itself /en-prefixed, so an unprefixed path never matches.
+      //
+      // The cabinet is the one exception, and has to be: that zone owns
+      // `/{locale}/cabinet/*` as real routes and bounces an unprefixed
+      // `/cabinet/*` to the reader's locale itself. Collapsing `/en/cabinet/*`
+      // back answers that bounce with the path it just left —
+      // `/cabinet/x` -> zone 307 -> `/en/cabinet/x` -> this 308 -> `/cabinet/x`
+      // — an endless loop for every English reader, which is most of them.
+      // `redirects()` runs before dynamic routes (the pipeline note below spells
+      // the order out), so app/[locale]/cabinet stays unreachable for English
+      // while this rule still matches it.
       { source: "/en", destination: "/", permanent: true },
-      { source: "/en/:path*", destination: "/:path*", permanent: true },
+      {
+        // The carve-out is a negative lookahead on the source only; the
+        // destination is untouched. `(?:/|$)` keeps it to the whole segment, so
+        // `/en/cabinets` — a different page — still collapses.
+        // `npm run redirects:check` asserts both halves against Next's own
+        // matcher.
+        source: "/en/:path((?!cabinet(?:/|$)).*)",
+        destination: "/:path*",
+        permanent: true,
+      },
     ];
   },
   // The raw flake-built documents in public/ (whitepaper.*.html,

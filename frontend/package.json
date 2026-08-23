@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "i18n:check": "tsx scripts/i18n-check.mts"
+    "i18n:check": "tsx scripts/i18n-check.mts",
+    "redirects:check": "tsx scripts/redirect-check.mts"
   },
   "dependencies": {
     "@evinvest/analytics": "^0.1.2",
