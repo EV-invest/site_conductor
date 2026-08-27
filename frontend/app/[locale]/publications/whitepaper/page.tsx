@@ -3,26 +3,15 @@ import { messagesFor } from "@/shared/config/i18n";
 import { Container } from "@evinvest/uikit";
 
 import { DocumentReader } from "@/shared/ui/document-reader";
-import { pageMetadata } from "@/shared/seo/page-metadata";
+import { localeMetadata } from "@/shared/seo/locale-metadata";
 import { PageGraph } from "@/shared/seo/page-graph";
 
 // generateMetadata only so the canonical carries the locale prefix — see
 // app/[locale]/team/page.tsx.
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
-  const t = translator(messagesFor(resolved), resolved);
-  return pageMetadata({
-    title: t("meta.whitepaper.title"),
-    description: t("meta.whitepaper.description"),
-    path: "/publications/whitepaper",
-    locale,
-  });
-}
+export const generateMetadata = localeMetadata(
+  "whitepaper",
+  "/publications/whitepaper"
+);
 
 // Filed under /publications with the research it underpins, but it is not a
 // blog-flake article: it has its own flake and lands at public/whitepaper.*, so
