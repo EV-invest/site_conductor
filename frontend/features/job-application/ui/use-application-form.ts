@@ -1,9 +1,7 @@
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 import { createApplication } from "@/entities/job-application";
-import {
-  type ApplicationErrors,
-  validateApplication,
-} from "../model/validation";
+import { useValidatedForm } from "@/shared/hooks/use-validated-form";
+import { validateApplication } from "../model/validation";
 
 export interface VacancyContext {
   slug: string;
@@ -11,8 +9,6 @@ export interface VacancyContext {
   requirements: string[];
   screeningQuestion: string;
 }
-
-export type Status = "idle" | "sending" | "sent" | "error";
 
 const EMPTY = {
   name: "",
@@ -24,18 +20,9 @@ const EMPTY = {
 
 /** State + zod-validated submit for the application form. */
 export function useApplicationForm(vacancy?: VacancyContext) {
-  const [fields, setFields] = useState(EMPTY);
+  // The confirmed requirements are the role branch's own state: only a vacancy
+  // renders checkboxes, and only a vacancy sends them.
   const [checked, setChecked] = useState<Set<string>>(new Set());
-  const [errors, setErrors] = useState<ApplicationErrors>({});
-  const [status, setStatus] = useState<Status>("idle");
-  // A key, not a sentence — see the note in the contact form's hook.
-  const [errorKey, setErrorKey] = useState<string | null>(null);
-
-  const edit = (field: keyof typeof EMPTY) => (value: string) => {
-    setFields(prev => ({ ...prev, [field]: value }));
-    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
-    setStatus(prev => (prev === "error" ? "idle" : prev));
-  };
 
   const toggle = (requirement: string) =>
     setChecked(prev => {
@@ -45,17 +32,11 @@ export function useApplicationForm(vacancy?: VacancyContext) {
       return next;
     });
 
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    const result = validateApplication(fields);
-    if (result.errors) {
-      setErrors(result.errors);
-      return;
-    }
-    setStatus("sending");
-    const { name, email, portfolio, message, screening } = result.data;
-    try {
-      const { data, error } = await createApplication({
+  const form = useValidatedForm({
+    initial: EMPTY,
+    validate: validateApplication,
+    send: ({ name, email, portfolio, message, screening }) =>
+      createApplication({
         body: {
           vacancy_slug: vacancy?.slug,
           name,
@@ -65,18 +46,8 @@ export function useApplicationForm(vacancy?: VacancyContext) {
           confirmed_requirements: vacancy ? [...checked] : [],
           screening_answer: vacancy && screening ? screening : undefined,
         },
-      });
-      if (error || !data) {
-        setErrorKey("form.submitError");
-        setStatus("error");
-        return;
-      }
-      setStatus("sent");
-    } catch {
-      setErrorKey("form.networkError");
-      setStatus("error");
-    }
-  }
+      }),
+  });
 
-  return { fields, edit, checked, toggle, errors, status, errorKey, submit };
+  return { ...form, checked, toggle };
 }
