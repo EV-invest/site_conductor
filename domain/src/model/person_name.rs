@@ -1,13 +1,11 @@
-use serde::{Deserialize, Serialize};
+use crate::{error::DomainError, model::newtype::string_newtype};
 
-use crate::error::DomainError;
-
-/// A person's name as typed into a form. Deliberately loose — just enough to
-/// stop junk and abuse: trimmed, 2–100 characters, letters in any script plus
-/// space/hyphen/apostrophe/period, and at least two actual letters.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct PersonName(String);
+string_newtype! {
+	/// A person's name as typed into a form. Deliberately loose — just enough to
+	/// stop junk and abuse: trimmed, 2–100 characters, letters in any script plus
+	/// space/hyphen/apostrophe/period, and at least two actual letters.
+	PersonName
+}
 
 impl PersonName {
 	pub fn parse(raw: impl Into<String>) -> Result<Self, DomainError> {
@@ -22,14 +20,6 @@ impl PersonName {
 			return Err(DomainError::Validation("name must contain at least 2 letters".to_string()));
 		}
 		Ok(Self(trimmed))
-	}
-
-	pub fn as_str(&self) -> &str {
-		&self.0
-	}
-
-	pub fn into_string(self) -> String {
-		self.0
 	}
 }
 
