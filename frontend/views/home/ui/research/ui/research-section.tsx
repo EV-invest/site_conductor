@@ -5,7 +5,8 @@ import {
   publicationsByKind,
 } from "@/entities/publication";
 
-import { ResearchA, type ResearchReport } from "./research";
+import { ResearchA } from "./research";
+import type { ResearchReport } from "./research-report";
 
 /**
  * Server half of the Research section: reads the catalogue and hands the client
