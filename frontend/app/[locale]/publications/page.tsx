@@ -1,7 +1,6 @@
-import { messagesFor } from "@/shared/config/i18n";
-import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
 import { PublicationsView } from "@/views/publications";
-import { pageMetadata } from "@/shared/seo/page-metadata";
+import { metadataFor } from "@/shared/seo/locale-metadata";
 
 // generateMetadata only so the canonical carries the locale prefix — see
 // app/[locale]/team/page.tsx.
@@ -11,16 +10,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // Titles and descriptions are what a reader sees in the browser tab and in a
-  // shared link — the one place the page's language shows before its body does.
-  const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
-  const t = translator(messagesFor(resolved), resolved);
-  const base = pageMetadata({
-    title: t("meta.publications.title"),
-    description: t("meta.publications.description"),
-    path: "/publications",
-    locale,
-  });
+  // Not `localeMetadata` like the other static pages: this one extends the
+  // result rather than returning it, so it needs the Metadata itself.
+  const base = metadataFor(locale, "publications", "/publications");
 
   // `types` adds <link rel="alternate" type="application/rss+xml">, which is how
   // newsreaders and aggregators discover the feed from the hub page. Spread onto
