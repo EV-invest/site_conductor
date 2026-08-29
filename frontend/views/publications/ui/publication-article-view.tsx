@@ -1,10 +1,8 @@
-import Link from "next/link";
 import { Container } from "@evinvest/uikit";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { translator, type Locale } from "@evinvest/i18n";
 
 import {
   hasTranslatedDocument,
-  formatPublicationDate,
   toPlateCover,
   type Publication,
 } from "@/entities/publication";
@@ -12,7 +10,8 @@ import { DocumentReader } from "@/shared/ui/document-reader";
 import { MediaPlate } from "@/shared/ui/media-plate";
 import { messagesFor } from "@/shared/config/i18n";
 
-import { kindLabel, pdfHref } from "../model/presentation";
+import { pdfHref } from "../model/presentation";
+import { PublicationArticleHeader } from "./publication-article-header";
 import { PublicationStructuredData } from "./publication-structured-data";
 
 /**
@@ -37,37 +36,7 @@ export function PublicationArticleView({
     <main className="min-h-screen bg-main-black pt-32 text-main-mist">
       <PublicationStructuredData publication={publication} />
       <Container>
-        <header className="mx-auto max-w-3xl">
-          <Link
-            href={localePath(locale, "/publications")}
-            className="font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/45 transition-colors hover:text-main-mist"
-          >
-            ← {t("publications.allPublications")}
-          </Link>
-          <div className="mt-8 flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
-            <span className="flex items-center gap-2.5 text-main-accent-t1">
-              <span aria-hidden className="size-[7px] bg-main-accent-t1" />
-              {kindLabel(publication.kind, t)}
-            </span>
-            {/* <time> so the dateline is machine-readable on its own, not only
-                inside the JSON-LD block. */}
-            <time dateTime={publication.date} className="text-main-mist/40">
-              {formatPublicationDate(publication.date, "long", locale)}
-            </time>
-          </div>
-          <h1 className="mt-5 font-serif-display text-4xl leading-tight font-bold text-white sm:text-5xl">
-            {publication.title}
-          </h1>
-          <p className="mt-5 font-serif-display text-lg leading-relaxed text-main-mist/90 italic">
-            {publication.dek}
-          </p>
-          {publication.author && (
-            <p className="mt-7 border-t border-main-mist/12 pt-5 font-mono-tech text-[11px] tracking-[0.14em] text-main-mist/50 uppercase">
-              {publication.author}
-              {publication.role ? ` · ${publication.role}` : ""}
-            </p>
-          )}
-        </header>
+        <PublicationArticleHeader publication={publication} locale={locale} />
 
         {cover && (
           <div className="mt-12">
