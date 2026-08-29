@@ -14,36 +14,22 @@
 //     React runtime exists to hydrate it.
 //   - The bar is `fixed` and takes no layout space; the shell CSS pads the zone
 //     document below it via the `--ev-shell-offset` token (build-shell.mts).
+// The parts sit beside this file, composed by BrandHeader and imported below.
 import type { ElementType, ReactNode } from "react";
 import Link from "next/link";
-import { Container, Logo } from "@evinvest/uikit";
 import { HeaderActions } from "@/shared/ui/header-actions";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { messagesFor } from "@/shared/config/i18n";
+import { HeaderBar } from "./header-bar";
+import { HeaderMobileMenu } from "./header-mobile-menu";
+import {
+  DEFAULT_MENU_LABELS,
+  type HeaderMenuLabels,
+  type HeaderNavItem,
+} from "./header-shared";
 import { NAV_ITEMS, localizeNav } from "./nav-items";
 
-export interface HeaderNavItem {
-  label: string;
-  href: string;
-}
-
-/** Accessible names for the menu controls, translated by the caller. */
-export interface HeaderMenuLabels {
-  open: string;
-  close: string;
-  menu: string;
-}
-
-const DEFAULT_MENU_LABELS: HeaderMenuLabels = {
-  open: "Open menu",
-  close: "Close menu",
-  menu: "Site menu",
-};
-
-/** Milliseconds before the first drawer row moves — the panel leads, rows follow. */
-const MENU_ENTER_DELAY = 90;
-/** Milliseconds between drawer rows. */
-const MENU_STEP = 45;
+export type { HeaderNavItem, HeaderMenuLabels };
 
 export interface BrandHeaderProps {
   nav: readonly HeaderNavItem[];
@@ -77,183 +63,21 @@ export function BrandHeader({
       data-slot="header"
       className="group/header fixed top-0 left-0 z-[60] w-full"
     >
-      <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md group-data-[zone=cabinet]/header:border-main-mist/10 group-data-[zone=cabinet]/header:bg-main-black group-data-[zone=cabinet]/header:h-[calc(5.5rem+1px)] group-data-[zone=cabinet]/header:py-0">
-        <Container className="flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] h-full items-center gap-4 group-data-[zone=cabinet]/header:max-w-none group-data-[zone=cabinet]/header:pl-[18px] group-data-[zone=cabinet]/header:pr-8">
-          <L
-            href={homeHref}
-            className="flex items-center gap-3"
-            data-slot="header-logo"
-            aria-label={homeLabel}
-          >
-            <Logo src="/assets/logo.svg" className="h-10 w-10 text-white" />
-            <div className="flex flex-col">
-              <span className="font-serif-display text-lg font-bold tracking-wider text-white">
-                EV INVESTMENT
-              </span>
-              <span className="font-mono-tech text-[9px] uppercase tracking-[0.3em] text-main-accent-t1">
-                Quy Nhon Fund
-              </span>
-            </div>
-          </L>
-
-          {/* The underline is a scaled pseudo-element, not a border: scaling a
-              composited transform costs no layout, and `origin-left` makes it
-              wipe in from the start of the word rather than grow from centre. */}
-          <nav className="hidden items-center gap-6 font-mono-tech text-xs uppercase tracking-widest lg:flex">
-            {nav.map(item => (
-              <L
-                key={item.href}
-                href={item.href}
-                className="relative text-main-mist/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-main-accent-t1 after:transition-transform after:duration-300 after:ease-out hover:text-main-accent-t1 hover:after:scale-x-100 focus-visible:text-main-accent-t1 focus-visible:after:scale-x-100"
-              >
-                {item.label}
-              </L>
-            ))}
-          </nav>
-
-          <div
-            data-slot="header-actions"
-            className="flex items-center gap-3 lg:justify-self-end"
-          >
-            {cta}
-            <button
-              type="button"
-              data-menu-toggle="open"
-              aria-label={menuLabels.open}
-              aria-expanded="false"
-              aria-haspopup="menu"
-              className="flex size-10 items-center justify-center text-white lg:hidden"
-            >
-              <svg
-                className="size-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </Container>
-      </div>
-
-      {/* Scrim. Clicking it closes — `data-menu-toggle` is matched by the
-          delegated handler, so no listener of its own. Kept below the panel and
-          above everything else the page can paint. */}
-      <div
-        data-slot="header-scrim"
-        data-menu-toggle="close"
-        aria-hidden
-        className="invisible fixed inset-0 z-[65] bg-main-black/70 opacity-0 backdrop-blur-xs transition-[opacity,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:opacity-100 lg:hidden"
+      <HeaderBar
+        nav={nav}
+        cta={cta}
+        linkComponent={L}
+        homeHref={homeHref}
+        homeLabel={homeLabel}
+        menuLabels={menuLabels}
       />
-
-      {/* Below-`lg` navigation: an aside drawer, not a full-screen takeover.
-          It stays mounted and slides on one composited property, so open/close
-          reverses mid-flight instead of restarting.
-          The property is `translate`, NOT `transform`: Tailwind v4 compiles
-          `translate-x-*` to the standalone `translate` property, so a
-          transition list naming `transform` matches nothing and the panel
-          teleports. Same trap on the rows below.
-          `visibility` is in the transition list on purpose: it is discretely
-          animated, so it flips to visible instantly on open and waits for the
-          slide-out to finish on close — which is also what keeps the closed
-          drawer out of the tab order and the accessibility tree, with no JS.
-          Any `<a>`/`<button>` click inside closes it (delegation in
-          header-behavior.ts), so the app-side CTA needs no wiring. */}
-      <aside
-        data-slot="header-mobile-overlay"
-        aria-label={menuLabels.menu}
-        className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-main-mist/10 bg-main-black shadow-2xl shadow-main-black/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
-      >
-        {/* The chip, not a "MENU" label. The label named the panel you were
-            already looking at; the chip says who you are signed in as, which is
-            the one thing this panel could tell you and didn't. It arrives on the
-            same cascade as the rows but ahead of them — identity first, then
-            destinations. `min-w-0` so a long address truncates inside the chip
-            rather than pushing the close button off the edge. */}
-        <div className="flex h-20 shrink-0 items-center justify-between gap-3 px-6">
-          <div
-            style={{ transitionDelay: `${MENU_ENTER_DELAY}ms` }}
-            className="min-w-0 flex-1 translate-x-4 opacity-0 transition-[opacity,translate] duration-300 ease-out group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
-          >
-            {mobileCta ?? cta}
-          </div>
-          <button
-            type="button"
-            data-menu-toggle="close"
-            aria-label={menuLabels.close}
-            className="-mr-2 flex size-10 items-center justify-center rounded-lg text-white transition-colors outline-none hover:bg-main-mist/10 focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <svg
-              className="size-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <nav className="flex flex-col px-6 font-mono-tech text-sm uppercase tracking-widest">
-          {nav.map((item, i) => (
-            <L
-              key={item.href}
-              href={item.href}
-              // The rows arrive a beat behind the panel, one after another. The
-              // delay is inline because it differs per row; on close it plays
-              // in reverse, unseen, behind the drawer already sliding away.
-              style={{
-                transitionDelay: `${MENU_ENTER_DELAY + i * MENU_STEP}ms`,
-              }}
-              className="translate-x-4 border-b border-main-mist/10 py-4 text-main-mist/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-main-accent-t1 focus-visible:text-main-accent-t1 group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
-            >
-              {item.label}
-            </L>
-          ))}
-        </nav>
-
-        <div className="flex-1" />
-
-        <div className="px-6 pb-10">
-          <button
-            type="button"
-            data-action="signout"
-            // Starts hidden — the static markup has no session awareness of its
-            // own; header-behavior.ts reveals it only once /api/auth/session
-            // confirms a signed-in principal.
-            hidden
-            // Sign-out arrives last and from below, not from the side like the
-            // rows: it is the one destructive control here, and giving it a
-            // different vector stops it reading as the final item in the same
-            // list. `hidden` is what gates it, so the delay only ever plays for
-            // a signed-in visitor.
-            style={{ transitionDelay: `${MENU_ENTER_DELAY + 5 * MENU_STEP}ms` }}
-            className="flex translate-y-2 items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 opacity-0 transition-[opacity,translate,background-color] duration-300 ease-out outline-none hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring group-data-[menu-open]/header:translate-y-0 group-data-[menu-open]/header:opacity-100"
-          >
-            <svg
-              className="size-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            Sign out
-          </button>
-        </div>
-      </aside>
+      <HeaderMobileMenu
+        nav={nav}
+        cta={cta}
+        mobileCta={mobileCta}
+        linkComponent={L}
+        menuLabels={menuLabels}
+      />
     </header>
   );
 }
