@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
 	architecture::{AggregateRoot, Entity, Id},
 	error::DomainError,
+	model::newtype::string_newtype,
 };
 
 pub type VacancyId = Id<VacancyTag, uuid::Uuid>;
@@ -52,11 +53,11 @@ impl VacancyCategory {
 	}
 }
 
-/// URL-safe identifier for a role (`investment-analyst`). The slug — not the
-/// UUID — is what the detail route `/hiring/{slug}` resolves against.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct Slug(String);
+string_newtype! {
+	/// URL-safe identifier for a role (`investment-analyst`). The slug — not the
+	/// UUID — is what the detail route `/hiring/{slug}` resolves against.
+	Slug
+}
 
 impl Slug {
 	pub fn parse(raw: impl Into<String>) -> Result<Self, DomainError> {
@@ -67,14 +68,6 @@ impl Slug {
 			return Err(DomainError::Validation(format!("invalid slug: {raw}")));
 		}
 		Ok(Self(s.to_string()))
-	}
-
-	pub fn as_str(&self) -> &str {
-		&self.0
-	}
-
-	pub fn into_string(self) -> String {
-		self.0
 	}
 }
 

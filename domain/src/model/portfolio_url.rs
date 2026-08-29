@@ -1,13 +1,11 @@
-use serde::{Deserialize, Serialize};
+use crate::{error::DomainError, model::newtype::string_newtype};
 
-use crate::error::DomainError;
-
-/// A candidate-supplied http(s) link. The check is hand-rolled and structural
-/// — scheme, non-empty host, no whitespace/control characters, ≤ 2048 chars —
-/// because a full URL parser is not worth a dependency for one optional field.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct PortfolioUrl(String);
+string_newtype! {
+	/// A candidate-supplied http(s) link. The check is hand-rolled and structural
+	/// — scheme, non-empty host, no whitespace/control characters, ≤ 2048 chars —
+	/// because a full URL parser is not worth a dependency for one optional field.
+	PortfolioUrl
+}
 
 impl PortfolioUrl {
 	pub fn parse(raw: impl Into<String>) -> Result<Self, DomainError> {
@@ -27,14 +25,6 @@ impl PortfolioUrl {
 			return Err(DomainError::Validation("portfolio_url must include a host".to_string()));
 		}
 		Ok(Self(trimmed))
-	}
-
-	pub fn as_str(&self) -> &str {
-		&self.0
-	}
-
-	pub fn into_string(self) -> String {
-		self.0
 	}
 }
 

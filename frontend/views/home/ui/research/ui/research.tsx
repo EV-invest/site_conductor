@@ -1,36 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "motion/react";
-import { ChevronRight, ArrowUpRight, BookOpen } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
-import { cn } from "@/shared/lib/utils";
-import { Text, Tier } from "@/shared/ui/text";
-import { Logo } from "@/shared/ui/logo";
-import { Reveal, SplitText } from "@/shared/ui/motion";
-import { accented } from "@/shared/ui/accented";
-import { useAnalytics } from "@/features/analytics";
+import { type Locale } from "@evinvest/i18n";
+import { Reveal } from "@/shared/ui/motion";
 
-// Report library. The list (left) and the reading pane (right) both render
-// from this — switching a card just moves the index, and the pane cross-fades.
-// The data comes from the publication catalogue via the server wrapper in
-// ./research-section, so this section can no longer drift from /publications
-// (it used to keep its own copy, including a slug that pointed at the wrong
-// report).
-export type ResearchReport = {
-  cat: string;
-  title: string;
-  paneTitle: string;
-  slug: string;
-  date: string;
-  quote: string;
-  body: string[];
-};
+import { ResearchHeading } from "./research-heading";
+import { ResearchMenu } from "./research-menu";
+import { ResearchPane } from "./research-pane";
+import { ResearchTabs } from "./research-tabs";
+import type { ResearchReport } from "./research-report";
 
+/// The section is one client island end to end: every part of it either reads
+/// or moves `active`, the index of the report being read. The tab strip
+/// (mobile) and the card list (desktop) set it; the pane renders it.
 export function ResearchA({
   reports,
   locale,
@@ -38,13 +21,8 @@ export function ResearchA({
   reports: ResearchReport[];
   locale: Locale;
 }) {
-  const t = useT();
   const [active, setActive] = useState(0);
-  const capture = useAnalytics();
-  const router = useRouter();
   const report = reports[active];
-  const goToReport = () =>
-    router.push(localePath(locale, `/publications/${report.slug}`));
 
   // 4. RESEARCH SECTION — quiet navy base (same family as the page) with a
   //    faint dot-grid texture so it reads as its own "document / library" zone
@@ -55,197 +33,24 @@ export function ResearchA({
       className="research-texture py-24 text-main-mist relative overflow-hidden border-y border-main-mist/10"
     >
       <Container className="relative z-10">
-        <Reveal className="max-w-3xl mb-16">
-          <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block mb-3">
-            {t("home.research.eyebrow")}
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
-            <SplitText inView>
-              {accented({
-                text: t("home.research.title"),
-                className: "italic text-main-accent-t1 font-serif",
-              })}
-            </SplitText>
-          </h2>
-          <Tier tier="main">
-            <Text className="mt-4">{t("home.research.intro")}</Text>
-          </Tier>
-        </Reveal>
+        <ResearchHeading />
 
         {/* Research Carousel / Interactive List */}
         <Reveal
           delay={0.05}
           className="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-0"
         >
-          {/* Mobile: browser-style tabs joined to the article. A continuous
-              bottom rule runs under the strip, broken only by the active tab,
-              which drops over it (-mb-px) to share the pane's black fill. */}
-          <div className="flex items-stretch border-b border-main-mist/10 lg:hidden">
-            {reports.map((r, idx) => {
-              const on = active === idx;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setActive(idx)}
-                  className={cn(
-                    "flex-1 border-l border-main-mist/10 first:border-l-0 transition-colors",
-                    on
-                      ? "-mb-px border-t-2 border-t-main-accent-t1 bg-main-black"
-                      : "border-t border-t-main-mist/10 bg-main-card/30 hover:bg-main-card/60"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "block py-3 px-2 text-center font-mono-tech text-[8px] uppercase tracking-[0.15em] leading-tight",
-                      on ? "text-main-accent-t1" : "text-main-mist/45"
-                    )}
-                  >
-                    {r.cat}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Research Selection Menu (desktop card list) */}
-          <div className="hidden lg:block lg:col-span-1 space-y-4">
-            {reports.map((r, idx) => (
-              <div
-                key={idx}
-                onClick={() => setActive(idx)}
-                className={cn(
-                  "p-6 border border-l-2 cursor-pointer transition-all duration-300",
-                  active === idx
-                    ? "research-panel border-main-mist/10 border-l-main-accent-t1 shadow-lg shadow-main-black/50"
-                    : "bg-main-card/40 border-main-mist/10 border-l-transparent hover:bg-main-card/70 hover:border-l-main-mist/30"
-                )}
-              >
-                <span className="text-[10px] font-mono-tech text-main-accent-t1 uppercase tracking-widest block mb-2">
-                  {r.cat}
-                </span>
-                <h4 className="font-serif-display text-lg text-white font-bold mb-3">
-                  {r.title}
-                </h4>
-                <div className="flex justify-between items-center font-mono-tech text-[10px] text-main-mist/40">
-                  <span>{r.date}</span>
-                  <span className="flex items-center gap-1">
-                    {t("home.research.read")}{" "}
-                    <ChevronRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Research Preview Content Pane — darker, opaque reading field so the
-              dot texture stops at the edge and the dim body text is easy to focus on.
-              `.research-panel` adds a soft warm "low sun" from the top-left. */}
-          <motion.div
-            layout
-            transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
-            role="link"
-            tabIndex={0}
-            aria-label={t("home.research.readAria", {
-              title: report.paneTitle,
-            })}
-            onClick={goToReport}
-            onKeyDown={e => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                goToReport();
-              }
-            }}
-            className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-main-accent-t1/60"
-          >
-            <div>
-              <div className="border-b border-main-mist/10 pb-6 mb-8">
-                <span className="text-xs font-mono-tech text-main-accent-t1 uppercase tracking-widest hidden lg:block mb-1">
-                  {report.cat}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-serif-display text-white font-bold">
-                  {report.paneTitle}
-                </h3>
-              </div>
-
-              <AnimatePresence mode="popLayout">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className="prose prose-sm text-main-mist/70 font-light max-w-none space-y-6 leading-relaxed"
-                >
-                  <p className="font-serif-display italic text-lg text-main-mist/90">
-                    &quot;{report.quote}&quot;
-                  </p>
-                  {report.body.map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            <motion.div
-              layout="position"
-              onClick={e => e.stopPropagation()}
-              className="mt-8 pt-6 border-t border-main-mist/10 flex flex-row justify-between items-center gap-3"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-main-accent-t1/15 border border-main-accent-t1/30 hidden sm:flex items-center justify-center text-main-accent-t1">
-                  <Logo className="w-6 h-6" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold text-white truncate">
-                    {t("home.research.department")}
-                  </p>
-                  <Text
-                    variant="secondary"
-                    className="text-[10px] font-mono-tech truncate hidden sm:block"
-                  >
-                    {t("home.research.leadAuthor")}
-                  </Text>
-                </div>
-              </div>
-              <div className="flex shrink-0 gap-2">
-                <Link
-                  href={localePath(locale, `/publications/${report.slug}`)}
-                  className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                  onClick={() =>
-                    capture("cta_clicked", {
-                      cta: "read_report",
-                      report: report.slug,
-                    })
-                  }
-                >
-                  <span className="sm:hidden">{t("home.research.read")}</span>
-                  <span className="hidden sm:inline">
-                    {t("home.research.readFull")}
-                  </span>
-                  <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
-                </Link>
-                <a
-                  href={`/publications/${report.slug}.pdf`}
-                  download
-                  className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
-                  onClick={() =>
-                    capture("cta_clicked", {
-                      cta: "download_report",
-                      report: report.slug,
-                    })
-                  }
-                >
-                  <span className="sm:hidden">
-                    {t("home.research.download")}
-                  </span>
-                  <span className="hidden sm:inline">
-                    {t("home.research.downloadFull")}
-                  </span>
-                  <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
+          <ResearchTabs
+            reports={reports}
+            active={active}
+            onSelect={setActive}
+          />
+          <ResearchMenu
+            reports={reports}
+            active={active}
+            onSelect={setActive}
+          />
+          <ResearchPane report={report} active={active} locale={locale} />
         </Reveal>
       </Container>
     </section>

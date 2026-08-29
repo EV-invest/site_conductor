@@ -1,13 +1,11 @@
-use serde::{Deserialize, Serialize};
+use crate::{error::DomainError, model::newtype::string_newtype};
 
-use crate::error::DomainError;
-
-/// Free-text body of a form submission (contact message, application letter,
-/// screening answer). Trimmed, 1–5000 characters. `field` names the form field
-/// in the error so the API surfaces per-field messages.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct MessageBody(String);
+string_newtype! {
+	/// Free-text body of a form submission (contact message, application letter,
+	/// screening answer). Trimmed, 1–5000 characters. `field` names the form field
+	/// in the error so the API surfaces per-field messages.
+	MessageBody
+}
 
 impl MessageBody {
 	pub fn parse(field: &'static str, raw: impl Into<String>) -> Result<Self, DomainError> {
@@ -19,14 +17,6 @@ impl MessageBody {
 			return Err(DomainError::Validation(format!("{field} must be at most 5000 characters")));
 		}
 		Ok(Self(trimmed))
-	}
-
-	pub fn as_str(&self) -> &str {
-		&self.0
-	}
-
-	pub fn into_string(self) -> String {
-		self.0
 	}
 }
 

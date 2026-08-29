@@ -11,27 +11,17 @@ import {
   ShortcutsDialog,
   usePublicationSearch,
 } from "@/features/publication-search";
-import { cn } from "@/shared/lib/utils";
 
-import { href } from "../model/presentation";
-import { EntryCard } from "./entry-card";
 import { FilterChips, type KindFilter } from "./filter-chips";
-import { LeadEntry } from "./lead-entry";
-
-// Module scope: these are `useMemo` deps inside the hook, so inline lambdas
-// would re-score the whole catalogue on every render.
-const getTitle = (p: Publication) => p.title;
-const getText = (p: Publication) => `${p.dek} ${p.text ?? ""}`;
-const getHref = (p: Publication) => href(p);
-
-const RESULTS_ID = "publication-results";
-const rowId = (slug: string) => `publication-${slug}`;
-
-// Keyboard selection is a roving highlight, not a listbox: the cards stay
-// ordinary links with several interactive descendants each, which `role=option`
-// forbids. So the highlight is styling plus a live region — no ARIA widget
-// semantics we cannot honour.
-const SELECTED = "outline-2 outline-offset-8 outline-main-accent-t1/60";
+import {
+  RESULTS_ID,
+  countsByKind,
+  getHref,
+  getText,
+  getTitle,
+  rowId,
+} from "./publication-index-shared";
+import { PublicationResults } from "./publication-results";
 
 export function PublicationIndex({
   publications,
@@ -43,15 +33,7 @@ export function PublicationIndex({
   const t = useT();
   const [kind, setKind] = useState<KindFilter>("all");
 
-  const counts = useMemo(
-    () => ({
-      all: publications.length,
-      "field-note": publications.filter(p => p.kind === "field-note").length,
-      research: publications.filter(p => p.kind === "research").length,
-      whitepaper: publications.filter(p => p.kind === "whitepaper").length,
-    }),
-    [publications]
-  );
+  const counts = useMemo(() => countsByKind(publications), [publications]);
 
   const items = useMemo(
     () =>
@@ -83,8 +65,6 @@ export function PublicationIndex({
   // The lead only earns its extra room in the resting state: once someone is
   // searching or filtering, every result deserves equal weight.
   const showLead = query === "" && kind === "all" && results.length > 0;
-  const grid = showLead ? results.slice(1) : results;
-  const gridOffset = showLead ? 1 : 0;
 
   return (
     <>
@@ -120,42 +100,13 @@ export function PublicationIndex({
       </p>
 
       <div id={RESULTS_ID} className="mt-14">
-        {results.length === 0 ? (
-          <p className="font-light text-main-mist/55" role="status">
-            {query === ""
-              ? t("publications.empty.filter")
-              : t("publications.empty.search", { query })}
-          </p>
-        ) : (
-          <>
-            {showLead && (
-              <LeadEntry
-                publication={results[0]}
-                locale={locale}
-                id={rowId(results[0].slug)}
-                className={cn(selectedIndex === 0 && SELECTED)}
-              />
-            )}
-            <div
-              className={cn(
-                "grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3",
-                showLead && "mt-16"
-              )}
-            >
-              {grid.map((publication, index) => (
-                <EntryCard
-                  locale={locale}
-                  key={publication.slug}
-                  publication={publication}
-                  id={rowId(publication.slug)}
-                  className={cn(
-                    selectedIndex === index + gridOffset && SELECTED
-                  )}
-                />
-              ))}
-            </div>
-          </>
-        )}
+        <PublicationResults
+          results={results}
+          query={query}
+          showLead={showLead}
+          selectedIndex={selectedIndex}
+          locale={locale}
+        />
       </div>
 
       <ShortcutsDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
