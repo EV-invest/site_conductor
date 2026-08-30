@@ -143,13 +143,9 @@
     "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
     "t": "Вопросы о вакансии, инвестициях или одном из наших прибрежных проектов? Напишите нам — ответит человек, а не бот."
   },
-  "contact.channel.hiring": {
-    "en": "Hiring",
-    "t": "Вакансии"
-  },
-  "contact.channel.investors": {
-    "en": "Investors",
-    "t": "Инвесторам"
+  "contact.channel.general": {
+    "en": "Email",
+    "t": "Почта"
   },
   "contact.office.hq.city": {
     "en": "Quy Nhơn",
@@ -564,8 +560,8 @@
     "t": "Мы ответим в любом случае."
   },
   "vacancy.apply.point3": {
-    "en": "Questions first? hiring@evinvest.vn",
-    "t": "Есть вопросы? hiring@evinvest.vn"
+    "en": "Questions first? admin@evinvest.ltd",
+    "t": "Есть вопросы? admin@evinvest.ltd"
   },
   "home.hero.headline.a": {
     "en": "Invest in *China+1*\nThrough *Vietnam*",

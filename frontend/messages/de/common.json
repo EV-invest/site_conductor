@@ -143,13 +143,9 @@
     "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
     "t": "Fragen zu einer Position, einer Investition oder einem unserer Küstenprojekte? Schreiben Sie uns — ein Mensch, kein Bot, antwortet."
   },
-  "contact.channel.hiring": {
-    "en": "Hiring",
-    "t": "Karriere"
-  },
-  "contact.channel.investors": {
-    "en": "Investors",
-    "t": "Investoren"
+  "contact.channel.general": {
+    "en": "Email",
+    "t": "E-Mail"
   },
   "contact.office.hq.city": {
     "en": "Quy Nhơn",
@@ -564,8 +560,8 @@
     "t": "Sie erhalten in jedem Fall eine Rückmeldung."
   },
   "vacancy.apply.point3": {
-    "en": "Questions first? hiring@evinvest.vn",
-    "t": "Vorab Fragen? hiring@evinvest.vn"
+    "en": "Questions first? admin@evinvest.ltd",
+    "t": "Vorab Fragen? admin@evinvest.ltd"
   },
   "home.hero.headline.a": {
     "en": "Invest in *China+1*\nThrough *Vietnam*",

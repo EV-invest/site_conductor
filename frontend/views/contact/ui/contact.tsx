@@ -50,12 +50,8 @@ export function ContactView({ locale }: { locale: Locale }) {
               </p>
               <div className="mt-9 flex flex-wrap gap-10">
                 <Channel
-                  label={t("contact.channel.hiring")}
-                  value="hiring@evinvest.vn"
-                />
-                <Channel
-                  label={t("contact.channel.investors")}
-                  value="invest@evinvest.vn"
+                  label={t("contact.channel.general")}
+                  value="admin@evinvest.ltd"
                 />
               </div>
               <div className="mt-10 grid gap-6 border-t border-white/[0.06] pt-8 sm:grid-cols-2">
