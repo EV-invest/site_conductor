@@ -33,6 +33,13 @@ export async function generateMetadata({
     description: publication.dek,
     path: `/publications/${slug}`,
     locale,
+    // The card is translated (title, dek); the *document* usually is not — it is
+    // a compiled Typst report from the blog repo, and `locales` is its record of
+    // where it exists. So the locales it does not cover canonicalise to the
+    // English URL rather than advertising five language versions of one English
+    // body — the duplicate-content trap shared/config/i18n.ts is guarding
+    // against, and the one place indexing all five locales could have sprung it.
+    contentLocales: publication.locales,
     image: coverStill(publication),
     type: "article",
     article: {

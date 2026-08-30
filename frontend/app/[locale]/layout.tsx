@@ -12,9 +12,17 @@ import { StatusCopyProvider } from "@/shared/ui/status-copy";
 export { viewport } from "@/application/metadata";
 
 // Locale-aware only in the one respect that matters at this level: whether the
-// locale may be indexed. Per-URL hreflang lives in app/sitemap.ts, where the
-// path is actually known — emitting it here would stamp every page with the same
-// alternates, which is worse than none.
+// locale may be indexed. All five are today, so the `noindex` branch below is
+// dormant — it stays because it is the kill switch shared/config/i18n.ts
+// documents: drop a locale from INDEXED_LOCALES and every page beneath it stops
+// being advertised, in one edit.
+//
+// Per-URL hreflang is emitted where the path is actually known — the <head>
+// links in shared/seo/page-metadata.ts (which every page reaches through
+// pageMetadata) and the <xhtml:link> entries in app/sitemap.ts, both built by
+// shared/seo/hreflang.ts so they cannot disagree. Never here: this layout sees
+// no path, so it would stamp every page with the same alternates, which is
+// worse than none.
 export async function generateMetadata({
   params,
 }: {
