@@ -15,6 +15,7 @@ import { Buffer } from "node:buffer";
 // once shipped an image whose markup pointed at /shell assets that weren't in
 // it). Statically imported so a build that skips generation fails here, and the
 // standalone output traces it: the per-request cost is one concat.
+import { DEFAULT_LOCALE, isLocale, type Locale } from "@evinvest/i18n";
 import shell from "../public/shell/manifest.json";
 
 const HOP_BY_HOP = [
@@ -54,7 +55,11 @@ const HEAD_INSERT =
   `<link rel="stylesheet" href="${shell.css}">` +
   `<script src="${shell.spanJs}"></script>` +
   `<script defer src="${shell.js}"></script>`;
-const BODY_INSERT = shell.fragment;
+// One prerendered header per locale (scripts/build-shell.mts). The zone's own
+// pages are localised; its chrome has to be too, or the only links out of the
+// cabinet point at the English site and drag the reader's language back with
+// them — see the fragment comment in build-shell.
+const FRAGMENTS = shell.fragments as Record<Locale, string>;
 
 // A zone whose header wants a zone-specific treatment (e.g. the cabinet's
 // full-bleed bordered bar) is tagged at inject time: the server already knows
@@ -62,12 +67,33 @@ const BODY_INSERT = shell.fragment;
 // frame — the styling variants key off it with no client round-trip and no
 // reflow. Only the header root's exact `data-slot="header"` is patched (not the
 // `data-slot="header-mobile-overlay"` sibling, whose value differs).
-function bodyInsertFor(headerZone: string | undefined): string {
-  if (!headerZone) return BODY_INSERT;
-  return BODY_INSERT.replace(
+function bodyInsertFor(
+  headerZone: string | undefined,
+  locale: Locale
+): string {
+  const fragment = FRAGMENTS[locale] ?? FRAGMENTS[DEFAULT_LOCALE];
+  if (!headerZone) return fragment;
+  return fragment.replace(
     'data-slot="header"',
     `data-slot="header" data-zone="${headerZone}"`
   );
+}
+
+/**
+ * The locale of the zone URL being proxied — the first segment of
+ * `/{locale}/cabinet/…`.
+ *
+ * Read straight off the path rather than through `splitLocalePath`, which
+ * normalises an explicit `/en` prefix away to the default locale. That is the
+ * right reading for the public site, where English is unprefixed; here the zone
+ * genuinely serves `/en/cabinet/*` as a real route and both spellings must land
+ * on the English fragment anyway, so the simpler read is also the honest one.
+ * Anything unrecognised (a zone with no locale in its path, e.g. /rea) falls
+ * back to the default.
+ */
+function localeOf(pathname: string): Locale {
+  const first = pathname.split("/")[1];
+  return isLocale(first) ? first : DEFAULT_LOCALE;
 }
 
 export async function proxyZone(
@@ -136,7 +162,7 @@ export async function proxyZone(
   const body =
     isHtml && upstream.body
       ? upstream.body.pipeThrough(
-          shellInjector(bodyInsertFor(opts?.headerZone))
+          shellInjector(bodyInsertFor(opts?.headerZone, localeOf(url.pathname)))
         )
       : upstream.body;
   return new Response(body, {

@@ -30,8 +30,10 @@ import { transformSync } from "esbuild";
 import postcss, { AtRule, type ChildNode } from "postcss";
 import tailwindcss from "@tailwindcss/postcss";
 
+import { LOCALES, localePath, translator, type Locale } from "@evinvest/i18n";
 import { BrandHeader } from "../application/layout/header";
-import { NAV_ITEMS } from "../application/layout/nav-items";
+import { NAV_ITEMS, localizeNav } from "../application/layout/nav-items";
+import { messagesFor } from "../shared/config/i18n";
 import registry from "../mfe-registry.json";
 import { spanEnterScript } from "./span-enter";
 
@@ -44,13 +46,45 @@ if (!chip) throw new Error("cabinet.account missing from mfe-registry.json");
 // Mirrors the conductor's own CTA wiring in app/layout.tsx: the bar chip hides
 // below `sm`; the overlay carries the full-width variant. The raw tag is
 // self-registering — the fragment appends its module script after the markup.
-const headerHtml = renderToStaticMarkup(
-  createElement(BrandHeader, {
-    nav: NAV_ITEMS,
-    cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
-    mobileCta: createElement(chip.tag, { class: "flex w-full" }),
-  })
-);
+//
+// One fragment PER LOCALE, and that is load-bearing rather than a nicety. This
+// header is the only chrome a zone has, so its links are how a reader leaves the
+// cabinet — and they used to be hardcoded to the unprefixed English forms (`/`,
+// `/team`). A reader in `/de/cabinet` clicking the wordmark therefore landed on
+// the English landing, which since `scripts/locale-cookie.ts` also rewrites the
+// `ev_locale` cookie: one stray click on the logo and their language was quietly
+// reset to English for the whole site. Localising the fragment is what keeps the
+// cookie honest, and the translated nav labels come along for free — the same
+// `localizeNav` the conductor's own <Header> uses, so the two cannot drift.
+//
+// The CSS, behaviour script and font are locale-independent and stay shared:
+// only the markup differs, and only in link targets and text.
+function fragmentFor(locale: Locale): string {
+  const t = translator(messagesFor(locale), locale);
+  return renderToStaticMarkup(
+    createElement(BrandHeader, {
+      nav: localizeNav(NAV_ITEMS, locale, t),
+      homeHref: localePath(locale, "/"),
+      homeLabel: t("a11y.homeLink"),
+      menuLabels: {
+        open: t("a11y.openMenu"),
+        close: t("a11y.closeMenu"),
+        menu: t("a11y.siteMenu"),
+      },
+      cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
+      mobileCta: createElement(chip.tag, { class: "flex w-full" }),
+    })
+  );
+}
+
+const fragments = Object.fromEntries(
+  LOCALES.map(locale => [locale, fragmentFor(locale)])
+) as Record<Locale, string>;
+
+// The stylesheet is compiled against one locale's markup, not all five. Tailwind
+// scans for class names and every fragment is the same component with the same
+// classes — only text and hrefs differ — so any locale yields an identical sheet.
+const headerHtml = fragments.en;
 
 const hash = (s: string | Buffer) =>
   createHash("sha256").update(s).digest("hex").slice(0, 8);
@@ -100,14 +134,23 @@ writeFileSync(
       js: `/shell/${jsName}`,
       spanJs: `/shell/${spanName}`,
       font: `/shell/${displayFontName}`,
-      fragment: `${headerHtml}<script type="module" src="${chip.scriptUrl}"></script>`,
+      // Keyed by locale; `shared/zone-proxy.ts` picks the one matching the URL it
+      // is proxying. The chip's module script is appended to each — it is
+      // self-registering and idempotent, and only one fragment is ever injected
+      // into a given document.
+      fragments: Object.fromEntries(
+        LOCALES.map(locale => [
+          locale,
+          `${fragments[locale]}<script type="module" src="${chip.scriptUrl}"></script>`,
+        ])
+      ),
     },
     null,
     2
   )
 );
 console.log(
-  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B), ${displayFontName} (${displayFontFile.length}B)`
+  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B), ${displayFontName} (${displayFontFile.length}B), ${LOCALES.length} locale fragments`
 );
 
 async function buildCss(

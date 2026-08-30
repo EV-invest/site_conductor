@@ -11,6 +11,7 @@ import { DevAbPanel } from "@/features/ab-variant";
 import { config } from "@/config";
 import shell from "@/public/shell/manifest.json";
 import { spanEnterScript } from "@/scripts/span-enter";
+import { localeCookieScript } from "@/scripts/locale-cookie";
 import { Header } from "./header";
 import { AccountChipRemote } from "./account-chip-remote";
 import { Footer } from "./footer";
@@ -57,6 +58,14 @@ export function SiteDocument({
             un-deferred for that reason alone; it reads one sessionStorage key
             and sets one attribute. */}
         <script dangerouslySetInnerHTML={{ __html: spanEnterScript("site") }} />
+        {/* Mirrors this document's locale into the cookie the cabinet zone
+            reads when an unprefixed /cabinet/* entry has to be resolved to a
+            real /{locale}/cabinet/* URL. Pre-paint and un-deferred because the
+            account chip in the header is clickable as soon as the header
+            paints. See scripts/locale-cookie.ts for the cookie contract. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: localeCookieScript(locale) }}
+        />
       </head>
       <body>
         {/* The header's one behavior implementation — the same content-hashed
