@@ -21,6 +21,7 @@ const SECTIONS = [
   { name: "hero", selector: "#hero" },
   { name: "research", selector: "#research" },
   { name: "portfolio", selector: "#portfolio" },
+  { name: "thesis", selector: "#thesis" },
   { name: "team", selector: "#team" },
   { name: "footer", selector: "footer" },
 ] as const;
@@ -36,7 +37,6 @@ const PIN_TO_TOP = new Set<string>(["header", "hero"]);
 const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
   hero: "a",
   hero_headline: "b",
-  team_office: "a",
   team_bio_shade: "a",
 };
 test.beforeEach(async ({ context, baseURL }) => {

@@ -42,3 +42,20 @@ export const STAGGER_TEXT = 0.045;
  * eye arrives. A reveal the reader watches start is a reveal that felt slow.
  */
 export const VIEWPORT = { once: true, margin: "-80px" } as const;
+
+/**
+ * {@link VIEWPORT} with the horizontal inset removed — for anything narrower
+ * than the page.
+ *
+ * A viewport margin shrinks the observer's root on ALL FOUR sides. On a
+ * full-width block the left/right inset is invisible, which is why `VIEWPORT`
+ * gets away with a single number. On a small element pinned near a screen edge
+ * it is fatal and silent: at 390px the root's right edge lands at x=310 while
+ * the showcase chart's exit label occupies x=310-350, so it never intersects,
+ * never "enters view", and its counter reads zero for the whole session.
+ * Nothing throws — the reader just sees a fund multiple of x0.00.
+ *
+ * The vertical inset is the half doing real work (fire just before the element
+ * is fully on screen), so it stays.
+ */
+export const VIEWPORT_Y = { once: true, margin: "-80px 0px" } as const;

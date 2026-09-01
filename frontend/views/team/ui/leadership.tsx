@@ -1,21 +1,13 @@
 import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
-import { getVariant } from "@/features/ab-variant/get-variant";
-import { ExperimentTracker } from "@/features/ab-variant";
-import { ASSETS } from "@/shared/config/assets";
 import { LeadershipIntro } from "@/entities/team";
 import { TeamMembers } from "./members";
 
-export async function TeamLeadership({ locale }: { locale: Locale }) {
-  const variant = await getVariant("team_office");
-  const officeSrc = variant === "b" ? ASSETS.messy_office : undefined;
-
+export function TeamLeadership({ locale }: { locale: Locale }) {
   return (
     <section className="border-t border-main-mist/10 py-20">
       <Container className="space-y-14">
-        <ExperimentTracker experiment="team_office" variant={variant}>
-          <LeadershipIntro locale={locale} officeSrc={officeSrc} />
-        </ExperimentTracker>
+        <LeadershipIntro locale={locale} />
         <TeamMembers locale={locale} />
       </Container>
     </section>

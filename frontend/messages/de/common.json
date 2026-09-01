@@ -187,17 +187,37 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Unsere Partner verbinden praktische Erfahrung in Investment, Risikomodellierung und Projektentwicklung mit der Umsetzung vor Ort in Quy Nhon und Da Nang — lokale Präsenz nach institutionellen Maßstäben."
   },
-  "team.leadership.officeBadge": {
-    "en": "Head Office",
-    "t": "Hauptsitz"
+  "team.leadership.pillar.investment.title": {
+    "en": "Investment",
+    "t": "Investment"
   },
-  "team.leadership.officeName": {
-    "en": "EV Boardroom • Quy Nhon",
-    "t": "EV Sitzungssaal • Quy Nhon"
+  "team.leadership.pillar.investment.body": {
+    "en": "Capital structure, entry pricing and the mandates we take from partners.",
+    "t": "Kapitalstruktur, Einstiegspreis und die Mandate, die wir von Partnern übernehmen."
   },
-  "team.leadership.photoAlt": {
-    "en": "EV Investment boardroom in Quy Nhon",
-    "t": "Sitzungssaal von EV Investment in Quy Nhon"
+  "team.leadership.pillar.risk.title": {
+    "en": "Risk modelling",
+    "t": "Risikomodellierung"
+  },
+  "team.leadership.pillar.risk.body": {
+    "en": "Downside first — occupancy, currency and exit-timing scenarios before any upside.",
+    "t": "Zuerst das Abwärtsrisiko — Auslastung, Währung und Ausstiegszeitpunkt, erst danach die Rendite."
+  },
+  "team.leadership.pillar.development.title": {
+    "en": "Development",
+    "t": "Projektentwicklung"
+  },
+  "team.leadership.pillar.development.body": {
+    "en": "Specification, contractor selection and oversight of what actually gets built.",
+    "t": "Spezifikation, Auswahl der Bauunternehmen und Aufsicht über das, was tatsächlich entsteht."
+  },
+  "team.leadership.pillar.execution.title": {
+    "en": "On the ground",
+    "t": "Vor Ort"
+  },
+  "team.leadership.pillar.execution.body": {
+    "en": "Present in Quy Nhon and Da Nang — a standing presence, not a travel schedule.",
+    "t": "Präsent in Quy Nhon und Da Nang — dauerhaft, nicht nach Reiseplan."
   },
   "team.philosophy.eyebrow": {
     "en": "How we operate",
@@ -710,6 +730,54 @@
   "home.research.readAria": {
     "en": "Read full report: {title}",
     "t": "Vollständigen Bericht lesen: {title}"
+  },
+  "home.showcase.eyebrow": {
+    "en": "The thesis in numbers",
+    "t": "Die These in Zahlen"
+  },
+  "home.showcase.title": {
+    "en": "What a *{years}-year hold* compounds to",
+    "t": "Worauf *{years} Jahre Haltedauer* aufzinsen"
+  },
+  "home.showcase.intro": {
+    "en": "One curve, one input. Below is a single unit of capital carried across a full underwriting horizon at the target rate we hold every coastal asset to — the arithmetic behind each allocation we make in Quy Nhon and Da Nang.",
+    "t": "Eine Kurve, ein einziger Eingangswert. Unten steht eine Kapitaleinheit über eine vollständige Haltedauer, zum Zielsatz, an dem wir jeden Küstenwert messen — die Arithmetik hinter jeder Allokation in Quy Nhon und Da Nang."
+  },
+  "home.showcase.chart.title": {
+    "en": "Modelled capital trajectory",
+    "t": "Modellierte Kapitalentwicklung"
+  },
+  "home.showcase.chart.legend": {
+    "en": "Target IRR, compounded annually",
+    "t": "Ziel-IRR, jährlich aufgezinst"
+  },
+  "home.showcase.chart.axis": {
+    "en": "Hold year",
+    "t": "Haltejahr"
+  },
+  "home.showcase.chart.alt": {
+    "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
+    "t": "Liniendiagramm: eine Kapitaleinheit wächst über {years} Jahre Haltedauer bei einer Ziel-IRR von 16,4 % von ×1,00 auf ×2,14."
+  },
+  "home.showcase.metric.multiple.label": {
+    "en": "Modelled {years}-year multiple",
+    "t": "Modelliertes Multiple nach {years} Jahren"
+  },
+  "home.showcase.metric.irr.note": {
+    "en": "The underwriting floor every asset has to clear.",
+    "t": "Die Schwelle, die jeder Wert überschreiten muss."
+  },
+  "home.showcase.metric.multiple.note": {
+    "en": "On a single unit of capital, gross of fees.",
+    "t": "Je Kapitaleinheit, vor Gebühren."
+  },
+  "home.showcase.metric.cap.note": {
+    "en": "Where the strategy stops taking capital.",
+    "t": "Der Punkt, an dem die Strategie kein Kapital mehr aufnimmt."
+  },
+  "home.showcase.disclaimer": {
+    "en": "Illustrative model, not a forecast and not a record of past performance. The curve is our published target IRR compounded annually across a full hold; realised returns depend on entry price, occupancy and exit timing.",
+    "t": "Illustratives Modell, keine Prognose und keine frühere Wertentwicklung. Die Kurve ist unsere veröffentlichte Ziel-IRR, jährlich aufgezinst über die gesamte Haltedauer; die tatsächliche Rendite hängt von Einstiegspreis, Auslastung und Ausstiegszeitpunkt ab."
   },
   "home.team.placeholder.hiring.sub": {
     "en": "Investment Analyst",

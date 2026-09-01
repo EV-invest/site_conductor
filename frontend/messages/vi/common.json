@@ -187,17 +187,37 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Các đối tác của chúng tôi kết hợp kinh nghiệm thực tiễn về đầu tư, mô hình hóa rủi ro và phát triển dự án với việc triển khai tại chỗ ở Quy Nhơn và Đà Nẵng — hiện diện địa phương theo chuẩn mực tổ chức."
   },
-  "team.leadership.officeBadge": {
-    "en": "Head Office",
-    "t": "Trụ sở chính"
+  "team.leadership.pillar.investment.title": {
+    "en": "Investment",
+    "t": "Đầu tư"
   },
-  "team.leadership.officeName": {
-    "en": "EV Boardroom • Quy Nhon",
-    "t": "Phòng họp EV • Quy Nhơn"
+  "team.leadership.pillar.investment.body": {
+    "en": "Capital structure, entry pricing and the mandates we take from partners.",
+    "t": "Cấu trúc vốn, giá vào và các uỷ thác chúng tôi nhận từ đối tác."
   },
-  "team.leadership.photoAlt": {
-    "en": "EV Investment boardroom in Quy Nhon",
-    "t": "Phòng họp của EV Investment tại Quy Nhơn"
+  "team.leadership.pillar.risk.title": {
+    "en": "Risk modelling",
+    "t": "Mô hình rủi ro"
+  },
+  "team.leadership.pillar.risk.body": {
+    "en": "Downside first — occupancy, currency and exit-timing scenarios before any upside.",
+    "t": "Rủi ro giảm giá trước — kịch bản lấp đầy, tỷ giá và thời điểm thoái vốn, rồi mới đến lợi nhuận."
+  },
+  "team.leadership.pillar.development.title": {
+    "en": "Development",
+    "t": "Phát triển dự án"
+  },
+  "team.leadership.pillar.development.body": {
+    "en": "Specification, contractor selection and oversight of what actually gets built.",
+    "t": "Đặc tả kỹ thuật, chọn nhà thầu và giám sát những gì thực sự được xây."
+  },
+  "team.leadership.pillar.execution.title": {
+    "en": "On the ground",
+    "t": "Tại thực địa"
+  },
+  "team.leadership.pillar.execution.body": {
+    "en": "Present in Quy Nhon and Da Nang — a standing presence, not a travel schedule.",
+    "t": "Hiện diện ở Quy Nhơn và Đà Nẵng — thường trực, không phải theo lịch công tác."
   },
   "team.philosophy.eyebrow": {
     "en": "How we operate",
@@ -710,6 +730,54 @@
   "home.research.readAria": {
     "en": "Read full report: {title}",
     "t": "Đọc toàn bộ báo cáo: {title}"
+  },
+  "home.showcase.eyebrow": {
+    "en": "The thesis in numbers",
+    "t": "Luận điểm bằng con số"
+  },
+  "home.showcase.title": {
+    "en": "What a *{years}-year hold* compounds to",
+    "t": "*{years} năm nắm giữ* cộng dồn thành gì"
+  },
+  "home.showcase.intro": {
+    "en": "One curve, one input. Below is a single unit of capital carried across a full underwriting horizon at the target rate we hold every coastal asset to — the arithmetic behind each allocation we make in Quy Nhon and Da Nang.",
+    "t": "Một đường cong, một dữ liệu đầu vào. Dưới đây là một đơn vị vốn đi hết một chu kỳ nắm giữ theo mức mục tiêu mà chúng tôi áp cho mọi tài sản ven biển — phép tính đằng sau mỗi khoản phân bổ tại Quy Nhơn và Đà Nẵng."
+  },
+  "home.showcase.chart.title": {
+    "en": "Modelled capital trajectory",
+    "t": "Quỹ đạo vốn theo mô hình"
+  },
+  "home.showcase.chart.legend": {
+    "en": "Target IRR, compounded annually",
+    "t": "IRR mục tiêu, cộng dồn hằng năm"
+  },
+  "home.showcase.chart.axis": {
+    "en": "Hold year",
+    "t": "Năm nắm giữ"
+  },
+  "home.showcase.chart.alt": {
+    "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
+    "t": "Biểu đồ đường: một đơn vị vốn tăng từ ×1,00 lên ×2,14 sau {years} năm nắm giữ với IRR mục tiêu 16,4 %."
+  },
+  "home.showcase.metric.multiple.label": {
+    "en": "Modelled {years}-year multiple",
+    "t": "Hệ số nhân mô hình sau {years} năm"
+  },
+  "home.showcase.metric.irr.note": {
+    "en": "The underwriting floor every asset has to clear.",
+    "t": "Ngưỡng thẩm định mà mọi tài sản phải vượt qua."
+  },
+  "home.showcase.metric.multiple.note": {
+    "en": "On a single unit of capital, gross of fees.",
+    "t": "Trên một đơn vị vốn, trước phí."
+  },
+  "home.showcase.metric.cap.note": {
+    "en": "Where the strategy stops taking capital.",
+    "t": "Điểm chiến lược ngừng nhận thêm vốn."
+  },
+  "home.showcase.disclaimer": {
+    "en": "Illustrative model, not a forecast and not a record of past performance. The curve is our published target IRR compounded annually across a full hold; realised returns depend on entry price, occupancy and exit timing.",
+    "t": "Mô hình minh hoạ, không phải dự báo và không phải kết quả trong quá khứ. Đường cong là IRR mục tiêu đã công bố, cộng dồn hằng năm trong suốt kỳ nắm giữ; lợi nhuận thực tế phụ thuộc vào giá vào, tỷ lệ lấp đầy và thời điểm thoái vốn."
   },
   "home.team.placeholder.hiring.sub": {
     "en": "Investment Analyst",

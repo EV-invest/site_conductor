@@ -17,7 +17,6 @@ export const experiments = {
   hero: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: "Invest in Vietnam / Through Institutional Vision"; b: "China+1 / Vietnam".
   hero_headline: { variants: ["a", "b"], weights: [0.5, 0.5] },
-  team_office: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: original gradient scrim; b: stacked text-shadow halo.
   team_bio_shade: { variants: ["a", "b"], weights: [0.5, 0.5] },
 } as const satisfies ExperimentConfig;
