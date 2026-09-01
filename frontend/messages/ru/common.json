@@ -187,17 +187,37 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Наши партнёры сочетают практический опыт в инвестициях, моделировании рисков и девелопменте с исполнением на местах в Куинёне и Дананге — локальное присутствие, подчинённое институциональной дисциплине."
   },
-  "team.leadership.officeBadge": {
-    "en": "Head Office",
-    "t": "Головной офис"
+  "team.leadership.pillar.investment.title": {
+    "en": "Investment",
+    "t": "Инвестиции"
   },
-  "team.leadership.officeName": {
-    "en": "EV Boardroom • Quy Nhon",
-    "t": "Переговорная EV • Куинён"
+  "team.leadership.pillar.investment.body": {
+    "en": "Capital structure, entry pricing and the mandates we take from partners.",
+    "t": "Структура капитала, цена входа и мандаты, которые мы принимаем от партнёров."
   },
-  "team.leadership.photoAlt": {
-    "en": "EV Investment boardroom in Quy Nhon",
-    "t": "Переговорная EV Investment в Куинёне"
+  "team.leadership.pillar.risk.title": {
+    "en": "Risk modelling",
+    "t": "Моделирование рисков"
+  },
+  "team.leadership.pillar.risk.body": {
+    "en": "Downside first — occupancy, currency and exit-timing scenarios before any upside.",
+    "t": "Сначала риск снижения — сценарии загрузки, валюты и сроков выхода, и только потом доходность."
+  },
+  "team.leadership.pillar.development.title": {
+    "en": "Development",
+    "t": "Девелопмент"
+  },
+  "team.leadership.pillar.development.body": {
+    "en": "Specification, contractor selection and oversight of what actually gets built.",
+    "t": "Спецификация, выбор подрядчиков и надзор за тем, что действительно строится."
+  },
+  "team.leadership.pillar.execution.title": {
+    "en": "On the ground",
+    "t": "На местах"
+  },
+  "team.leadership.pillar.execution.body": {
+    "en": "Present in Quy Nhon and Da Nang — a standing presence, not a travel schedule.",
+    "t": "Присутствие в Куинёне и Дананге — постоянное, а не по графику командировок."
   },
   "team.philosophy.eyebrow": {
     "en": "How we operate",
@@ -710,6 +730,54 @@
   "home.research.readAria": {
     "en": "Read full report: {title}",
     "t": "Читать отчёт целиком: {title}"
+  },
+  "home.showcase.eyebrow": {
+    "en": "The thesis in numbers",
+    "t": "Тезис в цифрах"
+  },
+  "home.showcase.title": {
+    "en": "What a *{years}-year hold* compounds to",
+    "t": "Во что складывается *{years}-летний горизонт*"
+  },
+  "home.showcase.intro": {
+    "en": "One curve, one input. Below is a single unit of capital carried across a full underwriting horizon at the target rate we hold every coastal asset to — the arithmetic behind each allocation we make in Quy Nhon and Da Nang.",
+    "t": "Одна кривая, один вход. Ниже — единица капитала, пронесённая через полный горизонт удержания по той целевой ставке, которой мы поверяем каждый прибрежный актив: арифметика, стоящая за каждым нашим размещением в Куинёне и Дананге."
+  },
+  "home.showcase.chart.title": {
+    "en": "Modelled capital trajectory",
+    "t": "Модельная траектория капитала"
+  },
+  "home.showcase.chart.legend": {
+    "en": "Target IRR, compounded annually",
+    "t": "Целевая IRR, сложный процент"
+  },
+  "home.showcase.chart.axis": {
+    "en": "Hold year",
+    "t": "Год удержания"
+  },
+  "home.showcase.chart.alt": {
+    "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
+    "t": "Линейный график: единица капитала растёт с ×1,00 до ×2,14 за {years} лет удержания при целевой IRR 16,4 %."
+  },
+  "home.showcase.metric.multiple.label": {
+    "en": "Modelled {years}-year multiple",
+    "t": "Модельный мультипликатор за {years} лет"
+  },
+  "home.showcase.metric.irr.note": {
+    "en": "The underwriting floor every asset has to clear.",
+    "t": "Порог, который обязан преодолеть каждый актив."
+  },
+  "home.showcase.metric.multiple.note": {
+    "en": "On a single unit of capital, gross of fees.",
+    "t": "На единицу капитала, до вычета комиссий."
+  },
+  "home.showcase.metric.cap.note": {
+    "en": "Where the strategy stops taking capital.",
+    "t": "Отметка, на которой стратегия перестаёт принимать капитал."
+  },
+  "home.showcase.disclaimer": {
+    "en": "Illustrative model, not a forecast and not a record of past performance. The curve is our published target IRR compounded annually across a full hold; realised returns depend on entry price, occupancy and exit timing.",
+    "t": "Иллюстративная модель, а не прогноз и не отчёт о прошлой доходности. Кривая — наша публичная целевая IRR, начисляемая по сложному проценту на всём горизонте удержания; фактический результат зависит от цены входа, загрузки и сроков выхода."
   },
   "home.team.placeholder.hiring.sub": {
     "en": "Investment Analyst",

@@ -4,6 +4,7 @@ import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
 import { Portfolio } from "./portfolio";
 import { Research } from "./research";
+import { Showcase } from "./showcase";
 import { Team } from "./team";
 import { HomeStructuredData } from "./structured-data";
 
@@ -20,6 +21,7 @@ export function HomeView({ locale }: { locale: Locale }) {
       <FieldNotes locale={locale} />
       <Portfolio />
       <Research locale={locale} />
+      <Showcase locale={locale} />
       <Team locale={locale} />
     </div>
   );

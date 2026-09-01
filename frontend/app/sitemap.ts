@@ -48,7 +48,6 @@ const HOME_IMAGES = [
   ASSETS.quynhon_future,
   ASSETS.luxury_villa,
   ASSETS.abstract_investment,
-  "/assets/EV_Investment_office.jpg",
 ].map(abs);
 
 /// One <url> per locale that is a genuine version of `path`, each annotated with
