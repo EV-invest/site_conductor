@@ -1,10 +1,17 @@
 "use client";
 
-import { useId, useMemo, useRef } from "react";
+import type { KeyboardEvent } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import type { Locale } from "@evinvest/i18n";
 
-import { CountUp, DUR, EASE, VIEWPORT_Y } from "@/shared/ui/motion";
+import {
+  CountUp,
+  DUR,
+  EASE,
+  VIEWPORT_LIVE,
+  VIEWPORT_Y,
+} from "@/shared/ui/motion";
 import {
   AREA_PATH,
   AXIS_PCT,
@@ -21,6 +28,7 @@ import {
   atY,
   x,
   y,
+  yearAt,
 } from "../model/trajectory";
 
 /**
@@ -29,23 +37,56 @@ import {
  * arrive, and a compounding curve only reads as compounding if the eye has time
  * to follow the slope steepening.
  */
-const SWEEP = 1.6;
+const SWEEP = 2.1;
 
 /** The exit marker lands as the sweep reaches it, not after it has finished. */
-const MARKER_DELAY = SWEEP * 0.85;
+const MARKER_DELAY = SWEEP * 0.82;
 
 /**
- * The compounding curve, plotted as the reader reaches it.
+ * Width of the reveal's soft edge, in viewBox units. The mask is a rectangle
+ * whose trailing edge fades out over this distance, so the chart dissolves into
+ * view instead of being uncovered by a hard vertical line travelling across it.
+ * At 0 this is a clip wipe again; much above ~120 the curve looks perpetually
+ * out of focus.
+ */
+const FEATHER = 90;
+
+/** One full travel of the pulse, then a rest. Together: one unhurried cycle. */
+const PULSE_TRAVEL = 2.8;
+const PULSE_REST = 2.2;
+
+/** Radar ping on the exit marker. Slow enough to read as breathing, not blinking. */
+const PING = 3;
+
+/**
+ * The compounding curve — plotted as the reader reaches it, then readable point
+ * by point.
  *
- * ## Why a clip wipe rather than a `pathLength` stroke draw
+ * ## The reveal is a feathered mask, not a clip
  *
  * Drawing the stroke with `pathLength: 0 → 1` animates along *arc length*, while
  * the area fill beneath it can only be revealed by *horizontal* position. Run
  * both and they desynchronise wherever the curve steepens — which, on a
- * compounding series, is exactly the right-hand half the eye is drawn to. One
- * animated clip rect over the whole plot keeps line, fill and nodes locked
- * together and reads as the chart plotting itself. Only that rect's geometry
- * animates; the paths themselves are static strings computed at module scope.
+ * compounding series, is exactly the right-hand half the eye is drawn to. So one
+ * moving rectangle governs line, fill and nodes together.
+ *
+ * That rectangle is a **mask** filled with a gradient rather than a clip path:
+ * its trailing edge fades over {@link FEATHER} units, which removes the hard
+ * sweeping edge a clip leaves behind. Sliding the rect (rather than growing its
+ * `width`) keeps the gradient locked to it, so the feather travels with the edge
+ * instead of stretching.
+ *
+ * Note the `x` in its `initial`/`animate` is motion's transform shorthand, not
+ * the SVG attribute — it compiles to `translateX`, so the sweep runs on the
+ * compositor. Rewriting it as an animated `x` *attribute* would look identical
+ * on the first frame and then relayout the mask sixty times a second.
+ *
+ * ## Two loops, both gated
+ *
+ * A pulse of light runs up the curve and the exit marker pings, forever — the
+ * chart reads as live rather than as a static picture. Both are gated on
+ * {@link VIEWPORT_LIVE} (a *repeating* observer) and on `prefers-reduced-motion`,
+ * so nothing animates off-screen or for a reader who asked for stillness.
  *
  * ## Why the labels are HTML
  *
@@ -62,19 +103,40 @@ export function TrajectoryChart({
   locale,
   alt,
   axisLabel,
+  exploreLabel,
+  hint,
+  yearLabels,
 }: {
   locale: Locale;
   /** Sentence describing the curve for a screen reader. */
   alt: string;
   /** Names the x axis, e.g. "Hold year". */
   axisLabel: string;
+  /** Accessible name for the interactive group, e.g. "Explore the curve…". */
+  exploreLabel: string;
+  /** Visible affordance, e.g. "Hover or use ← →". */
+  hint: string;
+  /** One label per year, indexed by year, e.g. `["Year 0", "Year 1", …]`. */
+  yearLabels: readonly string[];
 }) {
   // Two instances on one page would otherwise share — and clobber — each
-  // other's gradient and clip ids.
+  // other's gradient, mask and filter ids.
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, VIEWPORT_Y);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const entered = useInView(ref, VIEWPORT_Y);
+  const onScreen = useInView(ref, VIEWPORT_LIVE);
   const reduce = useReducedMotion();
+
+  // Which point the reader is asking about, and where the marker rests while it
+  // fades out — without `resting` the crosshair would snap back to year 0 on
+  // the way out instead of fading in place.
+  const [active, setActive] = useState<number | null>(null);
+  const [resting, setResting] = useState(HOLD_YEARS);
+  const select = useCallback((year: number | null) => {
+    setActive(year);
+    if (year !== null) setResting(year);
+  }, []);
 
   // The gridline labels sit inches from the exit marker, which CountUp formats
   // through Intl. Formatting these with `toFixed` instead would print "×1.00"
@@ -89,7 +151,9 @@ export function TrajectoryChart({
 
   // Reduced motion still gets the finished chart, just with no sweep — the
   // information was never in the movement. CountUp makes the same call itself.
-  const shown = inView || Boolean(reduce);
+  const shown = entered || Boolean(reduce);
+  const loop = onScreen && !reduce;
+
   const marker = {
     initial: { opacity: reduce ? 1 : 0 },
     animate: { opacity: shown ? 1 : 0 },
@@ -100,11 +164,48 @@ export function TrajectoryChart({
     },
   };
 
+  const track = useCallback(
+    (clientX: number) => {
+      const box = svgRef.current?.getBoundingClientRect();
+      if (!box || box.width === 0) return;
+      select(yearAt(((clientX - box.left) / box.width) * VIEW.w));
+    },
+    [select]
+  );
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+    if (step !== undefined) {
+      // Entering from the right edge starts at the exit; from the left, at zero.
+      const from = active ?? (step > 0 ? -1 : HOLD_YEARS + 1);
+      select(Math.min(HOLD_YEARS, Math.max(0, from + step)));
+    } else if (event.key === "Home") select(0);
+    else if (event.key === "End") select(HOLD_YEARS);
+    else if (event.key === "Escape") select(null);
+    else return;
+    event.preventDefault();
+  };
+
+  const point = active ?? resting;
+  const reading = `${yearLabels[point]} — ${asMultiple(TRAJECTORY[point])}`;
+
   return (
     <div ref={ref}>
-      {/* Positioning context for the labels: the `<svg>` and nothing else. */}
-      <div className="relative">
+      <div
+        // The interactive surface. `pan-y` keeps the page scrollable under a
+        // finger: scrubbing this chart must never trap a vertical swipe.
+        className="relative touch-pan-y rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-main-accent-t1/60"
+        role="group"
+        tabIndex={0}
+        aria-label={exploreLabel}
+        onPointerMove={e => track(e.clientX)}
+        onPointerDown={e => track(e.clientX)}
+        onPointerLeave={() => select(null)}
+        onBlur={() => select(null)}
+        onKeyDown={onKeyDown}
+      >
         <svg
+          ref={svgRef}
           viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}
           className="block h-auto w-full"
           role="img"
@@ -130,16 +231,37 @@ export function TrajectoryChart({
                 stopOpacity="0"
               />
             </linearGradient>
-            <clipPath id={`sweep-${uid}`}>
+
+            {/* The reveal's soft edge. Opaque until the last FEATHER units of
+                the rect, then out to nothing. */}
+            <linearGradient id={`feather-${uid}`} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="white" />
+              <stop
+                offset={`${(VIEW.w / (VIEW.w + FEATHER)) * 100}%`}
+                stopColor="white"
+              />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+            <mask
+              id={`sweep-${uid}`}
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width={VIEW.w}
+              height={VIEW.h}
+            >
+              {/* x runs -VIEW.w → 0: at the start the opaque part sits entirely
+                  left of the chart, at the end it covers all of it. */}
               <motion.rect
-                x={0}
                 y={0}
+                width={VIEW.w + FEATHER}
                 height={VIEW.h}
-                initial={{ width: reduce ? VIEW.w : 0 }}
-                animate={{ width: shown ? VIEW.w : 0 }}
+                fill={`url(#feather-${uid})`}
+                initial={{ x: reduce ? 0 : -VIEW.w }}
+                animate={{ x: shown ? 0 : -VIEW.w }}
                 transition={{ duration: SWEEP, ease: EASE.out }}
               />
-            </clipPath>
+            </mask>
           </defs>
 
           {/* Grid first and unclipped: the ruler is in place before the data
@@ -180,7 +302,7 @@ export function TrajectoryChart({
             />
           </g>
 
-          <g clipPath={`url(#sweep-${uid})`}>
+          <g mask={`url(#sweep-${uid})`}>
             <path d={AREA_PATH} fill={`url(#area-${uid})`} />
             <path
               d={LINE_PATH}
@@ -190,6 +312,34 @@ export function TrajectoryChart({
               strokeLinecap="round"
               strokeLinejoin="round"
             />
+
+            {/* The loop: a short bright dash running the length of the curve,
+                then a rest. `pathLength={1}` normalises the dash units so the
+                same numbers work whatever the path actually measures. */}
+            {loop ? (
+              <motion.path
+                d={LINE_PATH}
+                fill="none"
+                pathLength={1}
+                stroke="var(--color-main-accent-t3)"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeDasharray="0.05 0.95"
+                initial={{ strokeDashoffset: 1, opacity: 0 }}
+                // Opacity is keyframed so the pulse fades in as it leaves the
+                // origin and out as it reaches the exit, rather than sitting
+                // parked and visible at the start of the path between travels.
+                animate={{ strokeDashoffset: 0, opacity: [0, 0.9, 0.9, 0] }}
+                transition={{
+                  duration: PULSE_TRAVEL,
+                  ease: "linear",
+                  repeat: Infinity,
+                  repeatDelay: PULSE_REST,
+                  delay: SWEEP,
+                }}
+              />
+            ) : null}
+
             {/* A node per year: the curve is six underwritten points, not a
                 freehand trend line, and the dots say so without a caption. */}
             {TRAJECTORY.map((multiple, year) => (
@@ -214,6 +364,22 @@ export function TrajectoryChart({
               strokeWidth={1}
               strokeDasharray="3 4"
             />
+            {/* The second loop: a slow ping off the exit. */}
+            {loop ? (
+              <motion.circle
+                cx={x(HOLD_YEARS)}
+                cy={y(EXIT_MULTIPLE)}
+                className="fill-main-accent-t3"
+                initial={{ r: 5, opacity: 0.35 }}
+                animate={{ r: 18, opacity: 0 }}
+                transition={{
+                  duration: PING,
+                  ease: EASE.out,
+                  repeat: Infinity,
+                  delay: SWEEP,
+                }}
+              />
+            ) : null}
             <circle
               cx={x(HOLD_YEARS)}
               cy={y(EXIT_MULTIPLE)}
@@ -225,6 +391,39 @@ export function TrajectoryChart({
               cy={y(EXIT_MULTIPLE)}
               r={4}
               className="fill-main-accent-t3"
+            />
+          </motion.g>
+
+          {/* The reader's crosshair. Kept mounted and animated between points so
+              it glides along the series rather than teleporting. */}
+          <motion.g
+            aria-hidden="true"
+            animate={{ opacity: active === null ? 0 : 1 }}
+            transition={{ duration: DUR.fast, ease: EASE.out }}
+          >
+            <motion.line
+              y1={PLOT_TOP}
+              y2={AXIS_Y}
+              className="stroke-main-accent-t3/35"
+              strokeWidth={1}
+              initial={{ x1: x(HOLD_YEARS), x2: x(HOLD_YEARS) }}
+              animate={{ x1: x(point), x2: x(point) }}
+              transition={{ duration: DUR.fast, ease: EASE.out }}
+            />
+            <motion.circle
+              r={11}
+              className="fill-main-accent-t3/15"
+              initial={{ cx: x(HOLD_YEARS), cy: y(EXIT_MULTIPLE) }}
+              animate={{ cx: x(point), cy: y(TRAJECTORY[point]) }}
+              transition={{ duration: DUR.fast, ease: EASE.out }}
+            />
+            <motion.circle
+              r={4.5}
+              className="fill-main-accent-t3 stroke-main-black"
+              strokeWidth={1.5}
+              initial={{ cx: x(HOLD_YEARS), cy: y(EXIT_MULTIPLE) }}
+              animate={{ cx: x(point), cy: y(TRAJECTORY[point]) }}
+              transition={{ duration: DUR.fast, ease: EASE.out }}
             />
           </motion.g>
         </svg>
@@ -265,16 +464,57 @@ export function TrajectoryChart({
             // The drop below the axis is a fixed `translate-y`, not extra
             // percent: a percentage offset shrinks with the chart, and on a
             // phone these would sit on the axis line they label.
-            className="absolute -translate-x-1/2 translate-y-1.5 font-mono-tech text-[11px] text-main-mist/35"
+            className={`absolute -translate-x-1/2 translate-y-1.5 font-mono-tech text-[11px] transition-colors ${
+              active === year ? "text-main-accent-t3" : "text-main-mist/35"
+            }`}
             style={{ left: atX(year), top: AXIS_PCT }}
           >
             {year}
           </span>
         ))}
+
+        {/* The readout. Anchored to the node, nudged clear of the chart's edges
+            at the two ends so it never overflows the card. */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute z-10 whitespace-nowrap rounded-md border border-main-mist/15 bg-main-black/90 px-2.5 py-1.5 backdrop-blur-sm"
+          initial={{
+            opacity: 0,
+            left: atX(HOLD_YEARS),
+            top: atY(EXIT_MULTIPLE),
+          }}
+          animate={{
+            opacity: active === null ? 0 : 1,
+            left: atX(point),
+            top: atY(TRAJECTORY[point]),
+          }}
+          transition={{ duration: DUR.fast, ease: EASE.out }}
+          style={{
+            translate: `${point === 0 ? "0" : point === HOLD_YEARS ? "-100%" : "-50%"} calc(-100% - 14px)`,
+          }}
+        >
+          <span className="block font-mono-tech text-[9px] uppercase tracking-[0.2em] text-main-mist/50">
+            {yearLabels[point]}
+          </span>
+          <span className="block font-mono-tech text-sm font-semibold text-main-accent-t3">
+            {asMultiple(TRAJECTORY[point])}
+          </span>
+        </motion.div>
       </div>
 
-      <span className="mt-3 block text-right font-mono-tech text-[10px] uppercase tracking-[0.25em] text-main-mist/30">
-        {axisLabel}
+      <div className="mt-3 flex items-baseline justify-between gap-4">
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.25em] text-main-mist/25">
+          {hint}
+        </span>
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.25em] text-main-mist/30">
+          {axisLabel}
+        </span>
+      </div>
+
+      {/* Announced only while the reader is actually scrubbing — an always-live
+          region would read the resting point aloud on every render. */}
+      <span aria-live="polite" className="sr-only">
+        {active === null ? "" : reading}
       </span>
     </div>
   );

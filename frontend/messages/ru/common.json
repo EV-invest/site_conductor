@@ -759,6 +759,18 @@
     "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
     "t": "Линейный график: единица капитала растёт с ×1,00 до ×2,14 за {years} лет удержания при целевой IRR 16,4 %."
   },
+  "home.showcase.chart.explore": {
+    "en": "Explore the curve year by year",
+    "t": "Изучите кривую по годам"
+  },
+  "home.showcase.chart.hint": {
+    "en": "Drag or ← →",
+    "t": "Проведите или ← →"
+  },
+  "home.showcase.chart.year": {
+    "en": "Year {year}",
+    "t": "Год {year}"
+  },
   "home.showcase.metric.multiple.label": {
     "en": "Modelled {years}-year multiple",
     "t": "Модельный мультипликатор за {years} лет"

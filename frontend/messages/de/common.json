@@ -759,6 +759,18 @@
     "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
     "t": "Liniendiagramm: eine Kapitaleinheit wächst über {years} Jahre Haltedauer bei einer Ziel-IRR von 16,4 % von ×1,00 auf ×2,14."
   },
+  "home.showcase.chart.explore": {
+    "en": "Explore the curve year by year",
+    "t": "Die Kurve Jahr für Jahr erkunden"
+  },
+  "home.showcase.chart.hint": {
+    "en": "Drag or ← →",
+    "t": "Ziehen oder ← →"
+  },
+  "home.showcase.chart.year": {
+    "en": "Year {year}",
+    "t": "Jahr {year}"
+  },
   "home.showcase.metric.multiple.label": {
     "en": "Modelled {years}-year multiple",
     "t": "Modelliertes Multiple nach {years} Jahren"

@@ -77,6 +77,16 @@ export const y = (multiple: number) =>
         (PLOT.bottom - PLOT.top)
   );
 
+/**
+ * Inverse of {@link x}: the year whose node sits nearest a viewBox x, clamped to
+ * the series. Pointer and keyboard both land here, so "which point is the reader
+ * asking about" is answered by the same geometry that drew the point.
+ */
+export const yearAt = (viewX: number) => {
+  const t = (viewX - PLOT.left) / (PLOT.right - PLOT.left);
+  return Math.min(HOLD_YEARS, Math.max(0, Math.round(t * HOLD_YEARS)));
+};
+
 /** Fraction of the SVG box, for an HTML label positioned over the chart. */
 export const atX = (year: number) => `${round((x(year) / VIEW.w) * 100)}%`;
 export const atY = (multiple: number) =>

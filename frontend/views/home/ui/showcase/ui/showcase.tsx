@@ -5,7 +5,7 @@ import { Reveal, SplitText } from "@/shared/ui/motion";
 import { Text, Tier } from "@/shared/ui/text";
 import { accented } from "@/shared/ui/accented";
 import { messagesFor } from "@/shared/config/i18n";
-import { HOLD_YEARS } from "../model/trajectory";
+import { HOLD_YEARS, YEARS } from "../model/trajectory";
 import { TrajectoryChart } from "./trajectory-chart";
 import { ShowcaseMetrics } from "./metrics";
 
@@ -74,6 +74,15 @@ export function Showcase({ locale }: { locale: Locale }) {
                 locale={locale}
                 alt={t("home.showcase.chart.alt", values)}
                 axisLabel={t("home.showcase.chart.axis")}
+                exploreLabel={t("home.showcase.chart.explore")}
+                hint={t("home.showcase.chart.hint")}
+                // Rendered here, one string per year, rather than handed over as
+                // a formatter: this is a Server Component and a function prop
+                // cannot cross the boundary into a client one. The series is six
+                // points, so the whole set costs nothing to pass.
+                yearLabels={YEARS.map(year =>
+                  t("home.showcase.chart.year", { year })
+                )}
               />
             </div>
             <div className="lg:col-span-2">

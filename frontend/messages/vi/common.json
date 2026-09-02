@@ -759,6 +759,18 @@
     "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
     "t": "Biểu đồ đường: một đơn vị vốn tăng từ ×1,00 lên ×2,14 sau {years} năm nắm giữ với IRR mục tiêu 16,4 %."
   },
+  "home.showcase.chart.explore": {
+    "en": "Explore the curve year by year",
+    "t": "Khám phá đường cong theo từng năm"
+  },
+  "home.showcase.chart.hint": {
+    "en": "Drag or ← →",
+    "t": "Kéo hoặc ← →"
+  },
+  "home.showcase.chart.year": {
+    "en": "Year {year}",
+    "t": "Năm {year}"
+  },
   "home.showcase.metric.multiple.label": {
     "en": "Modelled {years}-year multiple",
     "t": "Hệ số nhân mô hình sau {years} năm"
