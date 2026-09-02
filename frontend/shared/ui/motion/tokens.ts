@@ -59,3 +59,16 @@ export const VIEWPORT = { once: true, margin: "-80px" } as const;
  * is fully on screen), so it stays.
  */
 export const VIEWPORT_Y = { once: true, margin: "-80px 0px" } as const;
+
+/**
+ * {@link VIEWPORT_Y} without `once` — the observer keeps reporting, so a value
+ * derived from it goes false again when the element leaves.
+ *
+ * This exists for *looping* ambience (a pulse travelling a chart line, a
+ * breathing marker). An `Infinity` repeat is the one animation on this site that
+ * never ends on its own, so it must be gated on something that can turn it off:
+ * left running off-screen it burns a phone's battery for a picture nobody is
+ * looking at. Entrances keep using the `once` variants — re-firing a reveal
+ * every time the reader scrolls back is a different bug.
+ */
+export const VIEWPORT_LIVE = { margin: "-80px 0px" } as const;

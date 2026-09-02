@@ -26,5 +26,6 @@ export {
   STAGGER,
   STAGGER_TEXT,
   VIEWPORT,
+  VIEWPORT_LIVE,
   VIEWPORT_Y,
 } from "./tokens";

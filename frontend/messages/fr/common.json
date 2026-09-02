@@ -759,6 +759,18 @@
     "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
     "t": "Graphique linéaire : une unité de capital passe de ×1,00 à ×2,14 sur {years} ans de détention, à un TRI cible de 16,4 %."
   },
+  "home.showcase.chart.explore": {
+    "en": "Explore the curve year by year",
+    "t": "Parcourir la courbe année par année"
+  },
+  "home.showcase.chart.hint": {
+    "en": "Drag or ← →",
+    "t": "Glissez ou ← →"
+  },
+  "home.showcase.chart.year": {
+    "en": "Year {year}",
+    "t": "Année {year}"
+  },
   "home.showcase.metric.multiple.label": {
     "en": "Modelled {years}-year multiple",
     "t": "Multiple modélisé sur {years} ans"
