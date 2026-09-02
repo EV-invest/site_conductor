@@ -731,66 +731,6 @@
     "en": "Read full report: {title}",
     "t": "Lire le rapport complet : {title}"
   },
-  "home.showcase.eyebrow": {
-    "en": "The thesis in numbers",
-    "t": "La thèse en chiffres"
-  },
-  "home.showcase.title": {
-    "en": "What a *{years}-year hold* compounds to",
-    "t": "Ce que capitalise *une détention de {years} ans*"
-  },
-  "home.showcase.intro": {
-    "en": "One curve, one input. Below is a single unit of capital carried across a full underwriting horizon at the target rate we hold every coastal asset to — the arithmetic behind each allocation we make in Quy Nhon and Da Nang.",
-    "t": "Une courbe, une seule donnée d'entrée. Ci-dessous, une unité de capital portée sur un horizon de détention complet au taux cible que nous exigeons de chaque actif côtier — l'arithmétique derrière chacune de nos allocations à Quy Nhon et Da Nang."
-  },
-  "home.showcase.chart.title": {
-    "en": "Modelled capital trajectory",
-    "t": "Trajectoire modélisée du capital"
-  },
-  "home.showcase.chart.legend": {
-    "en": "Target IRR, compounded annually",
-    "t": "TRI cible, capitalisé annuellement"
-  },
-  "home.showcase.chart.axis": {
-    "en": "Hold year",
-    "t": "Année de détention"
-  },
-  "home.showcase.chart.alt": {
-    "en": "Line chart: one unit of capital compounding from ×1.00 to ×2.14 over a {years}-year hold at a 16.4% target IRR.",
-    "t": "Graphique linéaire : une unité de capital passe de ×1,00 à ×2,14 sur {years} ans de détention, à un TRI cible de 16,4 %."
-  },
-  "home.showcase.chart.explore": {
-    "en": "Explore the curve year by year",
-    "t": "Parcourir la courbe année par année"
-  },
-  "home.showcase.chart.hint": {
-    "en": "Drag or ← →",
-    "t": "Glissez ou ← →"
-  },
-  "home.showcase.chart.year": {
-    "en": "Year {year}",
-    "t": "Année {year}"
-  },
-  "home.showcase.metric.multiple.label": {
-    "en": "Modelled {years}-year multiple",
-    "t": "Multiple modélisé sur {years} ans"
-  },
-  "home.showcase.metric.irr.note": {
-    "en": "The underwriting floor every asset has to clear.",
-    "t": "Le seuil que chaque actif doit franchir."
-  },
-  "home.showcase.metric.multiple.note": {
-    "en": "On a single unit of capital, gross of fees.",
-    "t": "Sur une unité de capital, avant frais."
-  },
-  "home.showcase.metric.cap.note": {
-    "en": "Where the strategy stops taking capital.",
-    "t": "Le point où la stratégie cesse d'accueillir des capitaux."
-  },
-  "home.showcase.disclaimer": {
-    "en": "Illustrative model, not a forecast and not a record of past performance. The curve is our published target IRR compounded annually across a full hold; realised returns depend on entry price, occupancy and exit timing.",
-    "t": "Modèle illustratif, ni prévision ni performance passée. La courbe correspond à notre TRI cible publié, capitalisé annuellement sur toute la durée de détention ; le rendement réel dépend du prix d'entrée, du taux d'occupation et du calendrier de sortie."
-  },
   "home.team.placeholder.hiring.sub": {
     "en": "Investment Analyst",
     "t": "Analyste en investissement"

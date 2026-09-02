@@ -21,7 +21,6 @@ const SECTIONS = [
   { name: "hero", selector: "#hero" },
   { name: "research", selector: "#research" },
   { name: "portfolio", selector: "#portfolio" },
-  { name: "thesis", selector: "#thesis" },
   { name: "team", selector: "#team" },
   { name: "footer", selector: "footer" },
 ] as const;
