@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE, localePath, type Locale } from "@evinvest/i18n";
 import { SITE, ROUTES } from "@/shared/config/site";
 import { alternateLocales, hreflangAlternates } from "@/shared/seo/hreflang";
 import { ASSETS } from "@/shared/config/assets";
-import { allPublications } from "@/entities/publication";
+import { allPublications, documentLocales } from "@/entities/publication";
 import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 
 // Driven off shared/config ROUTES (adding a subpage = one list entry) plus the
@@ -92,9 +92,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // text is not in the SSR HTML and it is not a meaningful indexable target —
   // same reasoning as its absence from ROUTES (shared/config/site.ts).
   //
-  // `publication.locales` records which locales the DOCUMENT exists in (absent ⇒
-  // English only), and that is what decides how many URLs a publication
-  // contributes. A translated card is not enough: the body is the page.
+  // `documentLocales` records which locales the DOCUMENT exists in (absent
+  // `locales` ⇒ English only), and that is what decides how many URLs a
+  // publication contributes — the same resolver the article page's
+  // `contentLocales` reads, so a head claiming five languages can't outlive a
+  // sitemap claiming one for the same slug (see the resolver's own comment). A
+  // translated card is not enough: the body is the page.
   const articleEntries: MetadataRoute.Sitemap = allPublications()
     .filter(publication => publication.kind !== "whitepaper")
     .flatMap(publication =>
@@ -105,7 +108,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           changeFrequency: "yearly",
           priority: 0.6,
         }),
-        publication.locales ?? [DEFAULT_LOCALE]
+        documentLocales(publication)
       )
     );
 
