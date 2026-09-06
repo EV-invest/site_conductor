@@ -143,13 +143,9 @@
     "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
     "t": "Fragen zu einer Position, einer Investition oder einem unserer Küstenprojekte? Schreiben Sie uns — ein Mensch, kein Bot, antwortet."
   },
-  "contact.channel.hiring": {
-    "en": "Hiring",
-    "t": "Karriere"
-  },
-  "contact.channel.investors": {
-    "en": "Investors",
-    "t": "Investoren"
+  "contact.channel.general": {
+    "en": "Email",
+    "t": "E-Mail"
   },
   "contact.office.hq.city": {
     "en": "Quy Nhơn",
@@ -191,17 +187,37 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Unsere Partner verbinden praktische Erfahrung in Investment, Risikomodellierung und Projektentwicklung mit der Umsetzung vor Ort in Quy Nhon und Da Nang — lokale Präsenz nach institutionellen Maßstäben."
   },
-  "team.leadership.officeBadge": {
-    "en": "Head Office",
-    "t": "Hauptsitz"
+  "team.leadership.pillar.investment.title": {
+    "en": "Investment",
+    "t": "Investment"
   },
-  "team.leadership.officeName": {
-    "en": "EV Boardroom • Quy Nhon",
-    "t": "EV Sitzungssaal • Quy Nhon"
+  "team.leadership.pillar.investment.body": {
+    "en": "Capital structure, entry pricing and the mandates we take from partners.",
+    "t": "Kapitalstruktur, Einstiegspreis und die Mandate, die wir von Partnern übernehmen."
   },
-  "team.leadership.photoAlt": {
-    "en": "EV Investment boardroom in Quy Nhon",
-    "t": "Sitzungssaal von EV Investment in Quy Nhon"
+  "team.leadership.pillar.risk.title": {
+    "en": "Risk modelling",
+    "t": "Risikomodellierung"
+  },
+  "team.leadership.pillar.risk.body": {
+    "en": "Downside first — occupancy, currency and exit-timing scenarios before any upside.",
+    "t": "Zuerst das Abwärtsrisiko — Auslastung, Währung und Ausstiegszeitpunkt, erst danach die Rendite."
+  },
+  "team.leadership.pillar.development.title": {
+    "en": "Development",
+    "t": "Projektentwicklung"
+  },
+  "team.leadership.pillar.development.body": {
+    "en": "Specification, contractor selection and oversight of what actually gets built.",
+    "t": "Spezifikation, Auswahl der Bauunternehmen und Aufsicht über das, was tatsächlich entsteht."
+  },
+  "team.leadership.pillar.execution.title": {
+    "en": "On the ground",
+    "t": "Vor Ort"
+  },
+  "team.leadership.pillar.execution.body": {
+    "en": "Present in Quy Nhon and Da Nang — a standing presence, not a travel schedule.",
+    "t": "Präsent in Quy Nhon und Da Nang — dauerhaft, nicht nach Reiseplan."
   },
   "team.philosophy.eyebrow": {
     "en": "How we operate",
@@ -564,8 +580,8 @@
     "t": "Sie erhalten in jedem Fall eine Rückmeldung."
   },
   "vacancy.apply.point3": {
-    "en": "Questions first? hiring@evinvest.vn",
-    "t": "Vorab Fragen? hiring@evinvest.vn"
+    "en": "Questions first? admin@evinvest.ltd",
+    "t": "Vorab Fragen? admin@evinvest.ltd"
   },
   "home.hero.headline.a": {
     "en": "Invest in *China+1*\nThrough *Vietnam*",

@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import {
   DEFAULT_LOCALE,
   isLocale,
+  LOCALES,
   localePath,
   type Locale,
 } from "@evinvest/i18n";
 import { SITE } from "@/shared/config/site";
+import { alternateLocales, hreflangAlternates } from "@/shared/seo/hreflang";
 
 // Why every page must call this instead of setting `title` + `description`
 // alone: Next.js does NOT merge `openGraph` field-by-field. A page that omits
@@ -34,6 +36,34 @@ const OG_LOCALES: Record<Locale, string> = {
   de: "de_DE",
 };
 
+/**
+ * The `og:locale` / `og:locale:alternate` pair for a page.
+ *
+ * Exported because the homepage cannot go through {@link pageMetadata} — its
+ * title is the root `title.default` ("EV Investment: …"), not a page title the
+ * template appends the brand to — but it still needs these two fields to differ
+ * per locale. Without it every `/xx` homepage shipped `og:locale=en_US`, telling
+ * every social crawler that the German homepage is English.
+ *
+ * `alternateLocale` mirrors hreflang off the same set, so it is absent whenever
+ * the page has no genuine alternates.
+ */
+export function ogLocaleFields(resolved: Locale, versions: readonly Locale[]) {
+  return {
+    // og:locale wants the underscored territory form ("en_US", "de_DE"), not
+    // the bare hreflang code. Only en has a territory we actually publish from,
+    // so the rest map to the language with its conventional region.
+    locale: OG_LOCALES[resolved],
+    ...(versions.length > 1
+      ? {
+          alternateLocale: versions
+            .filter(locale => locale !== resolved)
+            .map(locale => OG_LOCALES[locale]),
+        }
+      : {}),
+  };
+}
+
 export type PageMetadataInput = {
   /// Page title WITHOUT the site name — the root `title.template` appends it.
   title: string;
@@ -50,6 +80,15 @@ export type PageMetadataInput = {
   /// Defaults to the site OG card. Pass a publication cover to give an article
   /// its own preview.
   image?: PageImage;
+  /// Locales this page's CONTENT exists in — not which locales can render it.
+  ///
+  /// Defaults to all five, which is right for everything driven by the message
+  /// catalogues. Pass the narrower set for content this repo does not translate:
+  /// a publication whose Typst document is English-only passes
+  /// `publication.locales`, and its /ru, /vi, /fr and /de URLs then canonicalise
+  /// to the English one instead of claiming to be German and Russian versions of
+  /// a document that exists once, in English.
+  contentLocales?: readonly Locale[];
   /// "article" unlocks the published-time / author / section OG fields below.
   type?: "website" | "article";
   article?: {
@@ -64,6 +103,7 @@ export function pageMetadata({
   description,
   path,
   locale,
+  contentLocales = LOCALES,
   image = DEFAULT_IMAGE,
   type = "website",
   article,
@@ -72,29 +112,43 @@ export function pageMetadata({
   // string, so mirror the resolved form by hand or social cards lose the brand.
   const resolvedTitle = `${title} | ${SITE.name}`;
 
-  // Self-referencing per locale. A locale-blind canonical is a trap rather than
-  // a live bug today — only `en` is in INDEXED_LOCALES, and the other four are
-  // noindexed by app/[locale]/layout.tsx, so nothing they claim is read. But
-  // shared/config/i18n promises that adding a locale to INDEXED_LOCALES is the
-  // ONE change needed to launch it, and a canonical pointing at the English URL
-  // would make that locale deindex itself the moment it went live — silently.
   const resolved: Locale = isLocale(locale) ? locale : DEFAULT_LOCALE;
-  const url = localePath(resolved, path);
+
+  // The locales that are a real, indexable version of THIS page: indexed at all,
+  // and carrying this page's content. Usually all five.
+  const versions = alternateLocales(contentLocales);
+
+  // Self-referencing canonical per locale — `/ru/team` points at itself, not at
+  // `/team`. That is what lets all five locales rank instead of four of them
+  // deindexing into the English URL.
+  //
+  // The exception is a locale that is NOT a version of this page: it renders the
+  // English content under a localised shell, so it canonicalises to the English
+  // URL, which is the honest description of what a crawler found. Those pages
+  // also emit no hreflang — annotations on a page that canonicalises elsewhere
+  // are discarded, and a set naming a URL which then points away from itself is
+  // the "no return tag" conflict that makes Google drop the whole cluster.
+  const isOwnVersion = versions.includes(resolved);
+  const canonicalLocale =
+    isOwnVersion || !versions.includes(DEFAULT_LOCALE)
+      ? resolved
+      : DEFAULT_LOCALE;
+  const url = localePath(canonicalLocale, path);
+  const languages = isOwnVersion
+    ? hreflangAlternates(path, contentLocales)
+    : undefined;
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: url, ...(languages ? { languages } : {}) },
     openGraph: {
       type,
       siteName: SITE.name,
       title: resolvedTitle,
       description,
       url,
-      // og:locale wants the underscored territory form ("en_US", "de_DE"), not
-      // the bare hreflang code. Only en has a territory we actually publish
-      // from, so the rest map to the language with its conventional region.
-      locale: OG_LOCALES[resolved],
+      ...ogLocaleFields(resolved, versions),
       images: [
         {
           url: image.url,

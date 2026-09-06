@@ -6,8 +6,6 @@ export const ASSETS = {
   quynhon_future: "/assets/quynhon_future.webp",
   luxury_villa: "/assets/luxury_villa.webp",
   abstract_investment: "/assets/abstract_investment.webp",
-  office_interior: "/assets/EV_Investment_office.jpg",
-  messy_office: "/assets/team/messy_office.jpg",
   team_member_1: "/assets/team/Elisey.png",
   team_member_2: "/assets/team/Valeriy.png",
 };

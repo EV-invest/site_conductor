@@ -143,13 +143,9 @@
     "en": "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply.",
     "t": "Bạn có câu hỏi về một vị trí, một khoản đầu tư, hay một trong những dự án ven biển của chúng tôi? Hãy gửi tin nhắn — một con người, không phải bot, sẽ trả lời."
   },
-  "contact.channel.hiring": {
-    "en": "Hiring",
-    "t": "Tuyển dụng"
-  },
-  "contact.channel.investors": {
-    "en": "Investors",
-    "t": "Nhà đầu tư"
+  "contact.channel.general": {
+    "en": "Email",
+    "t": "Email"
   },
   "contact.office.hq.city": {
     "en": "Quy Nhơn",
@@ -191,17 +187,37 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Các đối tác của chúng tôi kết hợp kinh nghiệm thực tiễn về đầu tư, mô hình hóa rủi ro và phát triển dự án với việc triển khai tại chỗ ở Quy Nhơn và Đà Nẵng — hiện diện địa phương theo chuẩn mực tổ chức."
   },
-  "team.leadership.officeBadge": {
-    "en": "Head Office",
-    "t": "Trụ sở chính"
+  "team.leadership.pillar.investment.title": {
+    "en": "Investment",
+    "t": "Đầu tư"
   },
-  "team.leadership.officeName": {
-    "en": "EV Boardroom • Quy Nhon",
-    "t": "Phòng họp EV • Quy Nhơn"
+  "team.leadership.pillar.investment.body": {
+    "en": "Capital structure, entry pricing and the mandates we take from partners.",
+    "t": "Cấu trúc vốn, giá vào và các uỷ thác chúng tôi nhận từ đối tác."
   },
-  "team.leadership.photoAlt": {
-    "en": "EV Investment boardroom in Quy Nhon",
-    "t": "Phòng họp của EV Investment tại Quy Nhơn"
+  "team.leadership.pillar.risk.title": {
+    "en": "Risk modelling",
+    "t": "Mô hình rủi ro"
+  },
+  "team.leadership.pillar.risk.body": {
+    "en": "Downside first — occupancy, currency and exit-timing scenarios before any upside.",
+    "t": "Rủi ro giảm giá trước — kịch bản lấp đầy, tỷ giá và thời điểm thoái vốn, rồi mới đến lợi nhuận."
+  },
+  "team.leadership.pillar.development.title": {
+    "en": "Development",
+    "t": "Phát triển dự án"
+  },
+  "team.leadership.pillar.development.body": {
+    "en": "Specification, contractor selection and oversight of what actually gets built.",
+    "t": "Đặc tả kỹ thuật, chọn nhà thầu và giám sát những gì thực sự được xây."
+  },
+  "team.leadership.pillar.execution.title": {
+    "en": "On the ground",
+    "t": "Tại thực địa"
+  },
+  "team.leadership.pillar.execution.body": {
+    "en": "Present in Quy Nhon and Da Nang — a standing presence, not a travel schedule.",
+    "t": "Hiện diện ở Quy Nhơn và Đà Nẵng — thường trực, không phải theo lịch công tác."
   },
   "team.philosophy.eyebrow": {
     "en": "How we operate",
@@ -564,8 +580,8 @@
     "t": "Chúng tôi sẽ phản hồi dù kết quả thế nào."
   },
   "vacancy.apply.point3": {
-    "en": "Questions first? hiring@evinvest.vn",
-    "t": "Có câu hỏi trước? hiring@evinvest.vn"
+    "en": "Questions first? admin@evinvest.ltd",
+    "t": "Có câu hỏi trước? admin@evinvest.ltd"
   },
   "home.hero.headline.a": {
     "en": "Invest in *China+1*\nThrough *Vietnam*",

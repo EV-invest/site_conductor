@@ -42,3 +42,36 @@ export const STAGGER_TEXT = 0.045;
  * eye arrives. A reveal the reader watches start is a reveal that felt slow.
  */
 export const VIEWPORT = { once: true, margin: "-80px" } as const;
+
+/**
+ * {@link VIEWPORT} with the horizontal inset removed — for anything narrower
+ * than the page.
+ *
+ * A viewport margin shrinks the observer's root on ALL FOUR sides. On a
+ * full-width block the left/right inset is invisible, which is why `VIEWPORT`
+ * gets away with a single number. On a small element pinned near a screen edge
+ * it is fatal and silent: at 390px the root's right edge lands at x=310, so a
+ * label occupying x=310-350 never intersects, never "enters view", and any
+ * entrance keyed to it never runs. Nothing throws — the element simply sits at
+ * its initial state forever, which for a counter means it reads zero.
+ *
+ * (Found the hard way on a chart's right-hand marker, since removed. Keep this
+ * variant: the trap is a property of the margin, not of that one component.)
+ *
+ * The vertical inset is the half doing real work (fire just before the element
+ * is fully on screen), so it stays.
+ */
+export const VIEWPORT_Y = { once: true, margin: "-80px 0px" } as const;
+
+/**
+ * {@link VIEWPORT_Y} without `once` — the observer keeps reporting, so a value
+ * derived from it goes false again when the element leaves.
+ *
+ * This exists for *looping* ambience (a pulse travelling a line, a breathing
+ * marker). An `Infinity` repeat is the one animation on this site that
+ * never ends on its own, so it must be gated on something that can turn it off:
+ * left running off-screen it burns a phone's battery for a picture nobody is
+ * looking at. Entrances keep using the `once` variants — re-firing a reveal
+ * every time the reader scrolls back is a different bug.
+ */
+export const VIEWPORT_LIVE = { margin: "-80px 0px" } as const;
