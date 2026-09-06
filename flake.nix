@@ -560,6 +560,9 @@
             echo "▶ typecheck (tsc --noEmit)"
             npm run check
 
+            echo "▶ i18n drift (translation policy 1.1/1.2)"
+            npm run i18n:check
+
             echo "▶ visual regression (playwright)"
             ${portEnv}
             export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
