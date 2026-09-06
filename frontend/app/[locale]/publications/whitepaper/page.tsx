@@ -3,15 +3,30 @@ import { messagesFor } from "@/shared/config/i18n";
 import { Container } from "@evinvest/uikit";
 
 import { DocumentReader } from "@/shared/ui/document-reader";
-import { localeMetadata } from "@/shared/seo/locale-metadata";
+import { metadataFor } from "@/shared/seo/locale-metadata";
 import { PageGraph } from "@/shared/seo/page-graph";
 
-// generateMetadata only so the canonical carries the locale prefix — see
-// app/[locale]/team/page.tsx.
-export const generateMetadata = localeMetadata(
-  "whitepaper",
-  "/publications/whitepaper"
-);
+// Not `localeMetadata` like the other static pages: this one overrides
+// `robots`, so it needs the Metadata itself rather than the bare shape the
+// factory returns.
+//
+// The page was shipping `robots: index, follow` with a self-canonical while
+// being excluded from the sitemap AND from ROUTES for the opposite reason (see
+// shared/config/site.ts): its body mounts client-side in a shadow root, so
+// there is no text in the SSR HTML for a crawler to index — a thin page
+// advertised as indexable. `noindex` makes the metadata agree with the
+// sitemap/ROUTES exclusion instead of contradicting it; `follow` stays true so
+// its outbound links (the PDF download, the way back to /publications) still
+// pass link equity.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const base = metadataFor(locale, "whitepaper", "/publications/whitepaper");
+  return { ...base, robots: { index: false, follow: true } };
+}
 
 // Filed under /publications with the research it underpins, but it is not a
 // blog-flake article: it has its own flake and lands at public/whitepaper.*, so
