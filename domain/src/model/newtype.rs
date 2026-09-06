@@ -13,7 +13,7 @@
 macro_rules! string_newtype {
 	($(#[$meta:meta])* $name:ident) => {
 		$(#[$meta])*
-		#[derive(Clone, Debug, ::serde::Deserialize, Eq, PartialEq, ::serde::Serialize)]
+		#[derive(Clone, Debug, Eq, PartialEq, ::serde::Deserialize, ::serde::Serialize)]
 		#[serde(transparent)]
 		pub struct $name(String);
 
