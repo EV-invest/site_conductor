@@ -99,7 +99,7 @@ function localeOf(pathname: string): Locale {
 export async function proxyZone(
   request: Request,
   zoneUrl: string | undefined,
-  opts?: { headerZone?: string }
+  opts?: { headerZone?: string; noindex?: boolean }
 ): Promise<Response> {
   // Env unset ⇒ zone disabled: 404 rather than half-proxying, preserving the
   // old rewrite-less semantics.
@@ -153,6 +153,17 @@ export async function proxyZone(
   });
   for (const cookie of upstream.headers.getSetCookie())
     resHeaders.append("set-cookie", cookie);
+
+  // Opt-in, not zone-wide: the cabinet zone's HTML (its login screen included)
+  // ships no `meta robots` and no canonical of its own — the banking repo that
+  // owns that HTML has no reason to know it is served under a marketing
+  // domain's SEO policy — so a thin, unbranded login page was indexable purely
+  // because this hop passed its response through untouched. `X-Robots-Tag`
+  // applies to any content type (unlike a `<meta>` tag), so it works here
+  // without parsing the HTML. Per-route rather than per-zone: the /rea zone
+  // proxies through the same function and does not set this, so a future zone
+  // stays indexable by default unless it explicitly opts out like the cabinet.
+  if (opts?.noindex) resHeaders.set("x-robots-tag", "noindex");
 
   // Anything that isn't an HTML document (RSC payloads, files) streams through
   // byte-identical. Error HTML keeps its chrome — inject on 4xx/5xx too.
