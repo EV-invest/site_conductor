@@ -1,4 +1,4 @@
-import type { Locale } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, type Locale } from "@evinvest/i18n";
 
 import RAW from "./translations.json";
 import type { Publication } from "./types";
@@ -81,17 +81,34 @@ export function localizePublication(
 }
 
 /**
+ * Locales the *document* — not the card — actually exists in.
+ *
+ * Absent `locales` means English only, which is every entry authored so far:
+ * the reports are compiled Typst in a separate repo and nothing here translates
+ * them. This is the one resolver for that fallback — both the article page
+ * (`contentLocales` in its `pageMetadata` call) and `app/sitemap.ts` read it, so
+ * "no `locales` field" can't mean "English only" in one and "all five locales"
+ * in the other. It used to: the page passed `publication.locales` straight
+ * through, whose `undefined` fell through `pageMetadata`'s own default of all
+ * five, while the sitemap coalesced the same `undefined` to English-only — five
+ * hreflang entries on the page, one `<url>` in the sitemap for the same article,
+ * which is exactly the "head claims five languages, sitemap claims one" conflict
+ * `shared/seo/hreflang.ts` warns about.
+ */
+export function documentLocales(publication: Publication): readonly Locale[] {
+  return publication.locales ?? [DEFAULT_LOCALE];
+}
+
+/**
  * Whether the *document* — not the card — exists in this locale.
  *
- * Absent `locales` means English only, which is every entry authored so far: the
- * reports are compiled Typst in a separate repo and nothing here translates
- * them. This is what the article page's notice keys off, so the notice
- * disappears by itself on the day the blog build starts publishing translated
- * documents and declaring them.
+ * This is what the article page's notice keys off, so the notice disappears by
+ * itself on the day the blog build starts publishing translated documents and
+ * declaring them.
  */
 export function hasTranslatedDocument(
   publication: Publication,
   locale: Locale
 ): boolean {
-  return (publication.locales ?? ["en"]).includes(locale);
+  return documentLocales(publication).includes(locale);
 }

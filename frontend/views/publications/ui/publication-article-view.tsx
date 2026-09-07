@@ -69,6 +69,9 @@ export function PublicationArticleView({
 
       <DocumentReader
         title={publication.title}
+        // PublicationArticleHeader above already rendered the page's visible
+        // <h1> (the title) — the reader's own sr-only one would be a second.
+        renderHeading={false}
         downloadLabel={t("publications.downloadPdf")}
         downloadAriaLabel={t("document.downloadAria", {
           title: publication.title,

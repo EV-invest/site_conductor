@@ -3,7 +3,11 @@ import { messagesFor } from "@/shared/config/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { coverStill, findPublication } from "@/entities/publication";
+import {
+  coverStill,
+  documentLocales,
+  findPublication,
+} from "@/entities/publication";
 import { PublicationArticleView } from "@/views/publications";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -34,12 +38,14 @@ export async function generateMetadata({
     path: `/publications/${slug}`,
     locale,
     // The card is translated (title, dek); the *document* usually is not — it is
-    // a compiled Typst report from the blog repo, and `locales` is its record of
-    // where it exists. So the locales it does not cover canonicalise to the
-    // English URL rather than advertising five language versions of one English
-    // body — the duplicate-content trap shared/config/i18n.ts is guarding
-    // against, and the one place indexing all five locales could have sprung it.
-    contentLocales: publication.locales,
+    // a compiled Typst report from the blog repo, and `documentLocales` is its
+    // record of where it exists (absent `locales` ⇒ English only — the same
+    // fallback app/sitemap.ts reads, from the same resolver, so the two can't
+    // disagree). So the locales it does not cover canonicalise to the English
+    // URL rather than advertising five language versions of one English body —
+    // the duplicate-content trap shared/config/i18n.ts is guarding against, and
+    // the one place indexing all five locales could have sprung it.
+    contentLocales: documentLocales(publication),
     image: coverStill(publication),
     type: "article",
     article: {

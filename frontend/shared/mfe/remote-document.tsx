@@ -42,10 +42,17 @@ export async function RemoteDocument({
   // Light DOM, SSR. Trusted operator content (see ShadowDocument trust note).
   let inner: string;
   try {
-    inner = extractBodyInner(await loadDocHtml(src)).replace(
-      /<style[\s\S]*?<\/style>/gi,
-      "",
-    );
+    inner = extractBodyInner(await loadDocHtml(src))
+      .replace(/<style[\s\S]*?<\/style>/gi, "")
+      // The compiled document carries its own <h1> (its title, set by the typst
+      // build). A light-DOM caller composes this into a page that already has
+      // one — PublicationArticleHeader's — so left alone the page shipped two.
+      // Downgrading to <h2> here keeps the document's own heading hierarchy
+      // intact (it still reads as a heading, one level under the page title)
+      // without touching the shadow-isolated path (the whitepaper), which has
+      // no host <h1> to collide with.
+      .replace(/<h1\b/gi, "<h2")
+      .replace(/<\/h1>/gi, "</h2>");
   } catch {
     return <>{fallback}</>;
   }

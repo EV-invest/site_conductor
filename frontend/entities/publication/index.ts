@@ -16,6 +16,7 @@ export {
   publicationsByKind,
 } from "./model/selectors";
 export {
+  documentLocales,
   hasTranslatedDocument,
   localizePublication,
 } from "./model/translations";

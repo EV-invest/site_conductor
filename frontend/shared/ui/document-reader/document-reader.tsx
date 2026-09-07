@@ -14,6 +14,15 @@ export interface DocumentReaderProps {
   pdfSrc: string;
   /** Forwarded to `RemoteDocument` — self-styled docs (the whitepaper) isolate in a shadow root. */
   isolate?: boolean;
+  /**
+   * Render the sr-only `<h1>` below. Default `true` — right for the whitepaper
+   * (shadow-isolated, so this is the page's only heading). Pass `false` when the
+   * caller already rendered a visible `<h1>` of its own: `/publications/[slug]`
+   * does, in `PublicationArticleHeader`, and having both meant the page shipped
+   * two `<h1>`s (three counting the light-DOM document's own, downgraded to
+   * `<h2>` in `remote-document.tsx` for the same reason).
+   */
+  renderHeading?: boolean;
   /** Forwarded to `RemoteDocument` as `className` (e.g. `prose` for unstyled blog docs). */
   bodyClassName?: string;
   /** Shown in place of the doc if its build can't be loaded. Defaults to a PDF-download note. */
@@ -37,6 +46,7 @@ export function DocumentReader({
   htmlSrc,
   pdfSrc,
   isolate = false,
+  renderHeading = true,
   bodyClassName,
   fallback,
   downloadLabel,
@@ -45,8 +55,9 @@ export function DocumentReader({
   return (
     <main className="mt-24 min-h-[60vh]">
       {/* The doc supplies its own heading inside the body; this is only for the
-          a11y/heading landmark on the host page. */}
-      <h1 className="sr-only">{title}</h1>
+          a11y/heading landmark on the host page — and only when the host page
+          has no visible <h1> of its own (see `renderHeading`'s doc comment). */}
+      {renderHeading && <h1 className="sr-only">{title}</h1>}
 
       <HeaderAction>
         <a
