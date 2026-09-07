@@ -1,6 +1,10 @@
+import Image from "next/image";
 import { translator, type Locale } from "@evinvest/i18n";
 import { Text, Tier } from "@/shared/ui/text";
 import { SplitText } from "@/shared/ui/motion";
+import { getVariant } from "@/features/ab-variant/get-variant";
+import { ExperimentTracker, match } from "@/features/ab-variant";
+import { ASSETS } from "@/shared/config/assets";
 import { messagesFor } from "@/shared/config/i18n";
 import { accented } from "@/shared/ui/accented";
 
@@ -23,14 +27,16 @@ const PILLARS = ["investment", "risk", "development", "execution"] as const;
  * on the grid the section below already uses. Single source for both the
  * homepage Team section and the /team page, so the copy never drifts.
  *
- * It carried a boardroom photograph until v0.2.62. The picture was doing no work
- * the sentence beside it wasn't already doing, and an image block above a grid of
- * portraits gave the section two competing focal points before the reader
- * reached a single face. Removing it also retired the `team_office` A/B test,
- * whose two variants were both photographs of an office.
+ * It carried a boardroom photograph unconditionally until v0.2.62, on the
+ * argument that the picture did no work the sentence beside it wasn't already
+ * doing and gave the section two focal points before the reader reached a single
+ * face. `team_office` now measures that argument instead of assuming it: `a` is
+ * the text-only band, `b` restores the photograph. Only the picture is switched —
+ * the heading, sentence and pillars are one copy shared by both variants.
  */
-export function LeadershipIntro({ locale }: { locale: Locale }) {
+export async function LeadershipIntro({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
+  const office = await getVariant("team_office");
   return (
     <div className="space-y-10">
       <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12">
@@ -48,6 +54,23 @@ export function LeadershipIntro({ locale }: { locale: Locale }) {
           <Text className="lg:col-span-5">{t("team.leadership.intro")}</Text>
         </Tier>
       </div>
+
+      <ExperimentTracker experiment="team_office" variant={office}>
+        {match(office, {
+          a: null,
+          b: (
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl border border-main-mist/10 shadow-2xl">
+              <Image
+                src={ASSETS.office_interior}
+                alt={t("team.leadership.photoAlt")}
+                fill
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                className="object-cover opacity-80"
+              />
+            </div>
+          ),
+        })}
+      </ExperimentTracker>
 
       <dl className="grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
         {PILLARS.map((id, i) => (

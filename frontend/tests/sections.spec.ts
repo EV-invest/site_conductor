@@ -37,6 +37,7 @@ const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
   hero: "a",
   hero_headline: "b",
   team_bio_shade: "a",
+  team_office: "a",
 };
 test.beforeEach(async ({ context, baseURL }) => {
   await context.addCookies(
@@ -91,8 +92,13 @@ for (const { name, selector } of SECTIONS) {
         sel => {
           const root = document.querySelector(sel);
           if (!root) return false;
+          // A responsive-hidden branch (the mobile carousel at a desktop
+          // viewport) is never intersected, so its Reveal holds opacity:0 for
+          // good. Unrendered means nothing to reveal, not a dead bundle.
           return !Array.from(root.querySelectorAll("[style*='opacity']")).some(
-            el => getComputedStyle(el).opacity === "0"
+            el =>
+              el.getClientRects().length > 0 &&
+              getComputedStyle(el).opacity === "0"
           );
         },
         selector,

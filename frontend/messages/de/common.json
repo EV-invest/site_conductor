@@ -187,6 +187,10 @@
     "en": "Our partners pair hands-on investment, risk-modelling and development experience with on-the-ground execution in Quy Nhon and Da Nang — local presence held to institutional discipline.",
     "t": "Unsere Partner verbinden praktische Erfahrung in Investment, Risikomodellierung und Projektentwicklung mit der Umsetzung vor Ort in Quy Nhon und Da Nang — lokale Präsenz nach institutionellen Maßstäben."
   },
+  "team.leadership.photoAlt": {
+    "en": "EV Investment boardroom in Quy Nhon",
+    "t": "Sitzungssaal von EV Investment in Quy Nhon"
+  },
   "team.leadership.pillar.investment.title": {
     "en": "Investment",
     "t": "Investment"
@@ -632,12 +636,12 @@
     "t": "Vermietung"
   },
   "home.hero.stat.currentCity": {
-    "en": "Current Target City",
-    "t": "Aktuelle Zielstadt"
+    "en": "Highest EV City",
+    "t": "Stadt mit höchstem EV"
   },
   "home.hero.stat.aumCap": {
-    "en": "AUM hard cap",
-    "t": "Harte AUM-Obergrenze"
+    "en": "Closing at",
+    "t": "Schluss bei"
   },
   "home.hero.b.eyebrow": {
     "en": "Institutional Real Estate • Quy Nhon",

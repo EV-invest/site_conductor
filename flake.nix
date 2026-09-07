@@ -114,7 +114,6 @@
             AGENTS.md
             CLAUDE.md
             .claude/
-            .pre-commit-config.yaml
           '';
           jobs = {
             warnings.augment = [ "tokei" "code-duplication" ];
@@ -124,7 +123,6 @@
         };
         readme = v_flakes.readme-fw {
           inherit pkgs pname;
-          repo = "ev-invest/site_conductor";
           defaults = true;
           lastSupportedVersion = "nightly-1.92";
           rootDir = ./.;
@@ -562,6 +560,9 @@
             echo "▶ typecheck (tsc --noEmit)"
             npm run check
 
+            echo "▶ i18n drift (translation policy 1.1/1.2)"
+            npm run i18n:check
+
             echo "▶ visual regression (playwright)"
             ${portEnv}
             export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
@@ -569,6 +570,12 @@
             export PLAYWRIGHT_BROWSERS_PATH="${pkgs.playwright-driver.browsers}"
             export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="1"
             export PLAYWRIGHT_HOST_PLATFORM_OVERRIDE="nixos"
+            # The html reporter auto-opens the Expected/Actual/Diff view only when
+            # stdin is a TTY; under the pre-commit hook it is /dev/null, so hand the
+            # terminal back when there is one.
+            if (: < /dev/tty) 2>/dev/null; then
+              exec npm run test:visual < /dev/tty
+            fi
             exec npm run test:visual
           '';
         };
