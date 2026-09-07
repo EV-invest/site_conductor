@@ -37,6 +37,7 @@ const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
   hero: "a",
   hero_headline: "b",
   team_bio_shade: "a",
+  team_office: "a",
 };
 test.beforeEach(async ({ context, baseURL }) => {
   await context.addCookies(
