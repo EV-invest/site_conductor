@@ -220,6 +220,16 @@ const nextConfig: NextConfig = {
     // on THIS origin (cookies land first-party for every zone) and rewrite to the
     // concierge plane's auth web surface. Zones never run OAuth — they link to
     // /api/auth/login and verify the shared access-JWT cookie.
+    //
+    // KYC rides the SAME concierge web surface, so it reuses this one URL rather
+    // than introducing a second env var for the same service. Two unlike shapes
+    // pass through here:
+    //   /api/kyc/start            — the browser's, carrying the shared session cookie
+    //   /api/kyc/callback/:vendor — the provider's, server-to-server
+    // The callback is what makes this rewrite load-bearing: the verification
+    // vendor POSTs it from its own infrastructure, so it must be reachable on the
+    // PUBLIC origin. Concierge authenticates that request by HMAC over the raw
+    // body, never by a cookie — the absent session there is by design, not a hole.
     const auth = config.authWebUrl?.replace(/\/+$/, "");
     if (auth) {
       beforeFiles.push(
@@ -227,7 +237,8 @@ const nextConfig: NextConfig = {
         {
           source: "/api/callback/auth/:path*",
           destination: `${auth}/callback/auth/:path*`,
-        }
+        },
+        { source: "/api/kyc/:path*", destination: `${auth}/kyc/:path*` }
       );
     }
     // Serves the default locale at unprefixed paths, so no indexed English URL

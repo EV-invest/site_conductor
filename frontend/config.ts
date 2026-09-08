@@ -59,9 +59,13 @@ export const config = {
   get reaZoneUrl(): string | undefined {
     return prodRequired("REA_ZONE_URL");
   },
-  // The concierge plane's auth web surface. Auth is shell-owned: /api/auth/* and
+  // The concierge plane's web surface. Auth is shell-owned: /api/auth/* and
   // /api/callback/auth/* on THIS origin rewrite there, so session cookies land
-  // first-party for every zone. Unset ⇒ no rewrites ⇒ auth disabled (dev-only).
+  // first-party for every zone. /api/kyc/* rewrites there too — identity
+  // verification is owned by the same plane and served by the same process, so
+  // it shares this URL instead of a second env var pointing at one service.
+  // Unset ⇒ no rewrites ⇒ auth AND kyc disabled (dev-only). The name stayed
+  // AUTH_WEB_URL: it is already deployed, and renaming it buys nothing.
   get authWebUrl(): string | undefined {
     return prodRequired("AUTH_WEB_URL");
   },
