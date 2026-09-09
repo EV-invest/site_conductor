@@ -2,6 +2,7 @@ import type { Locale } from "@evinvest/i18n";
 
 import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
+import { Partners } from "./partners";
 import { Portfolio } from "./portfolio";
 import { Research } from "./research";
 import { Team } from "./team";
@@ -19,6 +20,7 @@ export function HomeView({ locale }: { locale: Locale }) {
       <Hero locale={locale} />
       <FieldNotes locale={locale} />
       <Portfolio />
+      <Partners locale={locale} />
       <Research locale={locale} />
       <Team locale={locale} />
     </div>

@@ -695,6 +695,18 @@
     "en": "More from the field",
     "t": "Thêm từ thực địa"
   },
+  "home.partners.eyebrow": {
+    "en": "What we run on",
+    "t": "Nền tảng chúng tôi sử dụng"
+  },
+  "home.partners.title": {
+    "en": "The stack behind *the numbers*",
+    "t": "Hạ tầng đằng sau *những con số*"
+  },
+  "home.partners.intro": {
+    "en": "Custody, identity verification, and the engineering that produces every report we publish. We name it because infrastructure you can verify is part of the diligence.",
+    "t": "Lưu ký tài sản, xác minh danh tính và nền tảng kỹ thuật tạo ra mọi báo cáo chúng tôi công bố. Chúng tôi công khai điều đó, vì hạ tầng có thể kiểm chứng cũng là một phần của quá trình thẩm định."
+  },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
     "t": "Chuẩn mực học thuật"
