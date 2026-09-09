@@ -1,3 +1,5 @@
+import { Clock, FileText, LineChart, MapPin } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { translator, type Locale } from "@evinvest/i18n";
 
 import { formatPublicationDate } from "@/entities/publication";
@@ -24,22 +26,36 @@ export function Masthead({
   // section that broke rather than one that has not started.
   // Real ICU plurals: Russian needs one/few/many/other for these counts, which
   // string concatenation cannot express.
-  const stats = [
+  // The icon carries the same counter the label spells out, so it is decorative
+  // and the rail keeps reading correctly in all five locales without it.
+  const stats: { icon: LucideIcon; text: string }[] = [
     fieldNoteCount > 0
-      ? t("publications.stat.fieldNotes", { count: fieldNoteCount })
+      ? {
+          icon: MapPin,
+          text: t("publications.stat.fieldNotes", { count: fieldNoteCount }),
+        }
       : null,
     researchCount > 0
-      ? t("publications.stat.reports", { count: researchCount })
+      ? {
+          icon: LineChart,
+          text: t("publications.stat.reports", { count: researchCount }),
+        }
       : null,
     whitepaperCount > 0
-      ? t("publications.stat.whitepapers", { count: whitepaperCount })
+      ? {
+          icon: FileText,
+          text: t("publications.stat.whitepapers", { count: whitepaperCount }),
+        }
       : null,
     updatedAt
-      ? t("publications.stat.updated", {
-          date: formatPublicationDate(updatedAt, "short", locale),
-        })
+      ? {
+          icon: Clock,
+          text: t("publications.stat.updated", {
+            date: formatPublicationDate(updatedAt, "short", locale),
+          }),
+        }
       : null,
-  ].filter(Boolean);
+  ].filter(stat => stat !== null);
 
   return (
     <header>
@@ -52,9 +68,14 @@ export function Masthead({
       <p className="mt-5 max-w-3xl leading-relaxed font-light text-main-mist/70">
         {t("publications.intro")}
       </p>
-      <p className="mt-8 border-y border-main-mist/15 py-4 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/50">
-        {stats.join("   ·   ")}
-      </p>
+      <ul className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-2 border-y border-main-mist/15 py-4 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/50">
+        {stats.map(({ icon: Icon, text }) => (
+          <li key={text} className="flex items-center gap-2">
+            <Icon aria-hidden className="size-3.5 text-main-accent-t1" />
+            {text}
+          </li>
+        ))}
+      </ul>
     </header>
   );
 }
