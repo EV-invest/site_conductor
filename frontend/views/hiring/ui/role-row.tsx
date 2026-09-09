@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock, MapPin } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
 import { useT } from "@evinvest/i18n/react";
 import { type VacancySummary, vacancyTeamLabel } from "@/entities/vacancy";
@@ -29,8 +29,15 @@ export function RoleRow({
           </span>
         </div>
         <p className="mt-2 text-sm text-main-mist/60">{vacancy.summary}</p>
-        <p className="mt-2 font-mono-tech text-[10px] uppercase tracking-[0.16em] text-main-mist/40">
-          {vacancy.location} · {vacancy.employment_type}
+        <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tech text-[10px] uppercase tracking-[0.16em] text-main-mist/40">
+          <span className="flex items-center gap-1.5">
+            <MapPin aria-hidden className="size-3" />
+            {vacancy.location}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Clock aria-hidden className="size-3" />
+            {vacancy.employment_type}
+          </span>
         </p>
       </div>
       <span className="hidden shrink-0 items-center gap-2 rounded-md border border-main-accent-t1/30 px-4 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-main-accent-t1 transition-colors group-hover:bg-main-accent-t1/10 sm:inline-flex">
