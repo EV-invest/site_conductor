@@ -9,7 +9,7 @@ const MAX_WIDTH: Record<MediaPlateSize, string> = {
 };
 
 export interface PlateFrameProps {
-  badge: string;
+  badge: ReactNode;
   caption?: string;
   provenance: string;
   plateLabel?: string;
@@ -49,7 +49,7 @@ export function PlateFrame({
     >
       <div className="relative aspect-video overflow-hidden">
         {children}
-        <span className="pointer-events-none absolute left-5 top-5 z-20 rounded-none border border-main-accent-t1/40 bg-main-black/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
+        <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-1.5 rounded-none border border-main-accent-t1/40 bg-main-black/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
           {badge}
         </span>
       </div>

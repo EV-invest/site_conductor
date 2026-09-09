@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
@@ -83,7 +84,8 @@ export function LeadEntry({
             href={localePath(locale, href(publication))}
             className="inline-flex items-center gap-2 bg-main-accent-t1 px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-main-black transition-colors hover:bg-main-mist hover:text-main-brand"
           >
-            {ctaFor(publication, t)} →
+            {ctaFor(publication, t)}
+            <ArrowRight aria-hidden className="size-3.5" />
           </Link>
         </div>
         <span className="sr-only">{kindLabel(publication.kind, t)}</span>

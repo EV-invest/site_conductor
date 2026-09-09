@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
 
 import { formatPublicationDate } from "@/entities/publication";
@@ -69,9 +70,10 @@ export function NoteSummary({
         )}
         <Link
           href={localePath(locale, note.href)}
-          className="font-mono-tech text-[11px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
+          className="inline-flex items-center gap-2 font-mono-tech text-[11px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
         >
-          {note.cta} →
+          {note.cta}
+          <ArrowRight aria-hidden className="size-3.5" />
         </Link>
       </div>
     </article>

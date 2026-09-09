@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 
 import {
@@ -74,9 +75,10 @@ export function EntryCard({
         <div className="mt-4 border-t border-main-mist/10 pt-4">
           <Link
             href={localePath(locale, href(publication))}
-            className="font-mono-tech text-[10px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
+            className="inline-flex items-center gap-2 font-mono-tech text-[10px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
           >
-            {ctaFor(publication, t)} →
+            {ctaFor(publication, t)}
+            <ArrowRight aria-hidden className="size-3.5" />
           </Link>
         </div>
       </div>

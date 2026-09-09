@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  Banknote,
+  Briefcase,
+  Clock,
+  MapPin,
+  type LucideIcon,
+} from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
@@ -7,10 +14,20 @@ import { messagesFor } from "@/shared/config/i18n";
 import { ShareButton } from "./share-button";
 import { UntranslatedNotice } from "./untranslated-notice";
 
-function Pill({ label, value }: { label: string; value: string }) {
+// The dot said nothing; the icon says which fact the pill carries. Decorative —
+// the translated `label` beside it is the accessible name.
+function Pill({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-main-card/40 px-3.5 py-1.5">
-      <span className="h-1.5 w-1.5 rounded-full bg-main-accent-t1/60" />
+      <Icon aria-hidden className="size-3.5 text-main-accent-t1/80" />
       <span className="font-mono-tech text-[9px] uppercase tracking-[0.16em] text-main-mist/45">
         {label}
       </span>
@@ -49,13 +66,19 @@ export function VacancyHero({
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2.5">
-          <Pill label={t("vacancy.pill.location")} value={vacancy.location} />
           <Pill
+            icon={MapPin}
+            label={t("vacancy.pill.location")}
+            value={vacancy.location}
+          />
+          <Pill
+            icon={Clock}
             label={t("vacancy.pill.type")}
             value={vacancy.employment_type}
           />
-          <Pill label={t("vacancy.pill.team")} value={team} />
+          <Pill icon={Briefcase} label={t("vacancy.pill.team")} value={team} />
           <Pill
+            icon={Banknote}
             label={t("vacancy.pill.compensation")}
             value={vacancy.compensation}
           />

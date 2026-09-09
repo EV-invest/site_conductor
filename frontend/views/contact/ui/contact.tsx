@@ -1,3 +1,4 @@
+import { Mail, MapPin } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import { translator, type Locale } from "@evinvest/i18n";
 
@@ -17,7 +18,8 @@ const OFFICES = [
 function Channel({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
+      <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
+        <Mail aria-hidden className="size-3.5 text-main-accent-t1" />
         {label}
       </p>
       <a
@@ -57,7 +59,11 @@ export function ContactView({ locale }: { locale: Locale }) {
               <div className="mt-10 grid gap-6 border-t border-white/[0.06] pt-8 sm:grid-cols-2">
                 {OFFICES.map(office => (
                   <div key={office.city}>
-                    <p className="font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/60">
+                    <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/60">
+                      <MapPin
+                        aria-hidden
+                        className="size-3.5 text-main-accent-t1"
+                      />
                       {t(office.city)}
                     </p>
                     <p className="mt-1 text-sm text-main-mist/45">

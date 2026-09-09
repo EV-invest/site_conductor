@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import { localePath, translator, type Locale } from "@evinvest/i18n";
 
@@ -53,9 +54,10 @@ export function FieldNotes({ locale }: { locale: Locale }) {
           </div>
           <Link
             href={localePath(locale, "/publications")}
-            className="border border-main-mist/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/85 transition-colors hover:border-main-accent-t1 hover:text-main-accent-t1"
+            className="inline-flex items-center gap-2 border border-main-mist/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/85 transition-colors hover:border-main-accent-t1 hover:text-main-accent-t1"
           >
-            {t("home.fieldNotes.all")} →
+            {t("home.fieldNotes.all")}
+            <ArrowRight aria-hidden className="size-3.5" />
           </Link>
         </Reveal>
 
@@ -94,7 +96,11 @@ export function FieldNotes({ locale }: { locale: Locale }) {
                           className="flex gap-4 text-sm text-main-mist/80 transition-colors hover:text-main-mist"
                         >
                           <span className="w-14 shrink-0 font-mono-tech text-[10px] text-main-mist/35">
-                            {formatPublicationDate(publication.date, "short", locale)}
+                            {formatPublicationDate(
+                              publication.date,
+                              "short",
+                              locale
+                            )}
                           </span>
                           {publication.title}
                         </Link>
