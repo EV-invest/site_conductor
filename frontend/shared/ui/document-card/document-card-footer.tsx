@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, FileDown } from "lucide-react";
+import { ArrowRight, Clock, File, FileDown, FileText } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export interface DocumentCardFooterProps {
   pages?: number;
@@ -17,21 +18,31 @@ export interface DocumentCardFooterProps {
  * point of this card is that a text dispatch is a complete object, not a media
  * card with a hole in it.
  */
-function formatLabel({ pages, readingMinutes, pdfHref }: DocumentCardFooterProps) {
+function formatTerms({
+  pages,
+  readingMinutes,
+  pdfHref,
+}: DocumentCardFooterProps): { icon: LucideIcon; text: string }[] {
   const terms = [
-    pages ? `${pages} PP` : null,
-    readingMinutes ? `${readingMinutes} MIN READ` : null,
-    pdfHref ? "PDF" : null,
-  ].filter(Boolean);
-  return terms.length ? terms.join(" · ") : "FULL REPORT";
+    pages ? { icon: FileText, text: `${pages} PP` } : null,
+    readingMinutes ? { icon: Clock, text: `${readingMinutes} MIN READ` } : null,
+    pdfHref ? { icon: File, text: "PDF" } : null,
+  ].filter(term => term !== null);
+  return terms.length ? terms : [{ icon: FileText, text: "FULL REPORT" }];
 }
 
 export function DocumentCardFooter(props: DocumentCardFooterProps) {
   const { href, pdfHref, cta, title } = props;
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-main-mist/10 pt-5">
-      <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
-        {formatLabel(props)}
+      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
+        {formatTerms(props).map(({ icon: Icon, text }) => (
+          <span key={text} className="flex items-center gap-1.5">
+            {/* Decorative: the term beside it already states the fact. */}
+            <Icon aria-hidden className="size-3" />
+            {text}
+          </span>
+        ))}
       </span>
       <div className="flex items-center gap-4">
         {pdfHref ? (

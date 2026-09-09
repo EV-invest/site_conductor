@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /**
  * Structural mirror of the publication entity's `Cover` union, declared here on
  * purpose: `shared/` must not import from `entities/` (FSD direction), so the
@@ -47,8 +49,12 @@ export interface MediaPlateProps {
   provenance?: string;
   /** Left rail prefix, e.g. `PLATE 01`. */
   plateLabel?: string;
-  /** Overrides the derived badge (`VIDEO · 08:12`, `PHOTO · 14 FRAMES`, …). */
-  badge?: string;
+  /**
+   * Overrides the derived badge (`VIDEO · 08:12`, `PHOTO · 14 FRAMES`, …).
+   * A node, not a string, so an override can carry its own leading icon the way
+   * the derived badge does.
+   */
+  badge?: ReactNode;
   size?: MediaPlateSize;
   className?: string;
 }

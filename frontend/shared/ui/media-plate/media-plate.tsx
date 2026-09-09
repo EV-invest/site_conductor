@@ -1,18 +1,41 @@
+import type { ReactNode } from "react";
+import { Image as ImageIcon, Video, Youtube } from "lucide-react";
+
 import { PlateFrame } from "./plate-frame";
 import { ImageStage } from "./image-stage";
 import { VideoStage } from "./video-plate";
 import { YouTubeStage } from "./youtube-plate";
 import type { MediaPlateCover, MediaPlateProps } from "./types";
 
-/** The badge states what the plate IS — never what it is missing. */
-function derivedBadge(cover: MediaPlateCover): string {
+/**
+ * The badge states what the plate IS — never what it is missing.
+ *
+ * The icon duplicates the word beside it, so it is decorative; the badge stays
+ * readable as text alone.
+ */
+function derivedBadge(cover: MediaPlateCover): ReactNode {
   switch (cover.type) {
     case "image":
-      return cover.frames ? `PHOTO · ${cover.frames} FRAMES` : "PHOTO";
+      return (
+        <>
+          <ImageIcon aria-hidden className="size-3" />
+          {cover.frames ? `PHOTO · ${cover.frames} FRAMES` : "PHOTO"}
+        </>
+      );
     case "video":
-      return cover.duration ? `VIDEO · ${cover.duration}` : "VIDEO";
+      return (
+        <>
+          <Video aria-hidden className="size-3" />
+          {cover.duration ? `VIDEO · ${cover.duration}` : "VIDEO"}
+        </>
+      );
     case "youtube":
-      return cover.duration ? `YOUTUBE · ${cover.duration}` : "YOUTUBE";
+      return (
+        <>
+          <Youtube aria-hidden className="size-3" />
+          {cover.duration ? `YOUTUBE · ${cover.duration}` : "YOUTUBE"}
+        </>
+      );
   }
 }
 
