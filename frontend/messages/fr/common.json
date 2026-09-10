@@ -695,6 +695,18 @@
     "en": "More from the field",
     "t": "Plus depuis le terrain"
   },
+  "home.partners.eyebrow": {
+    "en": "What we run on",
+    "t": "Ce sur quoi nous nous appuyons"
+  },
+  "home.partners.title": {
+    "en": "The stack behind *the numbers*",
+    "t": "L'infrastructure derrière *les chiffres*"
+  },
+  "home.partners.intro": {
+    "en": "Custody, identity verification, and the engineering that produces every report we publish. We name it because infrastructure you can verify is part of the diligence.",
+    "t": "La conservation des actifs, la vérification d'identité et l'ingénierie qui produit chacun de nos rapports. Nous la nommons, car une infrastructure vérifiable fait partie de la diligence."
+  },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
     "t": "Rigueur académique"

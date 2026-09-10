@@ -695,6 +695,18 @@
     "en": "More from the field",
     "t": "Ещё с места событий"
   },
+  "home.partners.eyebrow": {
+    "en": "What we run on",
+    "t": "На чём мы работаем"
+  },
+  "home.partners.title": {
+    "en": "The stack behind *the numbers*",
+    "t": "Инфраструктура за *цифрами*"
+  },
+  "home.partners.intro": {
+    "en": "Custody, identity verification, and the engineering that produces every report we publish. We name it because infrastructure you can verify is part of the diligence.",
+    "t": "Хранение активов, верификация личности и инженерная база, на которой строится каждый наш отчёт. Мы называем её открыто: инфраструктура, которую можно проверить, — это часть due diligence."
+  },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
     "t": "Академическая строгость"

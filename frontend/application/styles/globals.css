@@ -110,3 +110,39 @@
 .research-panel > * {
   position: relative;
 }
+
+/* Partner marquee — views/home/ui/partners.
+   A pure-CSS loop, so the trust bar stays a Server Component and ships no JS.
+   The track repeats the vendor list COPIES times (4, set in partners.tsx) and
+   slides exactly one copy per lap, so -25% is 100 / COPIES — change one and the
+   other has to follow. Because each item carries its own horizontal padding
+   rather than the row using a flex `gap`, every copy is an identical box and the
+   slide lands on the seam instead of half a gap short. */
+@keyframes partners-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.partners-marquee-track {
+  animation: partners-marquee 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partners-marquee-track {
+    animation: none;
+  }
+  /* Stopping the loop would strand every logo past the right edge, so hand the
+     row back to the reader as a plain horizontal scroller — and drop the
+     duplicate copy, which only ever existed to hide the seam. Scrolling here is
+     contained by the clipped viewport and never reaches <body>. */
+  .partners-marquee {
+    overflow-x: auto;
+  }
+  .partners-marquee-clone {
+    display: none;
+  }
+}
