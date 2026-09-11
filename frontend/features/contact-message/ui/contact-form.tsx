@@ -34,7 +34,7 @@ export function ContactForm() {
     <form
       onSubmit={submit}
       noValidate
-      className="rounded-xl border border-white/10 bg-main-card/40 p-6"
+      className="rounded-xl border border-white/10 bg-card/40 p-6"
     >
       <div className="space-y-4">
         <TextField
@@ -69,7 +69,7 @@ export function ContactForm() {
       </div>
 
       {status === "error" && errorKey && (
-        <p role="alert" className="mt-3 text-xs text-destructive">
+        <p role="alert" className="mt-3 text-xs text-accent-error">
           {t(errorKey)}
         </p>
       )}
@@ -78,7 +78,7 @@ export function ContactForm() {
         type="submit"
         disabled={status === "sending"}
         aria-busy={status === "sending"}
-        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90 disabled:opacity-60"
       >
         {status === "sending" ? (
           t("form.sending")

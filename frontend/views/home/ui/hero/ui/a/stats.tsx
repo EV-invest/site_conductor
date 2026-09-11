@@ -45,7 +45,7 @@ const STATS = [
   {
     key: "home.hero.stat.targetIrr",
     value: "16.4% +",
-    tone: "text-main-accent-t3",
+    tone: "text-accent-warn",
   },
   {
     key: "home.hero.stat.specialization",
@@ -55,9 +55,9 @@ const STATS = [
   {
     key: "home.hero.stat.currentCity",
     value: "Quy Nhon",
-    tone: "text-main-accent-t1",
+    tone: "text-accent-debug",
   },
-  { key: "home.hero.stat.aumCap", value: "$100M", tone: "text-main-accent-t4" },
+  { key: "home.hero.stat.aumCap", value: "$100M", tone: "text-accent-info" },
 ] as const;
 
 /**
@@ -68,7 +68,7 @@ const STATS = [
 export function HeroAStats({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <div className="absolute bottom-0 left-0 w-full bg-main-black/80 border-t border-main-mist/10 py-6 backdrop-blur-sm z-20">
+    <div className="absolute bottom-0 left-0 w-full bg-background/80 border-t border-ink/10 py-6 backdrop-blur-sm z-20">
       <Stagger onMount delay={0.7}>
         <Container className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {STATS.map(stat => (

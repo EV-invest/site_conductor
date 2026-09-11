@@ -18,7 +18,7 @@ function Stat({
   return (
     <div>
       <p className={cn("font-serif-display text-3xl", className)}>{value}</p>
-      <p className="mt-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
+      <p className="mt-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45">
         {label}
       </p>
     </div>
@@ -36,21 +36,21 @@ export function HiringHero({
 }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <section className="relative overflow-hidden bg-main-black pt-40 pb-16">
+    <section className="relative overflow-hidden bg-background pt-40 pb-16">
       <Container>
-        <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
+        <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
           {t("hiring.hero.eyebrow")}
         </p>
         <h1 className="max-w-3xl font-serif-display text-4xl font-light leading-tight text-white sm:text-6xl">
           <Accented text={t("hiring.hero.title")} />
         </h1>
-        <p className="mt-6 max-w-xl text-sm leading-relaxed text-main-mist/60 sm:text-base">
+        <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink/60 sm:text-base">
           {t("hiring.hero.intro")}
         </p>
         {/* In-page anchor — no locale prefix needed, it never leaves the page. */}
         <a
           href="#open-roles"
-          className="mt-8 inline-flex items-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90"
+          className="mt-8 inline-flex items-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
         >
           {t("hiring.hero.cta")} <ArrowDown className="h-4 w-4" />
         </a>
@@ -59,13 +59,13 @@ export function HiringHero({
           <Stat
             value={String(roleCount)}
             label={t("hiring.hero.stat.roles")}
-            className="text-main-accent-t3"
+            className="text-accent-warn"
           />
           <span className="h-8 w-px bg-white/10" />
           <Stat
             value={String(teamCount)}
             label={t("hiring.hero.stat.teams")}
-            className="text-main-accent-t1"
+            className="text-accent-debug"
           />
           <span className="h-8 w-px bg-white/10" />
           <Stat

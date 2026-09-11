@@ -9,7 +9,7 @@ import { SectionHead } from "./section-head";
 export function TeamOffices({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <section className="border-t border-main-mist/10 py-20">
+    <section className="border-t border-ink/10 py-20">
       <Container className="space-y-12">
         <SectionHead eyebrow={t("team.offices.eyebrow")}>
           {t("team.offices.title")}
@@ -18,10 +18,10 @@ export function TeamOffices({ locale }: { locale: Locale }) {
           {OFFICES.map(office => (
             <div
               key={office.id}
-              className="space-y-3.5 rounded-xl border border-main-mist/10 bg-main-card p-8"
+              className="space-y-3.5 rounded-xl border border-ink/10 bg-card p-8"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-main-mist/5 text-main-accent-t1">
+                <div className="flex size-10 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
                   <MapPin className="size-5" />
                 </div>
                 <h3 className="font-mono-tech text-[11px] uppercase tracking-widest text-white">
@@ -33,7 +33,7 @@ export function TeamOffices({ locale }: { locale: Locale }) {
                   form or Google Maps has to resolve, and it is the same string
                   the Organization JSON-LD emits. Translating it would break
                   both. */}
-              <p className="leading-relaxed text-main-mist/80">
+              <p className="leading-relaxed text-ink/80">
                 {office.streetAddress}, {office.addressLocality},{" "}
                 {office.addressRegion}, {office.addressCountry}
               </p>

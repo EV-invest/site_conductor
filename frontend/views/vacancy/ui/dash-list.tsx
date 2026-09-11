@@ -12,11 +12,11 @@ export function DashList({ items }: { items: string[] }) {
       {items.map(item => (
         <li
           key={item}
-          className="flex gap-2 text-sm leading-relaxed text-main-mist/65"
+          className="flex gap-2 text-sm leading-relaxed text-ink/65"
         >
           <ChevronRight
             aria-hidden
-            className="mt-1 size-3.5 shrink-0 text-main-accent-t1"
+            className="mt-1 size-3.5 shrink-0 text-accent-debug"
           />
           <span>{item}</span>
         </li>

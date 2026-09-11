@@ -39,7 +39,7 @@ export function HeaderMobileMenu({
         data-slot="header-scrim"
         data-menu-toggle="close"
         aria-hidden
-        className="invisible fixed inset-0 z-[65] bg-main-black/70 opacity-0 backdrop-blur-xs transition-[opacity,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:opacity-100 lg:hidden"
+        className="invisible fixed inset-0 z-[65] bg-background/70 opacity-0 backdrop-blur-xs transition-[opacity,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:opacity-100 lg:hidden"
       />
 
       {/* An aside drawer, not a full-screen takeover. It stays mounted and
@@ -58,7 +58,7 @@ export function HeaderMobileMenu({
       <aside
         data-slot="header-mobile-overlay"
         aria-label={menuLabels.menu}
-        className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-main-mist/10 bg-main-black shadow-2xl shadow-main-black/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
+        className="invisible fixed top-0 right-0 z-[70] flex h-dvh w-80 max-w-[calc(100vw-3rem)] translate-x-full flex-col border-l border-ink/10 bg-background shadow-2xl shadow-background/60 transition-[translate,visibility] duration-300 ease-out group-data-[menu-open]/header:visible group-data-[menu-open]/header:translate-x-0 lg:hidden"
       >
         {/* The chip, not a "MENU" label. The label named the panel you were
             already looking at; the chip says who you are signed in as, which is
@@ -77,7 +77,7 @@ export function HeaderMobileMenu({
             type="button"
             data-menu-toggle="close"
             aria-label={menuLabels.close}
-            className="-mr-2 flex size-10 items-center justify-center rounded-lg text-white transition-colors outline-none hover:bg-main-mist/10 focus-visible:ring-2 focus-visible:ring-ring"
+            className="-mr-2 flex size-10 items-center justify-center rounded-lg text-white transition-colors outline-none hover:bg-ink/10 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <svg
               className="size-6"
@@ -104,7 +104,7 @@ export function HeaderMobileMenu({
               style={{
                 transitionDelay: `${MENU_ENTER_DELAY + i * MENU_STEP}ms`,
               }}
-              className="translate-x-4 border-b border-main-mist/10 py-4 text-main-mist/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-main-accent-t1 focus-visible:text-main-accent-t1 group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
+              className="translate-x-4 border-b border-ink/10 py-4 text-ink/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-accent-debug focus-visible:text-accent-debug group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
             >
               {item.label}
             </L>

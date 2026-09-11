@@ -68,7 +68,7 @@ function Heading({
 }
 
 /**
- * Two text colors, named by role. The page text is Limestone Mist (--color-main-mist)
+ * Two text colors, named by role. The page text is Limestone Mist (--color-ink)
  * shown at two opacities:
  *   info      — primary reading copy. font-light leading-relaxed; size is pinned to
  *               the surrounding <Tier> (main=text-base/sm, alt=text-sm/xs).
@@ -79,8 +79,8 @@ function Heading({
 const textVariants = cva("", {
   variants: {
     variant: {
-      info: "font-light leading-relaxed text-main-mist/70",
-      secondary: "text-main-mist/40",
+      info: "font-light leading-relaxed text-ink/70",
+      secondary: "text-ink/40",
     },
   },
   defaultVariants: {

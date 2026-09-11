@@ -40,20 +40,20 @@ export function PlateFrame({
   return (
     <figure
       className={cn(
-        "group w-full rounded-none border border-main-mist/10 bg-main-card",
+        "group w-full rounded-none border border-ink/10 bg-card",
         "motion-safe:transition-colors motion-safe:duration-300",
-        "hover:border-main-accent-t1/45",
+        "hover:border-accent-debug/45",
         MAX_WIDTH[size],
         className
       )}
     >
       <div className="relative aspect-video overflow-hidden">
         {children}
-        <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-1.5 rounded-none border border-main-accent-t1/40 bg-main-black/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
+        <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-1.5 rounded-none border border-accent-debug/40 bg-background/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug">
           {badge}
         </span>
       </div>
-      <figcaption className="flex items-center justify-between gap-4 border-t border-main-mist/10 bg-main-black/50 px-5 py-2.5 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/45">
+      <figcaption className="flex items-center justify-between gap-4 border-t border-ink/10 bg-background/50 px-5 py-2.5 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-ink/45">
         <span className="truncate">{rail}</span>
         <span className="shrink-0">{provenance}</span>
       </figcaption>

@@ -19,7 +19,7 @@ export function FrameCard({
 }) {
   return (
     <div className="group space-y-4">
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl border border-main-mist/10 bg-main-card">
+      <div className="relative aspect-[3/4] overflow-hidden rounded-xl border border-ink/10 bg-card">
         {children}
       </div>
       <div>

@@ -4,7 +4,7 @@ import { Container } from "@evinvest/uikit";
 // backend never leaves the previous route frozen.
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-main-black" aria-hidden>
+    <div className="min-h-screen bg-background" aria-hidden>
       <Container className="pt-40 pb-16">
         <div className="h-3 w-40 animate-pulse rounded bg-white/[0.06]" />
         <div className="mt-6 h-11 w-2/3 animate-pulse rounded bg-white/[0.06]" />

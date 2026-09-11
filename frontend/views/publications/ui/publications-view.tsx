@@ -31,7 +31,7 @@ export function PublicationsView({ locale }: { locale: Locale }) {
   };
 
   return (
-    <main className="min-h-screen bg-main-black pt-32 pb-28 text-main-mist">
+    <main className="min-h-screen bg-background pt-32 pb-28 text-ink">
       <PublicationsStructuredData />
       <Container>
         <Masthead

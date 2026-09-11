@@ -31,7 +31,7 @@ export function placeholderCards(locale: Locale) {
   const t = translator(messagesFor(locale), locale);
   return CARDS.map(card => ({
     icon: card.icon,
-    iconClassName: "text-main-accent-t1",
+    iconClassName: "text-accent-debug",
     title: t(`team.join.${card.key}.title`),
     body: t(`team.join.${card.key}.body`),
     cta: t(`team.join.${card.key}.cta`),

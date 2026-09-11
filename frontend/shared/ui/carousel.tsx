@@ -47,8 +47,8 @@ export function MobileCarousel({
             which read as side shadows on every switch. */}
         <CarouselEdgeFade className="w-24 from-background/45 via-background/20 transition-none" />
 
-        <CarouselPrevious className="left-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
-        <CarouselNext className="right-3 size-9 border-main-mist/20 bg-main-black/40 text-white hover:bg-main-black/60 hover:text-white" />
+        <CarouselPrevious className="left-3 size-9 border-ink/20 bg-background/40 text-white hover:bg-background/60 hover:text-white" />
+        <CarouselNext className="right-3 size-9 border-ink/20 bg-background/40 text-white hover:bg-background/60 hover:text-white" />
       </div>
 
       <div className="mt-6 flex justify-center gap-2">
@@ -61,7 +61,7 @@ export function MobileCarousel({
             aria-current={i === index}
             className={cn(
               "h-1.5 rounded-full transition-all duration-300",
-              i === index ? "w-6 bg-main-accent-t1" : "w-1.5 bg-main-mist/25"
+              i === index ? "w-6 bg-accent-debug" : "w-1.5 bg-ink/25"
             )}
           />
         ))}

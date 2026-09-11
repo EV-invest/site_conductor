@@ -32,7 +32,7 @@ export function PlaceholderCard({
   return (
     <FrameCard
       heading={heading}
-      headingClassName="text-main-mist/40"
+      headingClassName="text-ink/40"
       sub={
         <Text variant="secondary" className="text-base sm:text-xs font-mono-tech mt-1">
           {sub}
@@ -43,7 +43,7 @@ export function PlaceholderCard({
         <div className="space-y-4">
           <div
             className={cn(
-              "w-12 h-12 rounded-full bg-main-mist/5 border border-main-mist/10 flex items-center justify-center mx-auto",
+              "w-12 h-12 rounded-full bg-ink/5 border border-ink/10 flex items-center justify-center mx-auto",
               iconClassName
             )}
           >
@@ -58,7 +58,7 @@ export function PlaceholderCard({
           <Button
             asChild
             variant="outline"
-            className="border-main-mist/15 text-main-mist/80 hover:border-main-accent-t1 hover:text-main-accent-t1 text-xs py-1 h-auto bg-transparent"
+            className="border-ink/15 text-ink/80 hover:border-accent-debug hover:text-accent-debug text-xs py-1 h-auto bg-transparent"
           >
             <Link href={href}>{cta}</Link>
           </Button>

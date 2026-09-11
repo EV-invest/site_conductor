@@ -16,21 +16,21 @@ export function HeroB({ locale }: { locale: Locale }) {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden z-10 bg-main-black"
+      className="relative min-h-screen flex items-center overflow-hidden z-10 bg-background"
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px] pointer-events-none" />
 
       <Container className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-28">
         {/* Left: editorial copy */}
         <div className="space-y-8">
-          <span className="block text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase">
+          <span className="block text-xs font-mono-tech text-accent-debug tracking-[0.3em] uppercase">
             {t("home.hero.b.eyebrow")}
           </span>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif-display font-light text-white leading-[1.05]">
             <Accented
               text={t("home.hero.b.headline")}
-              className="italic text-main-accent-t1 font-serif"
+              className="italic text-accent-debug font-serif"
             />
           </h1>
 
@@ -39,7 +39,7 @@ export function HeroB({ locale }: { locale: Locale }) {
           </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
-            <HeroBCta className="bg-main-mist text-main-brand hover:bg-main-accent-t1 hover:text-main-black hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />
+            <HeroBCta className="bg-ink text-brand hover:bg-accent-debug hover:text-background hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />
 
             <div>
               <Text
@@ -48,7 +48,7 @@ export function HeroB({ locale }: { locale: Locale }) {
               >
                 {t("home.hero.stat.targetIrr")}
               </Text>
-              <p className="text-2xl sm:text-3xl font-serif-display text-main-accent-t3 font-bold">
+              <p className="text-2xl sm:text-3xl font-serif-display text-accent-warn font-bold">
                 22.4% +
               </p>
             </div>

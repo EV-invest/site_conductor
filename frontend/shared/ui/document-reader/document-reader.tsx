@@ -65,7 +65,7 @@ export function DocumentReader({
           download
           aria-label={downloadAriaLabel ?? `Download ${title} as PDF`}
           title={downloadLabel ?? "Download PDF"}
-          className="inline-flex shrink-0 items-center border border-main-accent-t1/30 p-2 text-main-accent-t1 transition-colors hover:border-main-accent-t1 hover:text-main-mist"
+          className="inline-flex shrink-0 items-center border border-accent-debug/30 p-2 text-accent-debug transition-colors hover:border-accent-debug hover:text-ink"
         >
           <FileDown className="size-4" />
         </a>
@@ -77,9 +77,9 @@ export function DocumentReader({
         className={bodyClassName ?? "block"}
         fallback={
           fallback ?? (
-            <Container className="py-24 text-main-mist/60">
+            <Container className="py-24 text-ink/60">
               This document isn’t available right now —{" "}
-              <a href={pdfSrc} className="text-main-accent-t1 underline">
+              <a href={pdfSrc} className="text-accent-debug underline">
                 download the PDF
               </a>
               .

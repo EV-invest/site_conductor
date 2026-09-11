@@ -9,7 +9,7 @@ export function BoardroomImage({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
     <div className="relative">
-      <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-main-mist/10 shadow-2xl">
+      <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-ink/10 shadow-2xl">
         <Image
           src={ASSETS.quynhon_future}
           alt={t("home.hero.b.photoAlt")}
@@ -18,10 +18,10 @@ export function BoardroomImage({ locale }: { locale: Locale }) {
           className="object-cover opacity-80"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-main-black via-main-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
       </div>
 
-      <div className="absolute -bottom-6 -left-6 sm:left-6 bg-main-black/85 border border-main-mist/10 rounded-xl px-6 py-5 backdrop-blur-sm shadow-2xl grid grid-cols-2 gap-6">
+      <div className="absolute -bottom-6 -left-6 sm:left-6 bg-background/85 border border-ink/10 rounded-xl px-6 py-5 backdrop-blur-sm shadow-2xl grid grid-cols-2 gap-6">
         <div>
           <Text
             variant="secondary"
@@ -40,7 +40,7 @@ export function BoardroomImage({ locale }: { locale: Locale }) {
           >
             {t("home.hero.b.coastline")}
           </Text>
-          <p className="text-xl sm:text-2xl font-serif-display text-main-accent-t1 font-bold">
+          <p className="text-xl sm:text-2xl font-serif-display text-accent-debug font-bold">
             72 km
           </p>
         </div>

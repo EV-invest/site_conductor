@@ -27,29 +27,29 @@ export function PublicationArticleHeader({
     <header className="mx-auto max-w-3xl">
       <Link
         href={localePath(locale, "/publications")}
-        className="font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/45 transition-colors hover:text-main-mist"
+        className="font-mono-tech text-[11px] tracking-[0.15em] text-ink/45 transition-colors hover:text-ink"
       >
         ← {t("publications.allPublications")}
       </Link>
       <div className="mt-8 flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
-        <span className="flex items-center gap-2.5 text-main-accent-t1">
-          <span aria-hidden className="size-[7px] bg-main-accent-t1" />
+        <span className="flex items-center gap-2.5 text-accent-debug">
+          <span aria-hidden className="size-[7px] bg-accent-debug" />
           {kindLabel(publication.kind, t)}
         </span>
         {/* <time> so the dateline is machine-readable on its own, not only
             inside the JSON-LD block. */}
-        <time dateTime={publication.date} className="text-main-mist/40">
+        <time dateTime={publication.date} className="text-ink/40">
           {formatPublicationDate(publication.date, "long", locale)}
         </time>
       </div>
       <h1 className="mt-5 font-serif-display text-4xl leading-tight font-bold text-white sm:text-5xl">
         {publication.title}
       </h1>
-      <p className="mt-5 font-serif-display text-lg leading-relaxed text-main-mist/90 italic">
+      <p className="mt-5 font-serif-display text-lg leading-relaxed text-ink/90 italic">
         {publication.dek}
       </p>
       {publication.author && (
-        <p className="mt-7 border-t border-main-mist/12 pt-5 font-mono-tech text-[11px] tracking-[0.14em] text-main-mist/50 uppercase">
+        <p className="mt-7 border-t border-ink/12 pt-5 font-mono-tech text-[11px] tracking-[0.14em] text-ink/50 uppercase">
           {publication.author}
           {publication.role ? ` · ${publication.role}` : ""}
         </p>

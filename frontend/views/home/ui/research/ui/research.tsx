@@ -30,7 +30,7 @@ export function ResearchA({
   return (
     <section
       id="research"
-      className="research-texture py-24 text-main-mist relative overflow-hidden border-y border-main-mist/10"
+      className="research-texture py-24 text-ink relative overflow-hidden border-y border-ink/10"
     >
       <Container className="relative z-10">
         <ResearchHeading />

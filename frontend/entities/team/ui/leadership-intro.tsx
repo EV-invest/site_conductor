@@ -41,7 +41,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12">
         <div className="space-y-5 lg:col-span-7">
-          <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-main-accent-t1">
+          <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-accent-debug">
             {t("team.leadership.eyebrow")}
           </span>
           <h2 className="font-serif-display text-3xl font-light leading-[1.15] text-white sm:text-4xl">
@@ -59,7 +59,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
         {match(office, {
           a: null,
           b: (
-            <div className="relative aspect-[21/9] overflow-hidden rounded-xl border border-main-mist/10 shadow-2xl">
+            <div className="relative aspect-[21/9] overflow-hidden rounded-xl border border-ink/10 shadow-2xl">
               <Image
                 src={ASSETS.office_interior}
                 alt={t("team.leadership.photoAlt")}
@@ -77,11 +77,11 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
           // A <dl> may only contain <dt>/<dd> pairs, optionally wrapped one
           // pair to a <div> — so the ordinal lives inside the <dt> rather than
           // as a third sibling.
-          <div key={id} className="border-t border-main-mist/10 pt-4">
+          <div key={id} className="border-t border-ink/10 pt-4">
             <dt>
               <span
                 aria-hidden="true"
-                className="block font-mono-tech text-[10px] tracking-[0.25em] text-main-accent-t1/70"
+                className="block font-mono-tech text-[10px] tracking-[0.25em] text-accent-debug/70"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -89,7 +89,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
                 {t(`team.leadership.pillar.${id}.title`)}
               </span>
             </dt>
-            <dd className="mt-1.5 text-sm leading-relaxed text-main-mist/60">
+            <dd className="mt-1.5 text-sm leading-relaxed text-ink/60">
               {t(`team.leadership.pillar.${id}.body`)}
             </dd>
           </div>

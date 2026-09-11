@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
  */
 export function Kbd({ children }: { children: ReactNode }) {
   return (
-    <kbd className="rounded border border-main-mist/22 bg-main-mist/8 px-1.5 py-0.5 font-mono-tech text-[10px] leading-none text-main-mist/70">
+    <kbd className="rounded border border-ink/22 bg-ink/8 px-1.5 py-0.5 font-mono-tech text-[10px] leading-none text-ink/70">
       {children}
     </kbd>
   );
@@ -15,7 +15,7 @@ export function Kbd({ children }: { children: ReactNode }) {
 /** The quiet caption that follows a group of chips. */
 export function KbdCaption({ children }: { children: ReactNode }) {
   return (
-    <span className="font-mono-tech text-[10px] uppercase tracking-[0.16em] text-main-mist/35">
+    <span className="font-mono-tech text-[10px] uppercase tracking-[0.16em] text-ink/35">
       {children}
     </span>
   );

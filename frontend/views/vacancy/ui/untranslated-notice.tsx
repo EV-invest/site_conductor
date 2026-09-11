@@ -35,11 +35,11 @@ export function UntranslatedNotice({ locale }: { locale: Locale }) {
   return (
     <p
       role="note"
-      className="mt-7 flex max-w-xl items-start gap-2.5 rounded-lg border border-white/10 bg-main-card/40 px-3.5 py-2.5 text-xs leading-relaxed text-main-mist/60"
+      className="mt-7 flex max-w-xl items-start gap-2.5 rounded-lg border border-white/10 bg-card/40 px-3.5 py-2.5 text-xs leading-relaxed text-ink/60"
     >
       <Languages
         aria-hidden
-        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-main-accent-t1/70"
+        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-debug/70"
       />
       <span>{t("vacancy.untranslated")}</span>
     </p>

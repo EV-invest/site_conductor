@@ -68,9 +68,9 @@ export default async function Page({
         pdfSrc="/whitepaper.pdf"
         isolate
         fallback={
-          <Container className="py-24 text-main-mist/60">
+          <Container className="py-24 text-ink/60">
             {t("whitepaper.loading")}{" "}
-            <a href="/whitepaper.pdf" className="text-main-accent-t1 underline">
+            <a href="/whitepaper.pdf" className="text-accent-debug underline">
               {t("publications.downloadPdf")}
             </a>
             .

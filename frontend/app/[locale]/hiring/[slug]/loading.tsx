@@ -3,7 +3,7 @@ import { Container } from "@evinvest/uikit";
 // Streamed fallback while the role's server-side fetch resolves.
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-main-black" aria-hidden>
+    <div className="min-h-screen bg-background" aria-hidden>
       <Container className="pt-32 pb-10">
         <div className="h-3 w-28 animate-pulse rounded bg-white/[0.06]" />
         <div className="mt-7 h-3 w-52 animate-pulse rounded bg-white/[0.06]" />

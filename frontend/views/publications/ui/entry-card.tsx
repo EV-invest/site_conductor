@@ -61,21 +61,21 @@ export function EntryCard({
       <MediaPlate cover={cover} caption={publication.cover?.caption} />
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] tracking-[0.17em]">
-          <span className="text-main-accent-t1">
+          <span className="text-accent-debug">
             {kindLabel(publication.kind, t)}
           </span>
-          <span className="text-main-mist/40">{date}</span>
+          <span className="text-ink/40">{date}</span>
         </div>
         <h3 className="mt-3 font-serif-display text-xl font-bold text-white">
           {publication.title}
         </h3>
-        <p className="mt-2.5 flex-1 text-sm leading-relaxed font-light text-main-mist/65">
+        <p className="mt-2.5 flex-1 text-sm leading-relaxed font-light text-ink/65">
           {publication.dek}
         </p>
-        <div className="mt-4 border-t border-main-mist/10 pt-4">
+        <div className="mt-4 border-t border-ink/10 pt-4">
           <Link
             href={localePath(locale, href(publication))}
-            className="inline-flex items-center gap-2 font-mono-tech text-[10px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
+            className="inline-flex items-center gap-2 font-mono-tech text-[10px] tracking-[0.15em] text-accent-debug transition-colors hover:text-ink"
           >
             {ctaFor(publication, t)}
             <ArrowRight aria-hidden className="size-3.5" />

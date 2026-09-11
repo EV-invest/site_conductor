@@ -15,7 +15,7 @@ const PRINCIPLES = [
 export function TeamPhilosophy({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <section className="border-t border-main-mist/10 bg-main-surface py-20">
+    <section className="border-t border-ink/10 bg-secondary py-20">
       <Container className="space-y-12">
         <SectionHead eyebrow={t("team.philosophy.eyebrow")}>
           {t("team.philosophy.title")}
@@ -24,15 +24,15 @@ export function TeamPhilosophy({ locale }: { locale: Locale }) {
           {PRINCIPLES.map(({ icon: Icon, key }) => (
             <div
               key={key}
-              className="space-y-4 rounded-xl border border-main-mist/10 bg-main-card p-8"
+              className="space-y-4 rounded-xl border border-ink/10 bg-card p-8"
             >
-              <div className="flex size-13 items-center justify-center rounded-full bg-main-mist/5 text-main-accent-t1">
+              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
                 <Icon className="size-5" />
               </div>
               <h3 className="font-serif-display text-lg font-bold text-white">
                 {t(`team.philosophy.${key}.title`)}
               </h3>
-              <p className="text-sm leading-relaxed text-main-mist/75">
+              <p className="text-sm leading-relaxed text-ink/75">
                 {t(`team.philosophy.${key}.body`)}
               </p>
             </div>

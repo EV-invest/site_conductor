@@ -8,4 +8,4 @@
 // from `sm` up (where the behaviour doesn't exist) the original 14px stands, so
 // the desktop design is unchanged.
 export const INPUT_CLASS =
-  "w-full rounded-md border border-white/10 bg-main-black/30 px-3.5 py-2.5 text-base sm:text-sm text-main-mist placeholder:text-main-mist/30 transition-colors focus:border-main-accent-t1/50 focus:outline-none";
+  "w-full rounded-md border border-white/10 bg-background/30 px-3.5 py-2.5 text-base sm:text-sm text-ink placeholder:text-ink/30 transition-colors focus:border-accent-debug/50 focus:outline-none";

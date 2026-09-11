@@ -47,8 +47,8 @@ export function NewsletterForm() {
 
   if (status === "sent") {
     return (
-      <div className="flex items-center gap-2 border border-main-accent-t1/40 px-4 py-3">
-        <p className="text-xs text-main-accent-t1 font-mono-tech uppercase">
+      <div className="flex items-center gap-2 border border-accent-debug/40 px-4 py-3">
+        <p className="text-xs text-accent-debug font-mono-tech uppercase">
           {t("footer.newsletter.success")}
         </p>
       </div>
@@ -57,7 +57,7 @@ export function NewsletterForm() {
 
   return (
     <form onSubmit={submit} noValidate>
-      <div className="flex border border-main-mist/20">
+      <div className="flex border border-ink/20">
         <input
           type="email"
           placeholder={t("footer.newsletter.placeholder")}
@@ -77,7 +77,7 @@ export function NewsletterForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="bg-main-accent-t1 text-main-black px-4 font-mono-tech text-xs uppercase font-bold hover:bg-main-mist transition-colors disabled:opacity-60"
+          className="bg-accent-debug text-background px-4 font-mono-tech text-xs uppercase font-bold hover:bg-ink transition-colors disabled:opacity-60"
         >
           {status === "sending" ? "…" : t("footer.newsletter.join")}
         </button>

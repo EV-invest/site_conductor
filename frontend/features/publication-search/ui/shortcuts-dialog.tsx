@@ -45,12 +45,12 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
       onClick={event => {
         if (event.target === ref.current) onClose();
       }}
-      className="m-auto w-[min(28rem,calc(100vw-2rem))] border border-main-mist/10 bg-main-card p-0 text-main-mist backdrop:bg-main-black/70"
+      className="m-auto w-[min(28rem,calc(100vw-2rem))] border border-ink/10 bg-card p-0 text-ink backdrop:bg-background/70"
     >
       <div className="p-6">
         <h2
           id={TITLE_ID}
-          className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1"
+          className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug"
         >
           {t("publications.shortcuts.title")}
         </h2>
@@ -65,7 +65,7 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
                   <Kbd key={key}>{key}</Kbd>
                 ))}
               </dt>
-              <dd className="text-right text-sm text-main-mist/70">
+              <dd className="text-right text-sm text-ink/70">
                 {t(binding.descriptionKey)}
               </dd>
             </div>
@@ -74,7 +74,7 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 w-full border border-main-mist/10 px-4 py-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/50 transition-colors hover:text-main-mist"
+          className="mt-6 w-full border border-ink/10 px-4 py-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/50 transition-colors hover:text-ink"
         >
           Close
         </button>

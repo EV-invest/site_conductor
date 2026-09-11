@@ -26,7 +26,7 @@ export function MemberCard({
       heading={member.name}
       headingClassName="text-white"
       sub={
-        <p className="mt-1 font-mono-tech text-base sm:text-xs text-main-accent-t1">
+        <p className="mt-1 font-mono-tech text-base sm:text-xs text-accent-debug">
           {t(member.roleKey)}
         </p>
       }
@@ -39,7 +39,7 @@ export function MemberCard({
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       {shade === "gradient" ? (
-        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-main-black/85 via-transparent to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-background/85 via-transparent to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <Tier tier="alt">
             <Text>{t(member.bioKey)}</Text>
           </Tier>

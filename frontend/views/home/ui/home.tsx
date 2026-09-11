@@ -18,7 +18,7 @@ import { HomeStructuredData } from "./structured-data";
 // should name them.
 export function HomeView({ locale }: { locale: Locale }) {
   return (
-    <div className="min-h-screen bg-main-black text-main-mist font-sans">
+    <div className="min-h-screen bg-background text-ink font-sans">
       <HomeStructuredData locale={locale} />
       <Hero locale={locale} />
       <FieldNotes locale={locale} />

@@ -37,10 +37,10 @@ export function SearchField({
 }: SearchFieldProps) {
   const t = useT();
   return (
-    <div className="flex items-center gap-3 border border-main-mist/18 bg-main-black/60 px-4 py-3">
+    <div className="flex items-center gap-3 border border-ink/18 bg-background/60 px-4 py-3">
       <span
         aria-hidden="true"
-        className="text-base leading-none text-main-accent-t1"
+        className="text-base leading-none text-accent-debug"
       >
         ⌕
       </span>
@@ -61,7 +61,7 @@ export function SearchField({
         aria-activedescendant={activeDescendantId}
         // text-base on phones: under 16px iOS zooms the viewport on focus
         // (see shared/ui/control.ts). sm: keeps the 14px design.
-        className="min-w-0 flex-1 bg-transparent text-base sm:text-sm text-main-mist outline-none placeholder:text-main-mist/40"
+        className="min-w-0 flex-1 bg-transparent text-base sm:text-sm text-ink outline-none placeholder:text-ink/40"
       />
       <div
         aria-hidden="true"
@@ -70,7 +70,7 @@ export function SearchField({
         <Kbd>S</Kbd>
         <Kbd>/</Kbd>
         <KbdCaption>to focus</KbdCaption>
-        <span className="mx-1 h-3 w-px bg-main-mist/15" />
+        <span className="mx-1 h-3 w-px bg-ink/15" />
         <Kbd>?</Kbd>
         <KbdCaption>shortcuts</KbdCaption>
       </div>

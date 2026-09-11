@@ -32,7 +32,7 @@ export async function Team({ locale }: { locale: Locale }) {
   return (
     <section
       id="team"
-      className="py-24 relative border-t border-main-mist/10 bg-main-black"
+      className="py-24 relative border-t border-ink/10 bg-background"
     >
       <Container className="space-y-16">
         <Reveal>

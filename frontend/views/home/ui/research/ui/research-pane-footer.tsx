@@ -29,10 +29,10 @@ export function ResearchPaneFooter({
     <motion.div
       layout="position"
       onClick={e => e.stopPropagation()}
-      className="mt-8 pt-6 border-t border-main-mist/10 flex flex-row justify-between items-center gap-3"
+      className="mt-8 pt-6 border-t border-ink/10 flex flex-row justify-between items-center gap-3"
     >
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-10 h-10 shrink-0 rounded-full bg-main-accent-t1/15 border border-main-accent-t1/30 hidden sm:flex items-center justify-center text-main-accent-t1">
+        <div className="w-10 h-10 shrink-0 rounded-full bg-accent-debug/15 border border-accent-debug/30 hidden sm:flex items-center justify-center text-accent-debug">
           <Logo className="w-6 h-6" />
         </div>
         <div className="min-w-0">
@@ -50,7 +50,7 @@ export function ResearchPaneFooter({
       <div className="flex shrink-0 gap-2">
         <Link
           href={localePath(locale, `/publications/${report.slug}`)}
-          className="bg-transparent text-main-mist border border-main-mist/30 hover:border-main-accent-t1 hover:text-main-accent-t1 transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+          className="bg-transparent text-ink border border-ink/30 hover:border-accent-debug hover:text-accent-debug transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
           onClick={() =>
             capture("cta_clicked", {
               cta: "read_report",
@@ -67,7 +67,7 @@ export function ResearchPaneFooter({
         <a
           href={`/publications/${report.slug}.pdf`}
           download
-          className="bg-main-accent-t1 text-main-black hover:bg-main-mist hover:text-main-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
+          className="bg-accent-debug text-background hover:bg-ink hover:text-brand transition-all duration-300 rounded-none font-mono-tech text-[10px] sm:text-[11px] tracking-wider uppercase py-3 px-3 sm:px-4 inline-flex items-center"
           onClick={() =>
             capture("cta_clicked", {
               cta: "download_report",

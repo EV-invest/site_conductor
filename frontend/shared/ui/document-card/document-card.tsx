@@ -30,17 +30,17 @@ export function DocumentCard({
     <article
       className={cn(
         "group relative flex h-full flex-col rounded-none p-6 sm:p-8",
-        "border border-main-mist/12 border-l-2 border-l-main-accent-t1 bg-main-card/55",
+        "border border-ink/12 border-l-2 border-l-accent-debug bg-card/55",
         // Background only on hover — a `hover:border-*` would repaint the teal
         // spine along with the other three edges, and the spine is the identity.
         "motion-safe:transition-colors motion-safe:duration-300",
-        "hover:bg-main-card/75",
+        "hover:bg-card/75",
         className
       )}
     >
       <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] uppercase tracking-[0.22em]">
-        <span className="truncate text-main-accent-t1">{kind}</span>
-        <span className="shrink-0 text-main-mist/40">{date}</span>
+        <span className="truncate text-accent-debug">{kind}</span>
+        <span className="shrink-0 text-ink/40">{date}</span>
       </div>
 
       <h3 className="mt-4 font-serif-display text-xl font-bold leading-snug text-white sm:text-2xl">
@@ -48,13 +48,13 @@ export function DocumentCard({
       </h3>
 
       {quote ? (
-        <p className="mt-5 border-l border-main-accent-t1/30 pl-4 font-serif-display text-base italic leading-relaxed text-main-mist/90">
+        <p className="mt-5 border-l border-accent-debug/30 pl-4 font-serif-display text-base italic leading-relaxed text-ink/90">
           {quote}
         </p>
       ) : null}
 
       {/* Grows so the footer sits on the bottom edge regardless of copy length. */}
-      <p className="mt-5 flex-1 text-sm font-light leading-relaxed text-main-mist/65">
+      <p className="mt-5 flex-1 text-sm font-light leading-relaxed text-ink/65">
         {excerpt}
       </p>
 

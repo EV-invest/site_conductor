@@ -12,7 +12,7 @@ import { TeamStructuredData } from "./team-structured-data";
 // app-shell chrome from the root layout; this view owns the content top-to-bottom.
 export function TeamPageView({ locale }: { locale: Locale }) {
   return (
-    <div className="min-h-screen bg-main-black text-main-mist">
+    <div className="min-h-screen bg-background text-ink">
       <TeamStructuredData locale={locale} />
       <TeamHero locale={locale} />
       <TeamLeadership locale={locale} />

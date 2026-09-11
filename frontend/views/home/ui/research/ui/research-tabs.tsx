@@ -15,7 +15,7 @@ export function ResearchTabs({
   onSelect: (index: number) => void;
 }) {
   return (
-    <div className="flex items-stretch border-b border-main-mist/10 lg:hidden">
+    <div className="flex items-stretch border-b border-ink/10 lg:hidden">
       {reports.map((r, idx) => {
         const on = active === idx;
         return (
@@ -23,16 +23,16 @@ export function ResearchTabs({
             key={idx}
             onClick={() => onSelect(idx)}
             className={cn(
-              "flex-1 border-l border-main-mist/10 first:border-l-0 transition-colors",
+              "flex-1 border-l border-ink/10 first:border-l-0 transition-colors",
               on
-                ? "-mb-px border-t-2 border-t-main-accent-t1 bg-main-black"
-                : "border-t border-t-main-mist/10 bg-main-card/30 hover:bg-main-card/60"
+                ? "-mb-px border-t-2 border-t-accent-debug bg-background"
+                : "border-t border-t-ink/10 bg-card/30 hover:bg-card/60"
             )}
           >
             <span
               className={cn(
                 "block py-3 px-2 text-center font-mono-tech text-[8px] uppercase tracking-[0.15em] leading-tight",
-                on ? "text-main-accent-t1" : "text-main-mist/45"
+                on ? "text-accent-debug" : "text-ink/45"
               )}
             >
               {r.cat}

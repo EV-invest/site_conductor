@@ -29,15 +29,15 @@ export function NoteSummary({
         <span
           className={cn(
             "flex items-center gap-2.5",
-            lead ? "text-main-accent-t1" : "text-main-mist/40"
+            lead ? "text-accent-debug" : "text-ink/40"
           )}
         >
           {lead && (
-            <span aria-hidden className="size-[7px] bg-main-accent-t1" />
+            <span aria-hidden className="size-[7px] bg-accent-debug" />
           )}
           {eyebrow}
         </span>
-        <span className="text-main-mist/40">
+        <span className="text-ink/40">
           {formatPublicationDate(publication.date, "long", locale)}
         </span>
       </div>
@@ -57,20 +57,20 @@ export function NoteSummary({
       >
         {publication.title}
       </h3>
-      <p className="mt-2.5 leading-relaxed font-light text-main-mist/70">
+      <p className="mt-2.5 leading-relaxed font-light text-ink/70">
         {publication.dek}
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-main-mist/10 pt-4">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 pt-4">
         {publication.author && (
-          <span className="font-mono-tech text-[10px] tracking-[0.14em] text-main-mist/45 uppercase">
+          <span className="font-mono-tech text-[10px] tracking-[0.14em] text-ink/45 uppercase">
             {publication.author}
             {publication.role ? ` · ${publication.role}` : ""}
           </span>
         )}
         <Link
           href={localePath(locale, note.href)}
-          className="inline-flex items-center gap-2 font-mono-tech text-[11px] tracking-[0.15em] text-main-accent-t1 transition-colors hover:text-main-mist"
+          className="inline-flex items-center gap-2 font-mono-tech text-[11px] tracking-[0.15em] text-accent-debug transition-colors hover:text-ink"
         >
           {note.cta}
           <ArrowRight aria-hidden className="size-3.5" />

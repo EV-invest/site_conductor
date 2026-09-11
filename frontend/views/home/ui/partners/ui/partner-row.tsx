@@ -33,7 +33,7 @@ function PartnerItem({ partner: { name, mark } }: { partner: Partner }) {
     // space, so the two copies of the list are byte-identical boxes and the
     // -50% slide lands exactly on the seam. A `gap` would leave the loop half a
     // gap short and visibly hitch once per lap.
-    <li className="flex shrink-0 items-center gap-2.5 px-5 text-main-mist/55">
+    <li className="flex shrink-0 items-center gap-2.5 px-5 text-ink/55">
       {mark && (
         <span
           role={labelled ? undefined : "img"}

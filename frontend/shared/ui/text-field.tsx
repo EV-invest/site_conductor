@@ -4,7 +4,7 @@ import { type ChangeEvent, useId } from "react";
 import { INPUT_CLASS } from "./control";
 
 const LABEL_CLASS =
-  "mb-1.5 block font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/50";
+  "mb-1.5 block font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/50";
 
 interface TextFieldProps {
   label: string;
@@ -59,7 +59,7 @@ export function TextField({
         <p
           id={errorId}
           role="alert"
-          className="mt-1.5 text-xs text-destructive"
+          className="mt-1.5 text-xs text-accent-error"
         >
           {error}
         </p>

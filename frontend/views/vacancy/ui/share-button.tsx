@@ -19,11 +19,11 @@ export function ShareButton() {
           // clipboard unavailable — no-op
         }
       }}
-      className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-mist/80 transition-colors hover:border-white/30"
+      className="inline-flex items-center gap-2 rounded-md border border-white/15 px-5 py-3 font-mono-tech text-xs uppercase tracking-widest text-ink/80 transition-colors hover:border-white/30"
     >
       {copied ? (
         <>
-          <Check className="h-4 w-4 text-main-accent-t1" />{" "}
+          <Check className="h-4 w-4 text-accent-debug" />{" "}
           {t("vacancy.shareCopied")}
         </>
       ) : (

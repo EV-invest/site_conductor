@@ -7,9 +7,9 @@ import { ImageOff } from "lucide-react";
  */
 export function FallbackField() {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-main-surface">
-      <ImageOff className="size-7 text-main-mist/25" strokeWidth={1.25} />
-      <span className="font-mono-tech text-[10px] uppercase tracking-[0.22em] text-main-mist/30">
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-secondary">
+      <ImageOff className="size-7 text-ink/25" strokeWidth={1.25} />
+      <span className="font-mono-tech text-[10px] uppercase tracking-[0.22em] text-ink/30">
         Poster unavailable
       </span>
     </div>

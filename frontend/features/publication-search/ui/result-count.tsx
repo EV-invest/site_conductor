@@ -27,7 +27,7 @@ export function ResultCount({
     <p
       id={id}
       aria-live="polite"
-      className="font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/40"
+      className="font-mono-tech text-[10px] uppercase tracking-[0.18em] text-ink/40"
     >
       {shown === 0
         ? t("publications.results.none")

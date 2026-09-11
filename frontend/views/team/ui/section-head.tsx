@@ -11,7 +11,7 @@ export function SectionHead({
 }) {
   return (
     <div className="space-y-4">
-      <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-main-accent-t1">
+      <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-accent-debug">
         {eyebrow}
       </span>
       <h2 className="font-serif-display text-3xl font-light text-white sm:text-4xl">

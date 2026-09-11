@@ -39,7 +39,7 @@ export function VideoStage({
         controls
         playsInline
         aria-label={cover.alt}
-        className="absolute inset-0 size-full bg-main-black object-contain"
+        className="absolute inset-0 size-full bg-background object-contain"
       />
     );
   }

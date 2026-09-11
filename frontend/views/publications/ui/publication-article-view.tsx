@@ -33,7 +33,7 @@ export function PublicationArticleView({
   const cover = toPlateCover(publication);
 
   return (
-    <main className="min-h-screen bg-main-black pt-32 text-main-mist">
+    <main className="min-h-screen bg-background pt-32 text-ink">
       <PublicationStructuredData publication={publication} />
       <Container>
         <PublicationArticleHeader publication={publication} locale={locale} />
@@ -60,7 +60,7 @@ export function PublicationArticleView({
         <Container>
           <p
             role="note"
-            className="mx-auto mt-12 max-w-3xl border-t border-main-mist/12 pt-5 text-xs text-main-mist/55"
+            className="mx-auto mt-12 max-w-3xl border-t border-ink/12 pt-5 text-xs text-ink/55"
           >
             {t("publications.documentInEnglish")}
           </p>
@@ -78,13 +78,13 @@ export function PublicationArticleView({
         })}
         htmlSrc={`/publications/${publication.slug}.dark.html`}
         pdfSrc={pdfHref(publication)}
-        bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-main-accent-t1 prose-strong:text-main-mist"
+        bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-accent-debug prose-strong:text-ink"
         fallback={
-          <p className="mx-auto max-w-3xl px-6 py-16 text-main-mist/60">
+          <p className="mx-auto max-w-3xl px-6 py-16 text-ink/60">
             {t("publications.unavailable")}{" "}
             <a
               href={pdfHref(publication)}
-              className="text-main-accent-t1 underline"
+              className="text-accent-debug underline"
             >
               {t("publications.downloadPdf")}
             </a>

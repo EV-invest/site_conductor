@@ -18,7 +18,7 @@ export function HiringView({
 }) {
   const teamCount = new Set(vacancies.map(v => v.category)).size;
   return (
-    <div className="min-h-screen bg-main-black text-main-mist">
+    <div className="min-h-screen bg-background text-ink">
       <HiringStructuredData vacancies={vacancies} />
       <HiringHero
         locale={locale}

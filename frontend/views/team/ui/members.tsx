@@ -17,8 +17,8 @@ function CompactCard({
 }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <article className="flex gap-5 rounded-xl border border-main-mist/10 bg-main-card p-5">
-      <div className="relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-lg border border-main-mist/10 sm:w-36">
+    <article className="flex gap-5 rounded-xl border border-ink/10 bg-card p-5">
+      <div className="relative aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-lg border border-ink/10 sm:w-36">
         <Image
           src={member.photo}
           alt={member.name}
@@ -31,10 +31,10 @@ function CompactCard({
         <h3 className="font-serif-display text-lg font-bold text-white">
           {member.name}
         </h3>
-        <p className="mt-1 font-mono-tech text-xs tracking-wide text-main-accent-t1">
+        <p className="mt-1 font-mono-tech text-xs tracking-wide text-accent-debug">
           {t(member.roleKey)}
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-main-mist/75">
+        <p className="mt-3 text-sm leading-relaxed text-ink/75">
           {t(member.bioKey)}
         </p>
       </div>

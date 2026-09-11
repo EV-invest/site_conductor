@@ -40,9 +40,9 @@ export function PlateStage({ src, alt, size, onError }: PlateStageProps) {
         onError={onError}
         className="object-cover"
       />
-      <div className="pointer-events-none absolute inset-0 bg-main-black/30" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34%] bg-gradient-to-b from-main-black/60 via-transparent to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-main-black/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-background/30" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34%] bg-gradient-to-b from-background/60 via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-background/80 to-transparent" />
     </>
   );
 }

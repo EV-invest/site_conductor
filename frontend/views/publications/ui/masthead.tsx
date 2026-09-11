@@ -59,19 +59,19 @@ export function Masthead({
 
   return (
     <header>
-      <span className="block font-mono-tech text-xs tracking-[0.3em] text-main-accent-t1 uppercase">
+      <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
         {t("publications.eyebrow")}
       </span>
       <h1 className="mt-4 font-serif-display text-4xl leading-tight font-light text-white sm:text-6xl">
         <Accented text={t("publications.title")} />
       </h1>
-      <p className="mt-5 max-w-3xl leading-relaxed font-light text-main-mist/70">
+      <p className="mt-5 max-w-3xl leading-relaxed font-light text-ink/70">
         {t("publications.intro")}
       </p>
-      <ul className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-2 border-y border-main-mist/15 py-4 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/50">
+      <ul className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-2 border-y border-ink/15 py-4 font-mono-tech text-[11px] tracking-[0.15em] text-ink/50">
         {stats.map(({ icon: Icon, text }) => (
           <li key={text} className="flex items-center gap-2">
-            <Icon aria-hidden className="size-3.5 text-main-accent-t1" />
+            <Icon aria-hidden className="size-3.5 text-accent-debug" />
             {text}
           </li>
         ))}

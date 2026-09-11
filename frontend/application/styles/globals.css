@@ -27,7 +27,7 @@
     font-family: var(--font-sans);
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-main-accent-t1/30 selection:text-main-mist;
+    @apply bg-background text-ink antialiased selection:bg-accent-debug/30 selection:text-ink;
   }
 
   h1,
@@ -73,7 +73,7 @@
 
 /* Research-zone texture — faint dot-grid over a soft centre vignette. */
 .research-texture {
-  background-color: var(--color-main-surface);
+  background-color: var(--color-secondary);
   background-image:
     radial-gradient(
       circle at 50% 0%,
@@ -92,7 +92,7 @@
 /* Research reading panel — near-black field with a faint cool mottle. */
 .research-panel {
   position: relative;
-  background-color: var(--color-main-black);
+  background-color: var(--color-background);
 }
 .research-panel::before {
   content: "";

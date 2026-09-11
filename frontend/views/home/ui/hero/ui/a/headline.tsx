@@ -29,8 +29,8 @@ export async function HeroHeadline({ locale }: { locale: Locale }) {
 // translation can move either — German and Russian both reorder the phrase, and
 // where the line should break depends on how long the words come out.
 const TONES = [
-  "italic text-main-accent-t1 font-serif",
-  "italic text-main-accent-t2 font-serif",
+  "italic text-accent-debug font-serif",
+  "italic text-positive font-serif",
 ];
 
 function HeadlineB({ locale }: { locale: Locale }) {

@@ -15,7 +15,7 @@ export function VacancyView({
   vacancy: VacancyDetail;
 }) {
   return (
-    <div className="min-h-screen bg-main-black text-main-mist">
+    <div className="min-h-screen bg-background text-ink">
       <VacancyStructuredData vacancy={vacancy} locale={locale} />
       {/* The untranslated note lives inside VacancyHero: the fixed header would
           paint over anything rendered here, above the hero's clearing padding. */}

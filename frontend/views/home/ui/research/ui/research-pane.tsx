@@ -44,11 +44,11 @@ export function ResearchPane({
           goToReport();
         }
       }}
-      className="research-panel lg:col-span-2 border border-main-mist/10 border-t-0 lg:border-t shadow-2xl shadow-main-black/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-main-accent-t1/60"
+      className="research-panel lg:col-span-2 border border-ink/10 border-t-0 lg:border-t shadow-2xl shadow-background/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-debug/60"
     >
       <div>
-        <div className="border-b border-main-mist/10 pb-6 mb-8">
-          <span className="text-xs font-mono-tech text-main-accent-t1 uppercase tracking-widest hidden lg:block mb-1">
+        <div className="border-b border-ink/10 pb-6 mb-8">
+          <span className="text-xs font-mono-tech text-accent-debug uppercase tracking-widest hidden lg:block mb-1">
             {report.cat}
           </span>
           <h3 className="text-2xl sm:text-3xl font-serif-display text-white font-bold">
@@ -63,9 +63,9 @@ export function ResearchPane({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="prose prose-sm text-main-mist/70 font-light max-w-none space-y-6 leading-relaxed"
+            className="prose prose-sm text-ink/70 font-light max-w-none space-y-6 leading-relaxed"
           >
-            <p className="font-serif-display italic text-lg text-main-mist/90">
+            <p className="font-serif-display italic text-lg text-ink/90">
               &quot;{report.quote}&quot;
             </p>
             {report.body.map((p, i) => (

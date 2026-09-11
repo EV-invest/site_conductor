@@ -26,12 +26,12 @@ function Pill({
   value: string;
 }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-main-card/40 px-3.5 py-1.5">
-      <Icon aria-hidden className="size-3.5 text-main-accent-t1/80" />
-      <span className="font-mono-tech text-[9px] uppercase tracking-[0.16em] text-main-mist/45">
+    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-card/40 px-3.5 py-1.5">
+      <Icon aria-hidden className="size-3.5 text-accent-debug/80" />
+      <span className="font-mono-tech text-[9px] uppercase tracking-[0.16em] text-ink/45">
         {label}
       </span>
-      <span className="text-xs text-main-mist/85">{value}</span>
+      <span className="text-xs text-ink/85">{value}</span>
     </span>
   );
 }
@@ -46,22 +46,22 @@ export function VacancyHero({
   const t = translator(messagesFor(locale), locale);
   const team = vacancyTeamLabel(vacancy.category, vacancy.category_label, t);
   return (
-    <section className="bg-main-black pt-32 pb-10">
+    <section className="bg-background pt-32 pb-10">
       <Container>
         <Link
           href={localePath(locale, "/hiring")}
-          className="inline-flex items-center gap-2 font-mono-tech text-[11px] uppercase tracking-[0.16em] text-main-mist/45 transition-colors hover:text-main-mist/80"
+          className="inline-flex items-center gap-2 font-mono-tech text-[11px] uppercase tracking-[0.16em] text-ink/45 transition-colors hover:text-ink/80"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> {t("vacancy.back")}
         </Link>
         {!vacancy.translated && <UntranslatedNotice locale={locale} />}
-        <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-main-accent-t1">
+        <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-accent-debug">
           {team} · {vacancy.employment_type}
         </p>
         <h1 className="mt-3 font-serif-display text-4xl text-white sm:text-5xl">
           {vacancy.title}
         </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-main-mist/60 sm:text-base">
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink/60 sm:text-base">
           {vacancy.summary}
         </p>
 
@@ -87,7 +87,7 @@ export function VacancyHero({
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#apply"
-            className="inline-flex items-center rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90"
+            className="inline-flex items-center rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
           >
             {t("vacancy.applyCta")}
           </a>

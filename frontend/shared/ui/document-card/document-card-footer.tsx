@@ -34,8 +34,8 @@ function formatTerms({
 export function DocumentCardFooter(props: DocumentCardFooterProps) {
   const { href, pdfHref, cta, title } = props;
   return (
-    <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-main-mist/10 pt-5">
-      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
+    <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-ink/10 pt-5">
+      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/40">
         {formatTerms(props).map(({ icon: Icon, text }) => (
           <span key={text} className="flex items-center gap-1.5">
             {/* Decorative: the term beside it already states the fact. */}
@@ -50,7 +50,7 @@ export function DocumentCardFooter(props: DocumentCardFooterProps) {
             href={pdfHref}
             download
             aria-label={`Download ${title} as PDF`}
-            className="relative z-10 inline-flex items-center gap-1.5 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45 motion-safe:transition-colors hover:text-main-accent-t1"
+            className="relative z-10 inline-flex items-center gap-1.5 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45 motion-safe:transition-colors hover:text-accent-debug"
           >
             <FileDown className="size-3.5" />
             PDF
@@ -60,7 +60,7 @@ export function DocumentCardFooter(props: DocumentCardFooterProps) {
             so the card needs no nested/duplicate anchor around its title. */}
         <Link
           href={href}
-          className="inline-flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1 motion-safe:transition-colors hover:text-main-mist after:absolute after:inset-0 after:content-['']"
+          className="inline-flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug motion-safe:transition-colors hover:text-ink after:absolute after:inset-0 after:content-['']"
         >
           {cta}
           <ArrowRight className="size-3.5" />

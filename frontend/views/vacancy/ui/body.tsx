@@ -25,14 +25,14 @@ function GlanceRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-white/[0.06] pb-3 last:border-0 last:pb-0">
-      <dt className="font-mono-tech text-[10px] uppercase tracking-[0.16em] text-main-mist/45">
+      <dt className="font-mono-tech text-[10px] uppercase tracking-[0.16em] text-ink/45">
         {label}
       </dt>
       <dd
         className={
           accent
-            ? "text-sm font-medium text-main-accent-t1"
-            : "text-sm text-main-mist/85"
+            ? "text-sm font-medium text-accent-debug"
+            : "text-sm text-ink/85"
         }
       >
         {value}
@@ -51,12 +51,12 @@ export function VacancyBody({
   const t = translator(messagesFor(locale), locale);
   const team = vacancyTeamLabel(vacancy.category, vacancy.category_label, t);
   return (
-    <section className="bg-main-black py-12">
+    <section className="bg-background py-12">
       <Container>
         <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
           <div className="space-y-10">
             <Block title={t("vacancy.block.about")}>
-              <p className="text-sm leading-relaxed text-main-mist/65 sm:text-base">
+              <p className="text-sm leading-relaxed text-ink/65 sm:text-base">
                 {vacancy.about}
               </p>
             </Block>
@@ -83,8 +83,8 @@ export function VacancyBody({
           </div>
 
           <aside className="h-fit lg:sticky lg:top-28">
-            <div className="rounded-2xl border border-white/[0.07] bg-main-card/40 p-6">
-              <p className="mb-4 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
+            <div className="rounded-2xl border border-white/[0.07] bg-card/40 p-6">
+              <p className="mb-4 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45">
                 {t("vacancy.glance")}
               </p>
               <dl className="space-y-3">
@@ -105,7 +105,7 @@ export function VacancyBody({
               </dl>
               <a
                 href="#apply"
-                className="mt-6 block rounded-md bg-main-accent-t1 px-6 py-3 text-center font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90"
+                className="mt-6 block rounded-md bg-accent-debug px-6 py-3 text-center font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
               >
                 {t("vacancy.applyCta")}
               </a>

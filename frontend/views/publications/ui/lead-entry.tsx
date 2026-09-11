@@ -59,30 +59,30 @@ export function LeadEntry({
       </div>
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
-          <span className="flex items-center gap-2.5 text-main-accent-t1">
-            <span aria-hidden className="size-[7px] bg-main-accent-t1" />
+          <span className="flex items-center gap-2.5 text-accent-debug">
+            <span aria-hidden className="size-[7px] bg-accent-debug" />
             {t("publications.latestDispatch")}
           </span>
-          <span className="text-main-mist/40">
+          <span className="text-ink/40">
             {formatPublicationDate(publication.date, "long", locale)}
           </span>
         </div>
         <h2 className="mt-5 font-serif-display text-3xl leading-tight font-bold text-white sm:text-4xl">
           {publication.title}
         </h2>
-        <p className="mt-4 flex-1 leading-relaxed font-light text-main-mist/70">
+        <p className="mt-4 flex-1 leading-relaxed font-light text-ink/70">
           {publication.dek}
         </p>
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-main-mist/10 pt-5">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-5">
           {publication.author && (
-            <span className="font-mono-tech text-[10px] tracking-[0.14em] text-main-mist/45 uppercase">
+            <span className="font-mono-tech text-[10px] tracking-[0.14em] text-ink/45 uppercase">
               {publication.author}
               {publication.role ? ` · ${publication.role}` : ""}
             </span>
           )}
           <Link
             href={localePath(locale, href(publication))}
-            className="inline-flex items-center gap-2 bg-main-accent-t1 px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-main-black transition-colors hover:bg-main-mist hover:text-main-brand"
+            className="inline-flex items-center gap-2 bg-accent-debug px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-background transition-colors hover:bg-ink hover:text-brand"
           >
             {ctaFor(publication, t)}
             <ArrowRight aria-hidden className="size-3.5" />

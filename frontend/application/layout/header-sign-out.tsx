@@ -20,7 +20,7 @@ export function HeaderSignOut({ enterDelayMs }: { enterDelayMs: number }) {
         // this file cannot see. `hidden` is what gates it, so the delay only
         // ever plays for a signed-in visitor.
         style={{ transitionDelay: `${enterDelayMs}ms` }}
-        className="flex translate-y-2 items-center gap-2 rounded-lg border border-destructive/20 px-3 py-2.5 text-sm font-medium text-destructive/70 opacity-0 transition-[opacity,translate,background-color] duration-300 ease-out outline-none hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-ring group-data-[menu-open]/header:translate-y-0 group-data-[menu-open]/header:opacity-100"
+        className="flex translate-y-2 items-center gap-2 rounded-lg border border-accent-error/20 px-3 py-2.5 text-sm font-medium text-accent-error/70 opacity-0 transition-[opacity,translate,background-color] duration-300 ease-out outline-none hover:bg-accent-error/10 focus-visible:ring-2 focus-visible:ring-ring group-data-[menu-open]/header:translate-y-0 group-data-[menu-open]/header:opacity-100"
       >
         <svg
           className="size-4"

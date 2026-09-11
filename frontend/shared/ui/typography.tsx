@@ -73,13 +73,13 @@ const H5 = make(
 const H6 = make(
   "h6",
   "h6",
-  "font-mono-tech text-main-accent-t1 text-xs uppercase tracking-[0.3em] mt-6 mb-2"
+  "font-mono-tech text-accent-debug text-xs uppercase tracking-[0.3em] mt-6 mb-2"
 );
 
 const P = make(
   "p",
   "p",
-  "font-sans font-light leading-relaxed text-main-mist/70 text-sm sm:text-base [&:not(:first-child)]:mt-4"
+  "font-sans font-light leading-relaxed text-ink/70 text-sm sm:text-base [&:not(:first-child)]:mt-4"
 );
 
 export { H1, H2, H3, H4, H5, H6, P };

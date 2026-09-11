@@ -31,17 +31,17 @@ export function Partners({ locale }: { locale: Locale }) {
   return (
     <section
       id="partners"
-      className="border-b border-main-mist/10 bg-main-black py-20 text-main-mist"
+      className="border-b border-ink/10 bg-background py-20 text-ink"
     >
       <Container>
         <Reveal className="max-w-2xl">
-          <span className="block font-mono-tech text-xs tracking-[0.3em] text-main-accent-t1 uppercase">
+          <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
             {t("home.partners.eyebrow")}
           </span>
           <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-4xl">
             <Accented text={t("home.partners.title")} />
           </h2>
-          <p className="mt-4 leading-relaxed font-light text-main-mist/70">
+          <p className="mt-4 leading-relaxed font-light text-ink/70">
             {t("home.partners.intro")}
           </p>
         </Reveal>
@@ -60,7 +60,7 @@ export function Partners({ locale }: { locale: Locale }) {
           </div>
         </div>
         {/* Same gradient the uikit's CarouselEdgeFade paints, minus its
-            scroll-state opacity: `background` and `main-black` are the same
+            scroll-state opacity: `background` and `background` are the same
             token value, and this section sits on it. */}
         <div
           aria-hidden

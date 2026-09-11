@@ -11,14 +11,14 @@ export function ResearchHeading() {
   const t = useT();
   return (
     <Reveal className="max-w-3xl mb-16">
-      <span className="text-xs font-mono-tech text-main-accent-t1 tracking-[0.3em] uppercase block mb-3">
+      <span className="text-xs font-mono-tech text-accent-debug tracking-[0.3em] uppercase block mb-3">
         {t("home.research.eyebrow")}
       </span>
       <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
         <SplitText inView>
           {accented({
             text: t("home.research.title"),
-            className: "italic text-main-accent-t1 font-serif",
+            className: "italic text-accent-debug font-serif",
           })}
         </SplitText>
       </h2>

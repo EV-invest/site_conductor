@@ -5,7 +5,7 @@ import { TeamMembers } from "./members";
 
 export function TeamLeadership({ locale }: { locale: Locale }) {
   return (
-    <section className="border-t border-main-mist/10 py-20">
+    <section className="border-t border-ink/10 py-20">
       <Container className="space-y-14">
         <LeadershipIntro locale={locale} />
         <TeamMembers locale={locale} />

@@ -17,18 +17,18 @@ export function VacancyApply({
 }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <section id="apply" className="scroll-mt-24 bg-main-black pb-24 pt-8">
+    <section id="apply" className="scroll-mt-24 bg-background pb-24 pt-8">
       <Container>
-        <div className="rounded-3xl border border-white/[0.06] bg-main-card/20 p-4 sm:p-12">
+        <div className="rounded-3xl border border-white/[0.06] bg-card/20 p-4 sm:p-12">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
+              <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
                 {t("vacancy.apply.eyebrow")}
               </p>
               <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
                 <Accented text={t("vacancy.apply.title")} />
               </h2>
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-main-mist/60">
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-ink/60">
                 {t("vacancy.apply.intro", { role: vacancy.title })}
               </p>
               <div className="mt-6">

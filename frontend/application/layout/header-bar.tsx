@@ -28,7 +28,7 @@ export function HeaderBar({
   menuLabels,
 }: HeaderBarProps) {
   return (
-    <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-main-mist/10 group-data-[scrolled]/header:bg-main-black/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md group-data-[zone=cabinet]/header:border-main-mist/10 group-data-[zone=cabinet]/header:bg-main-black group-data-[zone=cabinet]/header:h-[calc(5.5rem+1px)] group-data-[zone=cabinet]/header:py-0">
+    <div className="border-b border-transparent bg-transparent py-6 transition-all duration-500 group-data-[scrolled]/header:border-ink/10 group-data-[scrolled]/header:bg-background/90 group-data-[scrolled]/header:py-4 group-data-[scrolled]/header:backdrop-blur-md group-data-[zone=cabinet]/header:border-ink/10 group-data-[zone=cabinet]/header:bg-background group-data-[zone=cabinet]/header:h-[calc(5.5rem+1px)] group-data-[zone=cabinet]/header:py-0">
       <Container className="flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] h-full items-center gap-4 group-data-[zone=cabinet]/header:max-w-none group-data-[zone=cabinet]/header:pl-[18px] group-data-[zone=cabinet]/header:pr-8">
         <L
           href={homeHref}
@@ -41,7 +41,7 @@ export function HeaderBar({
             <span className="font-serif-display text-lg font-bold tracking-wider text-white">
               EV INVESTMENT
             </span>
-            <span className="font-mono-tech text-[9px] uppercase tracking-[0.3em] text-main-accent-t1">
+            <span className="font-mono-tech text-[9px] uppercase tracking-[0.3em] text-accent-debug">
               Quy Nhon Fund
             </span>
           </div>
@@ -55,7 +55,7 @@ export function HeaderBar({
             <L
               key={item.href}
               href={item.href}
-              className="relative text-main-mist/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-main-accent-t1 after:transition-transform after:duration-300 after:ease-out hover:text-main-accent-t1 hover:after:scale-x-100 focus-visible:text-main-accent-t1 focus-visible:after:scale-x-100"
+              className="relative text-ink/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent-debug after:transition-transform after:duration-300 after:ease-out hover:text-accent-debug hover:after:scale-x-100 focus-visible:text-accent-debug focus-visible:after:scale-x-100"
             >
               {item.label}
             </L>

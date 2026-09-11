@@ -9,10 +9,10 @@ export function FormHeader({ roleTitle }: { roleTitle?: string }) {
   return (
     <>
       <div className="mb-5 flex items-center justify-between">
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-accent-t1">
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug">
           {t("apply.form.eyebrow")}
         </span>
-        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/40">
+        <span className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/40">
           {roleTitle
             ? t("apply.form.roleTag", { title: roleTitle })
             : t("apply.form.formTag")}
@@ -21,7 +21,7 @@ export function FormHeader({ roleTitle }: { roleTitle?: string }) {
       <h3 className="font-serif-display text-2xl text-white">
         {t("apply.form.heading")}
       </h3>
-      <p className="mb-5 mt-1 text-sm text-main-mist/55">
+      <p className="mb-5 mt-1 text-sm text-ink/55">
         {t("apply.form.intro")}
       </p>
     </>
@@ -37,7 +37,7 @@ export function FormFooter({ sending }: { sending: boolean }) {
         type="submit"
         disabled={sending}
         aria-busy={sending}
-        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-main-accent-t1 px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-main-black transition-colors hover:bg-main-accent-t1/90 disabled:opacity-60"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90 disabled:opacity-60"
       >
         {sending ? (
           t("form.sending")
@@ -47,7 +47,7 @@ export function FormFooter({ sending }: { sending: boolean }) {
           </>
         )}
       </button>
-      <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-main-mist/35">
+      <p className="mt-4 text-center font-mono-tech text-[9px] uppercase tracking-[0.18em] text-ink/35">
         {t("apply.form.footnote")}
       </p>
     </>

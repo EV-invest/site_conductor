@@ -16,7 +16,7 @@ const CARDS = [
 export function TeamJoin({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <section className="border-t border-main-mist/10 pb-24 pt-20">
+    <section className="border-t border-ink/10 pb-24 pt-20">
       <Container className="space-y-12">
         <SectionHead eyebrow={t("team.join.eyebrow")}>
           {t("team.join.title")}
@@ -25,18 +25,18 @@ export function TeamJoin({ locale }: { locale: Locale }) {
           {CARDS.map(({ icon: Icon, key, href }) => (
             <div
               key={key}
-              className="flex flex-col items-center gap-4 rounded-xl border border-main-mist/10 bg-main-card px-8 py-14 text-center"
+              className="flex flex-col items-center gap-4 rounded-xl border border-ink/10 bg-card px-8 py-14 text-center"
             >
-              <div className="flex size-13 items-center justify-center rounded-full bg-main-mist/5 text-main-accent-t1">
+              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
                 <Icon className="size-5" />
               </div>
-              <span className="font-mono-tech text-[10px] uppercase tracking-widest text-main-mist/60">
+              <span className="font-mono-tech text-[10px] uppercase tracking-widest text-ink/60">
                 {t(`team.join.${key}.eyebrow`)}
               </span>
               <h3 className="font-serif-display text-lg font-bold text-white">
                 {t(`team.join.${key}.title`)}
               </h3>
-              <p className="max-w-xs text-sm leading-relaxed text-main-mist/75">
+              <p className="max-w-xs text-sm leading-relaxed text-ink/75">
                 {t(`team.join.${key}.body`)}
               </p>
               <Link
@@ -44,7 +44,7 @@ export function TeamJoin({ locale }: { locale: Locale }) {
                 // the header: a reader on /ru/team clicking through must not
                 // land on the English /hiring.
                 href={localePath(locale, href)}
-                className="mt-1 rounded-md border border-main-accent-t1/60 px-5 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-main-accent-t1 transition-colors hover:bg-main-accent-t1/10"
+                className="mt-1 rounded-md border border-accent-debug/60 px-5 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-accent-debug transition-colors hover:bg-accent-debug/10"
               >
                 {t(`team.join.${key}.cta`)}
               </Link>

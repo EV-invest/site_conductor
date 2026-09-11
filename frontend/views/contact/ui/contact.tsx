@@ -18,13 +18,13 @@ const OFFICES = [
 function Channel({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-main-mist/45">
-        <Mail aria-hidden className="size-3.5 text-main-accent-t1" />
+      <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45">
+        <Mail aria-hidden className="size-3.5 text-accent-debug" />
         {label}
       </p>
       <a
         href={`mailto:${value}`}
-        className="text-sm text-main-mist/85 transition-colors hover:text-main-accent-t1"
+        className="text-sm text-ink/85 transition-colors hover:text-accent-debug"
       >
         {value}
       </a>
@@ -35,19 +35,19 @@ function Channel({ label, value }: { label: string; value: string }) {
 export function ContactView({ locale }: { locale: Locale }) {
   const t = translator(messagesFor(locale), locale);
   return (
-    <div className="min-h-screen bg-main-black text-main-mist">
+    <div className="min-h-screen bg-background text-ink">
       <ContactStructuredData />
       <section className="pt-36 pb-24">
         <Container>
           <div className="grid gap-14 lg:grid-cols-2">
             <div>
-              <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-main-accent-t1">
+              <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
                 {t("contact.eyebrow")}
               </p>
               <h1 className="font-serif-display text-4xl font-light text-white sm:text-5xl">
                 <Accented text={t("contact.title")} />
               </h1>
-              <p className="mt-5 max-w-md text-sm leading-relaxed text-main-mist/60 sm:text-base">
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-ink/60 sm:text-base">
                 {t("contact.intro")}
               </p>
               <div className="mt-9 flex flex-wrap gap-10">
@@ -59,14 +59,14 @@ export function ContactView({ locale }: { locale: Locale }) {
               <div className="mt-10 grid gap-6 border-t border-white/[0.06] pt-8 sm:grid-cols-2">
                 {OFFICES.map(office => (
                   <div key={office.city}>
-                    <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-main-mist/60">
+                    <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-ink/60">
                       <MapPin
                         aria-hidden
-                        className="size-3.5 text-main-accent-t1"
+                        className="size-3.5 text-accent-debug"
                       />
                       {t(office.city)}
                     </p>
-                    <p className="mt-1 text-sm text-main-mist/45">
+                    <p className="mt-1 text-sm text-ink/45">
                       {t(office.line)}
                     </p>
                   </div>

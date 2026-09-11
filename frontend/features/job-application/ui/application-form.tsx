@@ -44,7 +44,7 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
     <form
       onSubmit={submit}
       noValidate
-      className="rounded-xl border border-white/10 bg-main-card/40 p-6"
+      className="rounded-xl border border-white/10 bg-card/40 p-6"
     >
       <FormHeader roleTitle={vacancy?.title} />
 
@@ -101,7 +101,7 @@ export function ApplicationForm({ vacancy }: { vacancy?: VacancyContext }) {
       </div>
 
       {status === "error" && errorKey && (
-        <p role="alert" className="mt-3 text-xs text-destructive">
+        <p role="alert" className="mt-3 text-xs text-accent-error">
           {t(errorKey)}
         </p>
       )}

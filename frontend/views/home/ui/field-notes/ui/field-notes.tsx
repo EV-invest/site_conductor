@@ -35,12 +35,12 @@ export function FieldNotes({ locale }: { locale: Locale }) {
   return (
     <section
       id="field-notes"
-      className="border-b border-main-mist/10 bg-main-black py-24 text-main-mist"
+      className="border-b border-ink/10 bg-background py-24 text-ink"
     >
       <Container>
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="block font-mono-tech text-xs tracking-[0.3em] text-main-accent-t1 uppercase">
+            <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
               {t("home.fieldNotes.eyebrow")}
             </span>
             <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-5xl">
@@ -48,13 +48,13 @@ export function FieldNotes({ locale }: { locale: Locale }) {
                 {accented({ text: t("home.fieldNotes.title") })}
               </SplitText>
             </h2>
-            <p className="mt-4 leading-relaxed font-light text-main-mist/70">
+            <p className="mt-4 leading-relaxed font-light text-ink/70">
               {t("home.fieldNotes.intro")}
             </p>
           </div>
           <Link
             href={localePath(locale, "/publications")}
-            className="inline-flex items-center gap-2 border border-main-mist/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-main-mist/85 transition-colors hover:border-main-accent-t1 hover:text-main-accent-t1"
+            className="inline-flex items-center gap-2 border border-ink/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-ink/85 transition-colors hover:border-accent-debug hover:text-accent-debug"
           >
             {t("home.fieldNotes.all")}
             <ArrowRight aria-hidden className="size-3.5" />
@@ -78,24 +78,24 @@ export function FieldNotes({ locale }: { locale: Locale }) {
                 locale={locale}
               />
               {archive.length > 0 && (
-                <div className="border border-main-mist/10 bg-main-card/50 px-6 pt-5 pb-2">
-                  <span className="block font-mono-tech text-[10px] tracking-[0.19em] text-main-accent-t1 uppercase">
+                <div className="border border-ink/10 bg-card/50 px-6 pt-5 pb-2">
+                  <span className="block font-mono-tech text-[10px] tracking-[0.19em] text-accent-debug uppercase">
                     {t("home.fieldNotes.more")}
                   </span>
                   <ul className="mt-3">
                     {archive.map(({ publication }) => (
                       <li
                         key={publication.slug}
-                        className="border-t border-main-mist/8 py-3.5 first:border-t-0"
+                        className="border-t border-ink/8 py-3.5 first:border-t-0"
                       >
                         <Link
                           href={localePath(
                             locale,
                             `/publications/${publication.slug}`
                           )}
-                          className="flex gap-4 text-sm text-main-mist/80 transition-colors hover:text-main-mist"
+                          className="flex gap-4 text-sm text-ink/80 transition-colors hover:text-ink"
                         >
-                          <span className="w-14 shrink-0 font-mono-tech text-[10px] text-main-mist/35">
+                          <span className="w-14 shrink-0 font-mono-tech text-[10px] text-ink/35">
                             {formatPublicationDate(
                               publication.date,
                               "short",

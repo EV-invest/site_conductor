@@ -36,7 +36,7 @@ export default async function MfePage({
       scriptUrl={entry.scriptUrl}
       className="block min-h-[60vh]"
       fallback={
-        <Container className="py-24 text-main-mist/60">
+        <Container className="py-24 text-ink/60">
           Loading {entry.name}…
         </Container>
       }
