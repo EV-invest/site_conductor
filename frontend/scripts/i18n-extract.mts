@@ -37,7 +37,10 @@ function* sourceFiles(dir: string): Generator<string> {
   for (const item of readdirSync(join(ROOT, dir), { withFileTypes: true })) {
     const path = join(dir, item.name);
     if (item.isDirectory()) yield* sourceFiles(path);
-    else if (/\.tsx?$/.test(item.name)) yield path;
+    // `.mts` is in here for build-shell.mts, whose four header strings the site
+    // <Header> happens to duplicate verbatim — so they reached the catalogue by
+    // accident, and editing one copy would have silently desynced the two.
+    else if (/\.m?tsx?$/.test(item.name)) yield path;
   }
 }
 

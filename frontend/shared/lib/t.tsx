@@ -12,6 +12,20 @@ import type { T } from "@/shared/config/i18n";
 
 const Ctx = createContext<{ locale: Locale; t: T } | null>(null);
 
+// The client half of the unknown-key channel in shared/config/i18n.ts. Inlined
+// rather than imported from there: that module statically imports all five
+// catalogues, and pulling a value out of it would ship them to the browser.
+// `en` arrives with an empty catalogue by construction, so it is not a miss.
+const warned = new Set<string>();
+function warnUnknownKey(key: string, locale: Locale) {
+  if (locale === "en" || warned.has(key)) return;
+  warned.add(key);
+  console.warn(
+    `i18n ${locale}: "${key}" is not in messages/en/common.json — rendering the` +
+      ` inline English. Run \`npm run i18n:extract\`.`
+  );
+}
+
 export function I18nProvider({
   locale,
   messages,
@@ -24,8 +38,11 @@ export function I18nProvider({
   const value = useMemo(
     () => ({
       locale,
-      t: ((key, en, values) =>
-        formatMessage(messages[key] ?? en, locale, values)) as T,
+      t: ((key, en, values) => {
+        const pattern = messages[key];
+        if (pattern === undefined) warnUnknownKey(key, locale);
+        return formatMessage(pattern ?? en, locale, values);
+      }) as T,
     }),
     [locale, messages]
   );
