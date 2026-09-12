@@ -79,6 +79,10 @@
     "en": "Terms of Service",
     "t": "Условия использования"
   },
+  "footer.rights": {
+    "en": "All rights reserved.",
+    "t": "Все права защищены."
+  },
   "footer.newsletter.blurb": {
     "en": "Subscribe, to receive our macro reports",
     "t": "Подпишитесь, чтобы получать наши макроотчёты"

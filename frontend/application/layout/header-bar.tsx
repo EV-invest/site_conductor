@@ -7,7 +7,8 @@
 // backdrop-filtered root would become the containing block for the drawer and
 // scrim's `fixed` boxes and clamp them to the bar.
 import type { ElementType, ReactNode } from "react";
-import { Container, Logo } from "@evinvest/uikit";
+import { Container } from "@evinvest/uikit";
+import { Logo } from "@/shared/ui/logo";
 import type { HeaderMenuLabels, HeaderNavItem } from "./header-shared";
 
 interface HeaderBarProps {
@@ -36,7 +37,7 @@ export function HeaderBar({
           data-slot="header-logo"
           aria-label={homeLabel}
         >
-          <Logo src="/assets/logo.svg" className="h-10 w-10 text-white" />
+          <Logo className="h-10 w-10 text-white" />
           <div className="flex flex-col">
             <span className="font-serif-display text-lg font-bold tracking-wider text-white">
               EV INVESTMENT

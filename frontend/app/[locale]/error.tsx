@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { StatusScreen, statusButtonClass } from "@evinvest/uikit";
+import { StatusScreen, statusCtaClass } from "@evinvest/uikit";
 import { reportError } from "@/features/error-monitoring";
 import { useStatusCopy } from "@/shared/ui/status-copy";
 
@@ -35,7 +35,7 @@ export default function Error({
   if (!copy) {
     return (
       <StatusScreen
-        accent="red"
+        accent="error"
         code="500"
         eyebrow="Server error"
         headlineLead="Our systems are "
@@ -43,7 +43,7 @@ export default function Error({
         subtext="Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment."
         links={[{ label: "Back to home", href: "/", variant: "outline", leadingArrow: true }]}
       >
-        <button type="button" className={statusButtonClass("red", "filled")} onClick={reset}>
+        <button type="button" className={statusCtaClass("error", "primary")} onClick={reset}>
           Try again
         </button>
       </StatusScreen>
@@ -52,7 +52,7 @@ export default function Error({
 
   return (
     <StatusScreen
-      accent="red"
+      accent="error"
       code="500"
       eyebrow={copy.eyebrow}
       headlineLead={copy.headlineLead}
@@ -62,7 +62,7 @@ export default function Error({
         { label: copy.backHome, href: copy.homeHref, variant: "outline", leadingArrow: true },
       ]}
     >
-      <button type="button" className={statusButtonClass("red", "filled")} onClick={reset}>
+      <button type="button" className={statusCtaClass("error", "primary")} onClick={reset}>
         {copy.tryAgain}
       </button>
     </StatusScreen>

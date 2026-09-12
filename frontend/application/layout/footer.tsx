@@ -28,9 +28,7 @@ export function Footer() {
   }));
   // The uikit Footer defaults every one of these to English. Left unset they
   // are what a /ru/ reader still reads in English beside a translated sitemap,
-  // so each one is passed explicitly. The "Offices" and "Newsletter" column
-  // headings and the copyright line are baked into @evinvest/uikit with no prop
-  // to override them — they need a uikit release, see issue notes.
+  // so each one is passed explicitly.
   const offices = [
     { name: t("footer.office.hq.name"), address: t("footer.office.hq.address") },
     {
@@ -45,6 +43,8 @@ export function Footer() {
   return (
     <BrandFooter
       nav={nav}
+      brand="EV INVESTMENT"
+      copyright={`© ${new Date().getFullYear()} EV Investment. ${t("footer.rights")}`}
       description={t("footer.description")}
       tagline={t("footer.tagline")}
       offices={offices}

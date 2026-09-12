@@ -24,7 +24,7 @@ import { messagesFor } from "@/shared/config/i18n";
  */
 type StatusKind = "notFound" | "forbidden" | "unauthorized";
 
-const ACCENT = { notFound: "teal", forbidden: "gold", unauthorized: "gold" } as const;
+const ACCENT = { notFound: "info", forbidden: "warn", unauthorized: "warn" } as const;
 const CODE = { notFound: "404", forbidden: "403", unauthorized: "401" } as const;
 
 /** Shell-owned auth entry point; not a `[locale]` route, so no `localePath`. */
