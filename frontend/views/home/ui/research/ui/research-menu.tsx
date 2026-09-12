@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -41,7 +41,8 @@ export function ResearchMenu({
           <div className="flex justify-between items-center font-mono-tech text-[10px] text-ink/40">
             <span>{r.date}</span>
             <span className="flex items-center gap-1">
-              {t("home.research.read")} <ChevronRight className="w-3 h-3" />
+              {t("home.research.read", "Read")}{" "}
+              <ChevronRight className="w-3 h-3" />
             </span>
           </div>
         </div>

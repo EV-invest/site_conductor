@@ -1,7 +1,7 @@
 "use client";
 
 import type { Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 import type { Publication } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
@@ -40,8 +40,15 @@ export function PublicationResults({
   return results.length === 0 ? (
     <p className="font-light text-ink/55" role="status">
       {query === ""
-        ? t("publications.empty.filter")
-        : t("publications.empty.search", { query })}
+        ? t(
+            "publications.empty.filter",
+            "Nothing published under this filter yet."
+          )
+        : t(
+            "publications.empty.search",
+            "Nothing matches “{query}”. Clear the search with Esc, or try a place name — most dispatches are titled after one.",
+            { query }
+          )}
     </p>
   ) : (
     <>

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 import type { Publication } from "@/entities/publication";
 import {
@@ -91,7 +91,7 @@ export function PublicationIndex({
           cannot see it. */}
       <p aria-live="polite" className="sr-only">
         {selected
-          ? t("publications.announce", {
+          ? t("publications.announce", "{title} — {position} of {total}", {
               title: selected.title,
               position: (selectedIndex ?? 0) + 1,
               total: results.length,

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**
@@ -32,7 +32,8 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
             })
           }
         >
-          {t("home.hero.cta.explore")} <ArrowRight className="w-4 h-4 ml-2" />
+          {t("home.hero.cta.explore", "Explore Assets")}{" "}
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
 
         <Button
@@ -41,7 +42,7 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
           onClick={() => track("cta_clicked", { cta: "whitepaper" })}
         >
           <Link href="/publications/whitepaper">
-            {t("home.hero.cta.whitepaper")}{" "}
+            {t("home.hero.cta.whitepaper", "Whitepaper")}{" "}
             <FileText className="w-4 h-4 ml-2" />
           </Link>
         </Button>

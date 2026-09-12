@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
-import { type VacancySummary, vacancyTeamLabel } from "@/entities/vacancy";
+import { useT } from "@/shared/lib/t";
+import { type VacancySummary, teamLabels } from "@/entities/vacancy";
 
 export function RoleRow({
   vacancy,
@@ -25,7 +25,7 @@ export function RoleRow({
             {vacancy.title}
           </h3>
           <span className="rounded bg-accent-debug/10 px-2 py-0.5 font-mono-tech text-[9px] uppercase tracking-[0.16em] text-accent-debug">
-            {vacancyTeamLabel(vacancy.category, vacancy.category_label, t)}
+            {teamLabels(t)[vacancy.category] ?? vacancy.category_label}
           </span>
         </div>
         <p className="mt-2 text-sm text-ink/60">{vacancy.summary}</p>
@@ -41,7 +41,8 @@ export function RoleRow({
         </p>
       </div>
       <span className="hidden shrink-0 items-center gap-2 rounded-md border border-accent-debug/30 px-4 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-accent-debug transition-colors group-hover:bg-accent-debug/10 sm:inline-flex">
-        {t("hiring.board.viewRole")} <ArrowRight className="h-3.5 w-3.5" />
+        {t("hiring.board.viewRole", "View role")}{" "}
+        <ArrowRight className="h-3.5 w-3.5" />
       </span>
     </Link>
   );

@@ -1,4 +1,10 @@
-import { LOCALES, type Locale, type Messages } from "@evinvest/i18n";
+import {
+  formatMessage,
+  LOCALES,
+  type Locale,
+  type MessageValues,
+  type Messages,
+} from "@evinvest/i18n";
 import {
   resolveCatalogue,
   type TranslatedCatalogue,
@@ -30,8 +36,54 @@ const RESOLVED = Object.fromEntries(
   ])
 );
 
+// `resolveCatalogue` never leaves a hole, so a reader on /de cannot tell a
+// translated page from an English one served under German chrome — which is the
+// failure `i18n:check` exists to catch, except nothing forces that check to have
+// run before a server boots. Said once at module scope rather than per render:
+// the set is static, and a per-call hook could not see these at all, since the
+// English was substituted into `messages` before `t` ever looks.
+for (const { locale, missing, rejected } of Object.values(RESOLVED)) {
+  const keys = [...missing, ...rejected.map(r => r.key)];
+  if (keys.length > 0)
+    console.warn(
+      `i18n ${locale}: English served for ${keys.length} key(s) —` +
+        ` ${missing.length} untranslated, ${rejected.length} rejected by policy:` +
+        ` ${keys.join(", ")}`
+    );
+}
+
 export const messagesFor = (locale: Locale): Messages =>
   locale === "en" ? en : (RESOLVED[locale]?.messages ?? en);
+
+// A key the resolved catalogue has never heard of means the committed English
+// catalogue no longer matches the code — `npm run i18n:extract` was not run.
+// Deduplicated because this fires per render, and the same stale key renders on
+// every page. See scripts/i18n-check.mts, which is the build-time half.
+const warned = new Set<string>();
+const warnUnknownKey = (key: string, locale: Locale) => {
+  if (warned.has(key)) return;
+  warned.add(key);
+  console.warn(
+    `i18n ${locale}: "${key}" is not in messages/en/common.json — rendering the` +
+      ` inline English. Run \`npm run i18n:extract\`.`
+  );
+};
+
+// English is authored at the call site and the catalogue is generated back out
+// of it by `npm run i18n:extract`, so `en` here is the source, not a fallback:
+// a key absent from a translated catalogue renders the sentence the component
+// asked for rather than the raw key. `messages` is null for `en` because there
+// is nothing left to look up.
+export type T = (key: string, en: string, values?: MessageValues) => string;
+
+export const translate = (locale: Locale): T => {
+  const messages = locale === "en" ? null : messagesFor(locale);
+  return (key, en, values) => {
+    const pattern = messages?.[key];
+    if (messages && pattern === undefined) warnUnknownKey(key, locale);
+    return formatMessage(pattern ?? en, locale, values);
+  };
+};
 
 /** Per-locale policy outcome — read by `npm run i18n:check`. */
 export const catalogueReport = () => Object.values(RESOLVED);

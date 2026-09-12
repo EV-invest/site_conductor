@@ -1,52 +1,47 @@
 import Link from "next/link";
-import { Users, Globe } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
-import { messagesFor } from "@/shared/config/i18n";
+import { joinCards } from "@/entities/team";
+import { translate } from "@/shared/config/i18n";
 import { SectionHead } from "./section-head";
 
-// Plain styled <Link> CTAs (not two sibling <Button asChild> — that desyncs
-// hydration under React 19; see frontend/PATTERNS.md §7).
-const CARDS = [
-  { icon: Users, key: "hiring", href: "/hiring" },
-  { icon: Globe, key: "ir", href: "/contact" },
-];
-
 export function TeamJoin({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
+  // Locale-prefixed for the same reason localizeNav prefixes the header: a
+  // reader on /ru/team clicking through must not land on the English /hiring.
+  const cards = joinCards(t, href => localePath(locale, href));
   return (
     <section className="border-t border-ink/10 pb-24 pt-20">
       <Container className="space-y-12">
-        <SectionHead eyebrow={t("team.join.eyebrow")}>
-          {t("team.join.title")}
+        <SectionHead eyebrow={t("team.join.eyebrow", "Get involved")}>
+          {t("team.join.title", "Build the fund with us")}
         </SectionHead>
         <div className="grid gap-6 md:grid-cols-2">
-          {CARDS.map(({ icon: Icon, key, href }) => (
+          {/* Plain styled <Link> CTAs (not two sibling <Button asChild> — that
+              desyncs hydration under React 19; see frontend/PATTERNS.md §7). */}
+          {cards.map(({ icon: Icon, href, eyebrow, title, body, cta }) => (
             <div
-              key={key}
+              key={href}
               className="flex flex-col items-center gap-4 rounded-xl border border-ink/10 bg-card px-8 py-14 text-center"
             >
               <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
                 <Icon className="size-5" />
               </div>
               <span className="font-mono-tech text-[10px] uppercase tracking-widest text-ink/60">
-                {t(`team.join.${key}.eyebrow`)}
+                {eyebrow}
               </span>
               <h3 className="font-serif-display text-lg font-bold text-white">
-                {t(`team.join.${key}.title`)}
+                {title}
               </h3>
               <p className="max-w-xs text-sm leading-relaxed text-ink/75">
-                {t(`team.join.${key}.body`)}
+                {body}
               </p>
               <Link
-                // Locale-prefixed for the same reason localizeNav prefixes
-                // the header: a reader on /ru/team clicking through must not
-                // land on the English /hiring.
-                href={localePath(locale, href)}
+                href={href}
                 className="mt-1 rounded-md border border-accent-debug/60 px-5 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-accent-debug transition-colors hover:bg-accent-debug/10"
               >
-                {t(`team.join.${key}.cta`)}
+                {cta}
               </Link>
             </div>
           ))}

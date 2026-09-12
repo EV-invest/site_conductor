@@ -1,7 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 import { Kbd, KbdCaption } from "./kbd";
 import { RESULT_COUNT_ID } from "./result-count";
 
@@ -45,7 +45,7 @@ export function SearchField({
         ⌕
       </span>
       <label htmlFor={id} className="sr-only">
-        {label ?? t("publications.search.label")}
+        {label ?? t("publications.search.label", "Search publications")}
       </label>
       <input
         id={id}
@@ -53,7 +53,10 @@ export function SearchField({
         type="search"
         value={value}
         onChange={event => onChange(event.target.value)}
-        placeholder={t("publications.search.placeholder")}
+        placeholder={t(
+          "publications.search.placeholder",
+          "Search titles and full text…"
+        )}
         autoComplete="off"
         spellCheck={false}
         aria-describedby={describedBy}

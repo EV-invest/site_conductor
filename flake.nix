@@ -45,6 +45,24 @@
               pass_filenames = false;
               stages = [ "pre-push" ];
             };
+            # `messages/en/common.json` is generated out of the `t(key, english)`
+            # call sites, so a push where the two disagree ships a catalogue that
+            # describes copy nothing renders — and every drift check for the other
+            # four locales is then measured against that phantom source.
+            #
+            # Deliberately NOT folded into the `test` hook above, which skips
+            # unprotected refs and unchanged trees: this is a repo invariant, so it
+            # runs on every push with no exemptions. It costs ~1.5s (an AST walk,
+            # no type checker), which is what makes that affordable. `nix run
+            # .#test` and `prebuild` run it too; this is the one that cannot be
+            # bypassed, since the container build calls `next build` directly.
+            i18n = {
+              enable = true;
+              name = "i18n catalogue matches code (translation policy 1.1/1.2)";
+              entry = "${runI18nCheck}/bin/run-i18n-check";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+            };
           };
         });
         pname = "site_conductor";
@@ -540,6 +558,20 @@
             ${runFrontend}/bin/run-frontend & pids+=($!)
 
             wait
+          '';
+        };
+
+        # ── i18n gate: the pre-push hook above, standalone ──────────────────
+        # Its own derivation rather than a line in `runTest` because the hook has
+        # to run it without dragging in Playwright and its browser closure.
+        runI18nCheck = pkgs.writeShellApplication {
+          name = "run-i18n-check";
+          runtimeInputs = with pkgs; [ nodejs git ];
+          text = ''
+            repo="$(git rev-parse --show-toplevel)"
+            cd "$repo/frontend"
+            [ -d node_modules/.bin ] || npm ci
+            exec npm run i18n:check
           '';
         };
 

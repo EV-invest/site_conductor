@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 export function ShareButton() {
   const t = useT();
@@ -24,11 +24,11 @@ export function ShareButton() {
       {copied ? (
         <>
           <Check className="h-4 w-4 text-accent-debug" />{" "}
-          {t("vacancy.shareCopied")}
+          {t("vacancy.shareCopied", "Copied")}
         </>
       ) : (
         <>
-          <Share2 className="h-4 w-4" /> {t("vacancy.share")}
+          <Share2 className="h-4 w-4" /> {t("vacancy.share", "Share role")}
         </>
       )}
     </button>

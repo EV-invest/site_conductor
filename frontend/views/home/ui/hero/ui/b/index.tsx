@@ -1,9 +1,9 @@
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 import { Text, Tier } from "@/shared/ui/text";
 import { HeroBCta } from "./cta";
 import { BoardroomImage } from "./boardroom";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 /**
@@ -12,7 +12,7 @@ import { Accented } from "@/shared/ui/accented";
  * content-first hero. Server Component; the only client island is {@link HeroBCta}.
  */
 export function HeroB({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <section
       id="hero"
@@ -24,18 +24,26 @@ export function HeroB({ locale }: { locale: Locale }) {
         {/* Left: editorial copy */}
         <div className="space-y-8">
           <span className="block text-xs font-mono-tech text-accent-debug tracking-[0.3em] uppercase">
-            {t("home.hero.b.eyebrow")}
+            {t("home.hero.b.eyebrow", "Institutional Real Estate • Quy Nhon")}
           </span>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif-display font-light text-white leading-[1.05]">
             <Accented
-              text={t("home.hero.b.headline")}
+              text={t(
+                "home.hero.b.headline",
+                "Invest in *Quy Nhon*\nThrough Institutional Vision."
+              )}
               className="italic text-accent-debug font-serif"
             />
           </h1>
 
           <Tier tier="main">
-            <Text className="max-w-xl">{t("home.hero.b.copy")}</Text>
+            <Text className="max-w-xl">
+              {t(
+                "home.hero.b.copy",
+                "EV Investment bridges the gap between premium coastal real estate development and sophisticated investors. Experience high-yield real estate assets in Vietnam's fastest-growing coastal hub."
+              )}
+            </Text>
           </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
@@ -46,7 +54,7 @@ export function HeroB({ locale }: { locale: Locale }) {
                 variant="secondary"
                 className="text-[10px] font-mono-tech uppercase tracking-widest mb-1"
               >
-                {t("home.hero.stat.targetIrr")}
+                {t("home.hero.stat.targetIrr", "Target IRR")}
               </Text>
               <p className="text-2xl sm:text-3xl font-serif-display text-accent-warn font-bold">
                 22.4% +

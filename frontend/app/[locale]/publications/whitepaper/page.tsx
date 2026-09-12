@@ -1,5 +1,5 @@
-import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
-import { messagesFor } from "@/shared/config/i18n";
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Container } from "@evinvest/uikit";
 
 import { DocumentReader } from "@/shared/ui/document-reader";
@@ -42,7 +42,7 @@ export default async function Page({
 }) {
   const { locale } = await params;
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
-  const t = translator(messagesFor(resolved), resolved);
+  const t = translate(resolved);
   return (
     <>
       {/* The body is shadow-mounted and so unreadable to a crawler (which is
@@ -51,27 +51,43 @@ export default async function Page({
           than leaving a blank in the site's structure. */}
       <PageGraph
         path="/publications/whitepaper"
-        name={t("whitepaper.name")}
-        description={t("meta.whitepaper.description")}
+        name={t("whitepaper.name", "Whitepaper")}
+        description={t(
+          "meta.whitepaper.description",
+          "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
+        )}
         trail={[
-          { name: t("nav.publications"), path: "/publications" },
-          { name: t("whitepaper.name"), path: "/publications/whitepaper" },
+          {
+            name: t("nav.publications", "Publications"),
+            path: "/publications",
+          },
+          {
+            name: t("whitepaper.name", "Whitepaper"),
+            path: "/publications/whitepaper",
+          },
         ]}
       />
       <DocumentReader
-        title={t("whitepaper.title")}
-        downloadLabel={t("publications.downloadPdf")}
-        downloadAriaLabel={t("document.downloadAria", {
-          title: t("whitepaper.title"),
-        })}
+        title={t("whitepaper.title", "EV Investment Whitepaper")}
+        downloadLabel={t("publications.downloadPdf", "download the PDF")}
+        downloadAriaLabel={t(
+          "document.downloadAria",
+          "Download {title} as PDF",
+          {
+            title: t("whitepaper.title", "EV Investment Whitepaper"),
+          }
+        )}
         htmlSrc="/whitepaper.dark.html"
         pdfSrc="/whitepaper.pdf"
         isolate
         fallback={
           <Container className="py-24 text-ink/60">
-            {t("whitepaper.loading")}{" "}
+            {t(
+              "whitepaper.loading",
+              "Loading the whitepaper… if it doesn't appear,"
+            )}{" "}
             <a href="/whitepaper.pdf" className="text-accent-debug underline">
-              {t("publications.downloadPdf")}
+              {t("publications.downloadPdf", "download the PDF")}
             </a>
             .
           </Container>

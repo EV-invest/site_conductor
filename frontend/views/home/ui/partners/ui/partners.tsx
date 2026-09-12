@@ -1,8 +1,8 @@
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { Reveal } from "@/shared/ui/motion";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 import { PartnerRow } from "./partner-row";
@@ -27,7 +27,7 @@ const COPIES = 4;
 // ships no JS of its own. Only the two Reveal wrappers are client islands, the
 // same as every sibling section.
 export function Partners({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <section
       id="partners"
@@ -36,13 +36,18 @@ export function Partners({ locale }: { locale: Locale }) {
       <Container>
         <Reveal className="max-w-2xl">
           <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
-            {t("home.partners.eyebrow")}
+            {t("home.partners.eyebrow", "What we run on")}
           </span>
           <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-4xl">
-            <Accented text={t("home.partners.title")} />
+            <Accented
+              text={t("home.partners.title", "The stack behind *the numbers*")}
+            />
           </h2>
           <p className="mt-4 leading-relaxed font-light text-ink/70">
-            {t("home.partners.intro")}
+            {t(
+              "home.partners.intro",
+              "Custody, identity verification, and the engineering that ensures safety of your money. We commit to having full observability of all technology used to ensure your safe and seamless experience."
+            )}
           </p>
         </Reveal>
       </Container>

@@ -1,18 +1,24 @@
 import { Mail, MapPin } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { ContactForm } from "@/features/contact-message";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate, type T } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 import { ContactStructuredData } from "./contact-structured-data";
 
-// Keys, not text: the city name is translated too ("Хошимин"), so the pair has
-// to come out of the catalogue rather than being interpolated around it.
-const OFFICES = [
-  { city: "contact.office.hq.city", line: "contact.office.hq.line" },
-  { city: "contact.office.hcmc.city", line: "contact.office.hcmc.line" },
+// The city name translates too ("Хошимин"), so it is a message rather than a
+// literal interpolated into one.
+const offices = (t: T) => [
+  {
+    city: t("contact.office.hq.city", "Quy Nhơn"),
+    line: t("contact.office.hq.line", "Coastal HQ · Bình Định, Vietnam"),
+  },
+  {
+    city: t("contact.office.hcmc.city", "Ho Chi Minh City"),
+    line: t("contact.office.hcmc.line", "Investor relations · District 1"),
+  },
 ];
 
 function Channel({ label, value }: { label: string; value: string }) {
@@ -33,7 +39,7 @@ function Channel({ label, value }: { label: string; value: string }) {
 }
 
 export function ContactView({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <div className="min-h-screen bg-background text-ink">
       <ContactStructuredData />
@@ -42,33 +48,34 @@ export function ContactView({ locale }: { locale: Locale }) {
           <div className="grid gap-14 lg:grid-cols-2">
             <div>
               <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
-                {t("contact.eyebrow")}
+                {t("contact.eyebrow", "Contact")}
               </p>
               <h1 className="font-serif-display text-4xl font-light text-white sm:text-5xl">
-                <Accented text={t("contact.title")} />
+                <Accented text={t("contact.title", "Let's *talk*.")} />
               </h1>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-ink/60 sm:text-base">
-                {t("contact.intro")}
+                {t(
+                  "contact.intro",
+                  "Questions about a role, an investment, or one of our coastal developments? Send a note and a person — not a bot — will reply."
+                )}
               </p>
               <div className="mt-9 flex flex-wrap gap-10">
                 <Channel
-                  label={t("contact.channel.general")}
+                  label={t("contact.channel.general", "Email")}
                   value="admin@evinvest.ltd"
                 />
               </div>
               <div className="mt-10 grid gap-6 border-t border-white/[0.06] pt-8 sm:grid-cols-2">
-                {OFFICES.map(office => (
+                {offices(t).map(office => (
                   <div key={office.city}>
                     <p className="flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.18em] text-ink/60">
                       <MapPin
                         aria-hidden
                         className="size-3.5 text-accent-debug"
                       />
-                      {t(office.city)}
+                      {office.city}
                     </p>
-                    <p className="mt-1 text-sm text-ink/45">
-                      {t(office.line)}
-                    </p>
+                    <p className="mt-1 text-sm text-ink/45">{office.line}</p>
                   </div>
                 ))}
               </div>

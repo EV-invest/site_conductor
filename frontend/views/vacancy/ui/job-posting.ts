@@ -1,8 +1,8 @@
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { OFFICES } from "@/shared/config/site";
-import { type VacancyDetail, vacancyTeamLabel } from "@/entities/vacancy";
+import { type VacancyDetail, teamLabels } from "@/entities/vacancy";
 import {
   ldAbs,
   ldCompact,
@@ -78,7 +78,7 @@ export function jobPostingNode(
   vacancy: VacancyDetail,
   locale: Locale
 ): JsonLdNode {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   const path = `/hiring/${vacancy.slug}`;
   return ldCompact({
     "@type": "JobPosting",
@@ -91,11 +91,8 @@ export function jobPostingNode(
     employmentType: employmentType(vacancy.employment_type),
     hiringOrganization: { "@id": ORG_ID },
     jobLocation: jobLocation(vacancy.location),
-    occupationalCategory: vacancyTeamLabel(
-      vacancy.category,
-      vacancy.category_label,
-      t
-    ),
+    occupationalCategory:
+      teamLabels(t)[vacancy.category] ?? vacancy.category_label,
     identifier: {
       "@type": "PropertyValue",
       name: "EV Investment",

@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "npm install --no-audit --no-fund && tsx scripts/build-shell.mts",
     "dev": "next dev",
-    "prebuild": "npm install --no-audit --no-fund && tsx scripts/build-shell.mts && tsx scripts/build-og.tsx",
+    "prebuild": "npm install --no-audit --no-fund && tsx scripts/i18n-check.mts && tsx scripts/build-shell.mts && tsx scripts/build-og.tsx",
     "build": "stylelint \"application/styles/**/*.css\" && tsx scripts/css-conflict-check.mts && next build",
     "start": "next start",
     "lint": "eslint .",
@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
+    "i18n:extract": "tsx scripts/i18n-extract.mts",
     "i18n:check": "tsx scripts/i18n-check.mts",
     "redirects:check": "tsx scripts/redirect-check.mts"
   },

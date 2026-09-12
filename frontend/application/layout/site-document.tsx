@@ -1,7 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import Script from "next/script";
 import type { Locale } from "@evinvest/i18n";
-import { I18nProvider } from "@evinvest/i18n/react";
+import { I18nProvider } from "@/shared/lib/t";
 import { messagesFor } from "@/shared/config/i18n";
 import { fontInter, fontPlayfair } from "@/application/styles/fonts";
 import { Providers } from "@/application/providers";
@@ -73,7 +73,12 @@ export function SiteDocument({
         <Script defer src={shell.js} strategy="afterInteractive" />
         <DarkReaderHydrationFilter />
         <ErrorMonitoringProvider>
-          <I18nProvider locale={locale} messages={messagesFor(locale)}>
+          {/* English is authored inline at each call site, so an `en` reader
+              needs no catalogue serialised into the RSC payload at all. */}
+          <I18nProvider
+            locale={locale}
+            messages={locale === "en" ? {} : messagesFor(locale)}
+          >
             <Providers>
               {/* capturePageview=false: PostHogPageView owns every $pageview
                 (initial + App Router soft navigations), so the provider must not

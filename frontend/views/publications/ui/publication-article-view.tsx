@@ -1,5 +1,5 @@
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import {
   hasTranslatedDocument,
@@ -8,7 +8,7 @@ import {
 } from "@/entities/publication";
 import { DocumentReader } from "@/shared/ui/document-reader";
 import { MediaPlate } from "@/shared/ui/media-plate";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 import { pdfHref } from "../model/presentation";
 import { PublicationArticleHeader } from "./publication-article-header";
@@ -29,7 +29,7 @@ export function PublicationArticleView({
   publication: Publication;
   locale: Locale;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   const cover = toPlateCover(publication);
 
   return (
@@ -44,7 +44,7 @@ export function PublicationArticleView({
               cover={cover}
               size="wide"
               caption={publication.cover?.caption}
-              plateLabel={t("publications.plate", { n: "01" })}
+              plateLabel={t("publications.plate", "Plate {n}", { n: "01" })}
               className="mx-auto"
             />
           </div>
@@ -62,7 +62,10 @@ export function PublicationArticleView({
             role="note"
             className="mx-auto mt-12 max-w-3xl border-t border-ink/12 pt-5 text-xs text-ink/55"
           >
-            {t("publications.documentInEnglish")}
+            {t(
+              "publications.documentInEnglish",
+              "This summary is translated; the report itself is in English."
+            )}
           </p>
         </Container>
       )}
@@ -72,21 +75,28 @@ export function PublicationArticleView({
         // PublicationArticleHeader above already rendered the page's visible
         // <h1> (the title) — the reader's own sr-only one would be a second.
         renderHeading={false}
-        downloadLabel={t("publications.downloadPdf")}
-        downloadAriaLabel={t("document.downloadAria", {
-          title: publication.title,
-        })}
+        downloadLabel={t("publications.downloadPdf", "download the PDF")}
+        downloadAriaLabel={t(
+          "document.downloadAria",
+          "Download {title} as PDF",
+          {
+            title: publication.title,
+          }
+        )}
         htmlSrc={`/publications/${publication.slug}.dark.html`}
         pdfSrc={pdfHref(publication)}
         bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-accent-debug prose-strong:text-ink"
         fallback={
           <p className="mx-auto max-w-3xl px-6 py-16 text-ink/60">
-            {t("publications.unavailable")}{" "}
+            {t(
+              "publications.unavailable",
+              "This publication isn’t available right now —"
+            )}{" "}
             <a
               href={pdfHref(publication)}
               className="text-accent-debug underline"
             >
-              {t("publications.downloadPdf")}
+              {t("publications.downloadPdf", "download the PDF")}
             </a>
             .
           </p>

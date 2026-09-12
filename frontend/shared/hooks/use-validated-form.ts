@@ -40,10 +40,11 @@ export function useValidatedForm<TFields extends Record<string, string>>({
   const [fields, setFields] = useState(initial);
   const [errors, setErrors] = useState<FieldErrors<TFields>>({});
   const [status, setStatus] = useState<Status>("idle");
-  // A key, not a sentence: the backend answers in English, so a submit failure
-  // is reported through the catalogue instead of relayed verbatim. The precise
-  // cases are already covered by the inline per-field errors.
-  const [errorKey, setErrorKey] = useState<string | null>(null);
+  // The reason, not the sentence: the backend answers in English, so a submit
+  // failure is reported in the reader's language by the form rather than
+  // relayed verbatim. The precise cases are already covered by the inline
+  // per-field errors.
+  const [failure, setFailure] = useState<"submit" | "network" | null>(null);
 
   const edit = (field: keyof TFields & string) => (value: string) => {
     setFields(prev => ({ ...prev, [field]: value }));
@@ -62,16 +63,16 @@ export function useValidatedForm<TFields extends Record<string, string>>({
     try {
       const { data, error } = await send(result.data);
       if (error || !data) {
-        setErrorKey("form.submitError");
+        setFailure("submit");
         setStatus("error");
         return;
       }
       setStatus("sent");
     } catch {
-      setErrorKey("form.networkError");
+      setFailure("network");
       setStatus("error");
     }
   }
 
-  return { fields, edit, errors, status, errorKey, submit };
+  return { fields, edit, errors, status, failure, submit };
 }

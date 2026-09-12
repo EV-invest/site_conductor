@@ -1,5 +1,5 @@
 import { preload } from "react-dom";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { Text, Tier } from "@/shared/ui/text";
 import { Reveal } from "@/shared/ui/motion";
@@ -8,7 +8,7 @@ import { HeroACanvas } from "./canvas";
 import { HeroACta } from "./cta";
 import { HeroAStats } from "./stats";
 import { HeroHeadline } from "./headline";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 /**
  * Variant A — scroll-zoom metaphor. Server Component.
@@ -39,7 +39,7 @@ const COPY_DELAY = 0.35;
 const CTA_DELAY = 0.55;
 
 function HeroACtaAB({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <Reveal
       onMount
@@ -49,7 +49,7 @@ function HeroACtaAB({ locale }: { locale: Locale }) {
       <HeroACta
         scrollHint={
           <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-            {t("home.hero.scrollHint")}
+            {t("home.hero.scrollHint", "Follow the money")}
           </span>
         }
       />
@@ -58,19 +58,28 @@ function HeroACtaAB({ locale }: { locale: Locale }) {
 }
 
 function HeroCopy({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <HeroACanvas cta={<HeroACtaAB locale={locale} />}>
       <HeroHeadline locale={locale} />
       <Reveal onMount delay={COPY_DELAY}>
         <Tier tier="main">
           <Text className="max-w-2xl mx-auto mb-12">
-            {t("home.hero.copy.line1")}
+            {t(
+              "home.hero.copy.line1",
+              "Invest in Emergent Markets through Vietnam."
+            )}
             <br />
-            {t("home.hero.copy.line2")}
+            {t(
+              "home.hero.copy.line2",
+              "See why and how to invest directly. China+1 narrative ensures consistently increasing FDI inflows."
+            )}
             <br />
-            <strong>{t("home.hero.copy.edgeLabel")}</strong>:{" "}
-            {t("home.hero.copy.edge")}
+            <strong>{t("home.hero.copy.edgeLabel", "Edge")}</strong>:{" "}
+            {t(
+              "home.hero.copy.edge",
+              "our visarun branch lets us keep a pulse on regional trends in foreign purchases."
+            )}
           </Text>
         </Tier>
       </Reveal>

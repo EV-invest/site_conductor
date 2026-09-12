@@ -1,6 +1,6 @@
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import type { StatusCopy } from "@/shared/ui/status-copy";
 
 /**
@@ -9,14 +9,17 @@ import type { StatusCopy } from "@/shared/ui/status-copy";
  * which statically imports every catalogue.
  */
 export function serverErrorCopy(locale: Locale): StatusCopy {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return {
-    eyebrow: t("status.serverError.eyebrow"),
-    headlineLead: t("status.serverError.headlineLead"),
-    headlineAccent: t("status.serverError.headlineAccent"),
-    subtext: t("status.serverError.subtext"),
-    backHome: t("status.backHome"),
-    tryAgain: t("status.tryAgain"),
+    eyebrow: t("status.serverError.eyebrow", "Server error"),
+    headlineLead: t("status.serverError.headlineLead", "Our systems are "),
+    headlineAccent: t("status.serverError.headlineAccent", "recalibrating"),
+    subtext: t(
+      "status.serverError.subtext",
+      "Something broke on our end — not yours. We've been alerted and are restoring service. Please try again in a moment."
+    ),
+    backHome: t("status.backHome", "Back to home"),
+    tryAgain: t("status.tryAgain", "Try again"),
     homeHref: localePath(locale, "/"),
   };
 }

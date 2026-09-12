@@ -1,7 +1,7 @@
-import { Users, Globe } from "lucide-react";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
-import { messagesFor } from "@/shared/config/i18n";
+import { joinCards } from "@/entities/team";
+import { translate } from "@/shared/config/i18n";
 import { PlaceholderCard } from "./cards";
 
 /**
@@ -9,35 +9,23 @@ import { PlaceholderCard } from "./cards";
  * fragment below so the desktop grid can wrap each card in its own stagger item
  * — a fragment would put both cards in one grid cell.
  */
-// Title/body/CTA reuse the `team.join.*` keys the /team page already defines —
-// this is the same offer in a second place, and two copies of one sentence drift.
-const CARDS = [
-  {
-    icon: Users,
-    key: "hiring",
-    href: "/hiring",
-    subKey: "home.team.placeholder.hiring.sub",
-  },
-  {
-    icon: Globe,
-    key: "ir",
-    href: "/contact",
-    subKey: "home.team.placeholder.ir.sub",
-  },
-] as const;
-
-/** Resolved for one locale — the shape {@link PlaceholderCard} takes. */
 export function placeholderCards(locale: Locale) {
-  const t = translator(messagesFor(locale), locale);
-  return CARDS.map(card => ({
+  const t = translate(locale);
+  // The one field the /team section has no counterpart for: the role a reader
+  // would actually be applying into.
+  const sub = {
+    hiring: t("home.team.placeholder.hiring.sub", "Investment Analyst"),
+    ir: t("home.team.placeholder.ir.sub", "Investor Relations (IR)"),
+  };
+  return joinCards(t, href => localePath(locale, href)).map(card => ({
     icon: card.icon,
     iconClassName: "text-accent-debug",
-    title: t(`team.join.${card.key}.title`),
-    body: t(`team.join.${card.key}.body`),
-    cta: t(`team.join.${card.key}.cta`),
-    href: localePath(locale, card.href),
-    heading: t(`team.join.${card.key}.eyebrow`),
-    sub: t(card.subKey),
+    title: card.title,
+    body: card.body,
+    cta: card.cta,
+    href: card.href,
+    heading: card.eyebrow,
+    sub: sub[card.id],
   }));
 }
 

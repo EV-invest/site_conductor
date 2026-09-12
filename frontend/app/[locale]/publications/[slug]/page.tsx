@@ -1,5 +1,5 @@
-import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
-import { messagesFor } from "@/shared/config/i18n";
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -27,8 +27,11 @@ export async function generateMetadata({
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
   const publication = findPublication(slug, resolved);
   if (!publication) {
-    const t = translator(messagesFor(resolved), resolved);
-    return { title: t("meta.publication.notFound"), robots: { index: false } };
+    const t = translate(resolved);
+    return {
+      title: t("meta.publication.notFound", "Publication not found"),
+      robots: { index: false },
+    };
   }
   // og:type=article + the cover as the share image, so a dispatch posted to
   // LinkedIn or X carries its own art and dateline instead of the site card.
