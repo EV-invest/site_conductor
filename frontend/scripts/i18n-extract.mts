@@ -17,29 +17,34 @@ import { pathToFileURL } from "node:url";
 import ts from "typescript";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-// `scripts` is in here for build-shell.mts: the zone header fragment it renders
-// is chrome a reader sees, so its strings belong in the catalogue like any
-// other.
-const SOURCE_DIRS = [
-  "app",
-  "views",
-  "application",
-  "shared",
-  "features",
-  "entities",
-  "scripts",
-];
+// What is NOT source, rather than what is. A list of source directories is a
+// hole that opens the day someone adds a slice: `scripts` was outside it until
+// the zone header's four strings were noticed, and `.mts` with it — both
+// invisible, because an unscanned call site produces no error, just English
+// forever in five locales. This list is the stable half; adding to it is a
+// deliberate act with a reason, and everything else is scanned by default.
+const NOT_SOURCE = new Set([
+  "node_modules",
+  "public", // build output; `assets` and `messages` are its sources
+  "assets",
+  "messages",
+  "tests", // Playwright specs — their strings are assertions, not copy
+  "test-results",
+  "playwright-report",
+  "generated", // shared/api/generated — openapi-ts output, regenerated wholesale
+]);
 const TRANSLATED = ["ru", "vi", "fr", "de"] as const;
 
 export type Entry = { key: string; en: string; where: string };
 
 function* sourceFiles(dir: string): Generator<string> {
   for (const item of readdirSync(join(ROOT, dir), { withFileTypes: true })) {
+    if (item.name.startsWith(".") || NOT_SOURCE.has(item.name)) continue;
     const path = join(dir, item.name);
     if (item.isDirectory()) yield* sourceFiles(path);
-    // `.mts` is in here for build-shell.mts, whose four header strings the site
-    // <Header> happens to duplicate verbatim — so they reached the catalogue by
-    // accident, and editing one copy would have silently desynced the two.
+    // `.mts` too: build-shell.mts renders the zone header fragment, whose four
+    // strings the site <Header> happens to duplicate verbatim — so they reached
+    // the catalogue by accident, and editing one copy would have desynced them.
     else if (/\.m?tsx?$/.test(item.name)) yield path;
   }
 }
@@ -61,42 +66,40 @@ export function collect(): { entries: Entry[]; errors: string[] } {
   const entries: Entry[] = [];
   const errors: string[] = [];
 
-  for (const dir of SOURCE_DIRS) {
-    for (const path of sourceFiles(dir)) {
-      const text = readFileSync(join(ROOT, path), "utf8");
-      const source = ts.createSourceFile(
-        path,
-        text,
-        ts.ScriptTarget.Latest,
-        true,
-        ts.ScriptKind.TSX
-      );
-      const at = (node: ts.Node) => {
-        const { line } = source.getLineAndCharacterOfPosition(node.getStart());
-        return `${path}:${line + 1}`;
-      };
+  for (const path of sourceFiles("")) {
+    const text = readFileSync(join(ROOT, path), "utf8");
+    const source = ts.createSourceFile(
+      path,
+      text,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX
+    );
+    const at = (node: ts.Node) => {
+      const { line } = source.getLineAndCharacterOfPosition(node.getStart());
+      return `${path}:${line + 1}`;
+    };
 
-      const visit = (node: ts.Node) => {
-        if (
-          ts.isCallExpression(node) &&
-          ts.isIdentifier(node.expression) &&
-          node.expression.text === "t"
-        ) {
-          const [keyArg, enArg] = node.arguments;
-          const key = keyArg && literal(keyArg);
-          const en = enArg && literal(enArg);
-          if (key === null || key === undefined)
-            errors.push(`${at(node)}: t() key is not a string literal`);
-          else if (en === null || en === undefined)
-            errors.push(
-              `${at(node)}: t("${key}", …) has no literal English second argument`
-            );
-          else entries.push({ key, en, where: at(node) });
-        }
-        ts.forEachChild(node, visit);
-      };
-      visit(source);
-    }
+    const visit = (node: ts.Node) => {
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === "t"
+      ) {
+        const [keyArg, enArg] = node.arguments;
+        const key = keyArg && literal(keyArg);
+        const en = enArg && literal(enArg);
+        if (key === null || key === undefined)
+          errors.push(`${at(node)}: t() key is not a string literal`);
+        else if (en === null || en === undefined)
+          errors.push(
+            `${at(node)}: t("${key}", …) has no literal English second argument`
+          );
+        else entries.push({ key, en, where: at(node) });
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(source);
   }
 
   const seen = new Map<string, Entry>();
