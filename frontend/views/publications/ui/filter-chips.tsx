@@ -62,8 +62,11 @@ export function FilterChips({
               "inline-flex items-center gap-2 border px-4 py-2.5 font-mono-tech text-[11px] tracking-[0.15em] transition-colors",
               on
                 ? "border-accent-debug bg-accent-debug text-background"
-                : "border-ink/16 text-ink/55 hover:border-ink/40 hover:text-ink",
-              empty && "cursor-not-allowed opacity-35 hover:border-ink/16"
+                : "border-ink/16 text-ink/55",
+              // Withheld rather than overridden: a dead control brightening
+              // under the cursor invites the click it is refusing.
+              !on && !empty && "hover:border-ink/40 hover:text-ink",
+              empty && "cursor-not-allowed opacity-35"
             )}
           >
             <Icon aria-hidden className="size-3.5" />

@@ -543,7 +543,7 @@
           '';
         };
 
-        # ── test suite: frontend typecheck + Playwright visual regression ───
+        # ── test suite: frontend typecheck + static gates + visual regression ──
         # No Rust tests exist yet; add `cargo test --workspace` here when they do.
         runTest = pkgs.writeShellApplication {
           name = "run-test";
@@ -562,6 +562,11 @@
 
             echo "▶ i18n drift (translation policy 1.1/1.2)"
             npm run i18n:check
+
+            # `cn` panics on a conflict only in dev, and only once the offending
+            # combination of branches is rendered. This reaches all of them.
+            echo "▶ tailwind class conflicts (every cn() branch)"
+            npm run css:check
 
             echo "▶ visual regression (playwright)"
             ${portEnv}
