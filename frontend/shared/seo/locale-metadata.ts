@@ -1,7 +1,6 @@
-import { DEFAULT_LOCALE, isLocale, translator } from "@evinvest/i18n";
-import { messagesFor } from "@/shared/config/i18n";
+import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
+import { translate, type T } from "@/shared/config/i18n";
 import { pageMetadata } from "@/shared/seo/page-metadata";
-import type en from "@/messages/en/common.json";
 
 // Every static page under app/[locale] wants the same five steps: resolve the
 // route's locale, build a translator, and hand pageMetadata a title and
@@ -16,17 +15,56 @@ import type en from "@/messages/en/common.json";
 // the shape but not the logic, and folding them in would mean a helper with a
 // switch in it.
 
-/// Namespaces the English catalogue actually defines BOTH halves of. Derived
-/// rather than hand-listed so a typo is a build error instead of a raw
-/// `meta.teem.title` shipped into a <title> — the one failure copy-paste made
-/// easy and nothing here caught.
-export type MetaNamespace = {
-  [K in keyof typeof en]: K extends `meta.${infer N}.title`
-    ? `meta.${N}.description` extends keyof typeof en
-      ? N
-      : never
-    : never;
-}[keyof typeof en];
+/// Title and description for every static page under app/[locale], in one
+/// place. Both halves are stated per namespace, so a page cannot be given a
+/// title with no description — the shape a hand-written `meta.${ns}.title`
+/// lookup could not enforce.
+const META = (t: T) => ({
+  home: {
+    title: t("meta.home.tagline", "Invest in China+1 narrative"),
+    description: t(
+      "meta.home.description",
+      "Through Vietnam, with Quy-Nhon based fund, - we have direct pulse on Real Estate and tourist flows. Follow the money."
+    ),
+  },
+  team: {
+    title: t("meta.team.title", "Team"),
+    description: t(
+      "meta.team.description",
+      "The cross-border investment, risk and development team behind EV Investment — a Quy Nhơn–based fund building institutional access to Vietnam's premium coastal real estate."
+    ),
+  },
+  hiring: {
+    title: t("meta.hiring.title", "Hiring"),
+    description: t(
+      "meta.hiring.description",
+      "Join EV Investment — senior roles across investment, development, and client advisory for premium coastal developments in Quy Nhơn, Vietnam."
+    ),
+  },
+  contact: {
+    title: t("meta.contact.title", "Contact"),
+    description: t(
+      "meta.contact.description",
+      "Get in touch with EV Investment — hiring, investment, and our coastal developments in Quy Nhơn, Vietnam."
+    ),
+  },
+  publications: {
+    title: t("meta.publications.title", "Field Notes & Research"),
+    description: t(
+      "meta.publications.description",
+      "EV Investment publications — field notes filmed in Quy Nhơn and institutional research on Vietnam coastal real estate."
+    ),
+  },
+  whitepaper: {
+    title: t("meta.whitepaper.title", "Whitepaper"),
+    description: t(
+      "meta.whitepaper.description",
+      "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
+    ),
+  },
+});
+
+export type MetaNamespace = keyof ReturnType<typeof META>;
 
 /// The metadata itself, for pages that need to extend the result (e.g.
 /// /publications spreads an RSS `alternates.types` onto it).
@@ -38,13 +76,8 @@ export function metadataFor(locale: string, ns: MetaNamespace, path: string) {
   // Titles and descriptions are what a reader sees in the browser tab and in a
   // shared link — the one place the page's language shows before its body does.
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
-  const t = translator(messagesFor(resolved), resolved);
-  return pageMetadata({
-    title: t(`meta.${ns}.title`),
-    description: t(`meta.${ns}.description`),
-    path,
-    locale,
-  });
+  const { title, description } = META(translate(resolved))[ns];
+  return pageMetadata({ title, description, path, locale });
 }
 
 /// Ready to re-export from a route: `export const generateMetadata =

@@ -30,10 +30,10 @@ import { transformSync } from "esbuild";
 import postcss, { AtRule, type ChildNode } from "postcss";
 import tailwindcss from "@tailwindcss/postcss";
 
-import { LOCALES, localePath, translator, type Locale } from "@evinvest/i18n";
+import { LOCALES, localePath, type Locale } from "@evinvest/i18n";
 import { BrandHeader } from "../application/layout/header";
 import { NAV_ITEMS, localizeNav } from "../application/layout/nav-items";
-import { messagesFor } from "../shared/config/i18n";
+import { translate } from "../shared/config/i18n";
 import registry from "../mfe-registry.json";
 import { spanEnterScript } from "./span-enter";
 
@@ -60,16 +60,16 @@ if (!chip) throw new Error("cabinet.account missing from mfe-registry.json");
 // The CSS, behaviour script and font are locale-independent and stay shared:
 // only the markup differs, and only in link targets and text.
 function fragmentFor(locale: Locale): string {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return renderToStaticMarkup(
     createElement(BrandHeader, {
       nav: localizeNav(NAV_ITEMS, locale, t),
       homeHref: localePath(locale, "/"),
-      homeLabel: t("a11y.homeLink"),
+      homeLabel: t("a11y.homeLink", "EV Investment — home"),
       menuLabels: {
-        open: t("a11y.openMenu"),
-        close: t("a11y.closeMenu"),
-        menu: t("a11y.siteMenu"),
+        open: t("a11y.openMenu", "Open menu"),
+        close: t("a11y.closeMenu", "Close menu"),
+        menu: t("a11y.siteMenu", "Site menu"),
       },
       cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
       mobileCta: createElement(chip.tag, { class: "flex w-full" }),

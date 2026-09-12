@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**
@@ -26,7 +26,8 @@ export function HeroBCta({ className }: { className?: string }) {
           })
         }
       >
-        {t("home.hero.cta.explore")} <ArrowRight className="w-4 h-4 ml-2" />
+        {t("home.hero.cta.explore", "Explore Assets")}{" "}
+        <ArrowRight className="w-4 h-4 ml-2" />
       </Button>
 
       <Button
@@ -35,7 +36,8 @@ export function HeroBCta({ className }: { className?: string }) {
         onClick={() => track("cta_clicked", { cta: "whitepaper" })}
       >
         <Link href="/publications/whitepaper">
-          {t("home.hero.cta.whitepaper")} <FileText className="w-4 h-4 ml-2" />
+          {t("home.hero.cta.whitepaper", "Whitepaper")}{" "}
+          <FileText className="w-4 h-4 ml-2" />
         </Link>
       </Button>
     </div>

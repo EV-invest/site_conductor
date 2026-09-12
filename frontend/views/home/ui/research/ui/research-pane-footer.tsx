@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";
@@ -37,13 +37,16 @@ export function ResearchPaneFooter({
         </div>
         <div className="min-w-0">
           <p className="text-xs font-bold text-white truncate">
-            {t("home.research.department")}
+            {t("home.research.department", "EV Research Department")}
           </p>
           <Text
             variant="secondary"
             className="text-[10px] font-mono-tech truncate hidden sm:block"
           >
-            {t("home.research.leadAuthor")}
+            {t(
+              "home.research.leadAuthor",
+              "Lead Author: Dr. Nguyen An, Chief Economist"
+            )}
           </Text>
         </div>
       </div>
@@ -58,9 +61,9 @@ export function ResearchPaneFooter({
             })
           }
         >
-          <span className="sm:hidden">{t("home.research.read")}</span>
+          <span className="sm:hidden">{t("home.research.read", "Read")}</span>
           <span className="hidden sm:inline">
-            {t("home.research.readFull")}
+            {t("home.research.readFull", "Read Full Report")}
           </span>
           <BookOpen className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
         </Link>
@@ -75,9 +78,11 @@ export function ResearchPaneFooter({
             })
           }
         >
-          <span className="sm:hidden">{t("home.research.download")}</span>
+          <span className="sm:hidden">
+            {t("home.research.download", "Download")}
+          </span>
           <span className="hidden sm:inline">
-            {t("home.research.downloadFull")}
+            {t("home.research.downloadFull", "Download Full Report")}
           </span>
           <ArrowUpRight className="w-3.5 h-3.5 ml-1.5 sm:w-4 sm:h-4 sm:ml-2" />
         </a>

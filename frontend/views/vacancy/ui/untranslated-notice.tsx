@@ -1,7 +1,7 @@
 import { Languages } from "lucide-react";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 /**
  * Says plainly that this role is being served in English.
@@ -31,7 +31,7 @@ import { messagesFor } from "@/shared/config/i18n";
  * the title it qualifies, rather than a system bar bolted to the viewport.
  */
 export function UntranslatedNotice({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <p
       role="note"
@@ -41,7 +41,12 @@ export function UntranslatedNotice({ locale }: { locale: Locale }) {
         aria-hidden
         className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-debug/70"
       />
-      <span>{t("vacancy.untranslated")}</span>
+      <span>
+        {t(
+          "vacancy.untranslated",
+          "Shown in English — this role hasn't been translated into your language yet."
+        )}
+      </span>
     </p>
   );
 }

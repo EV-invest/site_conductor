@@ -1,8 +1,8 @@
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 import { ApplicationForm } from "@/features/job-application";
 import type { VacancyDetail } from "@/entities/vacancy";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 import { DashList } from "./dash-list";
 
@@ -15,7 +15,7 @@ export function VacancyApply({
   vacancy: VacancyDetail;
   locale: Locale;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <section id="apply" className="scroll-mt-24 bg-background pb-24 pt-8">
       <Container>
@@ -23,20 +23,32 @@ export function VacancyApply({
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
-                {t("vacancy.apply.eyebrow")}
+                {t("vacancy.apply.eyebrow", "Apply")}
               </p>
               <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
-                <Accented text={t("vacancy.apply.title")} />
+                <Accented
+                  text={t("vacancy.apply.title", "Send your *application*.")}
+                />
               </h2>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-ink/60">
-                {t("vacancy.apply.intro", { role: vacancy.title })}
+                {t(
+                  "vacancy.apply.intro",
+                  "Tell us where you'd fit on the {role} role. A few lines is enough — we read every note and reply within about two weeks.",
+                  { role: vacancy.title }
+                )}
               </p>
               <div className="mt-6">
                 <DashList
                   items={[
-                    t("vacancy.apply.point1"),
-                    t("vacancy.apply.point2"),
-                    t("vacancy.apply.point3"),
+                    t(
+                      "vacancy.apply.point1",
+                      "No cover-letter theatre — your work speaks."
+                    ),
+                    t("vacancy.apply.point2", "You'll hear back either way."),
+                    t(
+                      "vacancy.apply.point3",
+                      "Questions first? admin@evinvest.ltd"
+                    ),
                   ]}
                 />
               </div>

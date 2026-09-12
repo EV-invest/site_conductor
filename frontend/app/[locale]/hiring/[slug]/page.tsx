@@ -1,5 +1,5 @@
-import { DEFAULT_LOCALE, isLocale, translator, type Locale } from "@evinvest/i18n";
-import { messagesFor } from "@/shared/config/i18n";
+import { DEFAULT_LOCALE, isLocale, type Locale } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -63,11 +63,16 @@ export async function generateMetadata({
   // Explicit noindex, matching /publications/[slug]: the robots backstop keeps
   // a retired role unindexable even if a streaming boundary pins the status at
   // 200 and turns the 404 into a soft-404.
-  const t = translator(messagesFor(resolved), resolved);
+  const t = translate(resolved);
   if (!vacancy)
-    return { title: t("meta.vacancy.notFound"), robots: { index: false } };
+    return {
+      title: t("meta.vacancy.notFound", "Role not found"),
+      robots: { index: false },
+    };
   return pageMetadata({
-    title: t("meta.vacancy.title", { title: vacancy.title }),
+    title: t("meta.vacancy.title", "{title} — Hiring", {
+      title: vacancy.title,
+    }),
     description: vacancy.summary,
     path: `/hiring/${vacancy.slug}`,
     locale,

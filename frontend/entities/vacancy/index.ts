@@ -12,6 +12,8 @@ export {
   getVacancy,
 } from "@/shared/api";
 
+import type { T } from "@/shared/config/i18n";
+
 /// Data-cache options for ISR'd vacancy fetches (hiring board, role pages,
 /// sitemap). `cache: "force-cache"` alone caches the response *indefinitely* —
 /// a segment-level `export const revalidate` does not reach an explicit
@@ -30,38 +32,35 @@ export const vacancyCacheOptions = {
 /// Filter facets for the board, mirroring the backend `VacancyCategory`. The
 /// "All" pseudo-facet is UI-only (no category filter sent).
 ///
-/// `labelKey` is a catalogue key, not a label: these five facets are chrome the
-/// app owns, so they translate here. The vacancies themselves are translated by
-/// the *backend* — pass `query: { locale }` and the role arrives already resolved,
-/// with a `translated` flag saying whether it is the translation or the English
-/// (see docs/i18n-persisted-content.md). `category` deliberately stays a stable
-/// key on the wire and is translated here, where the chips are.
-export const VACANCY_CATEGORIES = [
-  { key: "all", labelKey: "hiring.category.all" },
-  { key: "investment", labelKey: "hiring.category.investment" },
-  { key: "development", labelKey: "hiring.category.development" },
-  { key: "advisory", labelKey: "hiring.category.advisory" },
-  { key: "operations", labelKey: "hiring.category.operations" },
-] as const;
+/// These five facets are chrome the app owns, so they translate here. The
+/// vacancies themselves are translated by the *backend* — pass
+/// `query: { locale }` and the role arrives already resolved, with a
+/// `translated` flag saying whether it is the translation or the English (see
+/// docs/i18n-persisted-content.md). `category` deliberately stays a stable key
+/// on the wire and is translated here, where the chips are.
+export const vacancyCategories = (t: T) =>
+  [
+    { key: "all", label: t("hiring.category.all", "All") },
+    { key: "investment", label: t("hiring.category.investment", "Investment") },
+    {
+      key: "development",
+      label: t("hiring.category.development", "Development"),
+    },
+    { key: "advisory", label: t("hiring.category.advisory", "Advisory") },
+    { key: "operations", label: t("hiring.category.operations", "Operations") },
+  ] as const;
 
-export type VacancyCategoryKey = (typeof VACANCY_CATEGORIES)[number]["key"];
+export type VacancyCategoryKey = ReturnType<
+  typeof vacancyCategories
+>[number]["key"];
 
 /// Richer team labels for the board's category pill (vs. the short filter-chip
-/// label). Returns the *rendered* label, so the caller passes its translator in;
-/// an unrecognised category falls back to the backend's own label, which is the
-/// one string here that cannot be translated ahead of time.
-const TEAM_LABEL_KEYS: Record<string, string> = {
-  investment: "hiring.team.investment",
-  development: "hiring.team.development",
-  advisory: "hiring.team.advisory",
-  operations: "hiring.team.operations",
-};
-
-export function vacancyTeamLabel(
-  category: string,
-  fallback: string,
-  t: (key: string) => string
-): string {
-  const key = TEAM_LABEL_KEYS[category];
-  return key ? t(key) : fallback;
-}
+/// label). The caller indexes this by `category` and falls back to the
+/// backend's own label, which is the one string here that cannot be translated
+/// ahead of time.
+export const teamLabels = (t: T): Record<string, string> => ({
+  investment: t("hiring.team.investment", "Investment & Research"),
+  development: t("hiring.team.development", "Development & Projects"),
+  advisory: t("hiring.team.advisory", "Client Advisory"),
+  operations: t("hiring.team.operations", "Operations"),
+});

@@ -1,10 +1,10 @@
-import { DEFAULT_LOCALE, translator, type Locale } from "@evinvest/i18n";
+import { DEFAULT_LOCALE, type Locale } from "@evinvest/i18n";
 
 import { ldAbs, ldCompact, ldId, ORG_ID } from "@/shared/seo/json-ld";
 import type { JsonLdNode } from "@/shared/seo/json-ld";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
-import { TEAM } from "./model";
+import { team } from "./model";
 
 // Person nodes, shared by the homepage graph and /team.
 //
@@ -28,22 +28,23 @@ export const personId = (name: string) => ldId(`#person-${slug(name)}`);
 /// derived from the (untranslated) name, so every locale's graph describes the
 /// same entities rather than minting a new person per language.
 export function teamPersonNodes(locale: Locale = DEFAULT_LOCALE): JsonLdNode[] {
-  const t = translator(messagesFor(locale), locale);
-  return TEAM.filter(member => !/\btodo\b/i.test(member.name)).map(member =>
-    ldCompact({
-      "@type": "Person",
-      "@id": personId(member.name),
-      name: member.name,
-      jobTitle: t(member.roleKey),
-      description: t(member.bioKey),
-      image: ldAbs(member.photo),
-      worksFor: { "@id": ORG_ID },
-      // The team page is where each person is described in full, so it is the
-      // canonical page for the entity even though the homepage also lists them.
-      // A plain URL, not a {"@id"} reference: these nodes also render on the
-      // homepage, where no /team WebPage node exists for a reference to resolve
-      // against. mainEntityOfPage accepts a URL, so this is valid on both.
-      mainEntityOfPage: ldAbs("/team"),
-    })
-  );
+  return team(translate(locale))
+    .filter(member => !/\btodo\b/i.test(member.name))
+    .map(member =>
+      ldCompact({
+        "@type": "Person",
+        "@id": personId(member.name),
+        name: member.name,
+        jobTitle: member.role,
+        description: member.bio,
+        image: ldAbs(member.photo),
+        worksFor: { "@id": ORG_ID },
+        // The team page is where each person is described in full, so it is the
+        // canonical page for the entity even though the homepage also lists them.
+        // A plain URL, not a {"@id"} reference: these nodes also render on the
+        // homepage, where no /team WebPage node exists for a reference to resolve
+        // against. mainEntityOfPage accepts a URL, so this is valid on both.
+        mainEntityOfPage: ldAbs("/team"),
+      })
+    );
 }

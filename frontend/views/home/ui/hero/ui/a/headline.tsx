@@ -1,9 +1,9 @@
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { getVariant } from "@/features/ab-variant/get-variant";
 import { ExperimentTracker, match } from "@/features/ab-variant";
 import { SplitText } from "@/shared/ui/motion";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { accented } from "@/shared/ui/accented";
 
 const H1 =
@@ -34,22 +34,34 @@ const TONES = [
 ];
 
 function HeadlineB({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <h1 className={H1}>
       <SplitText>
-        {accented({ text: t("home.hero.headline.b"), classNames: TONES })}
+        {accented({
+          text: t(
+            "home.hero.headline.b",
+            "Invest in *Vietnam*\nThrough Institutional Vision."
+          ),
+          classNames: TONES,
+        })}
       </SplitText>
     </h1>
   );
 }
 
 function HeadlineA({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <h1 className={H1}>
       <SplitText>
-        {accented({ text: t("home.hero.headline.a"), classNames: TONES })}
+        {accented({
+          text: t(
+            "home.hero.headline.a",
+            "Invest in *China+1*\nThrough *Vietnam*"
+          ),
+          classNames: TONES,
+        })}
       </SplitText>
     </h1>
   );

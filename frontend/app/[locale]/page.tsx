@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import {
-  DEFAULT_LOCALE,
-  isLocale,
-  localePath,
-  translator,
-} from "@evinvest/i18n";
+import { DEFAULT_LOCALE, isLocale, localePath } from "@evinvest/i18n";
 import { metadata as baseMetadata } from "@/application/metadata";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { SITE } from "@/shared/config/site";
 import { alternateLocales, hreflangAlternates } from "@/shared/seo/hreflang";
 import { ogLocaleFields } from "@/shared/seo/page-metadata";
@@ -46,9 +41,12 @@ export async function generateMetadata({
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
   const url = localePath(resolved, "/");
   const languages = hreflangAlternates("/");
-  const t = translator(messagesFor(resolved), resolved);
-  const tagline = t("meta.home.tagline");
-  const description = t("meta.home.description");
+  const t = translate(resolved);
+  const tagline = t("meta.home.tagline", "Invest in China+1 narrative");
+  const description = t(
+    "meta.home.description",
+    "Through Vietnam, with Quy-Nhon based fund, - we have direct pulse on Real Estate and tourist flows. Follow the money."
+  );
   const title = `${SITE.name}: ${tagline}`;
   return {
     title: { absolute: title },

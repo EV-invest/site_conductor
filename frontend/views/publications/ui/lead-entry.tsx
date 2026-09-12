@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
@@ -9,7 +9,7 @@ import {
 } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
 import { MediaPlate } from "@/shared/ui/media-plate";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 import { ctaFor, href, kindLabel } from "../model/presentation";
 import { EntryCard } from "./entry-card";
@@ -31,7 +31,7 @@ export function LeadEntry({
   id?: string;
   locale: Locale;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   const cover = toPlateCover(publication);
   if (!cover) {
     return (
@@ -54,14 +54,14 @@ export function LeadEntry({
           cover={cover}
           size="wide"
           caption={publication.cover?.caption}
-          plateLabel={t("publications.plate", { n: "01" })}
+          plateLabel={t("publications.plate", "Plate {n}", { n: "01" })}
         />
       </div>
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
           <span className="flex items-center gap-2.5 text-accent-debug">
             <span aria-hidden className="size-[7px] bg-accent-debug" />
-            {t("publications.latestDispatch")}
+            {t("publications.latestDispatch", "LATEST DISPATCH")}
           </span>
           <span className="text-ink/40">
             {formatPublicationDate(publication.date, "long", locale)}

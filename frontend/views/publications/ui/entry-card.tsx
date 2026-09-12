@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
@@ -10,7 +10,7 @@ import {
 import { cn } from "@/shared/lib/utils";
 import { DocumentCard } from "@/shared/ui/document-card";
 import { MediaPlate } from "@/shared/ui/media-plate";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 import { ctaFor, href, kindLabel, pdfHref } from "../model/presentation";
 
@@ -33,7 +33,7 @@ export function EntryCard({
   id?: string;
   locale: Locale;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   const cover = toPlateCover(publication);
   const date = formatPublicationDate(publication.date, "short", locale);
 

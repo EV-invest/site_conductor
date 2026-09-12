@@ -18,8 +18,8 @@
 import type { ElementType, ReactNode } from "react";
 import Link from "next/link";
 import { HeaderActions } from "@/shared/ui/header-actions";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
-import { messagesFor } from "@/shared/config/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { HeaderBar } from "./header-bar";
 import { HeaderMobileMenu } from "./header-mobile-menu";
 import {
@@ -97,16 +97,16 @@ export function Header({
 }) {
   // Server-side translation: this is a Server Component, so it reads the
   // catalogue directly rather than going through the client-side provider.
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <BrandHeader
       nav={localizeNav(NAV_ITEMS, locale, t)}
       homeHref={localePath(locale, "/")}
-      homeLabel={t("a11y.homeLink")}
+      homeLabel={t("a11y.homeLink", "EV Investment — home")}
       menuLabels={{
-        open: t("a11y.openMenu"),
-        close: t("a11y.closeMenu"),
-        menu: t("a11y.siteMenu"),
+        open: t("a11y.openMenu", "Open menu"),
+        close: t("a11y.closeMenu", "Close menu"),
+        menu: t("a11y.siteMenu", "Site menu"),
       }}
       linkComponent={Link}
       cta={

@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { useLocale, useT } from "@evinvest/i18n/react";
-import { VACANCY_CATEGORIES, type VacancySummary } from "@/entities/vacancy";
+import { useLocale, useT } from "@/shared/lib/t";
+import { vacancyCategories, type VacancySummary } from "@/entities/vacancy";
 import { Accented } from "@/shared/ui/accented";
 import { RoleRow } from "./role-row";
 
@@ -31,10 +31,10 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
     <section id="open-roles" className="scroll-mt-24 bg-background py-20">
       <Container>
         <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
-          {t("hiring.board.eyebrow")}
+          {t("hiring.board.eyebrow", "Open roles")}
         </p>
         <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
-          <Accented text={t("hiring.board.title")} />
+          <Accented text={t("hiring.board.title", "Where we're *hiring*.")} />
         </h2>
 
         <div className="mt-8 flex items-center gap-4">
@@ -43,20 +43,27 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder={t("hiring.board.search")}
-              aria-label={t("hiring.board.searchLabel")}
+              placeholder={t(
+                "hiring.board.search",
+                "Search roles, teams, or locations…"
+              )}
+              aria-label={t("hiring.board.searchLabel", "Search roles")}
               // text-base on phones: under 16px iOS zooms the viewport on
               // focus (see shared/ui/control.ts). sm: keeps the 14px design.
               className="w-full rounded-lg border border-white/10 bg-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-ink placeholder:text-ink/30 focus:border-accent-debug/40 focus:outline-none"
             />
           </div>
           <span className="hidden whitespace-nowrap font-mono-tech text-[11px] uppercase tracking-[0.2em] text-accent-debug sm:block">
-            {t("hiring.board.count", { count: filtered.length })}
+            {t(
+              "hiring.board.count",
+              "{count, plural, one {# role} other {# roles}}",
+              { count: filtered.length }
+            )}
           </span>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2.5">
-          {VACANCY_CATEGORIES.map(c => (
+          {vacancyCategories(t).map(c => (
             <button
               key={c.key}
               type="button"
@@ -67,7 +74,9 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
                   : "rounded-full border border-white/[0.12] px-4 py-1.5 text-xs text-ink/70 transition-colors hover:border-white/25"
               }
             >
-              {c.key === "all" ? t("hiring.board.allRoles") : t(c.labelKey)}
+              {c.key === "all"
+                ? t("hiring.board.allRoles", "All roles")
+                : c.label}
             </button>
           ))}
         </div>
@@ -78,7 +87,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
           ))}
           {filtered.length === 0 && (
             <p className="py-16 text-center text-sm text-ink/40">
-              {t("hiring.board.empty")}{" "}
+              {t("hiring.board.empty", "No roles match your search.")}{" "}
               <button
                 type="button"
                 onClick={() => {
@@ -87,7 +96,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
                 }}
                 className="text-accent-debug underline-offset-2 hover:underline"
               >
-                {t("hiring.board.clear")}
+                {t("hiring.board.clear", "Clear filters")}
               </button>
               .
             </p>

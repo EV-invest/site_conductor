@@ -4,7 +4,8 @@ import { MobileCarousel } from "@/shared/ui/carousel";
 import { Reveal, Stagger, StaggerItem } from "@/shared/ui/motion";
 import { getVariant } from "@/features/ab-variant/get-variant";
 import { ExperimentTracker } from "@/features/ab-variant";
-import { TEAM, MemberCard, LeadershipIntro } from "@/entities/team";
+import { team, MemberCard, LeadershipIntro } from "@/entities/team";
+import { translate } from "@/shared/config/i18n";
 import { PlaceholderCard } from "./shared/cards";
 import { placeholderCards, TeamPlaceholders } from "./shared/placeholders";
 
@@ -20,13 +21,9 @@ import { placeholderCards, TeamPlaceholders } from "./shared/placeholders";
 export async function Team({ locale }: { locale: Locale }) {
   const shadeVariant = await getVariant("team_bio_shade");
   const shade = shadeVariant === "b" ? "shadow" : "gradient";
-  const cards = TEAM.map(member => (
-    <MemberCard
-      key={member.name}
-      member={member}
-      locale={locale}
-      shade={shade}
-    />
+  const members = team(translate(locale));
+  const cards = members.map(member => (
+    <MemberCard key={member.name} member={member} shade={shade} />
   ));
 
   return (
@@ -42,9 +39,9 @@ export async function Team({ locale }: { locale: Locale }) {
         <ExperimentTracker experiment="team_bio_shade" variant={shadeVariant}>
           {/* Desktop: members and opportunities share one 4-up grid. */}
           <Stagger className="hidden gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4">
-            {TEAM.map(member => (
+            {members.map(member => (
               <StaggerItem key={member.name}>
-                <MemberCard member={member} locale={locale} shade={shade} />
+                <MemberCard member={member} shade={shade} />
               </StaggerItem>
             ))}
             {placeholderCards(locale).map(card => (

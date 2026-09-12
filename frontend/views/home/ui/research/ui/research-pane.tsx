@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 
 import { ResearchPaneFooter } from "./research-pane-footer";
 import type { ResearchReport } from "./research-report";
@@ -34,7 +34,7 @@ export function ResearchPane({
       transition={{ layout: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }}
       role="link"
       tabIndex={0}
-      aria-label={t("home.research.readAria", {
+      aria-label={t("home.research.readAria", "Read full report: {title}", {
         title: report.paneTitle,
       })}
       onClick={goToReport}

@@ -1,27 +1,54 @@
 import { FileSearch, FileSignature, MessageSquare, Users } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { ApplicationForm } from "@/features/job-application";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate, type T } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 // The medallion says what the step IS; the ordinal in the title line says where
 // it sits. A candidate checks "third of four" by eye, and the <ol> conveys that
 // to a screen reader only — hence a visible number, marked aria-hidden so the
 // list semantics are not read out twice.
-const STEPS: { icon: LucideIcon; key: string }[] = [
-  { icon: MessageSquare, key: "intro" },
-  { icon: FileSearch, key: "deep" },
-  { icon: Users, key: "meet" },
-  { icon: FileSignature, key: "offer" },
+const steps = (t: T) => [
+  {
+    icon: MessageSquare,
+    title: t("hiring.process.intro.title", "Intro call"),
+    body: t(
+      "hiring.process.intro.body",
+      "A 30-minute conversation about you and us — no scripts."
+    ),
+  },
+  {
+    icon: FileSearch,
+    title: t("hiring.process.deep.title", "Deep dive"),
+    body: t(
+      "hiring.process.deep.body",
+      "A real problem from our actual pipeline — no whiteboard puzzles."
+    ),
+  },
+  {
+    icon: Users,
+    title: t("hiring.process.meet.title", "Meet the team"),
+    body: t(
+      "hiring.process.meet.body",
+      "Time with the people you'd work beside, in Quy Nhơn or remote."
+    ),
+  },
+  {
+    icon: FileSignature,
+    title: t("hiring.process.offer.title", "Offer"),
+    body: t(
+      "hiring.process.offer.body",
+      "Fast, clear, and senior — usually within two weeks."
+    ),
+  },
 ];
 
 /** Merged "process + apply" panel: the gold-number hiring timeline beside the
  *  general (vacancy-agnostic) application form. */
 export function HiringProcess({ locale }: { locale: Locale }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <section id="apply" className="scroll-mt-24 bg-background pb-24 pt-4">
       <Container>
@@ -29,14 +56,16 @@ export function HiringProcess({ locale }: { locale: Locale }) {
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
-                {t("hiring.process.eyebrow")}
+                {t("hiring.process.eyebrow", "How we hire")}
               </p>
               <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
-                <Accented text={t("hiring.process.title")} />
+                <Accented
+                  text={t("hiring.process.title", "A short, *honest* process.")}
+                />
               </h2>
               <ol className="relative mt-9 space-y-6 before:absolute before:bottom-4 before:left-[17px] before:top-4 before:w-px before:bg-accent-warn/20">
-                {STEPS.map(({ icon: Icon, key }, index) => (
-                  <li key={key} className="relative flex gap-4">
+                {steps(t).map(({ icon: Icon, title, body }, index) => (
+                  <li key={title} className="relative flex gap-4">
                     <span className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent-warn/40 bg-background text-accent-warn">
                       <Icon aria-hidden className="size-4" />
                     </span>
@@ -48,10 +77,10 @@ export function HiringProcess({ locale }: { locale: Locale }) {
                         >
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        {t(`hiring.process.${key}.title`)}
+                        {title}
                       </h3>
                       <p className="mt-1 text-sm leading-relaxed text-ink/55">
-                        {t(`hiring.process.${key}.body`)}
+                        {body}
                       </p>
                     </div>
                   </li>

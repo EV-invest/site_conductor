@@ -1,8 +1,6 @@
 import Image from "next/image";
-import { translator, type Locale } from "@evinvest/i18n";
 import { Text, Tier } from "@/shared/ui/text";
 import { FrameCard } from "@/shared/ui/frame-card";
-import { messagesFor } from "@/shared/config/i18n";
 import type { TeamMember } from "../model";
 
 /**
@@ -13,21 +11,18 @@ import type { TeamMember } from "../model";
  */
 export function MemberCard({
   member,
-  locale,
   shade = "shadow",
 }: {
   member: TeamMember;
-  locale: Locale;
   shade?: "gradient" | "shadow";
 }) {
-  const t = translator(messagesFor(locale), locale);
   return (
     <FrameCard
       heading={member.name}
       headingClassName="text-white"
       sub={
         <p className="mt-1 font-mono-tech text-base sm:text-xs text-accent-debug">
-          {t(member.roleKey)}
+          {member.role}
         </p>
       }
     >
@@ -41,13 +36,13 @@ export function MemberCard({
       {shade === "gradient" ? (
         <div className="absolute inset-0 flex items-end bg-gradient-to-t from-background/85 via-transparent to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <Tier tier="alt">
-            <Text>{t(member.bioKey)}</Text>
+            <Text>{member.bio}</Text>
           </Tier>
         </div>
       ) : (
         <div className="absolute inset-0 z-10 flex transform-gpu items-end p-6 opacity-0 transition-opacity duration-300 [text-shadow:0_0_12px_#000,0_0_12px_#000,0_0_24px_#000,0_0_24px_#000,0_0_24px_#000,0_0_48px_#000,0_0_48px_#000,0_0_84px_rgb(0_0_0/0.8)] group-hover:opacity-100">
           <Tier tier="main">
-            <Text>{t(member.bioKey)}</Text>
+            <Text>{member.bio}</Text>
           </Tier>
         </div>
       )}

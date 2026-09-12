@@ -1,4 +1,10 @@
-import { LOCALES, type Locale, type Messages } from "@evinvest/i18n";
+import {
+  formatMessage,
+  LOCALES,
+  type Locale,
+  type MessageValues,
+  type Messages,
+} from "@evinvest/i18n";
 import {
   resolveCatalogue,
   type TranslatedCatalogue,
@@ -32,6 +38,19 @@ const RESOLVED = Object.fromEntries(
 
 export const messagesFor = (locale: Locale): Messages =>
   locale === "en" ? en : (RESOLVED[locale]?.messages ?? en);
+
+// English is authored at the call site and the catalogue is generated back out
+// of it by `npm run i18n:extract`, so `en` here is the source, not a fallback:
+// a key absent from a translated catalogue renders the sentence the component
+// asked for rather than the raw key. `messages` is null for `en` because there
+// is nothing left to look up.
+export type T = (key: string, en: string, values?: MessageValues) => string;
+
+export const translate = (locale: Locale): T => {
+  const messages = locale === "en" ? null : messagesFor(locale);
+  return (key, en, values) =>
+    formatMessage(messages?.[key] ?? en, locale, values);
+};
 
 /** Per-locale policy outcome — read by `npm run i18n:check`. */
 export const catalogueReport = () => Object.values(RESOLVED);

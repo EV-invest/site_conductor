@@ -1,9 +1,9 @@
 import { Container } from "@evinvest/uikit";
 import { ArrowDown } from "lucide-react";
-import { translator, type Locale } from "@evinvest/i18n";
+import type { Locale } from "@evinvest/i18n";
 
 import { cn } from "@/shared/lib/utils";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 function Stat({
@@ -34,43 +34,52 @@ export function HiringHero({
   roleCount: number;
   teamCount: number;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
   return (
     <section className="relative overflow-hidden bg-background pt-40 pb-16">
       <Container>
         <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
-          {t("hiring.hero.eyebrow")}
+          {t("hiring.hero.eyebrow", "Hiring · Join the fund")}
         </p>
         <h1 className="max-w-3xl font-serif-display text-4xl font-light leading-tight text-white sm:text-6xl">
-          <Accented text={t("hiring.hero.title")} />
+          <Accented
+            text={t(
+              "hiring.hero.title",
+              "Build coastal Vietnam's *next decade* with us."
+            )}
+          />
         </h1>
         <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink/60 sm:text-base">
-          {t("hiring.hero.intro")}
+          {t(
+            "hiring.hero.intro",
+            "EV Investment develops premium coastal assets in Quy Nhơn — and we're hiring senior people across investment, development, and client advisory. Find your role below."
+          )}
         </p>
         {/* In-page anchor — no locale prefix needed, it never leaves the page. */}
         <a
           href="#open-roles"
           className="mt-8 inline-flex items-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
         >
-          {t("hiring.hero.cta")} <ArrowDown className="h-4 w-4" />
+          {t("hiring.hero.cta", "View open roles")}{" "}
+          <ArrowDown className="h-4 w-4" />
         </a>
 
         <div className="mt-14 flex items-center gap-10 border-t border-white/[0.06] pt-7">
           <Stat
             value={String(roleCount)}
-            label={t("hiring.hero.stat.roles")}
+            label={t("hiring.hero.stat.roles", "Open roles")}
             className="text-accent-warn"
           />
           <span className="h-8 w-px bg-white/10" />
           <Stat
             value={String(teamCount)}
-            label={t("hiring.hero.stat.teams")}
+            label={t("hiring.hero.stat.teams", "Teams hiring")}
             className="text-accent-debug"
           />
           <span className="h-8 w-px bg-white/10" />
           <Stat
             value="2"
-            label={t("hiring.hero.stat.offices")}
+            label={t("hiring.hero.stat.offices", "Office locations")}
             className="text-white"
           />
         </div>

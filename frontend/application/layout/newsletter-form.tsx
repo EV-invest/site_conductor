@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { useT } from "@evinvest/i18n/react";
+import { useT } from "@/shared/lib/t";
 import {
   subscribeToNewsletter,
   type SubscribeError,
@@ -20,12 +20,21 @@ export function NewsletterForm() {
   const [error, setError] = useState<SubscribeError | "invalidEmail" | null>(
     null
   );
-  const errorKey = {
-    invalidEmail: "footer.newsletter.invalidEmail",
-    duplicate: "footer.newsletter.duplicate",
-    server: "footer.newsletter.error",
-    network: "footer.newsletter.networkError",
-  } as const;
+  const sentence = {
+    invalidEmail: t(
+      "footer.newsletter.invalidEmail",
+      "Enter a valid email address."
+    ),
+    duplicate: t("footer.newsletter.duplicate", "You're already on the list."),
+    server: t(
+      "footer.newsletter.error",
+      "Something went wrong — please try again."
+    ),
+    network: t(
+      "footer.newsletter.networkError",
+      "Network error — please try again."
+    ),
+  };
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -49,7 +58,7 @@ export function NewsletterForm() {
     return (
       <div className="flex items-center gap-2 border border-accent-debug/40 px-4 py-3">
         <p className="text-xs text-accent-debug font-mono-tech uppercase">
-          {t("footer.newsletter.success")}
+          {t("footer.newsletter.success", "You're on the list — welcome.")}
         </p>
       </div>
     );
@@ -60,7 +69,10 @@ export function NewsletterForm() {
       <div className="flex border border-ink/20">
         <input
           type="email"
-          placeholder={t("footer.newsletter.placeholder")}
+          placeholder={t(
+            "footer.newsletter.placeholder",
+            "Institutional Email"
+          )}
           value={email}
           onChange={e => {
             setEmail(e.target.value);
@@ -79,12 +91,12 @@ export function NewsletterForm() {
           disabled={status === "sending"}
           className="bg-accent-debug text-background px-4 font-mono-tech text-xs uppercase font-bold hover:bg-ink transition-colors disabled:opacity-60"
         >
-          {status === "sending" ? "…" : t("footer.newsletter.join")}
+          {status === "sending" ? "…" : t("footer.newsletter.join", "Join")}
         </button>
       </div>
       {status === "error" && error && (
         <p role="alert" className="mt-2 text-xs text-red-400">
-          {t(errorKey[error])}
+          {sentence[error]}
         </p>
       )}
     </form>

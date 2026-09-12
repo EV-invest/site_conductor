@@ -1,30 +1,28 @@
-import type { Translate } from "@evinvest/i18n";
-
 import type { Publication, PublicationKind } from "@/entities/publication";
+import type { T } from "@/shared/config/i18n";
 
-const KIND_KEY: Record<PublicationKind, string> = {
-  "field-note": "publications.kind.fieldNote",
-  research: "publications.kind.research",
-  whitepaper: "publications.kind.whitepaper",
-};
-
-export function kindLabel(kind: PublicationKind, t: Translate): string {
-  return t(KIND_KEY[kind]);
+export function kindLabel(kind: PublicationKind, t: T): string {
+  const label: Record<PublicationKind, string> = {
+    "field-note": t("publications.kind.fieldNote", "FIELD NOTE"),
+    research: t("publications.kind.research", "RESEARCH"),
+    whitepaper: t("publications.kind.whitepaper", "WHITEPAPER"),
+  };
+  return label[kind];
 }
 
 /// The verb states the format. A dispatch you watch and a report you read are
 /// different things, and the label should not pretend otherwise.
-export function ctaFor(publication: Publication, t: Translate): string {
+export function ctaFor(publication: Publication, t: T): string {
   switch (publication.cover?.type) {
     case "video":
     case "youtube":
-      return t("publications.cta.watchNote");
+      return t("publications.cta.watchNote", "WATCH THE NOTE");
     case "image":
-      return t("publications.cta.readNote");
+      return t("publications.cta.readNote", "READ THE NOTE");
     case undefined:
       return publication.kind === "whitepaper"
-        ? t("publications.cta.readWhitepaper")
-        : t("publications.cta.readReport");
+        ? t("publications.cta.readWhitepaper", "READ THE WHITEPAPER")
+        : t("publications.cta.readReport", "READ THE REPORT");
   }
 }
 

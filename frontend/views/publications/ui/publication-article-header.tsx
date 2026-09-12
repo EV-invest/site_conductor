@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { localePath, translator, type Locale } from "@evinvest/i18n";
+import { localePath, type Locale } from "@evinvest/i18n";
 
 import {
   formatPublicationDate,
   type Publication,
 } from "@/entities/publication";
-import { messagesFor } from "@/shared/config/i18n";
+import { translate } from "@/shared/config/i18n";
 
 import { kindLabel } from "../model/presentation";
 
@@ -21,7 +21,7 @@ export function PublicationArticleHeader({
   publication: Publication;
   locale: Locale;
 }) {
-  const t = translator(messagesFor(locale), locale);
+  const t = translate(locale);
 
   return (
     <header className="mx-auto max-w-3xl">
@@ -29,7 +29,7 @@ export function PublicationArticleHeader({
         href={localePath(locale, "/publications")}
         className="font-mono-tech text-[11px] tracking-[0.15em] text-ink/45 transition-colors hover:text-ink"
       >
-        ← {t("publications.allPublications")}
+        ← {t("publications.allPublications", "All publications")}
       </Link>
       <div className="mt-8 flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
         <span className="flex items-center gap-2.5 text-accent-debug">
