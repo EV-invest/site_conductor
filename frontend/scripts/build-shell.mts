@@ -208,10 +208,23 @@ async function buildCss(
     if (!at.params.startsWith("ev-toast")) hoisted.push(at.clone());
     at.remove();
   });
-  // The zone provides :root tokens / font-faces via its own tokens.css; ours
-  // must not restate them document-wide.
+  // The zone provides font-faces via its own tokens.css; ours must not restate
+  // them document-wide. The token *values*, though, travel with the fragment:
+  // uikit's `:root` block is re-targeted at `:scope` (the header itself, once
+  // wrapped below), so it inherits into the header subtree and nowhere else.
+  // Previously the block was stripped on the assumption that every zone loads
+  // the same tokens.css — but a zone loads whatever uikit it pinned, and the
+  // cabinet on 0.9 has no `--ink`: `border-color: color-mix(… var(--ink) …)`
+  // with an undefined var is invalid at computed-value time, which falls back
+  // to `currentColor`, and the bar's 1px bottom rule rendered solid white.
+  // `--ev-shell-offset` is the one token left out: its standalone `0px` default
+  // must never shadow the `:root` override this sheet sets at its tail.
   root.walkRules(rule => {
-    if (/:root|:host|toaster/.test(rule.selector)) rule.remove();
+    if (/:host|toaster/.test(rule.selector)) rule.remove();
+    else if (/:root/.test(rule.selector)) {
+      rule.selector = ":scope";
+      rule.walkDecls("--ev-shell-offset", decl => decl.remove());
+    }
   });
   root.walkAtRules("font-face", at => {
     at.remove();
