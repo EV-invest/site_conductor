@@ -12,7 +12,7 @@ export {
   getVacancy,
 } from "@/shared/api";
 
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
 /// Data-cache options for ISR'd vacancy fetches (hiring board, role pages,
 /// sitemap). `cache: "force-cache"` alone caches the response *indefinitely* —
@@ -38,7 +38,7 @@ export const vacancyCacheOptions = {
 /// `translated` flag saying whether it is the translation or the English (see
 /// docs/i18n-persisted-content.md). `category` deliberately stays a stable key
 /// on the wire and is translated here, where the chips are.
-export const vacancyCategories = (t: T) =>
+export const vacancyCategories = (t: Translate) =>
   [
     { key: "all", label: t("hiring.category.all", "All") },
     { key: "investment", label: t("hiring.category.investment", "Investment") },
@@ -58,7 +58,7 @@ export type VacancyCategoryKey = ReturnType<
 /// label). The caller indexes this by `category` and falls back to the
 /// backend's own label, which is the one string here that cannot be translated
 /// ahead of time.
-export const teamLabels = (t: T): Record<string, string> => ({
+export const teamLabels = (t: Translate): Record<string, string> => ({
   investment: t("hiring.team.investment", "Investment & Research"),
   development: t("hiring.team.development", "Development & Projects"),
   advisory: t("hiring.team.advisory", "Client Advisory"),

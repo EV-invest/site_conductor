@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import {
   subscribeToNewsletter,
   type SubscribeError,

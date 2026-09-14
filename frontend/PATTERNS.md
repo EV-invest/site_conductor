@@ -232,14 +232,29 @@ Notes that bite:
   becomes user-/dynamically-sourced, gate it (origin allowlist / DOMPurify).
 - Degrade gracefully: a `RemoteDocument` whose source can't be loaded renders its
   `fallback` (a PDF link), so a missing doc build never breaks the page.
+- **An element remote resolves its own locale from the DOM it is mounted into**
+  (`closest("[lang]")` — `localeOfElement` in `@evinvest/i18n`,
+  `ev_lib::mfe::host_locale` in Rust), **never from a prop or an attribute.**
+  `RemoteElement` `appendChild`s the node, which upgrades it and runs
+  `connectedCallback` synchronously, so a remote reads its configuration *before*
+  React's attribute-sync effect has run. `lang` is already correct on every host
+  that serves more than one language, and it is readable the instant the node is
+  attached. (Attributes are now applied before `appendChild` too, but that fixes
+  the race for values the remote reads *later* — it does not make an attribute a
+  sound channel for something needed at boot.)
 
 ### Component-MFE snapshot contract
 
 Every `kind:"component"` microfrontend MUST emit a self-contained static HTML
-snapshot of its root component from its own `nix build`, named `<name>.html` beside
-the embed bundle (e.g. `real-estate.overview` → `portfolio.html`). The snapshot is
-rendered **natively** (e.g. `dioxus_ssr`) from the **same** presentation components
-the live bundle mounts — never hand-authored — so it can't drift. Self-contained:
+snapshot of its root component from its own `nix build`, **one per locale**, named
+`<name>.<locale>.html` beside the embed bundle (e.g. `real-estate.overview` →
+`portfolio.{en,ru,vi,fr,de}.html`), each carrying its own `<html lang>`. Per-locale
+because of the sentence two paragraphs down: the snapshot shows **permanently** if
+the remote never upgrades, so one `lang="en"` file served under `/ru` is not a flash
+of English — it is English forever, for every reader with JS off or a 404'd bundle.
+The snapshot is rendered **natively** (e.g. `dioxus_ssr`) from the **same**
+presentation components the live bundle mounts — never hand-authored — so it can't
+drift, in copy any more than in markup. Self-contained:
 the producer's compiled MFE stylesheet is inlined + a minimal reset + dark
 `color-scheme` (the conductor is dark-only; snapshots use system-font fallback, as
 the MFE stylesheet ships no fonts and the shadow boundary blocks host inheritance).
@@ -247,8 +262,8 @@ Any value the snapshot can't resolve at build time (live-fetched data) renders t
 **standard missing-data placeholder `—`** (`"ERR"` is reserved for detected data
 faults — a value that *should* exist but is absent).
 
-The host wires it as the element's fallback:
-`<RemoteElement fallback={<ShadowDocument src="/mfe/<name>.html" />}>`. `RemoteElement`
+The host wires it as the element's fallback, picking the file by page locale:
+`<RemoteElement fallback={<ShadowDocument src={`/mfe/<name>.${locale}.html`} />}>`. `RemoteElement`
 renders `{ready ? null : fallback}`, so the snapshot shows until the remote upgrades
 and **permanently** if it never does; `ShadowDocument` adopts the full document
 (head + body) into a shadow root (full style containment — the inlined MFE css

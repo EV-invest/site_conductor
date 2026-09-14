@@ -1,7 +1,7 @@
 "use client";
 
 /** Default id — `SearchField` points `aria-describedby` here. */
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 export const RESULT_COUNT_ID = "publication-search-count";
 

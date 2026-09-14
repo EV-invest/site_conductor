@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
 // Limits mirror the backend contract (backend/openapi.json, issue #125);
 // change them together or the form and the API drift apart.
@@ -21,7 +21,7 @@ export const charLength = (value: string) => [...value].length;
 // key at render, see the `fe` helper in each. Keys and copy are stated together
 // there, and both forms index the same record, so an unlisted key is a hole a
 // reader would see.
-export const validationCopy = (t: T): Record<string, string> => ({
+export const validationCopy = (t: Translate): Record<string, string> => ({
   "validation.name.min": t(
     "validation.name.min",
     "Name must be at least 2 characters."

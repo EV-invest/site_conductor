@@ -3,14 +3,15 @@ import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 
 import { ContactForm } from "@/features/contact-message";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 import { ContactStructuredData } from "./contact-structured-data";
 
 // The city name translates too ("Хошимин"), so it is a message rather than a
 // literal interpolated into one.
-const offices = (t: T) => [
+const offices = (t: Translate) => [
   {
     city: t("contact.office.hq.city", "Quy Nhơn"),
     line: t("contact.office.hq.line", "Coastal HQ · Bình Định, Vietnam"),

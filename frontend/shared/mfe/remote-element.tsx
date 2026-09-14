@@ -31,6 +31,15 @@ export interface RemoteElementProps {
 const NO_ATTRS: Record<string, string | number | boolean | object> = {};
 const NO_EVENTS: Record<string, (detail: unknown) => void> = {};
 
+function applyAttributes(
+  element: HTMLElement,
+  attrs: Record<string, string | number | boolean | object>,
+) {
+  for (const [name, value] of Object.entries(attrs)) {
+    element.setAttribute(name, typeof value === "object" ? JSON.stringify(value) : String(value));
+  }
+}
+
 export function RemoteElement({
   tag,
   scriptUrl,
@@ -68,6 +77,14 @@ export function RemoteElement({
       element.addEventListener(name, listener);
       return [name, listener];
     });
+    // Attributes BEFORE appendChild. `appendChild` upgrades the element and runs
+    // `connectedCallback` synchronously, which is where a remote reads its
+    // configuration — so anything set by the sync effect below would land after
+    // the remote had already booted without it. (The locale does not come this
+    // way for exactly that reason; it is read off the host DOM's `lang`. This is
+    // still a live race for every other attribute.)
+    applyAttributes(element, attributesRef.current);
+    appliedAttrs.current = Object.keys(attributesRef.current);
     host.appendChild(element);
 
     return () => {
@@ -78,16 +95,16 @@ export function RemoteElement({
     };
   }, [ready, tag]);
 
-  // Sync attributes onto the live element (set current, drop removed) — keyed on
-  // serialized values, so a new object with the same data is a no-op.
+  // Keep attributes in sync with later prop changes (set current, drop removed) —
+  // keyed on serialized values, so a new object with the same data is a no-op.
+  // The mount effect above already applied the first set, before the element was
+  // ever connected.
   const attrKey = JSON.stringify(attributes);
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
     const attrs = attributesRef.current;
-    for (const [name, value] of Object.entries(attrs)) {
-      element.setAttribute(name, typeof value === "object" ? JSON.stringify(value) : String(value));
-    }
+    applyAttributes(element, attrs);
     for (const name of appliedAttrs.current) {
       if (!(name in attrs)) element.removeAttribute(name);
     }

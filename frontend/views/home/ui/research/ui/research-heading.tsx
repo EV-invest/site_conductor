@@ -1,6 +1,6 @@
 "use client";
 
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 import { Text, Tier } from "@/shared/ui/text";
 import { Reveal, SplitText } from "@/shared/ui/motion";

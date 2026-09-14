@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import { type VacancySummary, teamLabels } from "@/entities/vacancy";
 
 export function RoleRow({

@@ -1,7 +1,8 @@
 import { StatusScreen } from "@evinvest/uikit";
 import { localePath, type Locale } from "@evinvest/i18n";
 
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 
 /**
  * The 404 / 403 / 401 surfaces, in the reader's language.
@@ -37,7 +38,7 @@ const CODE = {
 
 // The trailing space on each `headlineLead` is load-bearing: StatusScreen
 // concatenates lead and accent into one line.
-const COPY = (t: T): Record<StatusKind, Record<string, string>> => ({
+const COPY = (t: Translate): Record<StatusKind, Record<string, string>> => ({
   notFound: {
     eyebrow: t("status.notFound.eyebrow", "Page not found"),
     headlineLead: t("status.notFound.headlineLead", "You've reached "),

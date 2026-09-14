@@ -2,10 +2,11 @@ import { LineChart, ShieldCheck, Anchor } from "lucide-react";
 import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { SectionHead } from "./section-head";
 
-const principles = (t: T) => [
+const principles = (t: Translate) => [
   {
     icon: LineChart,
     title: t("team.philosophy.macro.title", "Macro-first research"),

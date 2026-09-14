@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 import { cn } from "@/shared/lib/utils";
 

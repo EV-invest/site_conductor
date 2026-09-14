@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 export function ShareButton() {
   const t = useT();

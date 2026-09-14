@@ -1,7 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import Script from "next/script";
 import type { Locale } from "@evinvest/i18n";
-import { I18nProvider } from "@/shared/lib/t";
+import { I18nProvider } from "@evinvest/i18n/react";
 import { messagesFor } from "@/shared/config/i18n";
 import { fontInter, fontPlayfair } from "@/application/styles/fonts";
 import { Providers } from "@/application/providers";

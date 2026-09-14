@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useT } from "@/shared/lib/t";
-import type { T } from "@/shared/config/i18n";
+import { useT } from "@evinvest/i18n/react";
+import type { Translate } from "@evinvest/i18n";
 import { Kbd } from "./kbd";
 
 const TITLE_ID = "publication-search-shortcuts-title";
 
 // The key caps are literal keyboard legends, not prose — they do not translate.
-const bindings = (t: T) => [
+const bindings = (t: Translate) => [
   {
     keys: ["S", "/"],
     description: t("publications.shortcut.focus", "Focus the search field"),

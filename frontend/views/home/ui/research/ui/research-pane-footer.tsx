@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 import { Text } from "@/shared/ui/text";
 import { Logo } from "@/shared/ui/logo";

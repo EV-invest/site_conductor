@@ -1,6 +1,6 @@
 "use client";
 
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import { LIMITS, validationCopy } from "@/shared/lib/validation";
 import { SentPanel } from "@/shared/ui/sent-panel";
 import { TextField } from "@/shared/ui/text-field";

@@ -215,9 +215,11 @@
             # dragged the whole ~500 MB toolchain closure into the image. Rewrite is
             # equal-length and the strings are browser-console diagnostics only.
             ${pkgs.nukeReferences}/bin/nuke-refs public/mfe/*.wasm
-            # § component-MFE snapshot contract: REA must emit the drift-proof fallback.
+            # § component-MFE snapshot contract: REA must emit the drift-proof fallback,
+            # one file per locale — the snapshot shows permanently if the bundle never
+            # upgrades, so a single English file would be English forever on /ru.
             # `loadDocHtml` enforces it at prerender too; this is the clearer failure.
-            test -f public/mfe/portfolio.html
+            for locale in en ru vi fr de; do test -f "public/mfe/portfolio.$locale.html"; done
             wp=${whitepaper.packages.${system}.default}
             cp -f --no-preserve=mode "$wp/whitepaper.pdf" "$wp/whitepaper.light.html" "$wp/whitepaper.dark.html" public/
             for dir in ${blog.packages.${system}.default}/*/; do

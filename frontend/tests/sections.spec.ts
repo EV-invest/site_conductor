@@ -155,3 +155,39 @@ for (const { name, selector } of SECTIONS) {
     }
   });
 }
+
+// Issue 39's regression gate. The portfolio section is the one place on the
+// landing where the copy belongs to another repo, so it was English under every
+// locale's chrome — and English *twice over*, by two independent mechanisms that
+// both have to be checked:
+//
+//   snapshot path — JS off, or the bundle 404s. `portfolio.ru.html`, chosen by
+//                   the host at build. Shows permanently, so this is not a flash.
+//   wasm path     — the live bundle, which resolves the locale itself off the
+//                   page's `lang` (ev_lib::mfe::host_locale). Nothing is passed
+//                   to it; a prop or an attribute would arrive too late.
+//
+// Text, not a screenshot: the point is the language, and a per-locale baseline
+// would have to be re-captured on every copy edit in REA.
+const RU_PORTFOLIO = "Почему Куинён?";
+
+for (const path of ["snapshot", "wasm"] as const) {
+  test(`- portfolio reads Russian on /ru (${path})`, async ({ page }) => {
+    if (path === "snapshot") {
+      await page.route(
+        /real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/,
+        r => r.abort()
+      );
+    }
+    await page.goto("/ru");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ru");
+
+    const section = page.locator("#portfolio").first();
+    await section.scrollIntoViewIfNeeded();
+    // `getByText` pierces open shadow roots, so this reads the snapshot's copy
+    // through ShadowDocument's root as readily as the live element's light DOM.
+    await expect(section.getByText(RU_PORTFOLIO).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  });
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import { Kbd, KbdCaption } from "./kbd";
 import { RESULT_COUNT_ID } from "./result-count";
 
