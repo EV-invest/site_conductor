@@ -74,8 +74,9 @@ Frontend runs pull docs and the REA bundle from checkouts next to
 `site_conductor/` — `_estate/whitepaper/`, `blog/`, `_estate/real_estate_allocation/`,
 all optional. A missing checkout just warns: docs degrade to a PDF link, the
 portfolio section falls back to the in-repo render. For a live REA remote
-instead of the baked bundle: `cd ./docs/_estate/real_estate_allocation && nix run .#dev`
-(→ :59079, verify with `nix run .#healthcheck` there).
+instead of the baked bundle: run `nix run .#dev` in the
+`_estate/real_estate_allocation` checkout (→ :59079, verify with
+`nix run .#healthcheck` there).
 
 ### Microfrontends — no iframes
 
