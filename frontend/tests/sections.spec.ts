@@ -155,3 +155,48 @@ for (const { name, selector } of SECTIONS) {
     }
   });
 }
+
+// Issue 39's regression gate. The portfolio section is the one place on the
+// landing where the copy belongs to another repo, so it was English under every
+// locale's chrome — and English *twice over*, by two independent mechanisms that
+// both have to be checked:
+//
+//   snapshot path — JS off, or the bundle 404s. `portfolio.ru.html`, chosen by
+//                   the host at build. Shows permanently, so this is not a flash.
+//   wasm path     — the live bundle, which resolves the locale itself off the
+//                   page's `lang` (ev_lib::mfe::host_locale). Nothing is passed
+//                   to it; a prop or an attribute would arrive too late.
+//
+// Text, not a screenshot: the point is the language, and a per-locale baseline
+// would have to be re-captured on every copy edit in REA.
+const RU_PORTFOLIO = "Почему Куинён?";
+
+for (const path of ["snapshot", "wasm"] as const) {
+  test(`- portfolio reads Russian on /ru (${path})`, async ({ page }) => {
+    if (path === "snapshot") {
+      await page.route(
+        /real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/,
+        r => r.abort()
+      );
+    }
+    await page.goto("/ru");
+    // `evaluate`, not `locator("html")`: on the snapshot path that selector
+    // pierces the shadow root and matches two documents — the page's and the
+    // snapshot's. Which is the proof the right file was picked, asserted below.
+    expect(await page.evaluate(() => document.documentElement.lang)).toBe("ru");
+
+    const section = page.locator("#portfolio").first();
+    await section.scrollIntoViewIfNeeded();
+    if (path === "snapshot") {
+      // The host chose `portfolio.ru.html`, so the adopted document carries its
+      // own `lang="ru"`. A regression to a single snapshot shows up here as `en`
+      // rather than as copy that merely looks wrong.
+      await expect(section.locator("html")).toHaveAttribute("lang", "ru");
+    }
+    // `getByText` pierces open shadow roots, so this reads the snapshot's copy
+    // through ShadowDocument's root as readily as the live element's light DOM.
+    await expect(section.getByText(RU_PORTFOLIO).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  });
+}

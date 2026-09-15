@@ -4,7 +4,8 @@ import type { Locale } from "@evinvest/i18n";
 import { Text } from "@/shared/ui/text";
 import { Stagger, StaggerItem } from "@/shared/ui/motion";
 import { cn } from "@/shared/lib/utils";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 
 /** One key metric. The value's accent colour is the only thing that varies. */
 function Stat({
@@ -41,7 +42,7 @@ function Stat({
 // worse than no figure. Restore it here once the number is live.
 // Labels translate; the figures do not. "Rentals" is a word and translates;
 // "Quy Nhon" is a place and does not.
-const stats = (t: T) => [
+const stats = (t: Translate) => [
   {
     label: t("home.hero.stat.targetIrr", "Target IRR"),
     value: "16.4% +",

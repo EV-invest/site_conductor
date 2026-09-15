@@ -3,11 +3,12 @@ import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 
 import { OFFICES } from "@/shared/config/site";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { SectionHead } from "./section-head";
 
 /// Keyed by `OFFICES[].id`.
-const officeNames = (t: T): Record<string, string> => ({
+const officeNames = (t: Translate): Record<string, string> => ({
   quynhon: t("team.offices.quynhon", "Quy Nhon Head Office"),
   hcmc: t("team.offices.hcmc", "Ho Chi Minh Representative"),
 });

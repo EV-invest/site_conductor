@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { Container } from "@evinvest/uikit";
-import { useLocale, useT } from "@/shared/lib/t";
+import { useLocale, useT } from "@evinvest/i18n/react";
 import { vacancyCategories, type VacancySummary } from "@/entities/vacancy";
 import { Accented } from "@/shared/ui/accented";
 import { RoleRow } from "./role-row";

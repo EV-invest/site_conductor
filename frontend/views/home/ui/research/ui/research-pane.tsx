@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { localePath, type Locale } from "@evinvest/i18n";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 import { ResearchPaneFooter } from "./research-pane-footer";
 import type { ResearchReport } from "./research-report";

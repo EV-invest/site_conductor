@@ -3,14 +3,15 @@ import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 
 import { ApplicationForm } from "@/features/job-application";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
 // The medallion says what the step IS; the ordinal in the title line says where
 // it sits. A candidate checks "third of four" by eye, and the <ol> conveys that
 // to a screen reader only — hence a visible number, marked aria-hidden so the
 // list semantics are not read out twice.
-const steps = (t: T) => [
+const steps = (t: Translate) => [
   {
     icon: MessageSquare,
     title: t("hiring.process.intro.title", "Intro call"),

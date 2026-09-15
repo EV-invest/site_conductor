@@ -1,7 +1,7 @@
 import type { Publication, PublicationKind } from "@/entities/publication";
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
-export function kindLabel(kind: PublicationKind, t: T): string {
+export function kindLabel(kind: PublicationKind, t: Translate): string {
   const label: Record<PublicationKind, string> = {
     "field-note": t("publications.kind.fieldNote", "FIELD NOTE"),
     research: t("publications.kind.research", "RESEARCH"),
@@ -12,7 +12,7 @@ export function kindLabel(kind: PublicationKind, t: T): string {
 
 /// The verb states the format. A dispatch you watch and a report you read are
 /// different things, and the label should not pretend otherwise.
-export function ctaFor(publication: Publication, t: T): string {
+export function ctaFor(publication: Publication, t: Translate): string {
   switch (publication.cover?.type) {
     case "video":
     case "youtube":

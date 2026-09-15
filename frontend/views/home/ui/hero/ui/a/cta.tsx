@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**

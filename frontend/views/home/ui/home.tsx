@@ -22,7 +22,7 @@ export function HomeView({ locale }: { locale: Locale }) {
       <HomeStructuredData locale={locale} />
       <Hero locale={locale} />
       <FieldNotes locale={locale} />
-      <Portfolio />
+      <Portfolio locale={locale} />
       <Research locale={locale} />
       <Team locale={locale} />
     </div>

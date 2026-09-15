@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
 // Every static page under app/[locale] wants the same five steps: resolve the
@@ -19,7 +20,7 @@ import { pageMetadata } from "@/shared/seo/page-metadata";
 /// place. Both halves are stated per namespace, so a page cannot be given a
 /// title with no description — the shape a hand-written `meta.${ns}.title`
 /// lookup could not enforce.
-const META = (t: T) => ({
+const META = (t: Translate) => ({
   home: {
     title: t("meta.home.tagline", "Invest in China+1 narrative"),
     description: t(

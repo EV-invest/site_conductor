@@ -1,5 +1,5 @@
 import { toPlateCover, type Publication } from "@/entities/publication";
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 import type { MediaPlateCover } from "@/shared/ui/media-plate";
 
 export type NoteView = {
@@ -14,7 +14,7 @@ export type NoteView = {
 /// belongs on /publications as a document card, not inside a section built
 /// entirely around footage — so it is dropped here rather than rendered as a
 /// placeholder.
-export function toNoteViews(publications: Publication[], t: T): NoteView[] {
+export function toNoteViews(publications: Publication[], t: Translate): NoteView[] {
   return publications.flatMap((publication, index) => {
     const cover = toPlateCover(publication);
     if (!cover) return [];

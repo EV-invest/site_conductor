@@ -1,13 +1,13 @@
 import { localePath, type Locale } from "@evinvest/i18n";
 
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
 // One entry's label, deferred until a translator exists. A plain string would
 // force the catalogue key back out of the call site, which is what the inline
 // English exists to avoid; a `(t) => t(key, english)` thunk keeps both halves
 // here beside the href they belong to.
 export interface NavEntry {
-  label: (t: T) => string;
+  label: (t: Translate) => string;
   href: string;
 }
 
@@ -30,7 +30,7 @@ export const NAV_ITEMS: readonly NavEntry[] = [
 // homepage sections + research surfaces. Crawlable internal links from every
 // page, so each destination is one hop from anywhere on the site.
 export const FOOTER_NAV: readonly {
-  heading: (t: T) => string;
+  heading: (t: Translate) => string;
   links: readonly NavEntry[];
 }[] = [
   {
@@ -68,7 +68,7 @@ export const FOOTER_NAV: readonly {
 export function localizeNav(
   items: readonly NavEntry[],
   locale: Locale,
-  t: T
+  t: Translate
 ): { label: string; href: string }[] {
   return items.map(item => ({
     label: item.label(t),

@@ -4,15 +4,15 @@ import { FileText, LayoutGrid, LineChart, MapPin } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PublicationKind } from "@/entities/publication";
 import { cn } from "@/shared/lib/utils";
-import { useT } from "@/shared/lib/t";
-import type { T } from "@/shared/config/i18n";
+import { useT } from "@evinvest/i18n/react";
+import type { Translate } from "@evinvest/i18n";
 
 export type KindFilter = PublicationKind | "all";
 
 // The icon restates the kind the label already names, so it is decorative and
 // stays out of the accessible name.
 const chips = (
-  t: T
+  t: Translate
 ): { value: KindFilter; label: string; icon: LucideIcon }[] => [
   {
     value: "all",

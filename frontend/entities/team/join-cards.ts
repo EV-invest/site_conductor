@@ -1,12 +1,12 @@
 import { Users, Globe } from "lucide-react";
 
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
 // The same offer in two places — the /team "Get involved" section and the two
 // CTA cells that fill out the homepage Team grid. One copy here rather than the
 // sentence written twice, since the sentence is long enough that two copies
 // would be edited apart. Each surface adds its own chrome around these fields.
-export const joinCards = (t: T, localise: (href: string) => string) => [
+export const joinCards = (t: Translate, localise: (href: string) => string) => [
   {
     id: "hiring" as const,
     icon: Users,

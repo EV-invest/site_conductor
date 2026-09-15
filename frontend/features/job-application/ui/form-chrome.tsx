@@ -1,7 +1,7 @@
 "use client";
 
 import { Send } from "lucide-react";
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 
 /** Letterhead heading above the application fields. */
 export function FormHeader({ roleTitle }: { roleTitle?: string }) {

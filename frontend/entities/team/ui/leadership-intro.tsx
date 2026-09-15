@@ -5,7 +5,8 @@ import { SplitText } from "@/shared/ui/motion";
 import { getVariant } from "@/features/ab-variant/get-variant";
 import { ExperimentTracker, match } from "@/features/ab-variant";
 import { ASSETS } from "@/shared/config/assets";
-import { translate, type T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
+import { translate } from "@/shared/config/i18n";
 import { accented } from "@/shared/ui/accented";
 
 /**
@@ -19,7 +20,7 @@ import { accented } from "@/shared/ui/accented";
  * count makes the two blocks share one set of column edges, which is the whole
  * job of a text band between two grids.
  */
-const pillars = (t: T) => [
+const pillars = (t: Translate) => [
   {
     title: t("team.leadership.pillar.investment.title", "Investment"),
     body: t(

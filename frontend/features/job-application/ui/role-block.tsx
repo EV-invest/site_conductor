@@ -1,6 +1,6 @@
 "use client";
 
-import { useT } from "@/shared/lib/t";
+import { useT } from "@evinvest/i18n/react";
 import { LIMITS } from "@/shared/lib/validation";
 import { TextField } from "@/shared/ui/text-field";
 

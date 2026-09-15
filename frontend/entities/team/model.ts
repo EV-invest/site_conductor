@@ -1,6 +1,6 @@
 import { ASSETS } from "@/shared/config/assets";
 
-import type { T } from "@/shared/config/i18n";
+import type { Translate } from "@evinvest/i18n";
 
 // Role and bio arrive resolved rather than as keys: this row is rendered by the
 // homepage Team section, the /team grid and the Person JSON-LD, and each of
@@ -13,7 +13,7 @@ export type TeamMember = {
   bio: string;
 };
 
-export const team = (t: T): TeamMember[] => [
+export const team = (t: Translate): TeamMember[] => [
   {
     photo: ASSETS.team_member_1,
     name: "Elisey Zhikharev",
