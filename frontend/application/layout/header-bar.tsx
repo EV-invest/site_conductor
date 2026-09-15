@@ -7,8 +7,7 @@
 // backdrop-filtered root would become the containing block for the drawer and
 // scrim's `fixed` boxes and clamp them to the bar.
 import type { ElementType, ReactNode } from "react";
-import { Container } from "@evinvest/uikit";
-import { Logo } from "@/shared/ui/logo";
+import { Container, Logo } from "@evinvest/uikit";
 import type { HeaderMenuLabels, HeaderNavItem } from "./header-shared";
 
 interface HeaderBarProps {

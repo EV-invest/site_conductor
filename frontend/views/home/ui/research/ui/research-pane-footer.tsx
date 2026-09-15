@@ -5,9 +5,9 @@ import { motion } from "motion/react";
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import { localePath, type Locale } from "@evinvest/i18n";
 import { useT } from "@evinvest/i18n/react";
+import { Logo } from "@evinvest/uikit";
 
 import { Text } from "@/shared/ui/text";
-import { Logo } from "@/shared/ui/logo";
 import { useAnalytics } from "@/features/analytics";
 
 import type { ResearchReport } from "./research-report";

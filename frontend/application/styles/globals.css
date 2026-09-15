@@ -21,6 +21,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  /* The brand mark uikit's `Logo` masks. The kit ships no artwork, so these two
+     are the whole contract: the lockup itself (staged into public/assets from the
+     ev_assets input by flake.nix, never hand-edited) and its 387×335 canvas — a
+     CSS-masked <span> has no intrinsic size the way an inline <svg viewBox> does,
+     so the ratio has to be stated for `w-auto` to resolve. */
+  --brand-mark: url("/assets/logo.svg");
+  --brand-aspect: 387 / 335;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

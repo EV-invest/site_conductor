@@ -188,6 +188,18 @@ async function buildCss(
   font-family: var(--font-inter, "Inter"), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
+
+/* The lockup. uikit ships no artwork — Logo masks whatever --brand-mark names —
+   and the token is the consumer's, so it is not in the tokens.css this sheet
+   inherits from. Declared here for the same reason that block travels with the
+   fragment: a zone that declared none of its own would paint the header's mark
+   as a solid block. :root is re-targeted to :scope by the sweep below, so this
+   reaches the header subtree and nowhere else. The path is origin-absolute, and
+   every zone is mounted on the conductor's origin. */
+:root {
+  --brand-mark: url("/assets/logo.svg");
+  --brand-aspect: 387 / 335;
+}
 `;
   const inputPath = path.join(scratch, "input.css");
   writeFileSync(inputPath, input);
