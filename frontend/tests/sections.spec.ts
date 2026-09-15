@@ -180,10 +180,19 @@ for (const path of ["snapshot", "wasm"] as const) {
       );
     }
     await page.goto("/ru");
-    await expect(page.locator("html")).toHaveAttribute("lang", "ru");
+    // `evaluate`, not `locator("html")`: on the snapshot path that selector
+    // pierces the shadow root and matches two documents — the page's and the
+    // snapshot's. Which is the proof the right file was picked, asserted below.
+    expect(await page.evaluate(() => document.documentElement.lang)).toBe("ru");
 
     const section = page.locator("#portfolio").first();
     await section.scrollIntoViewIfNeeded();
+    if (path === "snapshot") {
+      // The host chose `portfolio.ru.html`, so the adopted document carries its
+      // own `lang="ru"`. A regression to a single snapshot shows up here as `en`
+      // rather than as copy that merely looks wrong.
+      await expect(section.locator("html")).toHaveAttribute("lang", "ru");
+    }
     // `getByText` pierces open shadow roots, so this reads the snapshot's copy
     // through ShadowDocument's root as readily as the live element's light DOM.
     await expect(section.getByText(RU_PORTFOLIO).first()).toBeVisible({
