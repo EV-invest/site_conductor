@@ -9,7 +9,7 @@ import { experiments } from "../shared/config/experiments";
 // nav hash, e.g. <baseURL>/#team — those use an id selector. The
 // page chrome (header/footer) has no anchor, so it's keyed by tag.
 //
-// portfolio is embedded from ../real_estate_allocation. The live wasm bundle IS
+// portfolio is embedded from ../_estate/real_estate_allocation. The live wasm bundle IS
 // served in the test env, so to get a deterministic baseline we block it (below)
 // and screenshot the ShadowDocument snapshot fallback instead — which is ours
 // (host-side mount) and the regression guard for the styled-snapshot fix. The

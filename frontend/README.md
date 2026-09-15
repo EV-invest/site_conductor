@@ -26,11 +26,11 @@ slice's `index.ts`, never deep paths. Conventions live in [`PATTERNS.md`](./PATT
 ```sh
 nix run .#frontend           # port from flake.nix `ports`
 ```
-This first runs `populate-docs`: it builds the **local sibling clones**
-`../whitepaper` and `../blog` (token-free — those repos are private but their
+This first runs `populate-docs`: it builds the **local clones**
+`../_estate/whitepaper` and `../blog` (token-free — those repos are private but their
 flake inputs are public) and copies their HTML/PDF into `public/`. Missing a
 clone or a failed build only warns — the dev server still boots and the doc pages
-degrade to a PDF link. Refresh a doc with `git -C ../whitepaper pull` (or `../blog`).
+degrade to a PDF link. Refresh a doc with `git -C ../_estate/whitepaper pull` (or `../blog`).
 
 Or inside the dev shell (`.envrc` + direnv), which runs `populate-docs` on entry:
 ```sh
