@@ -50,7 +50,7 @@ export function TeamPhilosophy({ locale }: { locale: Locale }) {
               key={title}
               className="space-y-4 rounded-xl border border-ink/10 bg-card p-8"
             >
-              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
+              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-primary-ink">
                 <Icon className="size-5" />
               </div>
               <h3 className="font-serif-display text-lg font-bold text-white">

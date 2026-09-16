@@ -30,7 +30,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
   return (
     <section id="open-roles" className="scroll-mt-24 bg-background py-20">
       <Container>
-        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
+        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-primary-ink">
           {t("hiring.board.eyebrow", "Open roles")}
         </p>
         <h2 className="font-serif-display text-3xl text-white sm:text-4xl">
@@ -50,10 +50,10 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
               aria-label={t("hiring.board.searchLabel", "Search roles")}
               // text-base on phones: under 16px iOS zooms the viewport on
               // focus (see shared/ui/control.ts). sm: keeps the 14px design.
-              className="w-full rounded-lg border border-white/10 bg-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-ink placeholder:text-ink/30 focus:border-accent-debug/40 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-ink placeholder:text-ink/30 focus:border-primary-ink/40 focus:outline-none"
             />
           </div>
-          <span className="hidden whitespace-nowrap font-mono-tech text-[11px] uppercase tracking-[0.2em] text-accent-debug sm:block">
+          <span className="hidden whitespace-nowrap font-mono-tech text-[11px] uppercase tracking-[0.2em] text-primary-ink sm:block">
             {t(
               "hiring.board.count",
               "{count, plural, one {# role} other {# roles}}",
@@ -70,7 +70,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
               onClick={() => setCategory(c.key)}
               className={
                 category === c.key
-                  ? "rounded-full bg-accent-debug px-4 py-1.5 text-xs font-medium text-background"
+                  ? "rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-on-primary"
                   : "rounded-full border border-white/[0.12] px-4 py-1.5 text-xs text-ink/70 transition-colors hover:border-white/25"
               }
             >
@@ -94,7 +94,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
                   setQuery("");
                   setCategory("all");
                 }}
-                className="text-accent-debug underline-offset-2 hover:underline"
+                className="text-primary-ink underline-offset-2 hover:underline"
               >
                 {t("hiring.board.clear", "Clear filters")}
               </button>

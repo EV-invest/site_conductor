@@ -71,7 +71,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
     <div className="space-y-10">
       <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-12">
         <div className="space-y-5 lg:col-span-7">
-          <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-accent-debug">
+          <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-primary-ink">
             {t("team.leadership.eyebrow", "Leadership")}
           </span>
           <h2 className="font-serif-display text-3xl font-light leading-[1.15] text-white sm:text-4xl">
@@ -124,7 +124,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
             <dt>
               <span
                 aria-hidden="true"
-                className="block font-mono-tech text-[10px] tracking-[0.25em] text-accent-debug/70"
+                className="block font-mono-tech text-[10px] tracking-[0.25em] text-primary-ink/70"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>

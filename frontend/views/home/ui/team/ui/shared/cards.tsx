@@ -58,7 +58,7 @@ export function PlaceholderCard({
           <Button
             asChild
             variant="outline"
-            className="border-ink/15 text-ink/80 hover:border-accent-debug hover:text-accent-debug text-xs py-1 h-auto bg-transparent"
+            className="border-ink/15 text-ink/80 hover:border-primary-ink hover:text-primary-ink text-xs py-1 h-auto bg-transparent"
           >
             <Link href={href}>{cta}</Link>
           </Button>

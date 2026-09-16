@@ -44,11 +44,11 @@ export function ResearchPane({
           goToReport();
         }
       }}
-      className="research-panel lg:col-span-2 border border-ink/10 border-t-0 lg:border-t shadow-2xl shadow-background/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-debug/60"
+      className="research-panel lg:col-span-2 border border-ink/10 border-t-0 lg:border-t shadow-2xl shadow-background/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-ink/60"
     >
       <div>
         <div className="border-b border-ink/10 pb-6 mb-8">
-          <span className="text-xs font-mono-tech text-accent-debug uppercase tracking-widest hidden lg:block mb-1">
+          <span className="text-xs font-mono-tech text-primary-ink uppercase tracking-widest hidden lg:block mb-1">
             {report.cat}
           </span>
           <h3 className="text-2xl sm:text-3xl font-serif-display text-white font-bold">

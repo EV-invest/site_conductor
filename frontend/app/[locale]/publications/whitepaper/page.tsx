@@ -86,7 +86,7 @@ export default async function Page({
               "whitepaper.loading",
               "Loading the whitepaper… if it doesn't appear,"
             )}{" "}
-            <a href="/whitepaper.pdf" className="text-accent-debug underline">
+            <a href="/whitepaper.pdf" className="text-primary-ink underline">
               {t("publications.downloadPdf", "download the PDF")}
             </a>
             .

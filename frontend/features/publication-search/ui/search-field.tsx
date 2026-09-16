@@ -40,7 +40,7 @@ export function SearchField({
     <div className="flex items-center gap-3 border border-ink/18 bg-background/60 px-4 py-3">
       <span
         aria-hidden="true"
-        className="text-base leading-none text-accent-debug"
+        className="text-base leading-none text-primary-ink"
       >
         ⌕
       </span>

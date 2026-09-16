@@ -27,7 +27,7 @@ function Pill({
 }) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-card/40 px-3.5 py-1.5">
-      <Icon aria-hidden className="size-3.5 text-accent-debug/80" />
+      <Icon aria-hidden className="size-3.5 text-primary-ink/80" />
       <span className="font-mono-tech text-[9px] uppercase tracking-[0.16em] text-ink/45">
         {label}
       </span>
@@ -56,7 +56,7 @@ export function VacancyHero({
           {t("vacancy.back", "All open roles")}
         </Link>
         {!vacancy.translated && <UntranslatedNotice locale={locale} />}
-        <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-accent-debug">
+        <p className="mt-7 font-mono-tech text-[11px] uppercase tracking-[0.3em] text-primary-ink">
           {team} · {vacancy.employment_type}
         </p>
         <h1 className="mt-3 font-serif-display text-4xl text-white sm:text-5xl">
@@ -92,7 +92,7 @@ export function VacancyHero({
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#apply"
-            className="inline-flex items-center rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
+            className="inline-flex items-center rounded-md bg-primary px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-on-primary transition-colors hover:bg-primary/90"
           >
             {t("vacancy.applyCta", "Apply for this role")}
           </a>

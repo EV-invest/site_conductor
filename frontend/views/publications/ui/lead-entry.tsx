@@ -59,8 +59,8 @@ export function LeadEntry({
       </div>
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
-          <span className="flex items-center gap-2.5 text-accent-debug">
-            <span aria-hidden className="size-[7px] bg-accent-debug" />
+          <span className="flex items-center gap-2.5 text-primary-ink">
+            <span aria-hidden className="size-[7px] bg-primary-ink" />
             {t("publications.latestDispatch", "LATEST DISPATCH")}
           </span>
           <span className="text-ink/40">
@@ -82,7 +82,7 @@ export function LeadEntry({
           )}
           <Link
             href={localePath(locale, href(publication))}
-            className="inline-flex items-center gap-2 bg-accent-debug px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-background transition-colors hover:bg-ink hover:text-brand"
+            className="inline-flex items-center gap-2 bg-primary px-5 py-3 font-mono-tech text-[11px] tracking-[0.15em] text-on-primary transition-colors hover:bg-ink hover:text-brand"
           >
             {ctaFor(publication, t)}
             <ArrowRight aria-hidden className="size-3.5" />

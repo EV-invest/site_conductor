@@ -30,7 +30,7 @@ export function DocumentCard({
     <article
       className={cn(
         "group relative flex h-full flex-col rounded-none p-6 sm:p-8",
-        "border border-ink/12 border-l-2 border-l-accent-debug bg-card/55",
+        "border border-ink/12 border-l-2 border-l-primary-ink bg-card/55",
         // Background only on hover — a `hover:border-*` would repaint the teal
         // spine along with the other three edges, and the spine is the identity.
         "motion-safe:transition-colors motion-safe:duration-300",
@@ -39,7 +39,7 @@ export function DocumentCard({
       )}
     >
       <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] uppercase tracking-[0.22em]">
-        <span className="truncate text-accent-debug">{kind}</span>
+        <span className="truncate text-primary-ink">{kind}</span>
         <span className="shrink-0 text-ink/40">{date}</span>
       </div>
 
@@ -48,7 +48,7 @@ export function DocumentCard({
       </h3>
 
       {quote ? (
-        <p className="mt-5 border-l border-accent-debug/30 pl-4 font-serif-display text-base italic leading-relaxed text-ink/90">
+        <p className="mt-5 border-l border-primary-ink/30 pl-4 font-serif-display text-base italic leading-relaxed text-ink/90">
           {quote}
         </p>
       ) : null}

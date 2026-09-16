@@ -37,7 +37,7 @@
     font-family: var(--font-sans);
   }
   body {
-    @apply bg-background text-ink antialiased selection:bg-accent-debug/30 selection:text-ink;
+    @apply bg-background text-ink antialiased selection:bg-primary-ink/30 selection:text-ink;
   }
 
   h1,
@@ -78,7 +78,7 @@
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a9d8f;
+  background: var(--primary-ink);
 }
 
 /* Research-zone texture — faint dot-grid over a soft centre vignette. */
@@ -87,7 +87,7 @@
   background-image:
     radial-gradient(
       circle at 50% 0%,
-      rgba(42, 157, 143, 0.05),
+      color-mix(in srgb, var(--primary-ink) 5%, transparent),
       transparent 60%
     ),
     radial-gradient(rgba(230, 225, 211, 0.05) 1px, transparent 1px);

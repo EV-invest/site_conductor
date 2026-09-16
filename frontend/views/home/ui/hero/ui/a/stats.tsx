@@ -56,7 +56,7 @@ const stats = (t: Translate) => [
   {
     label: t("home.hero.stat.currentCity", "Highest EV City"),
     value: "Quy Nhon",
-    tone: "text-accent-debug",
+    tone: "text-primary-ink",
   },
   {
     label: t("home.hero.stat.aumCap", "Closing at"),

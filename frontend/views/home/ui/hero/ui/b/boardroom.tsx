@@ -40,7 +40,7 @@ export function BoardroomImage({ locale }: { locale: Locale }) {
           >
             {t("home.hero.b.coastline", "Coastline")}
           </Text>
-          <p className="text-xl sm:text-2xl font-serif-display text-accent-debug font-bold">
+          <p className="text-xl sm:text-2xl font-serif-display text-primary-ink font-bold">
             72 km
           </p>
         </div>

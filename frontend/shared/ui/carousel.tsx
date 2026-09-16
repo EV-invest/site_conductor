@@ -61,7 +61,7 @@ export function MobileCarousel({
             aria-current={i === index}
             className={cn(
               "h-1.5 rounded-full transition-all duration-300",
-              i === index ? "w-6 bg-accent-debug" : "w-1.5 bg-ink/25"
+              i === index ? "w-6 bg-primary-ink" : "w-1.5 bg-ink/25"
             )}
           />
         ))}

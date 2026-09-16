@@ -56,8 +56,8 @@ export function NewsletterForm() {
 
   if (status === "sent") {
     return (
-      <div className="flex items-center gap-2 border border-accent-debug/40 px-4 py-3">
-        <p className="text-xs text-accent-debug font-mono-tech uppercase">
+      <div className="flex items-center gap-2 border border-primary-ink/40 px-4 py-3">
+        <p className="text-xs text-primary-ink font-mono-tech uppercase">
           {t("footer.newsletter.success", "You're on the list — welcome.")}
         </p>
       </div>
@@ -89,7 +89,7 @@ export function NewsletterForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="bg-accent-debug text-background px-4 font-mono-tech text-xs uppercase font-bold hover:bg-ink transition-colors disabled:opacity-60"
+          className="bg-primary text-on-primary px-4 font-mono-tech text-xs uppercase font-bold hover:bg-ink hover:text-background transition-colors disabled:opacity-60"
         >
           {status === "sending" ? "…" : t("footer.newsletter.join", "Join")}
         </button>

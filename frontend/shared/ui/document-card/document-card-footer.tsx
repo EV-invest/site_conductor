@@ -50,7 +50,7 @@ export function DocumentCardFooter(props: DocumentCardFooterProps) {
             href={pdfHref}
             download
             aria-label={`Download ${title} as PDF`}
-            className="relative z-10 inline-flex items-center gap-1.5 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45 motion-safe:transition-colors hover:text-accent-debug"
+            className="relative z-10 inline-flex items-center gap-1.5 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-ink/45 motion-safe:transition-colors hover:text-primary-ink"
           >
             <FileDown className="size-3.5" />
             PDF
@@ -60,7 +60,7 @@ export function DocumentCardFooter(props: DocumentCardFooterProps) {
             so the card needs no nested/duplicate anchor around its title. */}
         <Link
           href={href}
-          className="inline-flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug motion-safe:transition-colors hover:text-ink after:absolute after:inset-0 after:content-['']"
+          className="inline-flex items-center gap-2 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-primary-ink motion-safe:transition-colors hover:text-ink after:absolute after:inset-0 after:content-['']"
         >
           {cta}
           <ArrowRight className="size-3.5" />

@@ -71,7 +71,7 @@ export function Masthead({
 
   return (
     <header>
-      <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
+      <span className="block font-mono-tech text-xs tracking-[0.3em] text-primary-ink uppercase">
         {t("publications.eyebrow", "EV Investment · Publications")}
       </span>
       <h1 className="mt-4 font-serif-display text-4xl leading-tight font-light text-white sm:text-6xl">
@@ -86,7 +86,7 @@ export function Masthead({
       <ul className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-2 border-y border-ink/15 py-4 font-mono-tech text-[11px] tracking-[0.15em] text-ink/50">
         {stats.map(({ icon: Icon, text }) => (
           <li key={text} className="flex items-center gap-2">
-            <Icon aria-hidden className="size-3.5 text-accent-debug" />
+            <Icon aria-hidden className="size-3.5 text-primary-ink" />
             {text}
           </li>
         ))}

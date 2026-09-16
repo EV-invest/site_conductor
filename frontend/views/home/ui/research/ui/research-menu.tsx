@@ -28,11 +28,11 @@ export function ResearchMenu({
           className={cn(
             "p-6 border border-l-2 cursor-pointer transition-all duration-300",
             active === idx
-              ? "research-panel border-ink/10 border-l-accent-debug shadow-lg shadow-background/50"
+              ? "research-panel border-ink/10 border-l-primary-ink shadow-lg shadow-background/50"
               : "bg-card/40 border-ink/10 border-l-transparent hover:bg-card/70 hover:border-l-ink/30"
           )}
         >
-          <span className="text-[10px] font-mono-tech text-accent-debug uppercase tracking-widest block mb-2">
+          <span className="text-[10px] font-mono-tech text-primary-ink uppercase tracking-widest block mb-2">
             {r.cat}
           </span>
           <h4 className="font-serif-display text-lg text-white font-bold mb-3">

@@ -36,7 +36,7 @@ export function TeamOffices({ locale }: { locale: Locale }) {
               className="space-y-3.5 rounded-xl border border-ink/10 bg-card p-8"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
+                <div className="flex size-10 items-center justify-center rounded-full bg-ink/5 text-primary-ink">
                   <MapPin className="size-5" />
                 </div>
                 <h3 className="font-mono-tech text-[11px] uppercase tracking-widest text-white">

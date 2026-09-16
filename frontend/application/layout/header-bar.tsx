@@ -41,7 +41,7 @@ export function HeaderBar({
             <span className="font-serif-display text-lg font-bold tracking-wider text-white">
               EV INVESTMENT
             </span>
-            <span className="font-mono-tech text-[9px] uppercase tracking-[0.3em] text-accent-debug">
+            <span className="font-mono-tech text-[9px] uppercase tracking-[0.3em] text-primary-ink">
               Quy Nhon Fund
             </span>
           </div>
@@ -55,7 +55,7 @@ export function HeaderBar({
             <L
               key={item.href}
               href={item.href}
-              className="relative text-ink/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-accent-debug after:transition-transform after:duration-300 after:ease-out hover:text-accent-debug hover:after:scale-x-100 focus-visible:text-accent-debug focus-visible:after:scale-x-100"
+              className="relative text-ink/80 transition-colors outline-none after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary-ink after:transition-transform after:duration-300 after:ease-out hover:text-primary-ink hover:after:scale-x-100 focus-visible:text-primary-ink focus-visible:after:scale-x-100"
             >
               {item.label}
             </L>

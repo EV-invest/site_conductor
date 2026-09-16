@@ -16,7 +16,7 @@ export function DashList({ items }: { items: string[] }) {
         >
           <ChevronRight
             aria-hidden
-            className="mt-1 size-3.5 shrink-0 text-accent-debug"
+            className="mt-1 size-3.5 shrink-0 text-primary-ink"
           />
           <span>{item}</span>
         </li>

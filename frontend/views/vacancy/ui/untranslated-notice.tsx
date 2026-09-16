@@ -39,7 +39,7 @@ export function UntranslatedNotice({ locale }: { locale: Locale }) {
     >
       <Languages
         aria-hidden
-        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-debug/70"
+        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-ink/70"
       />
       <span>
         {t(

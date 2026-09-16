@@ -35,7 +35,7 @@ export function Partners({ locale }: { locale: Locale }) {
     >
       <Container>
         <Reveal className="max-w-2xl">
-          <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
+          <span className="block font-mono-tech text-xs tracking-[0.3em] text-primary-ink uppercase">
             {t("home.partners.eyebrow", "What we run on")}
           </span>
           <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-4xl">

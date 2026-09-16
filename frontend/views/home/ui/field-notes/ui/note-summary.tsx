@@ -29,11 +29,11 @@ export function NoteSummary({
         <span
           className={cn(
             "flex items-center gap-2.5",
-            lead ? "text-accent-debug" : "text-ink/40"
+            lead ? "text-primary-ink" : "text-ink/40"
           )}
         >
           {lead && (
-            <span aria-hidden className="size-[7px] bg-accent-debug" />
+            <span aria-hidden className="size-[7px] bg-primary-ink" />
           )}
           {eyebrow}
         </span>
@@ -70,7 +70,7 @@ export function NoteSummary({
         )}
         <Link
           href={localePath(locale, note.href)}
-          className="inline-flex items-center gap-2 font-mono-tech text-[11px] tracking-[0.15em] text-accent-debug transition-colors hover:text-ink"
+          className="inline-flex items-center gap-2 font-mono-tech text-[11px] tracking-[0.15em] text-primary-ink transition-colors hover:text-ink"
         >
           {note.cta}
           <ArrowRight aria-hidden className="size-3.5" />

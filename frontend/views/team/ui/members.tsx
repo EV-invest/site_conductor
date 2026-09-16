@@ -24,7 +24,7 @@ function CompactCard({ member }: { member: TeamMember }) {
         <h3 className="font-serif-display text-lg font-bold text-white">
           {member.name}
         </h3>
-        <p className="mt-1 font-mono-tech text-xs tracking-wide text-accent-debug">
+        <p className="mt-1 font-mono-tech text-xs tracking-wide text-primary-ink">
           {member.role}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-ink/75">{member.bio}</p>

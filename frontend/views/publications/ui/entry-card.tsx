@@ -61,7 +61,7 @@ export function EntryCard({
       <MediaPlate cover={cover} caption={publication.cover?.caption} />
       <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-center justify-between gap-4 font-mono-tech text-[10px] tracking-[0.17em]">
-          <span className="text-accent-debug">
+          <span className="text-primary-ink">
             {kindLabel(publication.kind, t)}
           </span>
           <span className="text-ink/40">{date}</span>
@@ -75,7 +75,7 @@ export function EntryCard({
         <div className="mt-4 border-t border-ink/10 pt-4">
           <Link
             href={localePath(locale, href(publication))}
-            className="inline-flex items-center gap-2 font-mono-tech text-[10px] tracking-[0.15em] text-accent-debug transition-colors hover:text-ink"
+            className="inline-flex items-center gap-2 font-mono-tech text-[10px] tracking-[0.15em] text-primary-ink transition-colors hover:text-ink"
           >
             {ctaFor(publication, t)}
             <ArrowRight aria-hidden className="size-3.5" />

@@ -19,7 +19,7 @@ export function placeholderCards(locale: Locale) {
   };
   return joinCards(t, href => localePath(locale, href)).map(card => ({
     icon: card.icon,
-    iconClassName: "text-accent-debug",
+    iconClassName: "text-primary-ink",
     title: card.title,
     body: card.body,
     cta: card.cta,

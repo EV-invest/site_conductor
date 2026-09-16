@@ -23,7 +23,7 @@ export function ShareButton() {
     >
       {copied ? (
         <>
-          <Check className="h-4 w-4 text-accent-debug" />{" "}
+          <Check className="h-4 w-4 text-primary-ink" />{" "}
           {t("vacancy.shareCopied", "Copied")}
         </>
       ) : (
