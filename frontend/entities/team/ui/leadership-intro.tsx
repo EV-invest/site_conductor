@@ -124,7 +124,7 @@ export async function LeadershipIntro({ locale }: { locale: Locale }) {
             <dt>
               <span
                 aria-hidden="true"
-                className="block font-mono-tech text-[10px] tracking-[0.25em] text-primary-ink/70"
+                className="block font-mono-tech text-[10px] tracking-[0.25em] text-primary-ink"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>

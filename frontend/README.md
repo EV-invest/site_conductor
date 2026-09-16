@@ -167,8 +167,12 @@ the Figma side is conformed to them, never the reverse.
 
 - **Tokens → Figma Variables.** Three collections mirror the CSS tokens 1:1, each
   with `var(--token)` code syntax so Dev Mode round-trips cleanly: `ev/color`
-  (brand primitives `main-*` + neutrals), `ev/semantic` (shadcn roles aliased onto
-  the primitives), `ev/radius` (the `--radius` scale).
+  (the kit's roles and surfaces from `@evinvest/uikit/styles/tokens.css`:
+  surfaces background / card / popover / muted, ink / ink-mid / ink-soft, lines
+  border / input / ring, filled roles brand / primary + primary-ink / secondary /
+  positive, and the accent ladder trace → debug → info → warn → error),
+  `ev/semantic` (shadcn roles aliased onto `ev/color`), `ev/radius` (the
+  `--radius` scale).
 - **Components.** The shadcn `bricks` are rebuilt as Figma variant-sets bound to
   those Variables (Button, Badge, Input/Field, Checkbox, Switch, Card, Select,
   Tabs, Accordion, Tooltip), on a dark navy surface. Fonts: Inter (sans) +

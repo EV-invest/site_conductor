@@ -51,7 +51,7 @@ export function RoleBlock({
                   type="checkbox"
                   checked={checked.has(requirement)}
                   onChange={() => onToggle(requirement)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-primary-ink"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
                 />
                 <span>{requirement}</span>
               </label>

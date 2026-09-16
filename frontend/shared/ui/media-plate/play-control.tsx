@@ -27,7 +27,7 @@ export function PlayControl({ label, size, onClick }: PlayControlProps) {
         "motion-safe:transition-colors motion-safe:duration-300",
         "hover:bg-primary hover:text-on-primary",
         "group-hover:bg-primary group-hover:text-on-primary",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-ink/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         size === "wide" ? "size-[72px]" : "size-16"
       )}
     >

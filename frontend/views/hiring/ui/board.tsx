@@ -50,7 +50,7 @@ export function HiringBoard({ vacancies }: { vacancies: VacancySummary[] }) {
               aria-label={t("hiring.board.searchLabel", "Search roles")}
               // text-base on phones: under 16px iOS zooms the viewport on
               // focus (see shared/ui/control.ts). sm: keeps the 14px design.
-              className="w-full rounded-lg border border-white/10 bg-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-ink placeholder:text-ink/30 focus:border-primary-ink/40 focus:outline-none"
+              className="w-full rounded-lg border border-white/10 bg-card/40 py-3.5 pl-11 pr-4 text-base sm:text-sm text-ink placeholder:text-ink/30 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
             />
           </div>
           <span className="hidden whitespace-nowrap font-mono-tech text-[11px] uppercase tracking-[0.2em] text-primary-ink sm:block">

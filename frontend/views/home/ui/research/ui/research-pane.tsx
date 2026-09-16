@@ -44,7 +44,7 @@ export function ResearchPane({
           goToReport();
         }
       }}
-      className="research-panel lg:col-span-2 border border-ink/10 border-t-0 lg:border-t shadow-2xl shadow-background/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-ink/60"
+      className="research-panel lg:col-span-2 border border-ink/10 border-t-0 lg:border-t shadow-2xl shadow-background/60 p-8 sm:p-12 flex flex-col justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div>
         <div className="border-b border-ink/10 pb-6 mb-8">
