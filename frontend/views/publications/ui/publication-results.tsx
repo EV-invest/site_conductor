@@ -14,7 +14,7 @@ import { rowId } from "./publication-index-shared";
 // ordinary links with several interactive descendants each, which `role=option`
 // forbids. So the highlight is styling plus a live region — no ARIA widget
 // semantics we cannot honour.
-const SELECTED = "outline-2 outline-offset-8 outline-accent-debug/60";
+const SELECTED = "outline-2 outline-offset-8 outline-ring";
 
 /**
  * What the index has to show for the current query: the empty note, or the

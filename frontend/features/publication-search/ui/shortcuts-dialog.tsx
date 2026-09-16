@@ -69,7 +69,7 @@ export function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
       <div className="p-6">
         <h2
           id={TITLE_ID}
-          className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug"
+          className="font-mono-tech text-[10px] uppercase tracking-[0.2em] text-primary-ink"
         >
           {t("publications.shortcuts.title", "Keyboard shortcuts")}
         </h2>

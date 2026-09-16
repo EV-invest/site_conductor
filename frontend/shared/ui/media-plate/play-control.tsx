@@ -23,11 +23,11 @@ export function PlayControl({ label, size, onClick }: PlayControlProps) {
       aria-label={label}
       className={cn(
         "absolute bottom-5 left-5 z-20 flex items-center justify-center rounded-full",
-        "border border-accent-debug/60 bg-background/55 text-accent-debug",
+        "border border-primary-ink/60 bg-background/55 text-primary-ink",
         "motion-safe:transition-colors motion-safe:duration-300",
-        "hover:bg-accent-debug hover:text-background",
-        "group-hover:bg-accent-debug group-hover:text-background",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-debug/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "hover:bg-primary hover:text-on-primary",
+        "group-hover:bg-primary group-hover:text-on-primary",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         size === "wide" ? "size-[72px]" : "size-16"
       )}
     >

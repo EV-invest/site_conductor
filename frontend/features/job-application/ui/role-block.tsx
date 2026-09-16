@@ -32,8 +32,8 @@ export function RoleBlock({
 }: RoleBlockProps) {
   const t = useT();
   return (
-    <div className="rounded-lg border-l-2 border-accent-debug/60 bg-accent-debug/[0.04] py-4 pl-4 pr-3">
-      <p className="mb-3 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug">
+    <div className="rounded-lg border-l-2 border-primary-ink/60 bg-primary-ink/[0.04] py-4 pl-4 pr-3">
+      <p className="mb-3 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-primary-ink">
         {t("apply.role.eyebrow", "For this role · {title}", { title })}
       </p>
       {requirements.length > 0 && (
@@ -51,7 +51,7 @@ export function RoleBlock({
                   type="checkbox"
                   checked={checked.has(requirement)}
                   onChange={() => onToggle(requirement)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-accent-debug"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
                 />
                 <span>{requirement}</span>
               </label>

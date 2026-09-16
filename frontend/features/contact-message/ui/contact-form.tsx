@@ -90,7 +90,7 @@ export function ContactForm() {
         type="submit"
         disabled={status === "sending"}
         aria-busy={status === "sending"}
-        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90 disabled:opacity-60"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-on-primary transition-colors hover:bg-primary/90 disabled:opacity-60"
       >
         {status === "sending" ? (
           t("form.sending", "Sending…")

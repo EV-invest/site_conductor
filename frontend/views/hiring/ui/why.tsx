@@ -17,7 +17,7 @@ function Reason({
 }) {
   return (
     <div className="border-t border-white/10 pt-5">
-      <div className="flex size-10 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
+      <div className="flex size-10 items-center justify-center rounded-full bg-ink/5 text-primary-ink">
         <Icon aria-hidden className="size-4" />
       </div>
       <h3 className="mt-3 font-medium text-white">{title}</h3>
@@ -36,7 +36,7 @@ export function HiringWhy({ locale }: { locale: Locale }) {
   return (
     <section className="bg-background py-20">
       <Container>
-        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
+        <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-primary-ink">
           {t("hiring.why.eyebrow", "Why EV")}
         </p>
         <h2 className="font-serif-display text-3xl text-white sm:text-4xl">

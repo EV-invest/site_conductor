@@ -104,7 +104,7 @@ export function HeaderMobileMenu({
               style={{
                 transitionDelay: `${MENU_ENTER_DELAY + i * MENU_STEP}ms`,
               }}
-              className="translate-x-4 border-b border-ink/10 py-4 text-ink/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-accent-debug focus-visible:text-accent-debug group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
+              className="translate-x-4 border-b border-ink/10 py-4 text-ink/80 opacity-0 transition-[opacity,translate,color] duration-300 ease-out outline-none hover:text-primary-ink focus-visible:text-primary-ink group-data-[menu-open]/header:translate-x-0 group-data-[menu-open]/header:opacity-100"
             >
               {item.label}
             </L>

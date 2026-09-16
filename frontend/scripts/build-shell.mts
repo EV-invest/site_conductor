@@ -215,9 +215,10 @@ async function buildCss(
   });
   const hoisted: ChildNode[] = [];
   root.walkAtRules(/^(property|keyframes)$/, at => {
-    // toast keyframes: tokens.css ships the toast lifecycle at its tail; no
-    // toast ever renders inside the header subtree.
-    if (!at.params.startsWith("ev-toast")) hoisted.push(at.clone());
+    // uikit component lifecycles (`ev-toast-*`, `ev-drawer-*` since 0.16):
+    // tokens.css ships them at its tail, and none of those components ever
+    // renders inside the header subtree — the mobile menu is CSS-only.
+    if (!at.params.startsWith("ev-")) hoisted.push(at.clone());
     at.remove();
   });
   // The zone provides font-faces via its own tokens.css; ours must not restate
@@ -232,7 +233,9 @@ async function buildCss(
   // `--ev-shell-offset` is the one token left out: its standalone `0px` default
   // must never shadow the `:root` override this sheet sets at its tail.
   root.walkRules(rule => {
-    if (/:host|toaster/.test(rule.selector)) rule.remove();
+    // toaster and drawer rules ride along with tokens.css; neither slot exists
+    // under the header (see the keyframes sweep above).
+    if (/:host|toaster|data-slot="drawer-/.test(rule.selector)) rule.remove();
     else if (/:root/.test(rule.selector)) {
       rule.selector = ":scope";
       rule.walkDecls("--ev-shell-offset", decl => decl.remove());

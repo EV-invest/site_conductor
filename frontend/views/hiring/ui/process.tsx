@@ -56,7 +56,7 @@ export function HiringProcess({ locale }: { locale: Locale }) {
         <div className="rounded-3xl border border-white/[0.06] bg-card/20 p-8 sm:p-12">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
+              <p className="mb-4 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-primary-ink">
                 {t("hiring.process.eyebrow", "How we hire")}
               </p>
               <h2 className="font-serif-display text-3xl text-white sm:text-4xl">

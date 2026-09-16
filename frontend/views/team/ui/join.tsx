@@ -25,7 +25,7 @@ export function TeamJoin({ locale }: { locale: Locale }) {
               key={href}
               className="flex flex-col items-center gap-4 rounded-xl border border-ink/10 bg-card px-8 py-14 text-center"
             >
-              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-accent-debug">
+              <div className="flex size-13 items-center justify-center rounded-full bg-ink/5 text-primary-ink">
                 <Icon className="size-5" />
               </div>
               <span className="font-mono-tech text-[10px] uppercase tracking-widest text-ink/60">
@@ -39,7 +39,7 @@ export function TeamJoin({ locale }: { locale: Locale }) {
               </p>
               <Link
                 href={href}
-                className="mt-1 rounded-md border border-accent-debug/60 px-5 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-accent-debug transition-colors hover:bg-accent-debug/10"
+                className="mt-1 rounded-md border border-primary-ink/60 px-5 py-2 font-mono-tech text-[11px] uppercase tracking-widest text-primary-ink transition-colors hover:bg-primary-ink/10"
               >
                 {cta}
               </Link>

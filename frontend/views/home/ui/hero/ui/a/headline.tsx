@@ -29,7 +29,7 @@ export async function HeroHeadline({ locale }: { locale: Locale }) {
 // translation can move either — German and Russian both reorder the phrase, and
 // where the line should break depends on how long the words come out.
 const TONES = [
-  "italic text-accent-debug font-serif",
+  "italic text-primary-ink font-serif",
   "italic text-positive font-serif",
 ];
 

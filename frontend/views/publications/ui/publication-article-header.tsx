@@ -32,8 +32,8 @@ export function PublicationArticleHeader({
         ← {t("publications.allPublications", "All publications")}
       </Link>
       <div className="mt-8 flex items-center justify-between gap-4 font-mono-tech text-[11px] tracking-[0.19em]">
-        <span className="flex items-center gap-2.5 text-accent-debug">
-          <span aria-hidden className="size-[7px] bg-accent-debug" />
+        <span className="flex items-center gap-2.5 text-primary-ink">
+          <span aria-hidden className="size-[7px] bg-primary-ink" />
           {kindLabel(publication.kind, t)}
         </span>
         {/* <time> so the dateline is machine-readable on its own, not only

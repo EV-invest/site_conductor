@@ -9,7 +9,7 @@ export function TeamHero({ locale }: { locale: Locale }) {
   return (
     <section className="pb-14 pt-36 sm:pt-40">
       <Container className="space-y-5">
-        <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-accent-debug">
+        <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-primary-ink">
           {t("team.eyebrow", "Our people")}
         </span>
         {/* The accent word is marked inside the catalogue string rather than

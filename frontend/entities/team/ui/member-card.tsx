@@ -21,7 +21,7 @@ export function MemberCard({
       heading={member.name}
       headingClassName="text-white"
       sub={
-        <p className="mt-1 font-mono-tech text-base sm:text-xs text-accent-debug">
+        <p className="mt-1 font-mono-tech text-base sm:text-xs text-primary-ink">
           {member.role}
         </p>
       }

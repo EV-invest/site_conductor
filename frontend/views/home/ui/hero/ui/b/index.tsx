@@ -23,7 +23,7 @@ export function HeroB({ locale }: { locale: Locale }) {
       <Container className="relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-28">
         {/* Left: editorial copy */}
         <div className="space-y-8">
-          <span className="block text-xs font-mono-tech text-accent-debug tracking-[0.3em] uppercase">
+          <span className="block text-xs font-mono-tech text-primary-ink tracking-[0.3em] uppercase">
             {t("home.hero.b.eyebrow", "Institutional Real Estate • Quy Nhon")}
           </span>
 
@@ -33,7 +33,7 @@ export function HeroB({ locale }: { locale: Locale }) {
                 "home.hero.b.headline",
                 "Invest in *Quy Nhon*\nThrough Institutional Vision."
               )}
-              className="italic text-accent-debug font-serif"
+              className="italic text-primary-ink font-serif"
             />
           </h1>
 
@@ -47,7 +47,7 @@ export function HeroB({ locale }: { locale: Locale }) {
           </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
-            <HeroBCta className="bg-ink text-brand hover:bg-accent-debug hover:text-background hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />
+            <HeroBCta className="bg-ink text-brand hover:bg-primary hover:text-on-primary hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />
 
             <div>
               <Text

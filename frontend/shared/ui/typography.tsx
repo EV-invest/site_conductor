@@ -73,7 +73,7 @@ const H5 = make(
 const H6 = make(
   "h6",
   "h6",
-  "font-mono-tech text-accent-debug text-xs uppercase tracking-[0.3em] mt-6 mb-2"
+  "font-mono-tech text-primary-ink text-xs uppercase tracking-[0.3em] mt-6 mb-2"
 );
 
 const P = make(

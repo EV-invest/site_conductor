@@ -38,7 +38,7 @@ export function HiringHero({
   return (
     <section className="relative overflow-hidden bg-background pt-40 pb-16">
       <Container>
-        <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-accent-debug">
+        <p className="mb-5 font-mono-tech text-[11px] uppercase tracking-[0.34em] text-primary-ink">
           {t("hiring.hero.eyebrow", "Hiring · Join the fund")}
         </p>
         <h1 className="max-w-3xl font-serif-display text-4xl font-light leading-tight text-white sm:text-6xl">
@@ -58,7 +58,7 @@ export function HiringHero({
         {/* In-page anchor — no locale prefix needed, it never leaves the page. */}
         <a
           href="#open-roles"
-          className="mt-8 inline-flex items-center gap-2 rounded-md bg-accent-debug px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
+          className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-mono-tech text-xs uppercase tracking-widest text-on-primary transition-colors hover:bg-primary/90"
         >
           {t("hiring.hero.cta", "View open roles")}{" "}
           <ArrowDown className="h-4 w-4" />
@@ -74,7 +74,7 @@ export function HiringHero({
           <Stat
             value={String(teamCount)}
             label={t("hiring.hero.stat.teams", "Teams hiring")}
-            className="text-accent-debug"
+            className="text-primary-ink"
           />
           <span className="h-8 w-px bg-white/10" />
           <Stat

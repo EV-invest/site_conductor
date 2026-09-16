@@ -85,7 +85,7 @@ export function PublicationArticleView({
         )}
         htmlSrc={`/publications/${publication.slug}.dark.html`}
         pdfSrc={pdfHref(publication)}
-        bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-accent-debug prose-strong:text-ink"
+        bodyClassName="prose prose-invert mx-auto max-w-3xl px-6 py-16 prose-headings:font-serif-display prose-headings:text-white prose-a:text-primary-ink prose-strong:text-ink"
         fallback={
           <p className="mx-auto max-w-3xl px-6 py-16 text-ink/60">
             {t(
@@ -94,7 +94,7 @@ export function PublicationArticleView({
             )}{" "}
             <a
               href={pdfHref(publication)}
-              className="text-accent-debug underline"
+              className="text-primary-ink underline"
             >
               {t("publications.downloadPdf", "download the PDF")}
             </a>

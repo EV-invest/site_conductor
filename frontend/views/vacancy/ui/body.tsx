@@ -31,7 +31,7 @@ function GlanceRow({
       <dd
         className={
           accent
-            ? "text-sm font-medium text-accent-debug"
+            ? "text-sm font-medium text-primary-ink"
             : "text-sm text-ink/85"
         }
       >
@@ -115,7 +115,7 @@ export function VacancyBody({
               </dl>
               <a
                 href="#apply"
-                className="mt-6 block rounded-md bg-accent-debug px-6 py-3 text-center font-mono-tech text-xs uppercase tracking-widest text-background transition-colors hover:bg-accent-debug/90"
+                className="mt-6 block rounded-md bg-primary px-6 py-3 text-center font-mono-tech text-xs uppercase tracking-widest text-on-primary transition-colors hover:bg-primary/90"
               >
                 {t("vacancy.applyCta", "Apply for this role")}
               </a>

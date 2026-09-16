@@ -42,14 +42,14 @@ export function PlateFrame({
       className={cn(
         "group w-full rounded-none border border-ink/10 bg-card",
         "motion-safe:transition-colors motion-safe:duration-300",
-        "hover:border-accent-debug/45",
+        "hover:border-primary-ink/45",
         MAX_WIDTH[size],
         className
       )}
     >
       <div className="relative aspect-video overflow-hidden">
         {children}
-        <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-1.5 rounded-none border border-accent-debug/40 bg-background/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-accent-debug">
+        <span className="pointer-events-none absolute left-5 top-5 z-20 inline-flex items-center gap-1.5 rounded-none border border-primary-ink/40 bg-background/60 px-2.5 py-1 font-mono-tech text-[10px] uppercase tracking-[0.2em] text-primary-ink">
           {badge}
         </span>
       </div>

@@ -40,7 +40,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
       <Container>
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="block font-mono-tech text-xs tracking-[0.3em] text-accent-debug uppercase">
+            <span className="block font-mono-tech text-xs tracking-[0.3em] text-primary-ink uppercase">
               {t("home.fieldNotes.eyebrow", "From the ground")}
             </span>
             <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-5xl">
@@ -62,7 +62,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
           </div>
           <Link
             href={localePath(locale, "/publications")}
-            className="inline-flex items-center gap-2 border border-ink/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-ink/85 transition-colors hover:border-accent-debug hover:text-accent-debug"
+            className="inline-flex items-center gap-2 border border-ink/25 px-5 py-3.5 font-mono-tech text-[11px] tracking-[0.15em] text-ink/85 transition-colors hover:border-primary-ink hover:text-primary-ink"
           >
             {t("home.fieldNotes.all", "All field notes")}
             <ArrowRight aria-hidden className="size-3.5" />
@@ -87,7 +87,7 @@ export function FieldNotes({ locale }: { locale: Locale }) {
               />
               {archive.length > 0 && (
                 <div className="border border-ink/10 bg-card/50 px-6 pt-5 pb-2">
-                  <span className="block font-mono-tech text-[10px] tracking-[0.19em] text-accent-debug uppercase">
+                  <span className="block font-mono-tech text-[10px] tracking-[0.19em] text-primary-ink uppercase">
                     {t("home.fieldNotes.more", "More from the field")}
                   </span>
                   <ul className="mt-3">

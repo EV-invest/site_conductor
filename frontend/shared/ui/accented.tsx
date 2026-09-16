@@ -52,7 +52,7 @@ import type { ReactNode } from "react";
  * // Two accents in different tones — the hero's China+1 / Vietnam pair.
  * <Accented
  *   text={t("home.hero.headline.a")}
- *   classNames={["… text-accent-debug", "… text-positive"]}
+ *   classNames={["… text-primary-ink", "… text-positive"]}
  * />
  * ```
  */
@@ -71,7 +71,7 @@ export interface AccentedProps {
 /** The nodes themselves — use this inside `SplitText`. See the note above. */
 export function accented({
   text,
-  className = "font-serif italic text-accent-debug",
+  className = "font-serif italic text-primary-ink",
   classNames,
 }: AccentedProps): ReactNode[] {
   const tones = classNames?.length ? classNames : [className];
