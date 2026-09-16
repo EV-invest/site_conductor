@@ -12,7 +12,7 @@ views/        page composition (HomeView), agnostic of A/B
 features/     behaviour slices: analytics, ab-variant, investment-calculator
 entities/     domain data (team, …)
 shared/       app-agnostic ui/, lib/, config/, hooks/, mfe/ (microfrontend host)
-application/  styles/globals.css → imports ../public/tokens.css
+application/  styles/globals.css → imports @evinvest/uikit/styles/tokens.css
 public/       static assets
 tests/        per-section Playwright visual baselines
 mfe-registry.json  microfrontend registry (name → tag/scriptUrl/kind)
@@ -38,8 +38,9 @@ cd site_conductor/frontend && npm install && npm run dev
 ```
 Tailwind builds automatically inside Next via the `@tailwindcss/postcss` plugin —
 no separate step. It imports the shared tokens from
-[`../public/tokens.css`](../public/tokens.css) through `application/styles/globals.css`;
-edit the tokens there and Next hot-reloads.
+`@evinvest/uikit/styles/tokens.css` through `application/styles/globals.css`;
+tokens are owned by [`EV-invest/lib`](https://github.com/EV-invest/lib) and
+reach this repo through a `@evinvest/uikit` bump, never a local edit.
 
 ## Checks
 
@@ -160,8 +161,9 @@ doc build degrades gracefully. The docs are produced by the sibling `whitepaper`
 The visual language is mirrored in a Figma file
 ([`Main`](https://www.figma.com/design/e0V2P1cQpEFRuXTeNtEMh6/Main)), kept
 **code-first**: [`application/styles/globals.css`](./application/styles/globals.css)
-plus the shared [`../public/tokens.css`](../public/tokens.css) are the source of
-truth; the Figma side is conformed to them, never the reverse.
+plus the shared `@evinvest/uikit/styles/tokens.css` (from
+[`EV-invest/lib`](https://github.com/EV-invest/lib)) are the source of truth;
+the Figma side is conformed to them, never the reverse.
 
 - **Tokens → Figma Variables.** Three collections mirror the CSS tokens 1:1, each
   with `var(--token)` code syntax so Dev Mode round-trips cleanly: `ev/color`
