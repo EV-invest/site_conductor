@@ -7,10 +7,13 @@ import { allPublications, documentLocales } from "@/entities/publication";
 import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 
 // Driven off shared/config ROUTES (adding a subpage = one list entry) plus the
-// static research articles and the live vacancy detail pages, fetched at build
-// so each role is indexable. ISR (not force-static) so newly published roles
-// enter the sitemap without a redeploy; the backend being unreachable degrades
-// to the static routes only.
+// static research articles and the live vacancy detail pages, so each role is
+// indexable. Rendered per request, NOT prerendered: the image is built in a
+// sandbox with no network, and an ISR prerender there would bake the
+// vacancy-less sitemap into the artifact and serve it for the first hour after
+// every rollout (#184). The hourly cache lives on the vacancy fetch itself
+// (`vacancyCacheOptions`), so the backend still sees at most one list request
+// an hour, and newly published roles enter the sitemap without a redeploy.
 //
 // Every entry is emitted once PER LOCALE, each carrying the full alternate set.
 // Google's requirement here is explicit and is the part that gets skipped: each
@@ -27,7 +30,7 @@ import { listVacancies, vacancyCacheOptions } from "@/entities/vacancy";
 // request per role to read. An always-now stamp on those is exactly what
 // teaches Google to distrust the field, and that would cost us the accurate
 // publication stamps too.
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 // Sitemap requires absolute URLs.
 const abs = (path: string) =>
@@ -112,21 +115,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       )
     );
 
-  // Live vacancy detail pages. Degrade to static routes only if unreachable.
-  let vacancyEntries: MetadataRoute.Sitemap = [];
-  try {
-    const { data } = await listVacancies(vacancyCacheOptions);
-    // All five locales: the backend localises a role per request (the detail
-    // route passes `query: { locale }`), so each URL is a real version.
-    vacancyEntries = (data ?? []).flatMap(vacancy =>
-      perLocale(`/hiring/${vacancy.slug}`, () => ({
-        changeFrequency: "weekly",
-        priority: 0.6,
-      }))
+  // Live vacancy detail pages. An unreachable board is NOT an empty board:
+  // the generated client reports transport and HTTP failures as `{ error }`
+  // rather than throwing, and folding that into `[]` once published a sitemap
+  // that told Google 35 role URLs had gone (#184). Throwing instead makes the
+  // response a 5xx, which crawlers treat as "keep the last copy, retry later" —
+  // and it lands in the pod log, where silent truncation never did.
+  const { data, error, response } = await listVacancies(vacancyCacheOptions);
+  if (error !== undefined || data === undefined) {
+    const detail =
+      error instanceof Error ? error.message : JSON.stringify(error);
+    throw new Error(
+      `sitemap: vacancy board unavailable (status ${response?.status ?? "none"}): ${detail}`
     );
-  } catch {
-    vacancyEntries = [];
   }
+  // All five locales: the backend localises a role per request (the detail
+  // route passes `query: { locale }`), so each URL is a real version.
+  const vacancyEntries: MetadataRoute.Sitemap = data.flatMap(vacancy =>
+    perLocale(`/hiring/${vacancy.slug}`, () => ({
+      changeFrequency: "weekly",
+      priority: 0.6,
+    }))
+  );
 
   return [...staticEntries, ...articleEntries, ...vacancyEntries];
 }
