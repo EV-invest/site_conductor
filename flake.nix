@@ -98,8 +98,9 @@
         # not a secret and lives here as a literal, not in sops (rpi5.nix README:
         # "The browser values are not here, by construction"). One project for
         # the site AND the cabinet so the funnel is continuous — banking bakes
-        # the same key. Empty ⇒ @evinvest/analytics mounts a no-op sink.
-        posthogKey = "";
+        # the same key (PostHog Cloud US, project 614067). Empty ⇒
+        # @evinvest/analytics mounts a no-op sink.
+        posthogKey = "phc_sBwWEgdgockVmfyucBRkTTo6iZ4Y2eApSGorD22WLzj3";
         posthogHost = "https://us.i.posthog.com";
 
         logoSrc = "${ev_assets}/logo/logo.svg";
