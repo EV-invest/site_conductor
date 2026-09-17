@@ -216,8 +216,14 @@ test("- mismatch on: header-drawer", { tag: ["@mobile"] }, async ({ page }) => {
   await waitForMotionToSettle(page);
 
   const toggle = page.getByRole("button", { name: "Open menu" });
-  await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  // The toggle is wired by the deferred `header-behavior` script; a click that
+  // lands before it attaches is a no-op, so retry until the state flips.
+  await expect(async () => {
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true", {
+      timeout: 500,
+    });
+  }).toPass({ timeout: 10_000 });
   // The aside carries `aria-label="Site menu"` → role `complementary`.
   const drawer = page.getByRole("complementary", { name: "Site menu" });
   await expect(drawer).toBeVisible();
