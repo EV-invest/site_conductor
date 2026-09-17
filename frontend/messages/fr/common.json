@@ -619,6 +619,14 @@
     "en": "Explore Assets",
     "t": "Explorer les actifs"
   },
+  "home.hero.cta.fact": {
+    "en": "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe.",
+    "t": "Connexion Google, contrôle d'identité le plus souvent décidé en moins d'une heure, puis dépôt et souscription."
+  },
+  "home.hero.cta.start": {
+    "en": "Start investing",
+    "t": "Commencer à investir"
+  },
   "home.hero.cta.whitepaper": {
     "en": "Whitepaper",
     "t": "Livre blanc"

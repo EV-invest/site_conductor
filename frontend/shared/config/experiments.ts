@@ -17,6 +17,11 @@ export const experiments = {
   hero: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: "Invest in Vietnam / Through Institutional Vision"; b: "China+1 / Vietnam".
   hero_headline: { variants: ["a", "b"], weights: [0.5, 0.5] },
+  // a: "Start investing" → cabinet as the primary, Explore secondary, the
+  // whitepaper a text link; b: the pre-#198 row (Explore primary, Whitepaper).
+  // The new row is listed first because production serves variants[0]: the
+  // cabinet entry is the deliverable, the old row is the comparison arm.
+  hero_cta: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: original gradient scrim; b: stacked text-shadow halo.
   team_bio_shade: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: text-only leadership band; b: the boardroom photograph above the pillars.

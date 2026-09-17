@@ -1,7 +1,7 @@
 import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
 import { Text, Tier } from "@/shared/ui/text";
-import { HeroBCta } from "./cta";
+import { HeroCta } from "../cta";
 import { BoardroomImage } from "./boardroom";
 import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
@@ -9,7 +9,8 @@ import { Accented } from "@/shared/ui/accented";
 /**
  * Variant B — calmer editorial split: left-aligned headline + CTA, framed image
  * on the right. No scroll-zoom (the A/B differentiator), so it reads as a
- * content-first hero. Server Component; the only client island is {@link HeroBCta}.
+ * content-first hero. Server Component; the only client islands are the CTA
+ * row's ({@link HeroCta}).
  */
 export function HeroB({ locale }: { locale: Locale }) {
   const t = translate(locale);
@@ -47,7 +48,7 @@ export function HeroB({ locale }: { locale: Locale }) {
           </Tier>
 
           <div className="flex flex-wrap items-center gap-8 pt-2">
-            <HeroBCta className="bg-ink text-brand hover:bg-primary hover:text-on-primary hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none" />
+            <HeroCta align="start" />
 
             <div>
               <Text
