@@ -66,6 +66,13 @@ export function SiteDocument({
         <script
           dangerouslySetInnerHTML={{ __html: localeCookieScript(locale) }}
         />
+        {/* Replays the last confirmed session state onto the header root
+            before the first paint, so a signed-in reader does not see the
+            signed-out pair while /api/auth/session is in flight. The same
+            bytes the zone proxy loads by URL — inlined here because this
+            document has no nonce CSP to satisfy and the file is a few hundred
+            bytes on the critical path. See scripts/session-stamp.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: shell.sessionInline }} />
       </head>
       <body>
         {/* The header's one behavior implementation — the same content-hashed

@@ -46,14 +46,23 @@ export const MENU_ENTER_DELAY = 90;
 export const MENU_STEP = 45;
 
 // The account chip is for the signed-in state only: it stays hidden until
-// scripts/header-behavior.ts stamps `data-session="authenticated"` on the
-// header root, while the static pair (header-cta.tsx) carries the signed-out
-// state from the server HTML. The chip's own signed-out CTA never shows —
-// it would double the pair's "Cabinet" — so exactly one of the two is visible
-// once the session is known, and the pair alone before that. Shared by the
-// conductor's slots (account-chip-remote.tsx) and the zone fragment
+// `data-session="authenticated"` lands on the header root — replayed from the
+// last load by scripts/session-stamp.ts before the first paint, then confirmed
+// or corrected by scripts/header-behavior.ts from /api/auth/session — while
+// the static pair (header-cta.tsx) carries the signed-out state from the
+// server HTML. The chip's own signed-out CTA never shows by design — it would
+// double the pair's "Cabinet" — so exactly one of the two is visible once the
+// session is known, and the pair alone before that. Shared by the conductor's
+// slots (account-chip-remote.tsx) and the zone fragment
 // (scripts/build-shell.mts) so the two hosts cannot drift.
 export const CHIP_BAR_CLASS =
   "hidden items-center group-data-[session=authenticated]/header:sm:flex";
 export const CHIP_MENU_CLASS =
   "hidden w-full group-data-[session=authenticated]/header:flex";
+
+// What the host tells the chip (banking #392): its signed-out CTA is the
+// secondary "Cabinet" affordance, so it opens the login page in its plain
+// sign-in state, never the signup one the pair's primary uses. No
+// `data-return-to` on the marketing site — there is no in-cabinet page the
+// reader was headed to. Applies to both hosts and both placements.
+export const CHIP_ATTRIBUTES = { "data-intent": "login" } as const;

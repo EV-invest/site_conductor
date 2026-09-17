@@ -59,9 +59,15 @@ export function BrandHeader({
   const L = linkComponent ?? "a";
 
   return (
+    // suppressHydrationWarning: scripts/session-stamp.ts may set
+    // `data-session` on this element before React hydrates it, and React's
+    // dev-mode diff would report the attribute it never rendered — the same
+    // arrangement <html> has with `data-span-from`. One level deep only, so
+    // a genuine mismatch below is still reported.
     <header
       data-slot="header"
       className="group/header fixed top-0 left-0 z-[60] w-full"
+      suppressHydrationWarning
     >
       <HeaderBar
         nav={nav}

@@ -44,6 +44,12 @@ const HOP_BY_HOP = [
 // conductor out of the cabinet's CSP entirely. It is ~200 bytes, immutable-
 // cached, and on a connection already open for the stylesheet beside it.
 //
+// session-stamp follows the same rules for the same reasons: blocking, a
+// file, and tiny. It replays the last confirmed session state onto the header
+// root before the first paint, so a signed-in reader does not see the
+// signed-out pair for the length of the /api/auth/session round trip
+// (scripts/session-stamp.ts).
+//
 // The display face is preloaded rather than left for the stylesheet to discover:
 // an @font-face `src` is only fetched once the CSS has parsed AND something it
 // styles is laid out, which on a zone is late enough for the wordmark to paint in
@@ -54,6 +60,7 @@ const HEAD_INSERT =
   `<link rel="preload" as="font" type="font/woff2" crossorigin href="${shell.font}">` +
   `<link rel="stylesheet" href="${shell.css}">` +
   `<script src="${shell.spanJs}"></script>` +
+  `<script src="${shell.sessionJs}"></script>` +
   `<script defer src="${shell.js}"></script>`;
 // One prerendered header per locale (scripts/build-shell.mts). The zone's own
 // pages are localised; its chrome has to be too, or the only links out of the

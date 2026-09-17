@@ -4,7 +4,11 @@ import { findMfe } from "@/shared/mfe/registry";
 import { translate } from "@/shared/config/i18n";
 import { CabinetEntryTracker } from "./cabinet-entry-tracker";
 import { HeaderBarCta, HeaderMenuCta } from "./header-cta";
-import { CHIP_BAR_CLASS, CHIP_MENU_CLASS } from "./header-shared";
+import {
+  CHIP_ATTRIBUTES,
+  CHIP_BAR_CLASS,
+  CHIP_MENU_CLASS,
+} from "./header-shared";
 import { authLinks } from "./nav-items";
 
 // Server Component that mounts the account chip where the header CTA sits. The chip is a
@@ -21,6 +25,7 @@ export async function AccountChipRemote({ className }: { className?: string }) {
     <RemoteElement
       tag={entry.tag}
       scriptUrl={entry.scriptUrl}
+      attributes={CHIP_ATTRIBUTES}
       className={className}
     />
   );

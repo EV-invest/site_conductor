@@ -8,9 +8,11 @@
 // Session awareness is one attribute: scripts/header-behavior.ts stamps
 // `data-session` on the header root from its single /api/auth/session read,
 // and the pair hides itself under `authenticated` through the same
-// `group-data-[...]/header:` variants the rest of the header styles off. Until
-// the script runs (or without JS) the pair is what a visitor sees — the right
-// default on a marketing site, where nearly every visitor is signed out.
+// `group-data-[...]/header:` variants the rest of the header styles off. A
+// returning reader gets the previous load's answer replayed before the first
+// paint (scripts/session-stamp.ts); otherwise, until the read answers (or
+// without JS) the pair is what a visitor sees — the right default on a
+// marketing site, where nearly every visitor is signed out.
 //
 // uikit `Button` with `href`, not `asChild`: it renders a plain
 // `<a data-slot="button">` with no Slot and no client JS, so it serialises
