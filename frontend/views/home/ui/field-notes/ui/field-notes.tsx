@@ -12,12 +12,12 @@ import { toNoteViews } from "../model/to-note-view";
 import { NoteSummary } from "./note-summary";
 
 /**
- * Second section of the homepage, directly under the hero.
+ * Third section of the homepage, right after the step map under the hero.
  *
  * Research (further down the page) is the desk work; this is the evidence from
- * the ground. Putting a real place and a real person immediately after the
- * pitch is the point — it is the fastest de-risking a fund selling one specific
- * district can do.
+ * the ground. Putting a real place and a real person straight after the pitch
+ * and the "how" is the point — it is the fastest de-risking a fund selling one
+ * specific district can do.
  */
 export function FieldNotes({ locale }: { locale: Locale }) {
   const t = translate(locale);

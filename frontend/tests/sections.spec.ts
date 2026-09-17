@@ -19,6 +19,7 @@ import { experiments } from "../shared/config/experiments";
 const SECTIONS = [
   { name: "header", selector: "header" },
   { name: "hero", selector: "#hero" },
+  { name: "how-it-works", selector: "#how-it-works" },
   { name: "research", selector: "#research" },
   { name: "portfolio", selector: "#portfolio" },
   { name: "team", selector: "#team" },
