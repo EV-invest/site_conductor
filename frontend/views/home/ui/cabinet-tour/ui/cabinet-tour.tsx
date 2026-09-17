@@ -22,10 +22,7 @@ import { CabinetTourCta } from "./cabinet-tour-cta";
 export function CabinetTour({ locale }: { locale: Locale }) {
   const t = translate(locale);
   return (
-    <section
-      id="cabinet-tour"
-      className="border-b border-ink/10 bg-background py-24 text-ink"
-    >
+    <section id="cabinet-tour" className="bg-background py-24 text-ink">
       <Container className="grid gap-12 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <Reveal>
