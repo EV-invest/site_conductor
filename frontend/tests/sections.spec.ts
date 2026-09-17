@@ -25,7 +25,11 @@ import { experiments } from "../shared/config/experiments";
 const SECTIONS = [
   { name: "header", selector: "header", on: ["desktop", "mobile"] },
   { name: "hero", selector: "#hero", on: ["desktop", "mobile"] },
-  { name: "how-it-works", selector: "#how-it-works", on: ["desktop", "mobile"] },
+  {
+    name: "how-it-works",
+    selector: "#how-it-works",
+    on: ["desktop", "mobile"],
+  },
   { name: "research", selector: "#research", on: ["desktop"] },
   { name: "portfolio", selector: "#portfolio", on: ["desktop"] },
   { name: "partners", selector: "#partners", on: ["desktop"] },
@@ -122,11 +126,21 @@ for (const { name, selector, on } of SECTIONS) {
       // A section taller than the viewport (any long section on mobile) keeps
       // its lower Reveals un-intersected after a top-aligned scroll: their
       // once-only observers never fire and the wait below reads a blank. Walk
-      // to the section's end first so every observer has seen the viewport,
-      // then return to the top for the capture — `once` keeps them revealed.
-      await section.evaluate(el => el.scrollIntoView({ block: "end" }));
-      await page.waitForTimeout(150);
-      await section.scrollIntoViewIfNeeded();
+      // the section top to bottom in viewport-sized steps so every observer
+      // has seen the viewport, then return to the top for the capture —
+      // `once` keeps them revealed.
+      await section.evaluate(async el => {
+        const step = Math.max(200, window.innerHeight - 200);
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        const bottom = top + el.getBoundingClientRect().height;
+        for (let y = top; y < bottom; y += step) {
+          window.scrollTo(0, y);
+          await new Promise(r => setTimeout(r, 120));
+        }
+        window.scrollTo(0, bottom - window.innerHeight);
+        await new Promise(r => setTimeout(r, 120));
+        el.scrollIntoView({ block: "start" });
+      });
     }
     // Let the scroll-driven transform settle to its resting frame.
     await page.waitForTimeout(150);
