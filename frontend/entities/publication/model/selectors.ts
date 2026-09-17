@@ -1,4 +1,6 @@
 import type { Locale } from "@evinvest/i18n";
+
+import { LOCALE_TAG } from "@/shared/lib/intl";
 import { PUBLICATIONS } from "./catalogue";
 import { localizePublication } from "./translations";
 import type { Publication, PublicationKind } from "./types";
@@ -74,25 +76,21 @@ export function fieldNotes(locale: Locale, n?: number): Publication[] {
 // UTC because a date-only string has no zone, and letting the runtime apply one
 // moves the article a day backwards for any reader west of Greenwich.
 //
-// `en` maps to en-GB, not `en`: day-month-year, which is what this site has
-// always shown and what the rest of its copy assumes.
-const LOCALE_TAG: Record<Locale, string> = {
-  en: "en-GB",
-  ru: "ru-RU",
-  vi: "vi-VN",
-  fr: "fr-FR",
-  de: "de-DE",
-};
+// The tag map itself lives in `shared/lib/intl` so the hero's figures and these
+// cards can never disagree on which tag `en` means.
 
 // Constructing an Intl formatter is not cheap and these are called per card, so
 // each (locale, style) pair is built once and kept.
 const FORMATTERS = new Map<string, Intl.DateTimeFormat>();
 
-function formatter(locale: Locale, style: "long" | "short"): Intl.DateTimeFormat {
+function formatter(
+  locale: Locale,
+  style: "long" | "short"
+): Intl.DateTimeFormat {
   const key = `${locale}:${style}`;
   const cached = FORMATTERS.get(key);
   if (cached) return cached;
-  const built = new Intl.DateTimeFormat(LOCALE_TAG[locale] ?? "en-GB", {
+  const built = new Intl.DateTimeFormat(LOCALE_TAG[locale], {
     day: "numeric",
     month: style === "long" ? "long" : "short",
     year: "numeric",
@@ -122,7 +120,10 @@ export function formatPublicationDate(
   // preserving its field *order*, which is the part that actually differs.
   return formatter(locale, "short")
     .formatToParts(at)
-    .filter(part => part.type === "day" || part.type === "month" || part.type === "year")
+    .filter(
+      part =>
+        part.type === "day" || part.type === "month" || part.type === "year"
+    )
     .map(part => part.value)
     .join(" ")
     .toUpperCase();
