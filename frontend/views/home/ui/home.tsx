@@ -2,6 +2,7 @@ import type { Locale } from "@evinvest/i18n";
 
 import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
+import { HowItWorks } from "./how-it-works";
 import { Portfolio } from "./portfolio";
 import { Research } from "./research";
 import { Team } from "./team";
@@ -21,6 +22,7 @@ export function HomeView({ locale }: { locale: Locale }) {
     <div className="min-h-screen bg-background text-ink font-sans">
       <HomeStructuredData locale={locale} />
       <Hero locale={locale} />
+      <HowItWorks locale={locale} />
       <FieldNotes locale={locale} />
       <Portfolio locale={locale} />
       <Research locale={locale} />
