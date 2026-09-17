@@ -29,8 +29,9 @@ export function ClosingCtaActions() {
   return (
     <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
       <Button
+        size="xl"
         href={localePath(locale, "/cabinet/login?intent=signup")}
-        className="bg-ink text-brand hover:bg-primary hover:text-on-primary transition-colors duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="bg-ink text-brand hover:bg-primary hover:text-on-primary transition-colors font-mono-tech text-xs tracking-widest uppercase rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
         onClick={() => track("open_cabinet")}
       >
         {t("home.closing.cta.start", "Start investing")}
@@ -38,8 +39,9 @@ export function ClosingCtaActions() {
       </Button>
       <Button
         variant="outline"
+        size="xl"
         href={localePath(locale, "/cabinet/login")}
-        className="bg-transparent text-ink border border-ink/40 hover:bg-ink hover:text-brand transition-colors duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="bg-transparent text-ink border border-ink/40 hover:bg-ink hover:text-brand transition-colors font-mono-tech text-xs tracking-widest uppercase rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
         onClick={() => track("cabinet")}
       >
         {t("home.closing.cta.cabinet", "Cabinet")}

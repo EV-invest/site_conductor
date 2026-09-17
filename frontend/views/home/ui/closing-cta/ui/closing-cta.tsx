@@ -51,7 +51,7 @@ export function ClosingCta({ locale }: { locale: Locale }) {
           <span className="text-xs font-mono-tech text-primary-ink tracking-[0.3em] uppercase block mb-3">
             {t("home.closing.eyebrow", "Get Started")}
           </span>
-          <h2 className="text-3xl sm:text-5xl font-serif-display text-white font-light leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-serif-display text-ink font-light leading-tight">
             <Accented
               text={t("home.closing.title", "Ready to *start investing*?")}
               className="italic text-primary-ink font-serif"
