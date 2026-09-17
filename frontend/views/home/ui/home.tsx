@@ -1,5 +1,6 @@
 import type { Locale } from "@evinvest/i18n";
 
+import { ClosingCta } from "./closing-cta";
 import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
 import { Portfolio } from "./portfolio";
@@ -25,6 +26,7 @@ export function HomeView({ locale }: { locale: Locale }) {
       <Portfolio locale={locale} />
       <Research locale={locale} />
       <Team locale={locale} />
+      <ClosingCta locale={locale} />
     </div>
   );
 }

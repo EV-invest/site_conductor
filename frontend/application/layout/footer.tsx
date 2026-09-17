@@ -1,7 +1,8 @@
 "use client";
 
-// Client boundary on purpose: `linkComponent={Link}` is a function prop, which
-// cannot cross the server→client boundary into the uikit's client Footer.
+// Client boundary on purpose: `linkComponent` is a function prop, which cannot
+// cross the server→client boundary into the uikit's client Footer.
+import { createContext, useContext, type ReactNode } from "react";
 import Link from "next/link";
 import { Footer as BrandFooter } from "@evinvest/uikit";
 import { useT, useLocale } from "@evinvest/i18n/react";
@@ -12,6 +13,30 @@ import { config } from "@/config";
 
 const version = config.public.buildVersion ?? "unknown";
 const commit = config.public.buildCommit || version;
+
+// The uikit Footer hands its link component nothing but `href`, so an entry's
+// `hard` flag (nav-items.ts) reaches the link through this set of the hrefs
+// that carry it — the flag stays beside the entry instead of becoming a path
+// pattern here.
+const HardHrefs = createContext<ReadonlySet<string>>(new Set());
+
+// Cross-zone targets are full document loads (PATTERNS §9); everything else
+// keeps `next/link`'s prefetch and soft navigation.
+function FooterLink({
+  href,
+  ...props
+}: {
+  href: string;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const hard = useContext(HardHrefs);
+  return hard.has(href) ? (
+    <a href={href} {...props} />
+  ) : (
+    <Link href={href} {...props} />
+  );
+}
 
 // The 12-col footer grid (Figma: site_conductor › Footer) is the shared
 // @evinvest/uikit Footer; this app supplies the sitemap columns, the
@@ -25,6 +50,11 @@ export function Footer() {
     heading: column.heading(t),
     links: localizeNav(column.links, locale, t),
   }));
+  const hardHrefs = new Set(
+    nav.flatMap(column =>
+      column.links.filter(link => link.hard).map(link => link.href)
+    )
+  );
   // The uikit Footer defaults every one of these to English. Left unset they
   // are what a /ru/ reader still reads in English beside a translated sitemap,
   // so each one is passed explicitly.
@@ -44,32 +74,31 @@ export function Footer() {
       ),
     },
   ];
-  const legalLinks = [
-    { label: t("footer.legal.privacy", "Privacy Policy"), href: "#hero" },
-    { label: t("footer.legal.terms", "Terms of Service"), href: "#hero" },
-  ];
+  // No legal links until the privacy / terms pages exist (issue #204): the
+  // previous pair pointed at `#hero`, which reads as a broken promise.
   return (
-    <BrandFooter
-      nav={nav}
-      brand="EV INVESTMENT"
-      copyright={`© ${new Date().getFullYear()} EV Investment. ${t("footer.rights", "All rights reserved.")}`}
-      description={t(
-        "footer.description",
-        "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam."
-      )}
-      tagline={t("footer.tagline", "Quy Nhon Fund")}
-      offices={offices}
-      legalLinks={legalLinks}
-      newsletterBlurb={t(
-        "footer.newsletter.blurb",
-        "Subscribe, to receive our macro reports"
-      )}
-      linkComponent={Link}
-      newsletter={<NewsletterForm />}
-      version={version}
-      commitHref={`https://github.com/ev-invest/site_conductor/commit/${commit}`}
-    >
-      <BuildVersionLog />
-    </BrandFooter>
+    <HardHrefs value={hardHrefs}>
+      <BrandFooter
+        nav={nav}
+        brand="EV INVESTMENT"
+        copyright={`© ${new Date().getFullYear()} EV Investment. ${t("footer.rights", "All rights reserved.")}`}
+        description={t(
+          "footer.description",
+          "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam."
+        )}
+        tagline={t("footer.tagline", "Quy Nhon Fund")}
+        offices={offices}
+        newsletterBlurb={t(
+          "footer.newsletter.blurb",
+          "Subscribe, to receive our macro reports"
+        )}
+        linkComponent={FooterLink}
+        newsletter={<NewsletterForm />}
+        version={version}
+        commitHref={`https://github.com/ev-invest/site_conductor/commit/${commit}`}
+      >
+        <BuildVersionLog />
+      </BrandFooter>
+    </HardHrefs>
   );
 }

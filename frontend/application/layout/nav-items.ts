@@ -10,6 +10,19 @@ import type { HeaderAuthLinks } from "./header-shared";
 export interface NavEntry {
   label: (t: Translate) => string;
   href: string;
+  /**
+   * A cross-zone target (PATTERNS §9): rendered as a plain `<a>`, never
+   * `next/link` — this router does not own the route, so a soft navigation
+   * would fetch a payload the zone never emits.
+   */
+  hard?: boolean;
+}
+
+/** A {@link NavEntry} resolved for one locale: translated label, prefixed href. */
+export interface LocalizedNavEntry {
+  label: string;
+  href: string;
+  hard?: boolean;
 }
 
 // Header navigation — single source for desktop + mobile menus, on conductor
@@ -29,8 +42,9 @@ export const NAV_ITEMS: readonly NavEntry[] = [
 ];
 
 // Footer sitemap columns (issue #34). Company = dedicated pages; Explore =
-// homepage sections + research surfaces. Crawlable internal links from every
-// page, so each destination is one hop from anywhere on the site.
+// homepage sections + research surfaces; Investors = the self-serve funnel's
+// entry points (issue #201). Crawlable internal links from every page, so each
+// destination is one hop from anywhere on the site.
 export const FOOTER_NAV: readonly {
   heading: (t: Translate) => string;
   links: readonly NavEntry[];
@@ -62,6 +76,32 @@ export const FOOTER_NAV: readonly {
       },
     ],
   },
+  {
+    heading: t => t("footer.investors", "Investors"),
+    links: [
+      {
+        label: t => t("footer.cabinet", "Cabinet"),
+        href: "/cabinet/login",
+        hard: true,
+      },
+      {
+        label: t => t("footer.openAccount", "Open an account"),
+        // `intent=signup` is what the login page reads for its first-visit
+        // state (banking #391); a bare /cabinet bounces newcomers to
+        // "Welcome back".
+        href: "/cabinet/login?intent=signup",
+        hard: true,
+      },
+      {
+        label: t => t("footer.finishVerification", "Finish verification"),
+        // The cabinet has no standalone KYC route: the verification row lives
+        // on the profile screen.
+        href: "/cabinet/profile",
+        hard: true,
+      },
+      { label: t => t("footer.reports", "Reports"), href: "/publications" },
+    ],
+  },
 ];
 
 // One place that turns the nav into what a given locale renders: translated
@@ -71,10 +111,11 @@ export function localizeNav(
   items: readonly NavEntry[],
   locale: Locale,
   t: Translate
-): { label: string; href: string }[] {
+): LocalizedNavEntry[] {
   return items.map(item => ({
     label: item.label(t),
     href: localePath(locale, item.href),
+    ...(item.hard && { hard: true }),
   }));
 }
 
