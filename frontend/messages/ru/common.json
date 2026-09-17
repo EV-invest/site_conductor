@@ -1238,5 +1238,9 @@
   "header.openAccount": {
     "en": "Open an account",
     "t": "Открыть счёт"
+  },
+  "header.signOut": {
+    "en": "Sign out",
+    "t": "Выйти"
   }
 }

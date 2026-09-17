@@ -13,12 +13,15 @@ export interface HeaderMenuLabels {
   open: string;
   close: string;
   menu: string;
+  /** The drawer's sign-out control — visible text, not just an accessible name. */
+  signOut: string;
 }
 
 export const DEFAULT_MENU_LABELS: HeaderMenuLabels = {
   open: "Open menu",
   close: "Close menu",
   menu: "Site menu",
+  signOut: "Sign out",
 };
 
 /** One signed-out entry into the cabinet: a hard cross-zone href and its label. */

@@ -1238,5 +1238,9 @@
   "header.openAccount": {
     "en": "Open an account",
     "t": "Mở tài khoản"
+  },
+  "header.signOut": {
+    "en": "Sign out",
+    "t": "Đăng xuất"
   }
 }

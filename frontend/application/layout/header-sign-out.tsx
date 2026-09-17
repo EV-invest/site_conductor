@@ -1,8 +1,15 @@
 // The mobile drawer's footer control. Its own file because it is the one
 // element in the panel with a session behind it: the static markup has no
 // session awareness (header-behavior.ts unhides it), and it enters on a
-// different vector from the rows above it.
-export function HeaderSignOut({ enterDelayMs }: { enterDelayMs: number }) {
+// different vector from the rows above it. The label arrives translated with
+// the other menu labels — this markup is stringified per locale for zones.
+export function HeaderSignOut({
+  enterDelayMs,
+  label,
+}: {
+  enterDelayMs: number;
+  label: string;
+}) {
   return (
     <div className="px-6 pb-10">
       <button
@@ -35,7 +42,7 @@ export function HeaderSignOut({ enterDelayMs }: { enterDelayMs: number }) {
           <polyline points="16 17 21 12 16 7" />
           <line x1="21" y1="12" x2="9" y2="12" />
         </svg>
-        Sign out
+        {label}
       </button>
     </div>
   );
