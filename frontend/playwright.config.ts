@@ -43,12 +43,38 @@ export default defineConfig({
     colorScheme: "dark",
   },
 
+  // Two viewports, one browser. Projects pick their tests by tag (`@desktop`
+  // / `@mobile` on each test in sections.spec.ts), so a section that only
+  // exists at one width is declared once, next to the test, not here.
   projects: [
     {
       name: "chromium",
+      grep: /@desktop/,
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
+      // A phone-class viewport (iPhone 13 logical size) on the same Chromium
+      // the desktop project renders with: the nixpkgs browser pin ships one
+      // engine, and mobile Safari's WebKit would give a second, unpinned set of
+      // glyph metrics to chase. Explicit `isMobile`/`hasTouch` rather than the
+      // `devices["iPhone 13"]` descriptor for that reason — the descriptor
+      // defaults to WebKit and carries its Safari user agent.
+      name: "mobile",
+      grep: /@mobile/,
+      // Own subdirectory so `hero.png` here never shadows the desktop
+      // `hero.png` — the desktop baselines keep their names and history.
+      snapshotPathTemplate: "{testDir}/__screenshots__/mobile/{arg}{ext}",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 390, height: 844 },
+        // 1×, not the phone's 3×: same pixel budget as desktop, no 9× PNGs,
+        // and the diffs stay comparable across the two projects.
+        deviceScaleFactor: 1,
+        isMobile: true,
+        hasTouch: true,
       },
     },
   ],

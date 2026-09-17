@@ -1,5 +1,5 @@
 import { cookieName } from "@evinvest/experiments";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 import { experiments } from "../shared/config/experiments";
 
@@ -15,17 +15,26 @@ import { experiments } from "../shared/config/experiments";
 // (host-side mount) and the regression guard for the styled-snapshot fix. The
 // live interactive element itself is not ours to test.
 //
+// `on` lists the viewports (playwright.config.ts projects, matched by tag) a
+// section is baselined at. Mobile covers the page chrome and the hero — the
+// surfaces the funnel work reshapes below `sm` (issue #205); the content
+// sections stay desktop-only until their phone layout is worth a baseline of
+// its own (portfolio is REA's render, not ours to pin twice).
+//
 // Adding a section to the site = adding one line here. Nothing else changes.
 const SECTIONS = [
-  { name: "header", selector: "header" },
-  { name: "hero", selector: "#hero" },
-  { name: "how-it-works", selector: "#how-it-works" },
-  { name: "research", selector: "#research" },
-  { name: "portfolio", selector: "#portfolio" },
-  { name: "team", selector: "#team" },
-  { name: "closing-cta", selector: "#closing-cta" },
-  { name: "footer", selector: "footer" },
+  { name: "header", selector: "header", on: ["desktop", "mobile"] },
+  { name: "hero", selector: "#hero", on: ["desktop", "mobile"] },
+  { name: "how-it-works", selector: "#how-it-works", on: ["desktop", "mobile"] },
+  { name: "research", selector: "#research", on: ["desktop"] },
+  { name: "portfolio", selector: "#portfolio", on: ["desktop"] },
+  { name: "team", selector: "#team", on: ["desktop"] },
+  { name: "closing-cta", selector: "#closing-cta", on: ["desktop", "mobile"] },
+  { name: "footer", selector: "footer", on: ["desktop", "mobile"] },
 ] as const;
+
+const tags = (on: readonly string[]) => on.map(viewport => `@${viewport}`);
+const isMobileProject = () => test.info().project.name === "mobile";
 
 // The hero scales its background with window.scrollY; pinning the scroll
 // position makes its zoom (and the header's blur-on-scroll state) deterministic.
@@ -52,8 +61,40 @@ test.beforeEach(async ({ context, baseURL }) => {
   );
 });
 
-for (const { name, selector } of SECTIONS) {
-  test(`- mismatch on: ${name}`, async ({ page }) => {
+// Web fonts shift glyph metrics, and the CloudFront background images load
+// over the network rather than via <img> decode — a baseline is only
+// comparable once both have landed.
+async function gotoHome(page: Page) {
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForLoadState("networkidle");
+}
+
+// Opacity reaching 1 is not the same as the motion being over: a staggered
+// group's last child, or a split headline's last word, can still be sliding
+// while the first is already opaque. `motion` drives these through the Web
+// Animations API, so waiting for the document to have nothing running is
+// exact — Playwright's own `animations: "disabled"` only freezes CSS.
+// Looping decoration (a spinner, a pulse) never finishes and must not be
+// waited on — only one-shot entrances count as "still settling". The header
+// drawer's CSS transitions surface through the same API, so this covers them too.
+async function waitForMotionToSettle(page: Page) {
+  await page.waitForFunction(
+    () =>
+      document
+        .getAnimations()
+        .every(
+          animation =>
+            animation.playState !== "running" ||
+            animation.effect?.getComputedTiming().iterations === Infinity
+        ),
+    undefined,
+    { timeout: 15_000 }
+  );
+}
+
+for (const { name, selector, on } of SECTIONS) {
+  test(`- mismatch on: ${name}`, { tag: tags(on) }, async ({ page }) => {
     if (name === "portfolio") {
       // Block REA's embed bundle so RemoteElement never upgrades and the
       // ShadowDocument snapshot fallback stays put — a deterministic, wasm-timing-
@@ -63,12 +104,7 @@ for (const { name, selector } of SECTIONS) {
         r => r.abort()
       );
     }
-    await page.goto("/");
-
-    // Web fonts shift glyph metrics; wait until they're applied.
-    await page.evaluate(() => document.fonts.ready);
-    // CloudFront background images load over the network, not via <img> decode.
-    await page.waitForLoadState("networkidle");
+    await gotoHome(page);
 
     // Playwright's CSS locator pierces open shadow roots, so `#portfolio` matches
     // both the light-DOM wrapper and the snapshot's own `id="portfolio"` inside the
@@ -113,27 +149,15 @@ for (const { name, selector } of SECTIONS) {
         );
       });
 
-    // Opacity reaching 1 is not the same as the motion being over: a staggered
-    // group's last child, or a split headline's last word, can still be sliding
-    // while the first is already opaque. `motion` drives these through the Web
-    // Animations API, so waiting for the document to have nothing running is
-    // exact — Playwright's own `animations: "disabled"` only freezes CSS.
-    // Looping decoration (a spinner, a pulse) never finishes and must not be
-    // waited on — only one-shot entrances count as "still settling".
-    await page.waitForFunction(
-      () =>
-        document
-          .getAnimations()
-          .every(
-            animation =>
-              animation.playState !== "running" ||
-              animation.effect?.getComputedTiming().iterations === Infinity
-          ),
-      undefined,
-      { timeout: 15_000 }
-    );
+    await waitForMotionToSettle(page);
 
-    if (name === "header") {
+    if (name === "header" && isMobileProject()) {
+      // Below `sm` the bar carries no account chip (it folds into the drawer),
+      // so the whole bar is deterministic and there is nothing to clip away.
+      // The desktop nav is `hidden` here, which is why the clip below cannot
+      // be reused: its right edge has no box.
+      await expect(section).toHaveScreenshot(`${name}.png`);
+    } else if (name === "header") {
       // The header CTA is the cabinet-served MFE account chip, present only
       // when that service is reachable — clip at the nav's right edge so the
       // baseline is independent of it.
@@ -159,6 +183,54 @@ for (const { name, selector } of SECTIONS) {
   });
 }
 
+// The open drawer is the other half of the mobile header: `data-menu-open` on
+// the header root slides the aside in and reveals the scrim (CSS transitions
+// on `translate` + `visibility`, no React). Viewport-sized on purpose — the
+// composition of scrim, dimmed page and panel is what a reader sees, and the
+// panel alone would hide a scrim regression.
+test("- mismatch on: header-drawer", { tag: ["@mobile"] }, async ({ page }) => {
+  await gotoHome(page);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await waitForMotionToSettle(page);
+
+  const toggle = page.getByRole("button", { name: "Open menu" });
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  // The aside carries `aria-label="Site menu"` → role `complementary`.
+  const drawer = page.getByRole("complementary", { name: "Site menu" });
+  await expect(drawer).toBeVisible();
+  await waitForMotionToSettle(page);
+
+  await expect(page).toHaveScreenshot("header-drawer.png");
+});
+
+// The funnel's first step (issue #205): a signed-out reader must see a way into
+// the cabinet without scrolling or opening the menu. "Primary" is whichever of
+// the two entries the page ships — the header pair's `data-cta="open_account"`
+// (header-cta.tsx, the name CabinetEntryTracker reports) or the hero's own
+// cabinet link — so the assertion holds through either landing first. `href`
+// rather than an accessible name because the copy is translated and the
+// destination is the contract; the tracker keys on the same href.
+for (const viewport of ["desktop", "mobile"] as const) {
+  test(
+    `- primary cabinet CTA sits inside the first ${viewport} viewport`,
+    { tag: [`@${viewport}`] },
+    async ({ page }) => {
+      await gotoHome(page);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await waitForMotionToSettle(page);
+
+      const cta = page
+        .locator('a[data-cta="open_account"], #hero a[href*="/cabinet/login"]')
+        .filter({ visible: true })
+        .first();
+      await expect(cta).toBeVisible();
+      // `ratio: 1` — the whole button, not a sliver peeking above the fold.
+      await expect(cta).toBeInViewport({ ratio: 1 });
+    }
+  );
+}
+
 // Issue 39's regression gate. The portfolio section is the one place on the
 // landing where the copy belongs to another repo, so it was English under every
 // locale's chrome — and English *twice over*, by two independent mechanisms that
@@ -175,31 +247,37 @@ for (const { name, selector } of SECTIONS) {
 const RU_PORTFOLIO = "Почему Куинён?";
 
 for (const path of ["snapshot", "wasm"] as const) {
-  test(`- portfolio reads Russian on /ru (${path})`, async ({ page }) => {
-    if (path === "snapshot") {
-      await page.route(
-        /real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/,
-        r => r.abort()
+  test(
+    `- portfolio reads Russian on /ru (${path})`,
+    { tag: ["@desktop"] },
+    async ({ page }) => {
+      if (path === "snapshot") {
+        await page.route(
+          /real_estate_allocation_embeds_bg\.wasm|mfe-real-estate-overview\.js/,
+          r => r.abort()
+        );
+      }
+      await page.goto("/ru");
+      // `evaluate`, not `locator("html")`: on the snapshot path that selector
+      // pierces the shadow root and matches two documents — the page's and the
+      // snapshot's. Which is the proof the right file was picked, asserted below.
+      expect(await page.evaluate(() => document.documentElement.lang)).toBe(
+        "ru"
       );
-    }
-    await page.goto("/ru");
-    // `evaluate`, not `locator("html")`: on the snapshot path that selector
-    // pierces the shadow root and matches two documents — the page's and the
-    // snapshot's. Which is the proof the right file was picked, asserted below.
-    expect(await page.evaluate(() => document.documentElement.lang)).toBe("ru");
 
-    const section = page.locator("#portfolio").first();
-    await section.scrollIntoViewIfNeeded();
-    if (path === "snapshot") {
-      // The host chose `portfolio.ru.html`, so the adopted document carries its
-      // own `lang="ru"`. A regression to a single snapshot shows up here as `en`
-      // rather than as copy that merely looks wrong.
-      await expect(section.locator("html")).toHaveAttribute("lang", "ru");
+      const section = page.locator("#portfolio").first();
+      await section.scrollIntoViewIfNeeded();
+      if (path === "snapshot") {
+        // The host chose `portfolio.ru.html`, so the adopted document carries its
+        // own `lang="ru"`. A regression to a single snapshot shows up here as `en`
+        // rather than as copy that merely looks wrong.
+        await expect(section.locator("html")).toHaveAttribute("lang", "ru");
+      }
+      // `getByText` pierces open shadow roots, so this reads the snapshot's copy
+      // through ShadowDocument's root as readily as the live element's light DOM.
+      await expect(section.getByText(RU_PORTFOLIO).first()).toBeVisible({
+        timeout: 15_000,
+      });
     }
-    // `getByText` pierces open shadow roots, so this reads the snapshot's copy
-    // through ShadowDocument's root as readily as the live element's light DOM.
-    await expect(section.getByText(RU_PORTFOLIO).first()).toBeVisible({
-      timeout: 15_000,
-    });
-  });
+  );
 }
