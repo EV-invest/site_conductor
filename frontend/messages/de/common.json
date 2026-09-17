@@ -619,6 +619,14 @@
     "en": "Explore Assets",
     "t": "Objekte ansehen"
   },
+  "home.hero.cta.fact": {
+    "en": "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe.",
+    "t": "Google-Anmeldung, Identitätsprüfung meist binnen einer Stunde entschieden, dann einzahlen und zeichnen."
+  },
+  "home.hero.cta.start": {
+    "en": "Start investing",
+    "t": "Jetzt investieren"
+  },
   "home.hero.cta.whitepaper": {
     "en": "Whitepaper",
     "t": "Whitepaper"

@@ -619,6 +619,14 @@
     "en": "Explore Assets",
     "t": "Khám phá tài sản"
   },
+  "home.hero.cta.fact": {
+    "en": "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe.",
+    "t": "Đăng nhập Google, xác minh danh tính thường được xét xong trong vòng một giờ, rồi nạp tiền và đăng ký mua."
+  },
+  "home.hero.cta.start": {
+    "en": "Start investing",
+    "t": "Bắt đầu đầu tư"
+  },
   "home.hero.cta.whitepaper": {
     "en": "Whitepaper",
     "t": "Sách trắng"

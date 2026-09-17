@@ -36,6 +36,7 @@ const PIN_TO_TOP = new Set<string>(["header", "hero"]);
 const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
   hero: "a",
   hero_headline: "b",
+  hero_cta: "a",
   team_bio_shade: "a",
   team_office: "a",
 };

@@ -2,12 +2,12 @@ import { preload } from "react-dom";
 import type { Locale } from "@evinvest/i18n";
 
 import { Text, Tier } from "@/shared/ui/text";
-import { Reveal } from "@/shared/ui/motion";
+import { Reveal, Settle } from "@/shared/ui/motion";
 import { ASSETS } from "@/shared/config/assets";
 import { HeroACanvas } from "./canvas";
-import { HeroACta } from "./cta";
 import { HeroAStats } from "./stats";
 import { HeroHeadline } from "./headline";
+import { HeroCta } from "../cta";
 import { translate } from "@/shared/config/i18n";
 
 /**
@@ -33,34 +33,31 @@ export function HeroA({ locale }: { locale: Locale }) {
 }
 
 // The hero's opening sequence, in beats: headline assembles (word stagger,
-// ~0.4s), then the sub-copy, then the CTAs. Each delay starts a little before
-// the previous beat ends so the sequence overlaps rather than marching.
+// ~0.4s), then the sub-copy. The sub-copy's delay starts a little before the
+// headline finishes so the two overlap rather than march. The CTA row is *not*
+// a beat: it is painted from the first frame and only settles (#198) — a
+// control that fades in ~1s after the headline reads as drag and, at opacity 0,
+// is invisible to LCP.
 const COPY_DELAY = 0.35;
-const CTA_DELAY = 0.55;
 
-function HeroACtaAB({ locale }: { locale: Locale }) {
+function HeroACtaRow({ locale }: { locale: Locale }) {
   const t = translate(locale);
   return (
-    <Reveal
-      onMount
-      delay={CTA_DELAY}
-      className="flex flex-col items-center gap-4"
-    >
-      <HeroACta
-        scrollHint={
-          <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
-            {t("home.hero.scrollHint", "Follow the money")}
-          </span>
-        }
-      />
-    </Reveal>
+    <Settle className="flex flex-col items-center gap-4">
+      <HeroCta align="center" />
+      <Text asChild variant="secondary" className="mt-8">
+        <span className="text-xs font-mono-tech tracking-widest uppercase">
+          {t("home.hero.scrollHint", "Follow the money")}
+        </span>
+      </Text>
+    </Settle>
   );
 }
 
 function HeroCopy({ locale }: { locale: Locale }) {
   const t = translate(locale);
   return (
-    <HeroACanvas cta={<HeroACtaAB locale={locale} />}>
+    <HeroACanvas cta={<HeroACtaRow locale={locale} />}>
       <HeroHeadline locale={locale} />
       <Reveal onMount delay={COPY_DELAY}>
         <Tier tier="main">

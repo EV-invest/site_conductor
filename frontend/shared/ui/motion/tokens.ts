@@ -27,6 +27,14 @@ export const DUR = {
 export const RISE = 16;
 
 /**
+ * Starting opacity of a {@link Settle}: the element is on screen from the
+ * first frame and only firms up. Above ~0.5 the browser still counts it as an
+ * LCP candidate and a reader never sees an empty slot where a control belongs;
+ * below 1 the settle still registers as motion. Never 0 — that is a `Reveal`.
+ */
+export const SETTLE_OPACITY = 0.6;
+
+/**
  * Seconds between siblings in a staggered group. Tuned so a 4-up grid finishes
  * within `DUR.slow` of its first child: past ~8 items, prefer two groups over a
  * longer tail.

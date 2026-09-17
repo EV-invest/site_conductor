@@ -36,7 +36,7 @@ code into the client bundle):
   Example: `ExperimentTracker` (client) wraps server `<TeamA/>` / `<TeamB/>`.
 - **Extract the interactive leaf** — pull just the handler into a tiny client
   component and render it from the server parent.
-  Examples: `hero/ui/hero-b-cta.tsx` (the only client bit of `HeroB`),
+  Examples: `hero/ui/cta/cabinet-first.tsx` (the only client bit of `HeroB`),
   `team/ui/team-placeholders.tsx` (the only client bit of `TeamA`/`TeamB`).
 
 **Litmus test:** if a section is static except for one button, the section is a
@@ -342,6 +342,7 @@ inline; if a value is missing, add it to the tokens.
 | Primitive | Use for | Trigger |
 |---|---|---|
 | `Reveal` | one block arriving | scroll (`whileInView`), or `onMount` above the fold |
+| `Settle` | a block that must be **there on first paint** (a primary CTA) and only firms up — opacity from `SETTLE_OPACITY`, half a `RISE`, no delay; instant under reduced motion | mount |
 | `Stagger` + `StaggerItem` | a row/grid arriving in sequence | same |
 | `SplitText` | a **display headline** assembling word by word | same, via `inView` |
 
@@ -353,7 +354,8 @@ Rules that are not negotiable:
   section that re-animates every time it scrolls back into view reads as broken.
 - **`prefers-reduced-motion` collapses movement to a plain fade**, never to
   nothing: the content still needs to arrive. Every primitive handles this; hand-
-  written motion must call `useReducedMotion()` itself.
+  written motion must call `useReducedMotion()` itself. (`Settle` is the one
+  exception — its content never left, so it renders at rest.)
 - **`SplitText` is for display type only.** Word-staggering body copy makes it
   unreadable while it settles. It keeps the reassembled string as the container's
   `aria-label` and `aria-hidden`s the word spans, so screen readers hear one
