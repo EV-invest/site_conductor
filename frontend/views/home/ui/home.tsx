@@ -1,5 +1,6 @@
 import type { Locale } from "@evinvest/i18n";
 
+import { CabinetTour } from "./cabinet-tour";
 import { ClosingCta } from "./closing-cta";
 import { FieldNotes } from "./field-notes";
 import { Hero } from "./hero";
@@ -25,6 +26,7 @@ export function HomeView({ locale }: { locale: Locale }) {
       <Portfolio locale={locale} />
       <Partners locale={locale} />
       <Research locale={locale} />
+      <CabinetTour locale={locale} />
       <Team locale={locale} />
       <ClosingCta locale={locale} />
     </div>

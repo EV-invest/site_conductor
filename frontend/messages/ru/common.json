@@ -1374,5 +1374,69 @@
   "header.signOut": {
     "en": "Sign out",
     "t": "Выйти"
+  },
+  "home.cabinetTour.eyebrow": {
+    "en": "Inside the investor cabinet",
+    "t": "Внутри кабинета инвестора"
+  },
+  "home.cabinetTour.title": {
+    "en": "Your investment, *in full view*",
+    "t": "Ваша инвестиция *как на ладони*"
+  },
+  "home.cabinetTour.intro": {
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
+    "t": "Кабинет — это место, где фонд отчитывается перед вами: что вы держите, как это оценено, на какой стадии проверка и что в кошельке. Это его настоящие экраны."
+  },
+  "home.cabinetTour.benefit.units.title": {
+    "en": "Holdings in allocation units",
+    "t": "Доля в юнитах аллокации"
+  },
+  "home.cabinetTour.benefit.units.body": {
+    "en": "Your stake is a number of units; its value follows the fund's posted NAV, not a promise.",
+    "t": "Ваша доля — это число юнитов; её стоимость следует за опубликованной NAV фонда, а не за обещанием."
+  },
+  "home.cabinetTour.benefit.nav.title": {
+    "en": "NAV history you can see",
+    "t": "История NAV перед глазами"
+  },
+  "home.cabinetTour.benefit.nav.body": {
+    "en": "Every valuation mark since inception, with your own participation drawn on top of it.",
+    "t": "Каждая оценочная марка с момента запуска — и поверх неё линия вашего участия."
+  },
+  "home.cabinetTour.benefit.status.title": {
+    "en": "Verification status always in view",
+    "t": "Статус проверки всегда на виду"
+  },
+  "home.cabinetTour.benefit.status.body": {
+    "en": "Identity check, account standing and the devices signed in — on your profile, never buried in a menu.",
+    "t": "Проверка личности, состояние счёта и устройства, с которых выполнен вход, — в профиле, а не в глубине меню."
+  },
+  "home.cabinetTour.benefit.wallet.title": {
+    "en": "Wallet in USDT",
+    "t": "Кошелёк в USDT"
+  },
+  "home.cabinetTour.benefit.wallet.body": {
+    "en": "Fund and withdraw in USDT on TRON; every balance is an entry on the ledger, not a spreadsheet.",
+    "t": "Пополнение и вывод в USDT в сети TRON; каждый баланс — запись в леджере, а не в таблице."
+  },
+  "home.cabinetTour.cta": {
+    "en": "See your cabinet",
+    "t": "Открыть свой кабинет"
+  },
+  "home.cabinetTour.caption": {
+    "en": "Screens from the live cabinet, demo data",
+    "t": "Экраны живого кабинета, демо-данные"
+  },
+  "home.cabinetTour.shot.home": {
+    "en": "Cabinet home: portfolio value, NAV history with your own participation drawn on it, and recent activity (demo data)",
+    "t": "Главная кабинета: стоимость портфеля, история NAV с линией вашего участия и последние операции (демо-данные)"
+  },
+  "home.cabinetTour.shot.invest": {
+    "en": "Invest: the product catalogue with your units, value and P&L per fund (demo data)",
+    "t": "Инвестиции: каталог продуктов с вашими юнитами, стоимостью и P&L по каждому фонду (демо-данные)"
+  },
+  "home.cabinetTour.shot.profile": {
+    "en": "Profile: verified identity, account standing and the devices signed in (demo data)",
+    "t": "Профиль: подтверждённая личность, состояние счёта и устройства, с которых выполнен вход (демо-данные)"
   }
 }

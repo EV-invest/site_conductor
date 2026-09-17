@@ -1374,5 +1374,69 @@
   "header.signOut": {
     "en": "Sign out",
     "t": "Se déconnecter"
+  },
+  "home.cabinetTour.eyebrow": {
+    "en": "Inside the investor cabinet",
+    "t": "Dans le cabinet investisseur"
+  },
+  "home.cabinetTour.title": {
+    "en": "Your investment, *in full view*",
+    "t": "Votre investissement, *en pleine vue*"
+  },
+  "home.cabinetTour.intro": {
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
+    "t": "Le cabinet est l'endroit où le fonds vous rend des comptes : ce que vous détenez, comment cela a été valorisé, où en est votre vérification et ce qu'il y a dans votre portefeuille. Ce sont ses véritables écrans."
+  },
+  "home.cabinetTour.benefit.units.title": {
+    "en": "Holdings in allocation units",
+    "t": "Des avoirs en unités d'allocation"
+  },
+  "home.cabinetTour.benefit.units.body": {
+    "en": "Your stake is a number of units; its value follows the fund's posted NAV, not a promise.",
+    "t": "Votre participation est un nombre d'unités ; sa valeur suit la VL publiée du fonds, pas une promesse."
+  },
+  "home.cabinetTour.benefit.nav.title": {
+    "en": "NAV history you can see",
+    "t": "Un historique de VL visible"
+  },
+  "home.cabinetTour.benefit.nav.body": {
+    "en": "Every valuation mark since inception, with your own participation drawn on top of it.",
+    "t": "Chaque valorisation depuis le lancement, avec votre propre participation tracée par-dessus."
+  },
+  "home.cabinetTour.benefit.status.title": {
+    "en": "Verification status always in view",
+    "t": "Le statut de vérification toujours en vue"
+  },
+  "home.cabinetTour.benefit.status.body": {
+    "en": "Identity check, account standing and the devices signed in — on your profile, never buried in a menu.",
+    "t": "Vérification d'identité, état du compte et appareils connectés — sur votre profil, jamais enfouis dans un menu."
+  },
+  "home.cabinetTour.benefit.wallet.title": {
+    "en": "Wallet in USDT",
+    "t": "Un portefeuille en USDT"
+  },
+  "home.cabinetTour.benefit.wallet.body": {
+    "en": "Fund and withdraw in USDT on TRON; every balance is an entry on the ledger, not a spreadsheet.",
+    "t": "Dépôts et retraits en USDT sur TRON ; chaque solde est une écriture dans le grand livre, pas une feuille de calcul."
+  },
+  "home.cabinetTour.cta": {
+    "en": "See your cabinet",
+    "t": "Voir votre cabinet"
+  },
+  "home.cabinetTour.caption": {
+    "en": "Screens from the live cabinet, demo data",
+    "t": "Écrans du cabinet en production, données de démonstration"
+  },
+  "home.cabinetTour.shot.home": {
+    "en": "Cabinet home: portfolio value, NAV history with your own participation drawn on it, and recent activity (demo data)",
+    "t": "Accueil du cabinet : valeur du portefeuille, historique de VL avec votre propre participation et activité récente (données de démonstration)"
+  },
+  "home.cabinetTour.shot.invest": {
+    "en": "Invest: the product catalogue with your units, value and P&L per fund (demo data)",
+    "t": "Investir : le catalogue de produits avec vos unités, leur valeur et le P&L par fonds (données de démonstration)"
+  },
+  "home.cabinetTour.shot.profile": {
+    "en": "Profile: verified identity, account standing and the devices signed in (demo data)",
+    "t": "Profil : identité vérifiée, état du compte et appareils connectés (données de démonstration)"
   }
 }

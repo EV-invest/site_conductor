@@ -33,6 +33,11 @@ const SECTIONS = [
   { name: "research", selector: "#research", on: ["desktop"] },
   { name: "portfolio", selector: "#portfolio", on: ["desktop"] },
   { name: "partners", selector: "#partners", on: ["desktop"] },
+  {
+    name: "cabinet-tour",
+    selector: "#cabinet-tour",
+    on: ["desktop", "mobile"],
+  },
   { name: "team", selector: "#team", on: ["desktop"] },
   { name: "closing-cta", selector: "#closing-cta", on: ["desktop", "mobile"] },
   { name: "footer", selector: "footer", on: ["desktop", "mobile"] },
