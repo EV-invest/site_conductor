@@ -1,4 +1,6 @@
 import type { Locale } from "@evinvest/i18n";
+
+import { formatCalendarDate } from "@/shared/lib/intl";
 import { PUBLICATIONS } from "./catalogue";
 import { localizePublication } from "./translations";
 import type { Publication, PublicationKind } from "./types";
@@ -71,37 +73,11 @@ export function fieldNotes(locale: Locale, n?: number): Publication[] {
 // in both places. Before this took a locale it was pinned to en-GB, which meant
 // a Russian page dated its articles "1 May 2026".
 //
-// UTC because a date-only string has no zone, and letting the runtime apply one
-// moves the article a day backwards for any reader west of Greenwich.
+// The policy itself (UTC, the tag map, the parts-built short form) lives in
+// `shared/lib/intl` so the hero's figures and these cards can never disagree.
+// What stays here is the publication's vocabulary: "short" is the mono-tech
+// masthead label, upper-cased because that is how every card sets it.
 //
-// `en` maps to en-GB, not `en`: day-month-year, which is what this site has
-// always shown and what the rest of its copy assumes.
-const LOCALE_TAG: Record<Locale, string> = {
-  en: "en-GB",
-  ru: "ru-RU",
-  vi: "vi-VN",
-  fr: "fr-FR",
-  de: "de-DE",
-};
-
-// Constructing an Intl formatter is not cheap and these are called per card, so
-// each (locale, style) pair is built once and kept.
-const FORMATTERS = new Map<string, Intl.DateTimeFormat>();
-
-function formatter(locale: Locale, style: "long" | "short"): Intl.DateTimeFormat {
-  const key = `${locale}:${style}`;
-  const cached = FORMATTERS.get(key);
-  if (cached) return cached;
-  const built = new Intl.DateTimeFormat(LOCALE_TAG[locale] ?? "en-GB", {
-    day: "numeric",
-    month: style === "long" ? "long" : "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-  FORMATTERS.set(key, built);
-  return built;
-}
-
 // `locale` is required, with no default. A default would make forgetting it
 // silent — English dates on a Russian page, which is exactly the bug this
 // parameter was added to fix, and invisible to anyone not reading that locale.
@@ -110,20 +86,6 @@ export function formatPublicationDate(
   style: "long" | "short",
   locale: Locale
 ): string {
-  const at = new Date(`${iso}T00:00:00Z`);
-  if (Number.isNaN(at.getTime())) return iso;
-  if (style === "long") return formatter(locale, "long").format(at);
-
-  // The short form is a mono-tech label — "1 MAY 2026" — so it wants the three
-  // fields and no punctuation. Built from parts rather than by stripping
-  // characters out of the formatted string: `replace(/\./g, "")` was an en-GB
-  // assumption that turned Russian's era suffix "2026 г." into a dangling
-  // "2026 Г". Keeping only day/month/year drops every locale's literals while
-  // preserving its field *order*, which is the part that actually differs.
-  return formatter(locale, "short")
-    .formatToParts(at)
-    .filter(part => part.type === "day" || part.type === "month" || part.type === "year")
-    .map(part => part.value)
-    .join(" ")
-    .toUpperCase();
+  if (style === "long") return formatCalendarDate(iso, locale, "long");
+  return formatCalendarDate(iso, locale, "label").toUpperCase();
 }

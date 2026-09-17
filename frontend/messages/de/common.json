@@ -659,6 +659,10 @@
     "en": "Highest EV City",
     "t": "Stadt mit höchstem EV"
   },
+  "home.hero.stat.asOf": {
+    "en": "Figures as of {date}",
+    "t": "Zahlen, Stand {date}"
+  },
   "home.hero.stat.aumCap": {
     "en": "Closing at",
     "t": "Schluss bei"
