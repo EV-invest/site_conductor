@@ -47,6 +47,26 @@
     "en": "Whitepaper",
     "t": "Sách trắng"
   },
+  "footer.investors": {
+    "en": "Investors",
+    "t": "Nhà đầu tư"
+  },
+  "footer.cabinet": {
+    "en": "Cabinet",
+    "t": "Cabinet"
+  },
+  "footer.openAccount": {
+    "en": "Open an account",
+    "t": "Mở tài khoản"
+  },
+  "footer.finishVerification": {
+    "en": "Finish verification",
+    "t": "Hoàn tất xác minh"
+  },
+  "footer.reports": {
+    "en": "Reports",
+    "t": "Báo cáo"
+  },
   "footer.description": {
     "en": "EV Investment is a registered real estate advisory and investment management fund specializing in premium coastal developments in Quy Nhon, Binh Dinh province, Vietnam.",
     "t": "EV Investment là quỹ tư vấn bất động sản và quản lý đầu tư đã đăng ký, chuyên về các dự án ven biển cao cấp tại Quy Nhơn, tỉnh Bình Định, Việt Nam."
@@ -70,14 +90,6 @@
   "footer.office.hcmc.address": {
     "en": "Deutsches Haus, 33 Le Duan Blvd, District 1, Ho Chi Minh City, Vietnam",
     "t": "Deutsches Haus, 33 đại lộ Lê Duẩn, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
-  },
-  "footer.legal.privacy": {
-    "en": "Privacy Policy",
-    "t": "Chính sách bảo mật"
-  },
-  "footer.legal.terms": {
-    "en": "Terms of Service",
-    "t": "Điều khoản dịch vụ"
   },
   "footer.rights": {
     "en": "All rights reserved.",
