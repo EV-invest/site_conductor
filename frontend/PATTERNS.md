@@ -302,8 +302,10 @@ the conductor-owned AppShell (the brand header) into the zone's HTML stream.
   (all of `public/` is), so a
   build that skips generation fails at the proxy's static import instead of
   shipping markup that points at `/shell` assets absent from the image. The
-  header carries no React state anywhere; both hosts load the same ~30-line
-  vanilla behavior script (`scripts/header-behavior.ts`).
+  header carries no React state anywhere; both hosts load the same vanilla
+  behavior script (`scripts/header-behavior.ts`, deferred) and the same
+  pre-paint session stamp (`scripts/session-stamp.ts`, blocking in `<head>`:
+  a zone loads it by URL, the conductor inlines the manifest's copy).
 - **Zones know nothing about the shell** — the single contract is the
   `--ev-shell-offset` token (uikit tokens.css, `0px` standalone; the injected
   header CSS overrides it to the bar's at-rest height and pads `body` by it,

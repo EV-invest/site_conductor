@@ -4,6 +4,20 @@
 // content-hashed IIFE by scripts/build-shell.mts. All it does: toggle
 // `data-scrolled` / `data-menu-open` / `data-session` on the root.
 (() => {
+  // The session state as last confirmed by /api/auth/session, kept for the
+  // pre-paint stamp (scripts/session-stamp.ts) to replay on the next hard load.
+  // The key and its two values are the whole contract between the scripts —
+  // neither can import the other. Storage may throw (private modes); a missed
+  // write only means the next load starts from the signed-out default.
+  const SESSION_KEY = "ev.session";
+  const remember = (state: "authenticated" | "anonymous") => {
+    try {
+      localStorage.setItem(SESSION_KEY, state);
+    } catch {
+      // See above.
+    }
+  };
+
   const header = document.querySelector<HTMLElement>(
     'header[data-slot="header"]'
   );
@@ -23,6 +37,9 @@
   // the sign-out button's `hidden` is cleared here because a hidden attribute
   // cannot be styled off. Nothing is stamped on a failed read: the pair stays,
   // which is the right guess for a visitor whose session cannot be confirmed.
+  // Before this answers, the root may already carry the previous load's state
+  // from the pre-paint stamp; this read overwrites it either way, and records
+  // the fresh answer for the next load.
   const signoutBtn = header.querySelector<HTMLElement>(
     '[data-action="signout"]'
   );
@@ -30,10 +47,9 @@
     .then(r => r.json())
     .then((s: { authenticated?: boolean }) => {
       const authenticated = s?.authenticated === true;
-      header.setAttribute(
-        "data-session",
-        authenticated ? "authenticated" : "anonymous"
-      );
+      const state = authenticated ? "authenticated" : "anonymous";
+      header.setAttribute("data-session", state);
+      remember(state);
       if (authenticated && signoutBtn) signoutBtn.hidden = false;
     })
     .catch(() => {});
@@ -73,9 +89,14 @@
     // Sign-out handler: POSTs /api/auth/logout with the CSRF token from the
     // page's meta tag (same mechanism as the AccountChip microfrontend), then
     // navigates home. Runs before the delegated-close so the menu closes too.
+    // The remembered state flips first, so the home page this lands on does
+    // not paint the (now empty) chip slot off a stale stamp. The chip's own
+    // sign-out (banking's element) cannot do this; there the next page's read
+    // corrects the stamp one round trip later.
     const signout = target.closest<HTMLElement>('[data-action="signout"]');
     if (signout) {
       setOpen(false);
+      remember("anonymous");
       const csrf =
         document
           .querySelector('meta[name="csrf-token"]')

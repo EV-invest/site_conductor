@@ -127,10 +127,18 @@ const displayFontFile = readFileSync(
 const displayFontName = `playfair.${hash(displayFontFile)}.woff2`;
 
 const fragmentCss = await buildCss(headerHtml, displayFontName);
-const behaviorJs = transformSync(
-  readFileSync(path.join(frontend, "scripts/header-behavior.ts"), "utf8"),
-  { loader: "ts", minify: true }
-).code;
+const stripTs = (file: string) =>
+  transformSync(readFileSync(path.join(frontend, file), "utf8"), {
+    loader: "ts",
+    minify: true,
+  }).code;
+const behaviorJs = stripTs("scripts/header-behavior.ts");
+// The pre-paint session stamp, a separate file for the same reason span-enter
+// is: it must run blocking in <head>, and the behaviour script is deferred on
+// both hosts. The zone proxy loads it by URL; the conductor inlines the same
+// bytes via the manifest (`sessionInline`), sparing its critical path a
+// request for a few hundred bytes. One build writes both, so they cannot drift.
+const sessionJs = stripTs("scripts/session-stamp.ts");
 // The span-enter decision, emitted as a real file rather than inlined into the
 // head fragment. Zones serve a strict `script-src 'self' 'nonce-…'` CSP, and an
 // inline script without that per-request nonce is simply blocked — which is
@@ -145,9 +153,11 @@ mkdirSync(outDir, { recursive: true });
 const cssName = `header.${hash(fragmentCss)}.css`;
 const jsName = `header-behavior.${hash(behaviorJs)}.js`;
 const spanName = `span-enter.${hash(spanJs)}.js`;
+const sessionName = `session-stamp.${hash(sessionJs)}.js`;
 writeFileSync(path.join(outDir, cssName), fragmentCss);
 writeFileSync(path.join(outDir, jsName), behaviorJs);
 writeFileSync(path.join(outDir, spanName), spanJs);
+writeFileSync(path.join(outDir, sessionName), sessionJs);
 writeFileSync(path.join(outDir, displayFontName), displayFontFile);
 
 writeFileSync(
@@ -157,6 +167,8 @@ writeFileSync(
       css: `/shell/${cssName}`,
       js: `/shell/${jsName}`,
       spanJs: `/shell/${spanName}`,
+      sessionJs: `/shell/${sessionName}`,
+      sessionInline: sessionJs,
       font: `/shell/${displayFontName}`,
       // Keyed by locale; `shared/zone-proxy.ts` picks the one matching the URL it
       // is proxying. The chip's module script is appended to each — it is
@@ -174,7 +186,7 @@ writeFileSync(
   )
 );
 console.log(
-  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B), ${displayFontName} (${displayFontFile.length}B), ${LOCALES.length} locale fragments`
+  `shell: ${cssName} (${fragmentCss.length}B), ${jsName} (${behaviorJs.length}B), ${sessionName} (${sessionJs.length}B), ${displayFontName} (${displayFontFile.length}B), ${LOCALES.length} locale fragments`
 );
 
 async function buildCss(
