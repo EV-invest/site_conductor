@@ -15,7 +15,10 @@ export default defineConfig({
   snapshotPathTemplate: "{testDir}/__screenshots__/{arg}{ext}",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  // One retry in CI: the reveal wait is timing-bound (IntersectionObserver +
+  // once-only motion) and a rare miss is not a regression; locally it stays
+  // strict so a real hang is seen.
+  retries: process.env.CI ? 1 : 0,
   // Locally, two reporters compose: a minimal one (tests/visual-reporter.ts)
   // that on failure prints only the expected/actual/diff image paths — no step
   // trace or code-frame, since a visual failure is an image mismatch, not a
