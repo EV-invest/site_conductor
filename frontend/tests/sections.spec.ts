@@ -126,33 +126,40 @@ for (const { name, selector, on } of SECTIONS) {
       // A section taller than the viewport (any long section on mobile) keeps
       // its lower Reveals un-intersected after a top-aligned scroll: their
       // once-only observers never fire and the wait below reads a blank. Walk
-      // the section top to bottom in viewport-sized steps so every observer
-      // has seen the viewport, then return to the top for the capture —
-      // `once` keeps them revealed.
+      // from the page top to the section's end in viewport-sized steps so
+      // every observer above and inside it has seen the viewport (and every
+      // lazy image above it has loaded — one that finishes after the capture
+      // starts would shift the page under the fixed chrome), then return to
+      // the top of the section for the capture — `once` keeps them revealed.
       await section.evaluate(async el => {
-        // Images above the section that finish loading after the walk would
-        // shift the page and move the fixed chrome relative to the capture.
-        await Promise.all(
-          Array.from(document.images).map(img =>
-            img.complete
-              ? undefined
-              : new Promise<void>(r => {
+        const pause = () => new Promise(r => setTimeout(r, 100));
+        const step = Math.max(200, window.innerHeight - 200);
+        const bottom =
+          el.getBoundingClientRect().top +
+          window.scrollY +
+          el.getBoundingClientRect().height;
+        for (let y = 0; y < bottom; y += step) {
+          window.scrollTo({ top: y, behavior: "instant" });
+          await pause();
+        }
+        // Lazy images below the fold never complete, so only wait for those
+        // the walk has passed — bounded, in case one of them is broken.
+        const passed = Array.from(document.images).filter(
+          img =>
+            !img.complete &&
+            img.getBoundingClientRect().top + window.scrollY < bottom
+        );
+        await Promise.race([
+          Promise.all(
+            passed.map(
+              img =>
+                new Promise<void>(r => {
                   img.onload = img.onerror = () => r();
                 })
-          )
-        );
-        const step = Math.max(200, window.innerHeight - 200);
-        const top = el.getBoundingClientRect().top + window.scrollY;
-        const bottom = top + el.getBoundingClientRect().height;
-        for (let y = top; y < bottom; y += step) {
-          window.scrollTo({ top: y, behavior: "instant" });
-          await new Promise(r => setTimeout(r, 120));
-        }
-        window.scrollTo({
-          top: bottom - window.innerHeight,
-          behavior: "instant",
-        });
-        await new Promise(r => setTimeout(r, 120));
+            )
+          ),
+          new Promise(r => setTimeout(r, 3000)),
+        ]);
         el.scrollIntoView({ block: "start", behavior: "instant" });
       });
     }
