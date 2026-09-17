@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Footer as BrandFooter } from "@evinvest/uikit";
 import { useT, useLocale } from "@evinvest/i18n/react";
 import { BuildVersionLog } from "./build-version-log";
-import { FOOTER_NAV, localizeNav } from "./nav-items";
+import { FOOTER_NAV, LEGAL_NAV, localizeNav } from "./nav-items";
 import { NewsletterForm } from "./newsletter-form";
 import { config } from "@/config";
 
@@ -74,8 +74,7 @@ export function Footer() {
       ),
     },
   ];
-  // No legal links until the privacy / terms pages exist (issue #204): the
-  // previous pair pointed at `#hero`, which reads as a broken promise.
+  const legalLinks = localizeNav(LEGAL_NAV, locale, t);
   return (
     <HardHrefs value={hardHrefs}>
       <BrandFooter
@@ -88,6 +87,7 @@ export function Footer() {
         )}
         tagline={t("footer.tagline", "Quy Nhon Fund")}
         offices={offices}
+        legalLinks={legalLinks}
         newsletterBlurb={t(
           "footer.newsletter.blurb",
           "Subscribe, to receive our macro reports"

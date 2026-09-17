@@ -127,6 +127,18 @@
     "en": "Network error — please try again.",
     "t": "Netzwerkfehler — bitte erneut versuchen."
   },
+  "footer.legal.terms": {
+    "en": "Terms",
+    "t": "AGB"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy",
+    "t": "Datenschutz"
+  },
+  "footer.legal.risk": {
+    "en": "Risk disclosure",
+    "t": "Risikohinweise"
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — Startseite"

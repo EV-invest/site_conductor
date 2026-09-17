@@ -127,6 +127,18 @@
     "en": "Network error — please try again.",
     "t": "Lỗi kết nối — vui lòng thử lại."
   },
+  "footer.legal.terms": {
+    "en": "Terms",
+    "t": "Điều khoản"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy",
+    "t": "Quyền riêng tư"
+  },
+  "footer.legal.risk": {
+    "en": "Risk disclosure",
+    "t": "Công bố rủi ro"
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — trang chủ"
