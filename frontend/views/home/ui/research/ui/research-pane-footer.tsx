@@ -57,6 +57,9 @@ export function ResearchPaneFooter({
           onClick={() =>
             capture("cta_clicked", {
               cta: "read_report",
+              location: "research",
+              variant: "control",
+              locale,
               report: report.slug,
             })
           }
@@ -74,6 +77,9 @@ export function ResearchPaneFooter({
           onClick={() =>
             capture("cta_clicked", {
               cta: "download_report",
+              location: "research",
+              variant: "control",
+              locale,
               report: report.slug,
             })
           }
