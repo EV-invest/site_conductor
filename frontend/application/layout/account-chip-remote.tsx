@@ -1,5 +1,6 @@
 import { RemoteElement } from "@/shared/mfe";
 import { findMfe } from "@/shared/mfe/registry";
+import { CabinetEntryTracker } from "./cabinet-entry-tracker";
 
 // Server Component that mounts the account chip where the header CTA sits. The chip is a
 // cabinet-served element remote (`cabinet.account` in mfe-registry.json), reached
@@ -17,5 +18,24 @@ export async function AccountChipRemote({ className }: { className?: string }) {
       scriptUrl={entry.scriptUrl}
       className={className}
     />
+  );
+}
+
+// The two placements of the chip in the shell, each wrapped in the entry
+// tracker with its funnel `location`. Kept here, next to the remote, so the
+// document only composes them and the header/menu split lives in one place.
+export function HeaderAccountSlot() {
+  return (
+    <CabinetEntryTracker location="header">
+      <AccountChipRemote className="hidden items-center sm:flex" />
+    </CabinetEntryTracker>
+  );
+}
+
+export function MenuAccountSlot() {
+  return (
+    <CabinetEntryTracker location="menu">
+      <AccountChipRemote className="flex w-full" />
+    </CabinetEntryTracker>
   );
 }

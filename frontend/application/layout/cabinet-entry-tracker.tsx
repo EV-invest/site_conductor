@@ -14,9 +14,11 @@ const HEADER_VARIANT = "control";
 // Client island around the account-chip slot. The chip is a cabinet-served
 // remote in light DOM whose markup this repo does not own, so the CTA event is
 // hung on a delegated listener over the slot instead of on the links
-// themselves. `data-cta-location` is left on the wrapper for the chip to read
-// once it instruments its own links (banking #392) — at that point one side
-// must stop firing, or the funnel double-counts.
+// themselves. Only the signed-out CTA (`/{locale}/cabinet/login`) counts: the
+// signed-in chip links to the profile, and a returning user's clicks on their
+// own name would inflate the entry funnel. `data-cta-location` is left on the
+// wrapper for the chip to read once it instruments its own links (banking
+// #392) — at that point one side must stop firing, or the funnel double-counts.
 export function CabinetEntryTracker({
   location,
   children,
@@ -33,7 +35,7 @@ export function CabinetEntryTracker({
   // pagehide flush — see the report on send_instantly in the lib.
   const onClickCapture = (e: MouseEvent<HTMLDivElement>) => {
     const target = e.target instanceof Element ? e.target : null;
-    if (!target?.closest('a[href*="/cabinet"]')) return;
+    if (!target?.closest('a[href*="/cabinet/login"]')) return;
     capture("cta_clicked", {
       cta: "cabinet",
       location,
