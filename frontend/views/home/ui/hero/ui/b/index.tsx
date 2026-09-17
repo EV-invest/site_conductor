@@ -4,6 +4,7 @@ import { Text, Tier } from "@/shared/ui/text";
 import { HeroCta } from "../cta";
 import { BoardroomImage } from "./boardroom";
 import { translate } from "@/shared/config/i18n";
+import { formatFundFigures } from "@/shared/lib/fund-figures";
 import { Accented } from "@/shared/ui/accented";
 
 /**
@@ -14,6 +15,7 @@ import { Accented } from "@/shared/ui/accented";
  */
 export function HeroB({ locale }: { locale: Locale }) {
   const t = translate(locale);
+  const figures = formatFundFigures(locale);
   return (
     <section
       id="hero"
@@ -50,16 +52,26 @@ export function HeroB({ locale }: { locale: Locale }) {
           <div className="flex flex-wrap items-center gap-8 pt-2">
             <HeroCta align="start" />
 
+            {/* The same figure as Hero A's ribbon, from the same constant (#204):
+                a variant must never quote a different fund than the control. */}
             <div className="shrink-0">
               <Text
                 variant="secondary"
-                className="text-[10px] font-mono-tech uppercase tracking-widest mb-1"
+                className="text-xs font-mono-tech uppercase tracking-widest mb-1"
               >
                 {t("home.hero.stat.targetIrr", "Target IRR")}
               </Text>
               <p className="text-2xl sm:text-3xl font-serif-display text-accent-warn font-bold">
-                22.4% +
+                {figures.targetIrr}
               </p>
+              <Text
+                variant="secondary"
+                className="text-xs font-mono-tech uppercase tracking-widest mt-1"
+              >
+                {t("home.hero.stat.asOf", "Figures as of {date}", {
+                  date: figures.asOf,
+                })}
+              </Text>
             </div>
           </div>
         </div>

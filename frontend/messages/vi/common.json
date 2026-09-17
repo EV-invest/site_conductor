@@ -659,6 +659,10 @@
     "en": "Highest EV City",
     "t": "Thành phố có EV cao nhất"
   },
+  "home.hero.stat.asOf": {
+    "en": "Figures as of {date}",
+    "t": "Số liệu tính đến {date}"
+  },
   "home.hero.stat.aumCap": {
     "en": "Closing at",
     "t": "Đóng ở mức"

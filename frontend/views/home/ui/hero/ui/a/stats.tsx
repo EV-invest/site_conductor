@@ -6,6 +6,10 @@ import { Stagger, StaggerItem } from "@/shared/ui/motion";
 import { cn } from "@/shared/lib/utils";
 import type { Translate } from "@evinvest/i18n";
 import { translate } from "@/shared/config/i18n";
+import {
+  formatFundFigures,
+  type FormattedFundFigures,
+} from "@/shared/lib/fund-figures";
 
 /** One key metric. The value's accent colour is the only thing that varies. */
 function Stat({
@@ -40,12 +44,13 @@ function Stat({
 // AUM under advisory is deliberately absent: it should be derived from total
 // bank assets rather than typed in, and a stale hardcoded figure on the hero is
 // worse than no figure. Restore it here once the number is live.
-// Labels translate; the figures do not. "Rentals" is a word and translates;
-// "Quy Nhon" is a place and does not.
-const stats = (t: Translate) => [
+// The fund figures come from `shared/config/fund-figures` (#204) — never typed
+// here. Labels translate; "Rentals" is a word and translates; "Quy Nhon" is a
+// place and does not.
+const stats = (t: Translate, figures: FormattedFundFigures) => [
   {
     label: t("home.hero.stat.targetIrr", "Target IRR"),
-    value: "16.4% +",
+    value: figures.targetIrr,
     tone: "text-accent-warn",
   },
   {
@@ -60,7 +65,7 @@ const stats = (t: Translate) => [
   },
   {
     label: t("home.hero.stat.aumCap", "Closing at"),
-    value: "$100M",
+    value: figures.closingTarget,
     tone: "text-accent-info",
   },
 ];
@@ -72,11 +77,12 @@ const stats = (t: Translate) => [
  */
 export function HeroAStats({ locale }: { locale: Locale }) {
   const t = translate(locale);
+  const figures = formatFundFigures(locale);
   return (
     <div className="absolute bottom-0 left-0 w-full bg-background/80 border-t border-ink/10 py-6 backdrop-blur-sm z-20">
       <Stagger onMount delay={0.7}>
         <Container className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats(t).map(stat => (
+          {stats(t, figures).map(stat => (
             <Stat
               key={stat.label}
               label={stat.label}
@@ -84,6 +90,16 @@ export function HeroAStats({ locale }: { locale: Locale }) {
               tone={stat.tone}
             />
           ))}
+          <StaggerItem distance={12} className="col-span-full">
+            <Text
+              variant="secondary"
+              className="text-xs font-mono-tech uppercase tracking-widest"
+            >
+              {t("home.hero.stat.asOf", "Figures as of {date}", {
+                date: figures.asOf,
+              })}
+            </Text>
+          </StaggerItem>
         </Container>
       </Stagger>
     </div>
