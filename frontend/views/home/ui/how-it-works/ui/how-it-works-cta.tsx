@@ -30,7 +30,8 @@ export function HowItWorksCta() {
     <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
       <Button
         href={localePath(locale, "/cabinet/login?intent=signup")}
-        className="bg-ink text-brand hover:bg-primary hover:text-on-primary hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        size="xl"
+        className="bg-ink text-brand hover:bg-primary hover:text-on-primary hover:scale-105 active:scale-95 font-mono-tech text-xs tracking-widest uppercase rounded-none outline-none focus-visible:ring-2 focus-visible:ring-ring"
         onClick={() =>
           capture("cta_clicked", {
             cta: "open_cabinet",

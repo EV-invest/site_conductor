@@ -23,14 +23,14 @@ export function HowItWorks({ locale }: { locale: Locale }) {
   return (
     <section
       id="how-it-works"
-      className="border-b border-ink/10 bg-background py-24 text-ink"
+      className="border-b border-border bg-background py-24 text-ink"
     >
       <Container>
         <Reveal className="max-w-2xl">
           <Eyebrow className="uppercase">
             {t("home.howItWorks.eyebrow", "How it works")}
           </Eyebrow>
-          <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-5xl">
+          <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-ink sm:text-5xl">
             <SplitText inView>
               {accented({
                 text: t(

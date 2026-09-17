@@ -10,7 +10,7 @@ import type { Step } from "../model/steps";
  */
 export function StepCard({ step }: { step: Step }) {
   return (
-    <Card className="h-full gap-4 rounded-xl border-ink/10 bg-card/50 py-8">
+    <Card className="h-full gap-4 border-border bg-card/50 py-8">
       <CardHeader className="gap-4 px-8">
         <span
           aria-hidden
@@ -18,8 +18,8 @@ export function StepCard({ step }: { step: Step }) {
         >
           {step.ordinal}
         </span>
-        <CardTitle className="font-serif-display text-xl font-light leading-snug text-white">
-          {step.title}
+        <CardTitle className="font-display text-xl font-light leading-snug text-ink">
+          <h3>{step.title}</h3>
         </CardTitle>
         <CardDescription className="text-base leading-relaxed font-light text-ink-mid sm:text-sm">
           {step.body}
