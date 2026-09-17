@@ -1,15 +1,19 @@
 import type { Locale } from "@evinvest/i18n";
 
 import { FUND_FIGURES } from "@/shared/config/fund-figures";
-import { formatCalendarDate, formatDecimal } from "./intl";
+import { formatCalendarDate, formatDecimal, formatPercent } from "./intl";
 
 export interface FormattedFundFigures {
-  /** "16.4% +" — the digits localised, the floor marker not. */
+  /** "16.4% +" / "16,4 % +" — the locale's percent, then the floor marker. */
   targetIrr: string;
   /** "$100M" — the digits localised, the currency and unit not. */
   closingTarget: string;
-  /** The as-of date in the locale's long form. */
-  asOf: string;
+  /**
+   * The as-of date as a mono-tech label ("17 SEP 2026" before the caller's
+   * `uppercase`), or absent while the figures are unconfirmed — see
+   * {@link FUND_FIGURES}.
+   */
+  asOf?: string;
 }
 
 /**
@@ -24,8 +28,10 @@ export interface FormattedFundFigures {
 export function formatFundFigures(locale: Locale): FormattedFundFigures {
   const { targetIrrPct, closingTargetUsdM, asOf } = FUND_FIGURES;
   return {
-    targetIrr: `${formatDecimal(targetIrrPct, locale, 1)}% +`,
+    targetIrr: `${formatPercent(targetIrrPct, locale, 1)} +`,
     closingTarget: `$${formatDecimal(closingTargetUsdM, locale, 0)}M`,
-    asOf: formatCalendarDate(asOf, locale),
+    ...(asOf !== undefined && {
+      asOf: formatCalendarDate(asOf, locale, "label"),
+    }),
   };
 }

@@ -64,14 +64,16 @@ export function HeroB({ locale }: { locale: Locale }) {
               <p className="text-2xl sm:text-3xl font-serif-display text-accent-warn font-bold">
                 {figures.targetIrr}
               </p>
-              <Text
-                variant="secondary"
-                className="text-xs font-mono-tech uppercase tracking-widest mt-1"
-              >
-                {t("home.hero.stat.asOf", "Figures as of {date}", {
-                  date: figures.asOf,
-                })}
-              </Text>
+              {figures.asOf && (
+                <Text
+                  variant="secondary"
+                  className="text-xs font-mono-tech uppercase tracking-widest mt-1"
+                >
+                  {t("home.hero.stat.asOf", "Figures as of {date}", {
+                    date: figures.asOf,
+                  })}
+                </Text>
+              )}
             </div>
           </div>
         </div>

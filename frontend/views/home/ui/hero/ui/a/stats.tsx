@@ -90,16 +90,18 @@ export function HeroAStats({ locale }: { locale: Locale }) {
               tone={stat.tone}
             />
           ))}
-          <StaggerItem distance={12} className="col-span-full">
-            <Text
-              variant="secondary"
-              className="text-xs font-mono-tech uppercase tracking-widest"
-            >
-              {t("home.hero.stat.asOf", "Figures as of {date}", {
-                date: figures.asOf,
-              })}
-            </Text>
-          </StaggerItem>
+          {figures.asOf && (
+            <StaggerItem distance={12} className="col-span-full">
+              <Text
+                variant="secondary"
+                className="text-xs font-mono-tech uppercase tracking-widest"
+              >
+                {t("home.hero.stat.asOf", "Figures as of {date}", {
+                  date: figures.asOf,
+                })}
+              </Text>
+            </StaggerItem>
+          )}
         </Container>
       </Stagger>
     </div>

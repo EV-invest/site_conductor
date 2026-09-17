@@ -14,15 +14,20 @@
 //
 // TODO(#204): owner to confirm figures and as-of date. The values below are
 // what the site already showed before they were centralised, not sourced facts;
-// `asOf` is a placeholder and must be replaced by the date the owner confirms.
+// `asOf` stays `undefined` — and the "as of" line stays off the page — until
+// the owner names the date the figures were confirmed on.
 
 export interface FundFigures {
   /** Target IRR, percent per annum. Rendered as a floor: "16.4% +". */
   readonly targetIrrPct: number;
   /** Hard cap the fund closes at, in USD millions. Rendered "$100M". */
   readonly closingTargetUsdM: number;
-  /** ISO 8601 calendar date the figures were last confirmed on. */
-  readonly asOf: string;
+  /**
+   * ISO 8601 calendar date the figures were last confirmed on. `undefined`
+   * means nobody has confirmed them yet and the "as of" line MUST NOT render —
+   * a placeholder date on the hero reads as a fact.
+   */
+  readonly asOf: string | undefined;
   /**
    * Minimum subscription, USD. `undefined` means the owner has not set one and
    * copy MUST omit the sentence — never render a placeholder amount.
@@ -40,7 +45,7 @@ export interface FundFigures {
 export const FUND_FIGURES: FundFigures = {
   targetIrrPct: 16.4,
   closingTargetUsdM: 100,
-  asOf: "2026-09-17",
+  asOf: undefined,
   minSubscriptionUsd: undefined,
   kycTiming:
     "A few minutes to submit. Most checks are decided within the hour.",
