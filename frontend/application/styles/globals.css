@@ -123,9 +123,9 @@
 
 /* Partner marquee — views/home/ui/partners.
    A pure-CSS loop, so the trust bar stays a Server Component and ships no JS.
-   The track repeats the vendor list COPIES times (4, set in partners.tsx) and
-   slides exactly one copy per lap, so -25% is 100 / COPIES — change one and the
-   other has to follow. Because each item carries its own horizontal padding
+   The track repeats the vendor list COPIES times (6, set in partners.tsx) and
+   slides exactly one copy per lap, so -100% / 6 is 1 / COPIES — change one and
+   the other has to follow. Because each item carries its own horizontal padding
    rather than the row using a flex `gap`, every copy is an identical box and the
    slide lands on the seam instead of half a gap short. */
 @keyframes partners-marquee {
@@ -133,12 +133,15 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(-25%);
+    transform: translateX(calc(-100% / 6));
   }
 }
 
+/* One lap moves one copy of the ~900px row, so the duration is what sets the
+   speed: 24s is ~38px/s, the pace the bar was tuned at when the row was twice
+   as long and the lap 45s. */
 .partners-marquee-track {
-  animation: partners-marquee 45s linear infinite;
+  animation: partners-marquee 24s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

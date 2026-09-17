@@ -28,6 +28,7 @@ const SECTIONS = [
   { name: "how-it-works", selector: "#how-it-works", on: ["desktop", "mobile"] },
   { name: "research", selector: "#research", on: ["desktop"] },
   { name: "portfolio", selector: "#portfolio", on: ["desktop"] },
+  { name: "partners", selector: "#partners", on: ["desktop"] },
   { name: "team", selector: "#team", on: ["desktop"] },
   { name: "closing-cta", selector: "#closing-cta", on: ["desktop", "mobile"] },
   { name: "footer", selector: "footer", on: ["desktop", "mobile"] },
