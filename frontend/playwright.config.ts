@@ -5,7 +5,10 @@ import { defineConfig, devices } from "@playwright/test";
 // so screenshots render identically across every machine on this flake.
 // Env fallbacks live in flake.nix only — run via `nix run .#test`.
 const PORT = process.env.SITE_CONDUCTOR_FRONTEND_PORT;
-if (!PORT) throw new Error("missing SITE_CONDUCTOR_FRONTEND_PORT — run via the flake: nix run .#test");
+if (!PORT)
+  throw new Error(
+    "missing SITE_CONDUCTOR_FRONTEND_PORT — run via the flake: nix run .#test"
+  );
 
 export default defineConfig({
   testDir: "./tests",
