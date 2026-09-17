@@ -130,16 +130,30 @@ for (const { name, selector, on } of SECTIONS) {
       // has seen the viewport, then return to the top for the capture —
       // `once` keeps them revealed.
       await section.evaluate(async el => {
+        // Images above the section that finish loading after the walk would
+        // shift the page and move the fixed chrome relative to the capture.
+        await Promise.all(
+          Array.from(document.images).map(img =>
+            img.complete
+              ? undefined
+              : new Promise<void>(r => {
+                  img.onload = img.onerror = () => r();
+                })
+          )
+        );
         const step = Math.max(200, window.innerHeight - 200);
         const top = el.getBoundingClientRect().top + window.scrollY;
         const bottom = top + el.getBoundingClientRect().height;
         for (let y = top; y < bottom; y += step) {
-          window.scrollTo(0, y);
+          window.scrollTo({ top: y, behavior: "instant" });
           await new Promise(r => setTimeout(r, 120));
         }
-        window.scrollTo(0, bottom - window.innerHeight);
+        window.scrollTo({
+          top: bottom - window.innerHeight,
+          behavior: "instant",
+        });
         await new Promise(r => setTimeout(r, 120));
-        el.scrollIntoView({ block: "start" });
+        el.scrollIntoView({ block: "start", behavior: "instant" });
       });
     }
     // Let the scroll-driven transform settle to its resting frame.
