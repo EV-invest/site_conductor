@@ -219,12 +219,17 @@ for (const { name, selector, on } of SECTIONS) {
         },
       });
     } else {
-      // The fixed header overlays whatever sits at the viewport top, leaking
-      // its MFE chip (network-dependent) into section baselines — mask it; it
-      // has its own test above.
-      await expect(section).toHaveScreenshot(`${name}.png`, {
-        mask: [page.locator("header")],
+      // Fixed chrome overlays whatever sits at the viewport edges — the header
+      // (its MFE chip is network-dependent; it has its own test above), Next's
+      // dev indicator and the A/B dev panel — and whether it lands inside the
+      // element depends on the scroll offset the capture ends on, which is not
+      // stable across runs. Hide all three for the capture instead of masking:
+      // a mask still records where the chrome was.
+      await page.addStyleTag({
+        content:
+          "header, nextjs-portal, div[style*='2147483647'] { visibility: hidden !important; }",
       });
+      await expect(section).toHaveScreenshot(`${name}.png`);
     }
   });
 }
