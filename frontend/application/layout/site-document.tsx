@@ -14,6 +14,7 @@ import { spanEnterScript } from "@/scripts/span-enter";
 import { localeCookieScript } from "@/scripts/locale-cookie";
 import { Header } from "./header";
 import { AccountChipRemote } from "./account-chip-remote";
+import { CabinetEntryTracker } from "./cabinet-entry-tracker";
 import { Footer } from "./footer";
 import { DarkReaderHydrationFilter } from "./dark-reader-hydration-filter";
 import "@/application/styles/globals.css";
@@ -83,18 +84,28 @@ export function SiteDocument({
               {/* capturePageview=false: PostHogPageView owns every $pageview
                 (initial + App Router soft navigations), so the provider must not
                 also fire the initial one. Suspense is required by
-                useSearchParams. */}
-              <PostHogProvider capturePageview={false}>
+                useSearchParams. Key/host are passed explicitly: the lib's env
+                fallback is a dynamic process.env read that the browser bundle
+                cannot resolve (config.ts header). */}
+              <PostHogProvider
+                capturePageview={false}
+                apiKey={config.public.posthogKey}
+                host={config.public.posthogHost}
+              >
                 <Suspense fallback={null}>
                   <PostHogPageView />
                 </Suspense>
                 <Header
                   locale={locale}
                   accountSlot={
-                    <AccountChipRemote className="hidden items-center sm:flex" />
+                    <CabinetEntryTracker location="header">
+                      <AccountChipRemote className="hidden items-center sm:flex" />
+                    </CabinetEntryTracker>
                   }
                   mobileAccountSlot={
-                    <AccountChipRemote className="flex w-full" />
+                    <CabinetEntryTracker location="menu">
+                      <AccountChipRemote className="flex w-full" />
+                    </CabinetEntryTracker>
                   }
                 />
                 {children}
