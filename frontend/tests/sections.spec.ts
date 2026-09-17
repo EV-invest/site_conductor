@@ -119,6 +119,13 @@ for (const { name, selector, on } of SECTIONS) {
     if (PIN_TO_TOP.has(name)) {
       await page.evaluate(() => window.scrollTo(0, 0));
     } else {
+      // A section taller than the viewport (any long section on mobile) keeps
+      // its lower Reveals un-intersected after a top-aligned scroll: their
+      // once-only observers never fire and the wait below reads a blank. Walk
+      // to the section's end first so every observer has seen the viewport,
+      // then return to the top for the capture — `once` keeps them revealed.
+      await section.evaluate(el => el.scrollIntoView({ block: "end" }));
+      await page.waitForTimeout(150);
       await section.scrollIntoViewIfNeeded();
     }
     // Let the scroll-driven transform settle to its resting frame.
