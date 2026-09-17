@@ -12,12 +12,19 @@
 // the script runs (or without JS) the pair is what a visitor sees — the right
 // default on a marketing site, where nearly every visitor is signed out.
 //
-// Plain styled <a>s, not uikit `<Button asChild>`: two of those as siblings
-// desync React 19 hydration (PATTERNS §7). `data-cta` is what the
-// CabinetEntryTracker reads to name the click in the funnel.
+// uikit `Button` with `href`, not `asChild`: it renders a plain
+// `<a data-slot="button">` with no Slot and no client JS, so it serialises
+// under `renderToStaticMarkup` like `Container` and `Logo` already do, and the
+// §7 sibling-hydration trap (a Slot thing) does not apply. `data-cta` is what
+// the CabinetEntryTracker reads to name the click in the funnel.
+import { Button } from "@evinvest/uikit";
 import type { HeaderAuthLinks } from "./header-shared";
 
-const FOCUS = "outline-none focus-visible:ring-2 focus-visible:ring-ring";
+// The header's type — the nav beside it is mono-tech, not the button's sans —
+// and the solid focus ring: the button base ships a tinted `ring-ring/50`,
+// which measures ~2:1 on these surfaces and misses the 3:1 floor.
+const HEADER_BUTTON =
+  "font-mono-tech text-xs tracking-wider focus-visible:ring-2 focus-visible:ring-ring";
 
 // The bar's pair. The primary stays out of the burger below `sm`; only the
 // secondary folds into the drawer (HeaderMenuCta), so the smallest viewport
@@ -28,36 +35,42 @@ export function HeaderBarCta({ links }: { links: HeaderAuthLinks }) {
       data-slot="header-cta"
       className="flex items-center gap-3 group-data-[session=authenticated]/header:hidden"
     >
-      <a
+      <Button
         href={links.cabinet.href}
+        variant="ghost"
+        size="md"
         data-cta="cabinet"
-        className={`hidden h-9 shrink-0 items-center px-2 font-mono-tech text-xs tracking-wider text-ink/80 transition-colors hover:text-primary-ink focus-visible:text-primary-ink sm:inline-flex ${FOCUS}`}
+        className={`hidden text-ink-mid hover:text-primary-ink sm:inline-flex ${HEADER_BUTTON}`}
       >
         {links.cabinet.label}
-      </a>
-      <a
+      </Button>
+      <Button
         href={links.openAccount.href}
+        variant="primary"
+        size="md"
         data-cta="open_account"
-        className={`inline-flex h-9 shrink-0 items-center justify-center rounded-md bg-primary px-3 font-mono-tech text-xs tracking-wider whitespace-nowrap text-on-primary transition-colors hover:bg-primary/90 sm:px-4 ${FOCUS}`}
+        className={HEADER_BUTTON}
       >
         {links.openAccount.label}
-      </a>
+      </Button>
     </div>
   );
 }
 
 // The drawer's identity slot for a signed-out reader: the secondary entry,
-// full width, where the chip sits for a signed-in one. Styled like the chip's
-// former sign-in CTA so the slot reads the same in both states.
+// full width, where the chip sits for a signed-in one. The system `outline`
+// variant, not a hand-rolled primary-outline — that set already drifted once
+// in the cabinet's chip.
 export function HeaderMenuCta({ links }: { links: HeaderAuthLinks }) {
   return (
-    <a
+    <Button
       href={links.cabinet.href}
+      variant="outline"
+      size="md"
       data-cta="cabinet"
-      data-slot="header-menu-cta"
-      className={`flex h-9 w-full items-center justify-center rounded-md border border-primary-ink px-4 font-mono-tech text-xs tracking-wider text-primary-ink transition-colors hover:bg-primary hover:text-on-primary group-data-[session=authenticated]/header:hidden ${FOCUS}`}
+      className={`w-full group-data-[session=authenticated]/header:hidden ${HEADER_BUTTON}`}
     >
       {links.cabinet.label}
-    </a>
+    </Button>
   );
 }

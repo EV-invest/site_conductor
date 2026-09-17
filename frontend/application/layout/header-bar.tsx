@@ -77,7 +77,7 @@ export function HeaderBar({
             aria-label={menuLabels.open}
             aria-expanded="false"
             aria-haspopup="menu"
-            className="flex size-10 shrink-0 items-center justify-center text-white lg:hidden"
+            className="flex size-10 shrink-0 items-center justify-center rounded-lg text-white outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
           >
             <svg
               className="size-6"
