@@ -755,6 +755,38 @@
     "en": "Investor Relations (IR)",
     "t": "Investor Relations (IR)"
   },
+  "home.closing.eyebrow": {
+    "en": "Get Started",
+    "t": "Loslegen"
+  },
+  "home.closing.title": {
+    "en": "Ready to *start investing*?",
+    "t": "Bereit, *zu investieren*?"
+  },
+  "home.closing.intro": {
+    "en": "Open an account online, verify your identity and subscribe to allocation units — all from the investor cabinet.",
+    "t": "Eröffnen Sie online ein Konto, bestätigen Sie Ihre Identität und zeichnen Sie Allokationseinheiten — alles im Investoren-Cabinet."
+  },
+  "home.closing.fact.kyc": {
+    "en": "Sign in with Google; most identity checks are decided within the hour",
+    "t": "Anmeldung mit Google; die meisten Identitätsprüfungen sind innerhalb einer Stunde entschieden"
+  },
+  "home.closing.fact.units": {
+    "en": "Subscribe to allocation units at the current NAV",
+    "t": "Zeichnung von Allokationseinheiten zum aktuellen NAV"
+  },
+  "home.closing.fact.cabinet": {
+    "en": "NAV, reports and payouts in your cabinet",
+    "t": "NAV, Berichte und Auszahlungen in Ihrem Cabinet"
+  },
+  "home.closing.cta.start": {
+    "en": "Start investing",
+    "t": "Jetzt investieren"
+  },
+  "home.closing.cta.cabinet": {
+    "en": "Cabinet",
+    "t": "Cabinet"
+  },
   "publications.eyebrow": {
     "en": "EV Investment · Publications",
     "t": "EV Investment · Publikationen"
