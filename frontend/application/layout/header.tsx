@@ -83,9 +83,10 @@ export function BrandHeader({
 }
 
 // The conductor's wired header: nav items, `next/link`, and the CTA cluster. The
-// account chip is a cabinet element remote resolved server-side in
-// `app/layout.tsx` and threaded down as `accountSlot`; route-owned actions
-// (`HeaderActions`) slot in left of the chip.
+// cabinet entries — the static signed-out pair and the account chip, a cabinet
+// element remote resolved server-side — are composed in
+// account-chip-remote.tsx and threaded down as `accountSlot`; route-owned
+// actions (`HeaderActions`) slot in left of them.
 export function Header({
   accountSlot,
   mobileAccountSlot,
@@ -107,6 +108,7 @@ export function Header({
         open: t("a11y.openMenu", "Open menu"),
         close: t("a11y.closeMenu", "Close menu"),
         menu: t("a11y.siteMenu", "Site menu"),
+        signOut: t("header.signOut", "Sign out"),
       }}
       linkComponent={Link}
       cta={

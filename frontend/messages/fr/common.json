@@ -1230,5 +1230,17 @@
   "status.signIn": {
     "en": "Sign in",
     "t": "Se connecter"
+  },
+  "header.cabinet": {
+    "en": "Cabinet",
+    "t": "Mon espace"
+  },
+  "header.openAccount": {
+    "en": "Open an account",
+    "t": "Ouvrir un compte"
+  },
+  "header.signOut": {
+    "en": "Sign out",
+    "t": "Se déconnecter"
   }
 }

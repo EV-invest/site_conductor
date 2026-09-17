@@ -1230,5 +1230,17 @@
   "status.signIn": {
     "en": "Sign in",
     "t": "Đăng nhập"
+  },
+  "header.cabinet": {
+    "en": "Cabinet",
+    "t": "Cabinet"
+  },
+  "header.openAccount": {
+    "en": "Open an account",
+    "t": "Mở tài khoản"
+  },
+  "header.signOut": {
+    "en": "Sign out",
+    "t": "Đăng xuất"
   }
 }

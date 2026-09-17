@@ -117,6 +117,7 @@ export function HeaderMobileMenu({
             enters on a different vector. */}
         <HeaderSignOut
           enterDelayMs={MENU_ENTER_DELAY + (nav.length - 1) * MENU_STEP}
+          label={menuLabels.signOut}
         />
       </aside>
     </>

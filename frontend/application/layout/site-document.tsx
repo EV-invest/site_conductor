@@ -96,8 +96,8 @@ export function SiteDocument({
                 </Suspense>
                 <Header
                   locale={locale}
-                  accountSlot={<HeaderAccountSlot />}
-                  mobileAccountSlot={<MenuAccountSlot />}
+                  accountSlot={<HeaderAccountSlot locale={locale} />}
+                  mobileAccountSlot={<MenuAccountSlot locale={locale} />}
                 />
                 {children}
                 <Footer />
