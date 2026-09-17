@@ -14,6 +14,13 @@ import { PRIMARY, SECONDARY, SIZE, TEXT_LINK, type HeroCtaAlign } from "./row";
 // under the `hero` tracker. Renaming would fork the funnel dashboard.
 const ACTION = "clicked";
 
+// The login page renders its signup state only under `?intent=signup`
+// (banking #391); a bare /cabinet bounces a visitor to the "Welcome back"
+// login intent. The cabinet's proxy sends signed-in users away from /login, so
+// the link is right in both states. `localePath` only prefixes, so the query
+// survives it.
+const SIGNUP = "/cabinet/login?intent=signup";
+
 /**
  * Client island — arm `a` of `hero_cta`: "Start investing" into the cabinet as
  * the primary, "Explore Assets" demoted to secondary, the whitepaper a text
@@ -38,7 +45,7 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
         className={`flex flex-wrap items-center gap-4 ${centred ? "justify-center" : ""}`}
       >
         <Button
-          href={localePath(locale, "/cabinet")}
+          href={localePath(locale, SIGNUP)}
           size={SIZE}
           className={PRIMARY}
           onClick={() => track(ACTION, { cta: "open_cabinet", ...common })}
