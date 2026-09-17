@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { Text } from "@/shared/ui/text";
-import { useT } from "@evinvest/i18n/react";
+import { useLocale, useT } from "@evinvest/i18n/react";
 import { useExperimentEvent } from "@/features/ab-variant";
 
 /**
@@ -18,18 +18,23 @@ import { useExperimentEvent } from "@/features/ab-variant";
 export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
   const track = useExperimentEvent();
   const t = useT();
+  const locale = useLocale();
   return (
     <>
       <div className="flex flex-row items-center gap-4">
         <Button
           className="bg-ink text-brand hover:bg-primary hover:text-on-primary hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
           onClick={() =>
-            track("cta_clicked", { cta: "explore_assets" }, fire => {
-              fire();
-              document
-                .getElementById("portfolio")
-                ?.scrollIntoView({ behavior: "smooth" });
-            })
+            track(
+              "cta_clicked",
+              { cta: "explore_assets", location: "hero", locale },
+              fire => {
+                fire();
+                document
+                  .getElementById("portfolio")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }
+            )
           }
         >
           {t("home.hero.cta.explore", "Explore Assets")}{" "}
@@ -39,7 +44,13 @@ export function HeroACta({ scrollHint }: { scrollHint: ReactNode }) {
         <Button
           asChild
           className="max-sm:hidden bg-transparent text-ink border border-ink/40 hover:bg-ink hover:text-brand hover:scale-105 active:scale-95 transition-all duration-300 font-mono-tech text-xs tracking-widest uppercase px-8 py-6 rounded-none"
-          onClick={() => track("cta_clicked", { cta: "whitepaper" })}
+          onClick={() =>
+            track("cta_clicked", {
+              cta: "whitepaper",
+              location: "hero",
+              locale,
+            })
+          }
         >
           <Link href="/publications/whitepaper">
             {t("home.hero.cta.whitepaper", "Whitepaper")}{" "}

@@ -93,6 +93,15 @@
         # Full commit the footer link points at — kept separate so the display
         # version can be a human tag without the link losing the exact rev.
         buildCommit = self.rev or self.dirtyRev or "";
+        # PostHog project key (phc_…). A browser value by construction: it is
+        # inlined into the client bundle and shipped to every visitor, so it is
+        # not a secret and lives here as a literal, not in sops (rpi5.nix README:
+        # "The browser values are not here, by construction"). One project for
+        # the site AND the cabinet so the funnel is continuous — banking bakes
+        # the same key (PostHog Cloud US, project 614067). Empty ⇒
+        # @evinvest/analytics mounts a no-op sink.
+        posthogKey = "phc_sBwWEgdgockVmfyucBRkTTo6iZ4Y2eApSGorD22WLzj3";
+        posthogHost = "https://us.i.posthog.com";
 
         logoSrc = "${ev_assets}/logo/logo.svg";
 
@@ -190,6 +199,10 @@
             NEXT_PUBLIC_SITE_URL = "https://evinvest.ltd";
             NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
             NEXT_PUBLIC_API_URL = "https://api.evinvest.ltd";
+            # NEXT_PUBLIC_* are inlined at `next build`; the runtime copies in the
+            # container contract below cover dynamic renders.
+            NEXT_PUBLIC_POSTHOG_KEY = posthogKey;
+            NEXT_PUBLIC_POSTHOG_HOST = posthogHost;
             # Zone/auth topology must be present at `next build`: rewrites() resolves
             # into routes-manifest.json here and is never re-evaluated at runtime, so
             # runtime-only env cannot enable the asset/API/auth rewrites (the /rea and
@@ -314,6 +327,8 @@
               NEXT_PUBLIC_API_URL = "https://api.evinvest.ltd";
               NEXT_PUBLIC_SITE_URL = "https://evinvest.ltd";
               NEXT_PUBLIC_REA_URL = "https://rea.evinvest.ltd";
+              NEXT_PUBLIC_POSTHOG_KEY = posthogKey;
+              NEXT_PUBLIC_POSTHOG_HOST = posthogHost;
               # Server Component fetches stay in-cluster instead of hairpinning
               # through the Cloudflare tunnel.
               API_URL_INTERNAL = "http://site-conductor-backend:58844";

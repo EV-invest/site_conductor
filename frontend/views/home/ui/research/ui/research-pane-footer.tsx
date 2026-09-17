@@ -12,6 +12,10 @@ import { useAnalytics } from "@/features/analytics";
 
 import type { ResearchReport } from "./research-report";
 
+// The research pane runs no experiment, so the funnel schema's `variant` is
+// the control arm — same convention as the shell's cabinet entry tracker.
+const RESEARCH_VARIANT = "control";
+
 /// The pane's standing footer: who publishes the report on the left, the two
 /// ways into it on the right. It swallows its own clicks so the buttons win
 /// over the pane-wide navigation they sit inside.
@@ -57,6 +61,9 @@ export function ResearchPaneFooter({
           onClick={() =>
             capture("cta_clicked", {
               cta: "read_report",
+              location: "research",
+              variant: RESEARCH_VARIANT,
+              locale,
               report: report.slug,
             })
           }
@@ -74,6 +81,9 @@ export function ResearchPaneFooter({
           onClick={() =>
             capture("cta_clicked", {
               cta: "download_report",
+              location: "research",
+              variant: RESEARCH_VARIANT,
+              locale,
               report: report.slug,
             })
           }

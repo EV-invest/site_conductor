@@ -123,5 +123,15 @@ export const config = {
     get analyticsWebsiteId(): string | undefined {
       return optional(process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID);
     },
+    // PostHog project key/host, passed to <PostHogProvider> as props: the lib's
+    // own env fallback is a dynamic `process.env[name]` read, which the browser
+    // bundle resolves to undefined — so without these getters the provider is a
+    // no-op even with the key in the build env. Unset ⇒ no-op sink.
+    get posthogKey(): string | undefined {
+      return optional(process.env.NEXT_PUBLIC_POSTHOG_KEY);
+    },
+    get posthogHost(): string | undefined {
+      return optional(process.env.NEXT_PUBLIC_POSTHOG_HOST);
+    },
   },
 } as const;
