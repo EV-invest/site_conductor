@@ -127,6 +127,18 @@
     "en": "Network error — please try again.",
     "t": "Erreur réseau — veuillez réessayer."
   },
+  "footer.legal.terms": {
+    "en": "Terms",
+    "t": "Conditions"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy",
+    "t": "Confidentialité"
+  },
+  "footer.legal.risk": {
+    "en": "Risk disclosure",
+    "t": "Information sur les risques"
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — accueil"
@@ -1247,6 +1259,30 @@
     "en": "Publication not found",
     "t": "Publication introuvable"
   },
+  "meta.privacy.description": {
+    "en": "What personal data EV Investment collects, why, who processes it, and your rights over it.",
+    "t": "Quelles données personnelles EV Investment collecte, pourquoi, qui les traite et vos droits sur elles."
+  },
+  "meta.privacy.title": {
+    "en": "Privacy Policy",
+    "t": "Politique de confidentialité"
+  },
+  "meta.risk.description": {
+    "en": "The risks of investing through EV Investment — read before subscribing.",
+    "t": "Les risques d’un investissement via EV Investment — à lire avant de souscrire."
+  },
+  "meta.risk.title": {
+    "en": "Risk Disclosure",
+    "t": "Information sur les risques"
+  },
+  "meta.terms.description": {
+    "en": "The terms on which EV Investment provides its website and investor cabinet.",
+    "t": "Les conditions auxquelles EV Investment fournit son site et son espace investisseur."
+  },
+  "meta.terms.title": {
+    "en": "Terms of Service",
+    "t": "Conditions d’utilisation"
+  },
   "status.notFound.eyebrow": {
     "en": "Page not found",
     "t": "Page introuvable"
@@ -1342,5 +1378,153 @@
   "header.signOut": {
     "en": "Sign out",
     "t": "Se déconnecter"
+  },
+  "legal.contactUs": {
+    "en": "Contact us",
+    "t": "Contactez-nous"
+  },
+  "legal.documentInEnglish": {
+    "en": "The headings are translated; the binding text of this document is in English.",
+    "t": "Les titres sont traduits ; le texte faisant foi de ce document est en anglais."
+  },
+  "legal.effectiveDate": {
+    "en": "Effective date",
+    "t": "Date d’entrée en vigueur"
+  },
+  "legal.eyebrow": {
+    "en": "Legal",
+    "t": "Mentions légales"
+  },
+  "legal.privacy.controller.title": {
+    "en": "Who is responsible",
+    "t": "Qui est responsable"
+  },
+  "legal.privacy.cookies.title": {
+    "en": "Cookies and analytics",
+    "t": "Cookies et analyse"
+  },
+  "legal.privacy.data.title": {
+    "en": "What we collect",
+    "t": "Ce que nous collectons"
+  },
+  "legal.privacy.lede": {
+    "en": "What personal data EV Investment collects, why, who processes it, and the rights you have over it.",
+    "t": "Quelles données personnelles EV Investment collecte, pourquoi, qui les traite et quels droits vous avez sur elles."
+  },
+  "legal.privacy.purposes.title": {
+    "en": "Why we use it",
+    "t": "Pourquoi nous les utilisons"
+  },
+  "legal.privacy.retention.title": {
+    "en": "Where it goes and how long we keep it",
+    "t": "Où elles vont et combien de temps nous les conservons"
+  },
+  "legal.privacy.rights.title": {
+    "en": "Your rights",
+    "t": "Vos droits"
+  },
+  "legal.privacy.security.title": {
+    "en": "Security and changes",
+    "t": "Sécurité et modifications"
+  },
+  "legal.privacy.sharing.title": {
+    "en": "Who processes it",
+    "t": "Qui les traite"
+  },
+  "legal.privacy.title": {
+    "en": "Privacy Policy",
+    "t": "Politique de confidentialité"
+  },
+  "legal.questions": {
+    "en": "Questions about this document?",
+    "t": "Une question sur ce document ?"
+  },
+  "legal.risk.capital.title": {
+    "en": "Your capital is at risk",
+    "t": "Votre capital est à risque"
+  },
+  "legal.risk.costs.title": {
+    "en": "Fees, tax and operations",
+    "t": "Frais, fiscalité et opérations"
+  },
+  "legal.risk.digital.title": {
+    "en": "Stablecoin, network and custody",
+    "t": "Stablecoin, réseau et conservation"
+  },
+  "legal.risk.lede": {
+    "en": "What can go wrong with an investment through EV Investment. Read it before you subscribe.",
+    "t": "Ce qui peut mal tourner dans un investissement via EV Investment. À lire avant de souscrire."
+  },
+  "legal.risk.liquidity.title": {
+    "en": "Liquidity and redemption",
+    "t": "Liquidité et rachat"
+  },
+  "legal.risk.market.title": {
+    "en": "Concentration, currency and country",
+    "t": "Concentration, devise et pays"
+  },
+  "legal.risk.targets.title": {
+    "en": "Targets are not forecasts",
+    "t": "Les objectifs ne sont pas des prévisions"
+  },
+  "legal.risk.title": {
+    "en": "Risk Disclosure",
+    "t": "Information sur les risques"
+  },
+  "legal.risk.valuation.title": {
+    "en": "Valuation",
+    "t": "Valorisation"
+  },
+  "legal.terms.account.title": {
+    "en": "Your account",
+    "t": "Votre compte"
+  },
+  "legal.terms.conduct.title": {
+    "en": "Acceptable use",
+    "t": "Utilisation acceptable"
+  },
+  "legal.terms.contact.title": {
+    "en": "Contact",
+    "t": "Contact"
+  },
+  "legal.terms.funds.title": {
+    "en": "Deposits, withdrawals and custody",
+    "t": "Dépôts, retraits et conservation"
+  },
+  "legal.terms.law.title": {
+    "en": "Changes, governing law and disputes",
+    "t": "Modifications, droit applicable et litiges"
+  },
+  "legal.terms.lede": {
+    "en": "The agreement between you and EV Investment for using this website and the investor cabinet.",
+    "t": "L’accord entre vous et EV Investment pour l’utilisation de ce site et de l’espace investisseur."
+  },
+  "legal.terms.liability.title": {
+    "en": "Liability",
+    "t": "Responsabilité"
+  },
+  "legal.terms.provider.title": {
+    "en": "Who we are and what these terms cover",
+    "t": "Qui nous sommes et ce que couvrent ces conditions"
+  },
+  "legal.terms.risk.title": {
+    "en": "No advice; capital at risk",
+    "t": "Pas de conseil ; capital à risque"
+  },
+  "legal.terms.termination.title": {
+    "en": "Suspension and closure",
+    "t": "Suspension et clôture"
+  },
+  "legal.terms.title": {
+    "en": "Terms of Service",
+    "t": "Conditions d’utilisation"
+  },
+  "legal.terms.units.title": {
+    "en": "Subscriptions, redemptions and fees",
+    "t": "Souscriptions, rachats et frais"
+  },
+  "legal.terms.verification.title": {
+    "en": "Identity verification",
+    "t": "Vérification d’identité"
   }
 }

@@ -127,6 +127,18 @@
     "en": "Network error — please try again.",
     "t": "Lỗi kết nối — vui lòng thử lại."
   },
+  "footer.legal.terms": {
+    "en": "Terms",
+    "t": "Điều khoản"
+  },
+  "footer.legal.privacy": {
+    "en": "Privacy",
+    "t": "Quyền riêng tư"
+  },
+  "footer.legal.risk": {
+    "en": "Risk disclosure",
+    "t": "Công bố rủi ro"
+  },
   "a11y.homeLink": {
     "en": "EV Investment — home",
     "t": "EV Investment — trang chủ"
@@ -1247,6 +1259,30 @@
     "en": "Publication not found",
     "t": "Không tìm thấy ấn phẩm"
   },
+  "meta.privacy.description": {
+    "en": "What personal data EV Investment collects, why, who processes it, and your rights over it.",
+    "t": "EV Investment thu thập dữ liệu cá nhân nào, vì sao, ai xử lý và quyền của bạn đối với dữ liệu đó."
+  },
+  "meta.privacy.title": {
+    "en": "Privacy Policy",
+    "t": "Chính sách quyền riêng tư"
+  },
+  "meta.risk.description": {
+    "en": "The risks of investing through EV Investment — read before subscribing.",
+    "t": "Rủi ro khi đầu tư qua EV Investment — đọc trước khi đăng ký mua."
+  },
+  "meta.risk.title": {
+    "en": "Risk Disclosure",
+    "t": "Công bố rủi ro"
+  },
+  "meta.terms.description": {
+    "en": "The terms on which EV Investment provides its website and investor cabinet.",
+    "t": "Các điều khoản theo đó EV Investment cung cấp trang web và tài khoản nhà đầu tư."
+  },
+  "meta.terms.title": {
+    "en": "Terms of Service",
+    "t": "Điều khoản dịch vụ"
+  },
   "status.notFound.eyebrow": {
     "en": "Page not found",
     "t": "Không tìm thấy trang"
@@ -1342,5 +1378,153 @@
   "header.signOut": {
     "en": "Sign out",
     "t": "Đăng xuất"
+  },
+  "legal.contactUs": {
+    "en": "Contact us",
+    "t": "Liên hệ với chúng tôi"
+  },
+  "legal.documentInEnglish": {
+    "en": "The headings are translated; the binding text of this document is in English.",
+    "t": "Các tiêu đề đã được dịch; văn bản có giá trị pháp lý của tài liệu này là bản tiếng Anh."
+  },
+  "legal.effectiveDate": {
+    "en": "Effective date",
+    "t": "Ngày hiệu lực"
+  },
+  "legal.eyebrow": {
+    "en": "Legal",
+    "t": "Pháp lý"
+  },
+  "legal.privacy.controller.title": {
+    "en": "Who is responsible",
+    "t": "Ai chịu trách nhiệm"
+  },
+  "legal.privacy.cookies.title": {
+    "en": "Cookies and analytics",
+    "t": "Cookie và phân tích"
+  },
+  "legal.privacy.data.title": {
+    "en": "What we collect",
+    "t": "Chúng tôi thu thập gì"
+  },
+  "legal.privacy.lede": {
+    "en": "What personal data EV Investment collects, why, who processes it, and the rights you have over it.",
+    "t": "EV Investment thu thập dữ liệu cá nhân nào, vì sao, ai xử lý và bạn có những quyền gì đối với dữ liệu đó."
+  },
+  "legal.privacy.purposes.title": {
+    "en": "Why we use it",
+    "t": "Vì sao chúng tôi sử dụng"
+  },
+  "legal.privacy.retention.title": {
+    "en": "Where it goes and how long we keep it",
+    "t": "Dữ liệu đi đâu và được lưu bao lâu"
+  },
+  "legal.privacy.rights.title": {
+    "en": "Your rights",
+    "t": "Quyền của bạn"
+  },
+  "legal.privacy.security.title": {
+    "en": "Security and changes",
+    "t": "Bảo mật và thay đổi"
+  },
+  "legal.privacy.sharing.title": {
+    "en": "Who processes it",
+    "t": "Ai xử lý dữ liệu"
+  },
+  "legal.privacy.title": {
+    "en": "Privacy Policy",
+    "t": "Chính sách quyền riêng tư"
+  },
+  "legal.questions": {
+    "en": "Questions about this document?",
+    "t": "Có câu hỏi về tài liệu này?"
+  },
+  "legal.risk.capital.title": {
+    "en": "Your capital is at risk",
+    "t": "Vốn của bạn có rủi ro"
+  },
+  "legal.risk.costs.title": {
+    "en": "Fees, tax and operations",
+    "t": "Phí, thuế và vận hành"
+  },
+  "legal.risk.digital.title": {
+    "en": "Stablecoin, network and custody",
+    "t": "Stablecoin, mạng lưới và lưu ký"
+  },
+  "legal.risk.lede": {
+    "en": "What can go wrong with an investment through EV Investment. Read it before you subscribe.",
+    "t": "Điều gì có thể xảy ra khi đầu tư qua EV Investment. Hãy đọc trước khi đăng ký mua."
+  },
+  "legal.risk.liquidity.title": {
+    "en": "Liquidity and redemption",
+    "t": "Thanh khoản và rút vốn"
+  },
+  "legal.risk.market.title": {
+    "en": "Concentration, currency and country",
+    "t": "Tập trung, tiền tệ và quốc gia"
+  },
+  "legal.risk.targets.title": {
+    "en": "Targets are not forecasts",
+    "t": "Mục tiêu không phải dự báo"
+  },
+  "legal.risk.title": {
+    "en": "Risk Disclosure",
+    "t": "Công bố rủi ro"
+  },
+  "legal.risk.valuation.title": {
+    "en": "Valuation",
+    "t": "Định giá"
+  },
+  "legal.terms.account.title": {
+    "en": "Your account",
+    "t": "Tài khoản của bạn"
+  },
+  "legal.terms.conduct.title": {
+    "en": "Acceptable use",
+    "t": "Sử dụng được phép"
+  },
+  "legal.terms.contact.title": {
+    "en": "Contact",
+    "t": "Liên hệ"
+  },
+  "legal.terms.funds.title": {
+    "en": "Deposits, withdrawals and custody",
+    "t": "Nạp, rút và lưu ký"
+  },
+  "legal.terms.law.title": {
+    "en": "Changes, governing law and disputes",
+    "t": "Thay đổi, luật điều chỉnh và tranh chấp"
+  },
+  "legal.terms.lede": {
+    "en": "The agreement between you and EV Investment for using this website and the investor cabinet.",
+    "t": "Thỏa thuận giữa bạn và EV Investment về việc sử dụng trang web này và tài khoản nhà đầu tư."
+  },
+  "legal.terms.liability.title": {
+    "en": "Liability",
+    "t": "Trách nhiệm pháp lý"
+  },
+  "legal.terms.provider.title": {
+    "en": "Who we are and what these terms cover",
+    "t": "Chúng tôi là ai và các điều khoản này áp dụng cho gì"
+  },
+  "legal.terms.risk.title": {
+    "en": "No advice; capital at risk",
+    "t": "Không phải lời khuyên; vốn có rủi ro"
+  },
+  "legal.terms.termination.title": {
+    "en": "Suspension and closure",
+    "t": "Tạm ngưng và đóng tài khoản"
+  },
+  "legal.terms.title": {
+    "en": "Terms of Service",
+    "t": "Điều khoản dịch vụ"
+  },
+  "legal.terms.units.title": {
+    "en": "Subscriptions, redemptions and fees",
+    "t": "Đăng ký mua, rút vốn và phí"
+  },
+  "legal.terms.verification.title": {
+    "en": "Identity verification",
+    "t": "Xác minh danh tính"
   }
 }
