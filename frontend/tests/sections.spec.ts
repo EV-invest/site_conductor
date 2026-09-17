@@ -25,7 +25,11 @@ import { experiments } from "../shared/config/experiments";
 const SECTIONS = [
   { name: "header", selector: "header", on: ["desktop", "mobile"] },
   { name: "hero", selector: "#hero", on: ["desktop", "mobile"] },
-  { name: "how-it-works", selector: "#how-it-works", on: ["desktop", "mobile"] },
+  {
+    name: "how-it-works",
+    selector: "#how-it-works",
+    on: ["desktop", "mobile"],
+  },
   { name: "research", selector: "#research", on: ["desktop"] },
   { name: "portfolio", selector: "#portfolio", on: ["desktop"] },
   { name: "partners", selector: "#partners", on: ["desktop"] },
@@ -119,6 +123,47 @@ for (const { name, selector, on } of SECTIONS) {
     if (PIN_TO_TOP.has(name)) {
       await page.evaluate(() => window.scrollTo(0, 0));
     } else {
+      // A section taller than the viewport (any long section on mobile) keeps
+      // its lower Reveals un-intersected after a top-aligned scroll: their
+      // once-only observers never fire and the wait below reads a blank. Walk
+      // from the page top to the section's end in viewport-sized steps so
+      // every observer above and inside it has seen the viewport (and every
+      // lazy image above it has loaded — one that finishes after the capture
+      // starts would shift the page under the fixed chrome), then bring the
+      // section back into view for the capture — `once` keeps them revealed.
+      await section.evaluate(async el => {
+        const pause = () => new Promise(r => setTimeout(r, 100));
+        const step = Math.max(200, window.innerHeight - 200);
+        const bottom =
+          el.getBoundingClientRect().top +
+          window.scrollY +
+          el.getBoundingClientRect().height;
+        for (let y = 0; y < bottom; y += step) {
+          window.scrollTo({ top: y, behavior: "instant" });
+          await pause();
+        }
+        // Lazy images below the fold never complete, so only wait for those
+        // the walk has passed — bounded, in case one of them is broken.
+        const passed = Array.from(document.images).filter(
+          img =>
+            !img.complete &&
+            img.getBoundingClientRect().top + window.scrollY < bottom
+        );
+        await Promise.race([
+          Promise.all(
+            passed.map(
+              img =>
+                new Promise<void>(r => {
+                  img.onload = img.onerror = () => r();
+                })
+            )
+          ),
+          new Promise(r => setTimeout(r, 3000)),
+        ]);
+      });
+      // Playwright's own scroll (the protocol one `toHaveScreenshot` repeats
+      // before capturing) ignores CSS scroll-padding, a DOM scrollIntoView
+      // honours it — end on the former so the capture's scroll is a no-op.
       await section.scrollIntoViewIfNeeded();
     }
     // Let the scroll-driven transform settle to its resting frame.
@@ -174,12 +219,17 @@ for (const { name, selector, on } of SECTIONS) {
         },
       });
     } else {
-      // The fixed header overlays whatever sits at the viewport top, leaking
-      // its MFE chip (network-dependent) into section baselines — mask it; it
-      // has its own test above.
-      await expect(section).toHaveScreenshot(`${name}.png`, {
-        mask: [page.locator("header")],
+      // Fixed chrome overlays whatever sits at the viewport edges — the header
+      // (its MFE chip is network-dependent; it has its own test above), Next's
+      // dev indicator and the A/B dev panel — and whether it lands inside the
+      // element depends on the scroll offset the capture ends on, which is not
+      // stable across runs. Hide all three for the capture instead of masking:
+      // a mask still records where the chrome was.
+      await page.addStyleTag({
+        content:
+          "header, nextjs-portal, div[style*='2147483647'] { visibility: hidden !important; }",
       });
+      await expect(section).toHaveScreenshot(`${name}.png`);
     }
   });
 }
@@ -195,8 +245,14 @@ test("- mismatch on: header-drawer", { tag: ["@mobile"] }, async ({ page }) => {
   await waitForMotionToSettle(page);
 
   const toggle = page.getByRole("button", { name: "Open menu" });
-  await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  // The toggle is wired by the deferred `header-behavior` script; a click that
+  // lands before it attaches is a no-op, so retry until the state flips.
+  await expect(async () => {
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true", {
+      timeout: 500,
+    });
+  }).toPass({ timeout: 10_000 });
   // The aside carries `aria-label="Site menu"` → role `complementary`.
   const drawer = page.getByRole("complementary", { name: "Site menu" });
   await expect(drawer).toBeVisible();
