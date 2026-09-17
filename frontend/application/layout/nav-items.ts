@@ -80,14 +80,17 @@ export function localizeNav(
 
 // The signed-out pair's targets, one place for both hosts (the conductor's
 // <Header> and the zone fragment in scripts/build-shell.mts). Hard cross-zone
-// hrefs (PATTERNS §9): the cabinet root for a newcomer, its sign-in page for a
-// returning investor. Both labels are capped at 20 characters (i18n-max) — the
-// primary shares the bar with the burger below `sm`, where a longer label
-// overflows a 320px viewport in German.
+// hrefs (PATTERNS §9), both onto the sign-in page: a newcomer arrives with
+// `intent=signup`, which the login page reads for its first-visit state
+// (banking #391) — a bare /cabinet would bounce them to the default
+// "Welcome back" — and a returning investor without it. The cabinet's proxy
+// already sends a signed-in reader away from /login. Both labels are capped at
+// 20 characters (i18n-max) — the primary shares the bar with the burger below
+// `sm`, where a longer label overflows a 320px viewport in German.
 export function authLinks(locale: Locale, t: Translate): HeaderAuthLinks {
   return {
     openAccount: {
-      href: localePath(locale, "/cabinet"),
+      href: localePath(locale, "/cabinet/login?intent=signup"),
       label: t("header.openAccount", "Open an account"),
     },
     cabinet: {
