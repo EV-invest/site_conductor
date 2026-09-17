@@ -1374,5 +1374,69 @@
   "header.signOut": {
     "en": "Sign out",
     "t": "Đăng xuất"
+  },
+  "home.cabinetTour.eyebrow": {
+    "en": "Inside the investor cabinet",
+    "t": "Bên trong cabinet nhà đầu tư"
+  },
+  "home.cabinetTour.title": {
+    "en": "Your investment, *in full view*",
+    "t": "Khoản đầu tư của bạn, *rõ ràng trước mắt*"
+  },
+  "home.cabinetTour.intro": {
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
+    "t": "Cabinet là nơi quỹ báo cáo với bạn: bạn đang nắm giữ gì, được định giá ra sao, xác minh đến đâu và ví có gì. Đây là những màn hình thật của nó."
+  },
+  "home.cabinetTour.benefit.units.title": {
+    "en": "Holdings in allocation units",
+    "t": "Nắm giữ theo đơn vị phân bổ"
+  },
+  "home.cabinetTour.benefit.units.body": {
+    "en": "Your stake is a number of units; its value follows the fund's posted NAV, not a promise.",
+    "t": "Phần của bạn là một số đơn vị; giá trị của nó đi theo NAV được quỹ công bố, không phải một lời hứa."
+  },
+  "home.cabinetTour.benefit.nav.title": {
+    "en": "NAV history you can see",
+    "t": "Lịch sử NAV bạn có thể thấy"
+  },
+  "home.cabinetTour.benefit.nav.body": {
+    "en": "Every valuation mark since inception, with your own participation drawn on top of it.",
+    "t": "Mọi mốc định giá kể từ khi thành lập, với phần tham gia của chính bạn vẽ chồng lên trên."
+  },
+  "home.cabinetTour.benefit.status.title": {
+    "en": "Verification status always in view",
+    "t": "Trạng thái xác minh luôn hiển thị"
+  },
+  "home.cabinetTour.benefit.status.body": {
+    "en": "Identity check, account standing and the devices signed in — on your profile, never buried in a menu.",
+    "t": "Xác minh danh tính, tình trạng tài khoản và các thiết bị đã đăng nhập — ngay trên hồ sơ, không bao giờ bị chôn trong menu."
+  },
+  "home.cabinetTour.benefit.wallet.title": {
+    "en": "Wallet in USDT",
+    "t": "Ví bằng USDT"
+  },
+  "home.cabinetTour.benefit.wallet.body": {
+    "en": "Fund and withdraw in USDT on TRON; every balance is an entry on the ledger, not a spreadsheet.",
+    "t": "Nạp và rút bằng USDT trên TRON; mọi số dư là một bút toán trên sổ cái, không phải bảng tính."
+  },
+  "home.cabinetTour.cta": {
+    "en": "See your cabinet",
+    "t": "Xem cabinet của bạn"
+  },
+  "home.cabinetTour.caption": {
+    "en": "Screens from the live cabinet, demo data",
+    "t": "Màn hình từ cabinet thật, dữ liệu demo"
+  },
+  "home.cabinetTour.shot.home": {
+    "en": "Cabinet home: portfolio value, NAV history with your own participation drawn on it, and recent activity (demo data)",
+    "t": "Trang chủ cabinet: giá trị danh mục, lịch sử NAV với phần tham gia của bạn và hoạt động gần đây (dữ liệu demo)"
+  },
+  "home.cabinetTour.shot.invest": {
+    "en": "Invest: the product catalogue with your units, value and P&L per fund (demo data)",
+    "t": "Đầu tư: danh mục sản phẩm với số đơn vị, giá trị và P&L của bạn theo từng quỹ (dữ liệu demo)"
+  },
+  "home.cabinetTour.shot.profile": {
+    "en": "Profile: verified identity, account standing and the devices signed in (demo data)",
+    "t": "Hồ sơ: danh tính đã xác minh, tình trạng tài khoản và các thiết bị đã đăng nhập (dữ liệu demo)"
   }
 }
