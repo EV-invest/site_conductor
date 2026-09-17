@@ -2,7 +2,7 @@
 // HTML by the proxy and loaded by the conductor's own layout (the markup in
 // application/layout/header.tsx ships no state). Zero imports; built to a
 // content-hashed IIFE by scripts/build-shell.mts. All it does: toggle
-// `data-scrolled` / `data-menu-open` on the root.
+// `data-scrolled` / `data-menu-open` / `data-session` on the root.
 (() => {
   const header = document.querySelector<HTMLElement>(
     'header[data-slot="header"]'
@@ -16,21 +16,27 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // The static mobile sign-out button ships `hidden` (the markup has no
-  // session awareness of its own — that lives in the AccountChip mfe); reveal
-  // it only once /api/auth/session confirms a signed-in principal, so a
-  // signed-out visitor on any zone never sees it.
+  // The static markup has no session awareness of its own: it ships the
+  // signed-out pair visible, the account chip and the drawer's sign-out button
+  // hidden. One read of /api/auth/session decides all three — `data-session`
+  // on the root flips the pair and the chip through their CSS variants, and
+  // the sign-out button's `hidden` is cleared here because a hidden attribute
+  // cannot be styled off. Nothing is stamped on a failed read: the pair stays,
+  // which is the right guess for a visitor whose session cannot be confirmed.
   const signoutBtn = header.querySelector<HTMLElement>(
     '[data-action="signout"]'
   );
-  if (signoutBtn) {
-    fetch("/api/auth/session")
-      .then(r => r.json())
-      .then((s: { authenticated?: boolean }) => {
-        if (s?.authenticated) signoutBtn.hidden = false;
-      })
-      .catch(() => {});
-  }
+  fetch("/api/auth/session")
+    .then(r => r.json())
+    .then((s: { authenticated?: boolean }) => {
+      const authenticated = s?.authenticated === true;
+      header.setAttribute(
+        "data-session",
+        authenticated ? "authenticated" : "anonymous"
+      );
+      if (authenticated && signoutBtn) signoutBtn.hidden = false;
+    })
+    .catch(() => {});
 
   // The drawer stays mounted and is hidden with `visibility`, which already
   // takes it out of the tab order and the accessibility tree — so open/close

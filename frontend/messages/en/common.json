@@ -65,6 +65,8 @@
   "form.networkError": "Network error — please try again.",
   "form.sending": "Sending…",
   "form.submitError": "Something went wrong. Please try again.",
+  "header.cabinet": "Cabinet",
+  "header.openAccount": "Open an account",
   "hiring.board.allRoles": "All roles",
   "hiring.board.clear": "Clear filters",
   "hiring.board.count": "{count, plural, one {# role} other {# roles}}",

@@ -1,6 +1,7 @@
 import { localePath, type Locale } from "@evinvest/i18n";
 
 import type { Translate } from "@evinvest/i18n";
+import type { HeaderAuthLinks } from "./header-shared";
 
 // One entry's label, deferred until a translator exists. A plain string would
 // force the catalogue key back out of the call site, which is what the inline
@@ -15,8 +16,9 @@ export interface NavEntry {
 // pages and in the zone-injected shell fragment (scripts/build-shell.mts) alike.
 // Portfolio / Research are root-relative anchors to the homepage sections (so
 // they work from any route, then scroll); Publications / Team / Hiring /
-// Contact are dedicated pages. The brand logo links home. The account chip CTA
-// is rendered separately (application/layout/account-chip-remote.tsx).
+// Contact are dedicated pages. The brand logo links home. The cabinet entries
+// are rendered separately: the static signed-out pair from `authLinks` below
+// (header-cta.tsx), the signed-in chip from account-chip-remote.tsx.
 export const NAV_ITEMS: readonly NavEntry[] = [
   { label: t => t("nav.portfolio", "Portfolio"), href: "/#portfolio" },
   { label: t => t("nav.research", "Research"), href: "/#research" },
@@ -74,4 +76,23 @@ export function localizeNav(
     label: item.label(t),
     href: localePath(locale, item.href),
   }));
+}
+
+// The signed-out pair's targets, one place for both hosts (the conductor's
+// <Header> and the zone fragment in scripts/build-shell.mts). Hard cross-zone
+// hrefs (PATTERNS §9): the cabinet root for a newcomer, its sign-in page for a
+// returning investor. Both labels are capped at 20 characters (i18n-max) — the
+// primary shares the bar with the burger below `sm`, where a longer label
+// overflows a 320px viewport in German.
+export function authLinks(locale: Locale, t: Translate): HeaderAuthLinks {
+  return {
+    openAccount: {
+      href: localePath(locale, "/cabinet"),
+      label: t("header.openAccount", "Open an account"),
+    },
+    cabinet: {
+      href: localePath(locale, "/cabinet/login"),
+      label: t("header.cabinet", "Cabinet"),
+    },
+  };
 }

@@ -37,7 +37,11 @@ export function HeaderBar({
           aria-label={homeLabel}
         >
           <Logo className="h-10 w-10 text-white" />
-          <div className="flex flex-col">
+          {/* Mark only below `sm`: the wordmark and the signed-out primary
+              (header-cta.tsx) cannot share a 320px bar — measured, the pair
+              overlapped the burger by ~60px in every locale. The mark still
+              carries the accessible name via the link's aria-label. */}
+          <div className="hidden flex-col sm:flex">
             <span className="font-serif-display text-lg font-bold tracking-wider text-white">
               EV INVESTMENT
             </span>
@@ -73,7 +77,7 @@ export function HeaderBar({
             aria-label={menuLabels.open}
             aria-expanded="false"
             aria-haspopup="menu"
-            className="flex size-10 items-center justify-center text-white lg:hidden"
+            className="flex size-10 shrink-0 items-center justify-center text-white lg:hidden"
           >
             <svg
               className="size-6"

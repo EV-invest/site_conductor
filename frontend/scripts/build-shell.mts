@@ -24,7 +24,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createElement } from "react";
+import { Fragment, createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { transformSync } from "esbuild";
 import postcss, { AtRule, type ChildNode } from "postcss";
@@ -32,7 +32,16 @@ import tailwindcss from "@tailwindcss/postcss";
 
 import { LOCALES, localePath, type Locale } from "@evinvest/i18n";
 import { BrandHeader } from "../application/layout/header";
-import { NAV_ITEMS, localizeNav } from "../application/layout/nav-items";
+import { HeaderBarCta, HeaderMenuCta } from "../application/layout/header-cta";
+import {
+  CHIP_BAR_CLASS,
+  CHIP_MENU_CLASS,
+} from "../application/layout/header-shared";
+import {
+  NAV_ITEMS,
+  authLinks,
+  localizeNav,
+} from "../application/layout/nav-items";
 import { translate } from "../shared/config/i18n";
 import registry from "../mfe-registry.json";
 import { spanEnterScript } from "./span-enter";
@@ -43,9 +52,11 @@ const outDir = path.join(frontend, "public/shell");
 const chip = registry.find(entry => entry.name === "cabinet.account");
 if (!chip) throw new Error("cabinet.account missing from mfe-registry.json");
 
-// Mirrors the conductor's own CTA wiring in app/layout.tsx: the bar chip hides
-// below `sm`; the overlay carries the full-width variant. The raw tag is
-// self-registering — the fragment appends its module script after the markup.
+// Mirrors the conductor's own CTA wiring in account-chip-remote.tsx: the static
+// signed-out pair beside the chip in the bar, the secondary beside it in the
+// overlay; the chip is hidden until the session is known to be signed in. The
+// raw tag is self-registering — the fragment appends its module script after
+// the markup.
 //
 // One fragment PER LOCALE, and that is load-bearing rather than a nicety. This
 // header is the only chrome a zone has, so its links are how a reader leaves the
@@ -61,6 +72,7 @@ if (!chip) throw new Error("cabinet.account missing from mfe-registry.json");
 // only the markup differs, and only in link targets and text.
 function fragmentFor(locale: Locale): string {
   const t = translate(locale);
+  const links = authLinks(locale, t);
   return renderToStaticMarkup(
     createElement(BrandHeader, {
       nav: localizeNav(NAV_ITEMS, locale, t),
@@ -71,8 +83,18 @@ function fragmentFor(locale: Locale): string {
         close: t("a11y.closeMenu", "Close menu"),
         menu: t("a11y.siteMenu", "Site menu"),
       },
-      cta: createElement(chip.tag, { class: "hidden items-center sm:flex" }),
-      mobileCta: createElement(chip.tag, { class: "flex w-full" }),
+      cta: createElement(
+        Fragment,
+        null,
+        createElement(HeaderBarCta, { links }),
+        createElement(chip.tag, { class: CHIP_BAR_CLASS })
+      ),
+      mobileCta: createElement(
+        Fragment,
+        null,
+        createElement(HeaderMenuCta, { links }),
+        createElement(chip.tag, { class: CHIP_MENU_CLASS })
+      ),
     })
   );
 }
