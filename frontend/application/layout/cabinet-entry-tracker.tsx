@@ -15,13 +15,15 @@ const HEADER_VARIANT = "control";
 // (header-cta.tsx) and the account chip, a cabinet-served remote in light DOM
 // whose markup this repo does not own — so the CTA event is hung on a
 // delegated listener over the slot instead of on the links themselves. A link
-// names itself through `data-cta` (the pair: `open_account` / `cabinet`); the
-// chip's own signed-out CTA (`/{locale}/cabinet/login`) counts as `cabinet`
-// for as long as it has no such attribute. Nothing else counts: the signed-in
-// chip links to the profile, and a returning user's clicks on their own name
-// would inflate the entry funnel. `data-cta-location` is left on the wrapper
-// for the chip to read once it instruments its own links (banking #392) — at
-// that point one side must stop firing, or the funnel double-counts.
+// names itself through `data-cta`: the pair's `open_account` / `cabinet`, and
+// since banking #392 the chip's own signed-out CTA carries `cabinet` too; the
+// href match below is the fallback for a chip build that predates it. Nothing
+// else counts: the signed-in chip links to the profile, and a returning
+// user's clicks on their own name would inflate the entry funnel. The chip is
+// deliberately not instrumented (it carries no analytics client), so this
+// listener is the single counter; `data-cta-location` stays on the wrapper
+// for it to read if that ever changes — at that point one side must stop
+// firing, or the funnel double-counts.
 export function CabinetEntryTracker({
   location,
   children,

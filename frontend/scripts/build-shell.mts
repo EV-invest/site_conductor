@@ -34,6 +34,7 @@ import { LOCALES, localePath, type Locale } from "@evinvest/i18n";
 import { BrandHeader } from "../application/layout/header";
 import { HeaderBarCta, HeaderMenuCta } from "../application/layout/header-cta";
 import {
+  CHIP_ATTRIBUTES,
   CHIP_BAR_CLASS,
   CHIP_MENU_CLASS,
 } from "../application/layout/header-shared";
@@ -88,13 +89,13 @@ function fragmentFor(locale: Locale): string {
         Fragment,
         null,
         createElement(HeaderBarCta, { links }),
-        createElement(chip.tag, { class: CHIP_BAR_CLASS })
+        createElement(chip.tag, { class: CHIP_BAR_CLASS, ...CHIP_ATTRIBUTES })
       ),
       mobileCta: createElement(
         Fragment,
         null,
         createElement(HeaderMenuCta, { links }),
-        createElement(chip.tag, { class: CHIP_MENU_CLASS })
+        createElement(chip.tag, { class: CHIP_MENU_CLASS, ...CHIP_ATTRIBUTES })
       ),
     })
   );

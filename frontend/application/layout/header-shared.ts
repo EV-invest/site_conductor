@@ -57,3 +57,10 @@ export const CHIP_BAR_CLASS =
   "hidden items-center group-data-[session=authenticated]/header:sm:flex";
 export const CHIP_MENU_CLASS =
   "hidden w-full group-data-[session=authenticated]/header:flex";
+
+// What the host tells the chip (banking #392): its signed-out CTA is the
+// secondary "Cabinet" affordance, so it opens the login page in its plain
+// sign-in state, never the signup one the pair's primary uses. No
+// `data-return-to` on the marketing site — there is no in-cabinet page the
+// reader was headed to. Applies to both hosts and both placements.
+export const CHIP_ATTRIBUTES = { "data-intent": "login" } as const;
