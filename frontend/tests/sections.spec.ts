@@ -129,8 +129,8 @@ for (const { name, selector, on } of SECTIONS) {
       // from the page top to the section's end in viewport-sized steps so
       // every observer above and inside it has seen the viewport (and every
       // lazy image above it has loaded — one that finishes after the capture
-      // starts would shift the page under the fixed chrome), then return to
-      // the top of the section for the capture — `once` keeps them revealed.
+      // starts would shift the page under the fixed chrome), then bring the
+      // section back into view for the capture — `once` keeps them revealed.
       await section.evaluate(async el => {
         const pause = () => new Promise(r => setTimeout(r, 100));
         const step = Math.max(200, window.innerHeight - 200);
@@ -160,8 +160,11 @@ for (const { name, selector, on } of SECTIONS) {
           ),
           new Promise(r => setTimeout(r, 3000)),
         ]);
-        el.scrollIntoView({ block: "start", behavior: "instant" });
       });
+      // Playwright's own scroll (the protocol one `toHaveScreenshot` repeats
+      // before capturing) ignores CSS scroll-padding, a DOM scrollIntoView
+      // honours it — end on the former so the capture's scroll is a no-op.
+      await section.scrollIntoViewIfNeeded();
     }
     // Let the scroll-driven transform settle to its resting frame.
     await page.waitForTimeout(150);
