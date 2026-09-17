@@ -12,10 +12,10 @@
 // not share code; until this object moves into an `@evinvest/*` package, the
 // cabinet mirrors it field for field, and a change here is a change there.
 //
-// TODO(#204): owner to confirm figures and as-of date. The values below are
-// what the site already showed before they were centralised, not sourced facts;
-// `asOf` stays `undefined` — and the "as of" line stays off the page — until
-// the owner names the date the figures were confirmed on.
+// Confirmed by the owner on 2026-09-18 (#204): the values are the ones the site
+// showed before they were centralised, and `asOf` is the confirmation date. Set
+// `asOf` back to `undefined` to take the "as of" line off the page while a new
+// figure is pending — a placeholder date must never render as a fact.
 
 export interface FundFigures {
   /** Target IRR, percent per annum. Rendered as a floor: "16.4% +". */
@@ -45,7 +45,7 @@ export interface FundFigures {
 export const FUND_FIGURES: FundFigures = {
   targetIrrPct: 16.4,
   closingTargetUsdM: 100,
-  asOf: undefined,
+  asOf: "2026-09-18",
   minSubscriptionUsd: undefined,
   kycTiming:
     "A few minutes to submit. Most checks are decided within the hour.",
