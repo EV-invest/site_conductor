@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
+import { Button } from "@evinvest/uikit";
 import { localePath } from "@evinvest/i18n";
 import { useLocale, useT } from "@evinvest/i18n/react";
 import { Text } from "@/shared/ui/text";
 import { useExperimentEvent } from "@/features/ab-variant";
-import { PRIMARY, SECONDARY, TEXT_LINK, type HeroCtaAlign } from "./row";
+import { PRIMARY, SECONDARY, SIZE, TEXT_LINK, type HeroCtaAlign } from "./row";
 
 // Emitted as `hero_cta_clicked`: the tracker prefixes the experiment key, so
 // the bare `clicked` keeps the event name the pre-#198 row already reported
@@ -19,9 +20,8 @@ const ACTION = "clicked";
  * link, and one line under the row saying what the primary leads into.
  *
  * The cabinet is a routed zone (PATTERNS §9), so the primary is a hard `<a>`
- * — never `next/link`. It is a plain styled anchor rather than a uikit
- * `Button asChild` because the row would otherwise hold two `asChild` siblings
- * (PATTERNS §7).
+ * — `Button href`, never `next/link`. Nothing in the row is `asChild`, so the
+ * two-sibling hydration trap (PATTERNS §7) cannot apply.
  */
 export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
   const track = useExperimentEvent();
@@ -37,17 +37,19 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
       <div
         className={`flex flex-wrap items-center gap-4 ${centred ? "justify-center" : ""}`}
       >
-        <a
+        <Button
           href={localePath(locale, "/cabinet")}
+          size={SIZE}
           className={PRIMARY}
           onClick={() => track(ACTION, { cta: "open_cabinet", ...common })}
         >
           {t("home.hero.cta.start", "Start investing")}
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </a>
+          <ArrowRight />
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size={SIZE}
           className={SECONDARY}
           onClick={() =>
             track(ACTION, { cta: "explore_assets", ...common }, fire => {
@@ -59,7 +61,7 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
           }
         >
           {t("home.hero.cta.explore", "Explore Assets")}
-        </button>
+        </Button>
 
         <Link
           href="/publications/whitepaper"
@@ -67,14 +69,14 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
           onClick={() => track(ACTION, { cta: "whitepaper", ...common })}
         >
           {t("home.hero.cta.whitepaper", "Whitepaper")}
-          <FileText className="w-4 h-4 ml-2" />
+          <FileText />
         </Link>
       </div>
 
       {/* TODO(#204): sourced figures (minimum subscription, reporting cadence)
           join this line once the owner confirms them. Until then it carries
           only the cabinet's own KYC promise (`kyc.dialog.timeBody`). */}
-      <Text variant="secondary" className="text-xs max-w-xl">
+      <Text variant="secondary" className="text-xs text-ink-soft max-w-md">
         {t(
           "home.hero.cta.fact",
           "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe."

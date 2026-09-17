@@ -50,7 +50,7 @@ export function HeroB({ locale }: { locale: Locale }) {
           <div className="flex flex-wrap items-center gap-8 pt-2">
             <HeroCta align="start" />
 
-            <div>
+            <div className="shrink-0">
               <Text
                 variant="secondary"
                 className="text-[10px] font-mono-tech uppercase tracking-widest mb-1"

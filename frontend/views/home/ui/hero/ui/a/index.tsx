@@ -46,7 +46,7 @@ function HeroACtaRow({ locale }: { locale: Locale }) {
     <Settle className="flex flex-col items-center gap-4">
       <HeroCta align="center" />
       <Text asChild variant="secondary" className="mt-8">
-        <span className="text-[9px] font-mono-tech tracking-[0.3em] uppercase">
+        <span className="text-xs font-mono-tech tracking-widest uppercase">
           {t("home.hero.scrollHint", "Follow the money")}
         </span>
       </Text>
