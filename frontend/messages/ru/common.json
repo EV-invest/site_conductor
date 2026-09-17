@@ -764,16 +764,48 @@
     "t": "Ещё с места событий"
   },
   "home.partners.eyebrow": {
-    "en": "What we run on",
-    "t": "На чём мы работаем"
+    "en": "What your money runs on",
+    "t": "На чём работают ваши деньги"
   },
   "home.partners.title": {
     "en": "The stack behind *the numbers*",
     "t": "Инфраструктура за *цифрами*"
   },
   "home.partners.intro": {
-    "en": "Custody, identity verification, and the engineering that ensures safety of your money. We commit to having full observability of all technology used to ensure your safe and seamless experience.",
-    "t": "Хранение активов, верификация личности и инженерная база, которая обеспечивает сохранность ваших денег. Мы обязуемся сохранять полную прозрачность всех используемых технологий, чтобы работа с нами была безопасной и беспроблемной."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Хранение — Turnkey, проверка личности — Didit, вход через Google, USDT в сети TRON, каждый баланс — в леджере TigerBeetle. Наши клиентские продукты — кабинет инвестора и этот сайт — разрабатываются открыто на GitHub."
+  },
+  "home.partners.github": {
+    "en": "See the code on GitHub",
+    "t": "Посмотреть код на GitHub"
+  },
+  "home.partners.role.custody": {
+    "en": "Custody",
+    "t": "Хранение"
+  },
+  "home.partners.role.identity": {
+    "en": "Identity",
+    "t": "Личность"
+  },
+  "home.partners.role.ledger": {
+    "en": "Ledger",
+    "t": "Леджер"
+  },
+  "home.partners.role.network": {
+    "en": "Network",
+    "t": "Сеть"
+  },
+  "home.partners.role.openSource": {
+    "en": "Open source",
+    "t": "Открытый код"
+  },
+  "home.partners.role.signIn": {
+    "en": "Sign-in",
+    "t": "Вход"
+  },
+  "home.partners.role.stablecoin": {
+    "en": "Stablecoin",
+    "t": "Стейблкоин"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",

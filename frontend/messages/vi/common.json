@@ -764,16 +764,48 @@
     "t": "Thêm từ thực địa"
   },
   "home.partners.eyebrow": {
-    "en": "What we run on",
-    "t": "Nền tảng chúng tôi sử dụng"
+    "en": "What your money runs on",
+    "t": "Tiền của bạn vận hành trên gì"
   },
   "home.partners.title": {
     "en": "The stack behind *the numbers*",
     "t": "Hạ tầng đằng sau *những con số*"
   },
   "home.partners.intro": {
-    "en": "Custody, identity verification, and the engineering that ensures safety of your money. We commit to having full observability of all technology used to ensure your safe and seamless experience.",
-    "t": "Lưu ký tài sản, xác minh danh tính và nền tảng kỹ thuật bảo đảm an toàn cho tiền của bạn. Chúng tôi cam kết minh bạch hoàn toàn về mọi công nghệ được sử dụng, để trải nghiệm của bạn luôn an toàn và liền mạch."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Lưu ký bởi Turnkey, xác minh danh tính bởi Didit, đăng nhập bằng Google, USDT trên mạng TRON, mọi số dư nằm trong sổ cái TigerBeetle. Các sản phẩm dành cho khách hàng của chúng tôi — khu vực nhà đầu tư và trang web này — được phát triển công khai trên GitHub."
+  },
+  "home.partners.github": {
+    "en": "See the code on GitHub",
+    "t": "Xem mã nguồn trên GitHub"
+  },
+  "home.partners.role.custody": {
+    "en": "Custody",
+    "t": "Lưu ký"
+  },
+  "home.partners.role.identity": {
+    "en": "Identity",
+    "t": "Danh tính"
+  },
+  "home.partners.role.ledger": {
+    "en": "Ledger",
+    "t": "Sổ cái"
+  },
+  "home.partners.role.network": {
+    "en": "Network",
+    "t": "Mạng lưới"
+  },
+  "home.partners.role.openSource": {
+    "en": "Open source",
+    "t": "Mã nguồn mở"
+  },
+  "home.partners.role.signIn": {
+    "en": "Sign-in",
+    "t": "Đăng nhập"
+  },
+  "home.partners.role.stablecoin": {
+    "en": "Stablecoin",
+    "t": "Stablecoin"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",

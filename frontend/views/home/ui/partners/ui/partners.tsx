@@ -1,26 +1,30 @@
 import { Container } from "@evinvest/uikit";
 import type { Locale } from "@evinvest/i18n";
+import { ExternalLink } from "lucide-react";
 
 import { Reveal } from "@/shared/ui/motion";
 import { translate } from "@/shared/config/i18n";
 import { Accented } from "@/shared/ui/accented";
 
+import { partners } from "../model/partners";
 import { PartnerRow } from "./partner-row";
 
 // How many times the track repeats the list. The animation slides exactly one
 // copy per lap, which only reads as continuous while the REMAINING copies still
-// cover the viewport — one row of this list is roughly 1700px, so two copies
+// cover the viewport — one row of this list is roughly 900px, so two copies
 // would run dry and show a gap before snapping back on any window wider than
-// that, which is most desktops. Four carries it past ~5000px.
+// that, which is most desktops. Six carries it past ~4500px.
 //
-// Keep in sync with the -25% in `partners-marquee` (application/styles/globals.css):
-// that percentage is 100 / COPIES.
-const COPIES = 4;
+// Keep in sync with the `-100% / 6` in `partners-marquee`
+// (application/styles/globals.css): that fraction is 1 / COPIES.
+const COPIES = 6;
+
+const GITHUB_ORG = "https://github.com/EV-invest";
 
 // A trust bar between the portfolio and the research desk: the portfolio claims
-// the returns, this says what produces and safeguards them, and research then
-// shows the working. Named vendors are cheap for us and expensive to fake, which
-// is the whole point of putting them on the page.
+// the returns, this says who holds, verifies and moves the money behind them,
+// and research then shows the working. Named vendors are cheap for us and
+// expensive to fake, which is the whole point of putting them on the page.
 //
 // Deliberately a Server Component with zero interactivity: the loop is CSS
 // (see `partners-marquee` in application/styles/globals.css), so the section
@@ -28,6 +32,7 @@ const COPIES = 4;
 // same as every sibling section.
 export function Partners({ locale }: { locale: Locale }) {
   const t = translate(locale);
+  const items = partners(t);
   return (
     <section
       id="partners"
@@ -35,20 +40,32 @@ export function Partners({ locale }: { locale: Locale }) {
     >
       <Container>
         <Reveal className="max-w-2xl">
-          <span className="block font-mono-tech text-xs tracking-[0.3em] text-primary-ink uppercase">
-            {t("home.partners.eyebrow", "What we run on")}
+          <span className="block font-mono-tech text-xs tracking-widest text-primary-ink uppercase">
+            {t("home.partners.eyebrow", "What your money runs on")}
           </span>
-          <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-white sm:text-4xl">
+          <h2 className="mt-3 font-serif-display text-3xl leading-tight font-light text-ink sm:text-4xl">
             <Accented
               text={t("home.partners.title", "The stack behind *the numbers*")}
             />
           </h2>
-          <p className="mt-4 leading-relaxed font-light text-ink/70">
+          <p className="mt-4 leading-relaxed font-light text-ink-mid">
             {t(
               "home.partners.intro",
-              "Custody, identity verification, and the engineering that ensures safety of your money. We commit to having full observability of all technology used to ensure your safe and seamless experience."
+              "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub."
             )}
           </p>
+          {/* A plain <a>, not Button: this is a reference in running copy, not a
+              call to action, and the permanent underline is what tells it apart
+              from the CTAs above and below. */}
+          <a
+            href={GITHUB_ORG}
+            target="_blank"
+            rel="noopener"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-sm font-mono-tech text-xs tracking-widest text-primary-ink uppercase underline underline-offset-4 transition-colors duration-300 outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {t("home.partners.github", "See the code on GitHub")}
+            <ExternalLink aria-hidden className="size-3.5" />
+          </a>
         </Reveal>
       </Container>
 
@@ -60,7 +77,7 @@ export function Partners({ locale }: { locale: Locale }) {
         <div className="partners-marquee overflow-hidden">
           <div className="partners-marquee-track flex w-max">
             {Array.from({ length: COPIES }, (_, i) => (
-              <PartnerRow key={i} clone={i > 0} />
+              <PartnerRow key={i} items={items} clone={i > 0} />
             ))}
           </div>
         </div>
