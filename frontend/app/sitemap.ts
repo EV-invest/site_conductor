@@ -78,17 +78,21 @@ const perLocale = (
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = ROUTES.flatMap(route =>
-    perLocale(route.path, locale => ({
-      changeFrequency: route.changeFrequency,
-      priority: route.priority,
-      // The art is one file serving every locale, so it is declared on the
-      // default-locale homepage only. Repeating the same image URL under five
-      // <url> entries does not get it indexed five times; it inflates the file
-      // and asks Googlebot to re-fetch art it already has.
-      ...(route.path === "/" && locale === DEFAULT_LOCALE
-        ? { images: HOME_IMAGES }
-        : {}),
-    }))
+    perLocale(
+      route.path,
+      locale => ({
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
+        // The art is one file serving every locale, so it is declared on the
+        // default-locale homepage only. Repeating the same image URL under five
+        // <url> entries does not get it indexed five times; it inflates the file
+        // and asks Googlebot to re-fetch art it already has.
+        ...(route.path === "/" && locale === DEFAULT_LOCALE
+          ? { images: HOME_IMAGES }
+          : {}),
+      }),
+      route.contentLocales
+    )
   );
 
   // The whitepaper is excluded on purpose: it mounts in a shadow root, so its
