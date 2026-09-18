@@ -728,32 +728,12 @@
     "t": "Die Infrastruktur hinter *den Zahlen*"
   },
   "home.partners.intro": {
-    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
-    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, jeder Saldo in einem TigerBeetle-Ledger. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger, errors and product analytics through Sentry and PostHog. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, jeder Saldo in einem TigerBeetle-Ledger, Fehler und Produktanalytik über Sentry und PostHog. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
   },
   "home.partners.github": {
     "en": "See the code on GitHub",
     "t": "Den Code auf GitHub ansehen"
-  },
-  "home.partners.role.custody": {
-    "en": "Custody",
-    "t": "Verwahrung"
-  },
-  "home.partners.role.identity": {
-    "en": "Identity",
-    "t": "Identität"
-  },
-  "home.partners.role.ledger": {
-    "en": "Ledger",
-    "t": "Ledger"
-  },
-  "home.partners.role.openSource": {
-    "en": "Open source",
-    "t": "Open Source"
-  },
-  "home.partners.role.signIn": {
-    "en": "Sign-in",
-    "t": "Anmeldung"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",

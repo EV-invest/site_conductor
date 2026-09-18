@@ -11,13 +11,14 @@ import { PartnerRow } from "./partner-row";
 
 // How many times the track repeats the list. The animation slides exactly one
 // copy per lap, which only reads as continuous while the REMAINING copies still
-// cover the viewport — one row of this list is roughly 900px, so two copies
-// would run dry and show a gap before snapping back on any window wider than
-// that, which is most desktops. Six carries it past ~4500px.
+// cover the viewport — one row of this list measures ~1200px at the current
+// mark size, so two copies would run dry and show a gap before snapping back
+// on any window wider than that, which is most desktops. Five carries the
+// remaining four past ~4800px, beyond a 4K display.
 //
-// Keep in sync with the `-100% / 6` in `partners-marquee`
+// Keep in sync with the `-100% / 5` in `partners-marquee`
 // (application/styles/globals.css): that fraction is 1 / COPIES.
-const COPIES = 6;
+const COPIES = 5;
 
 const GITHUB_ORG = "https://github.com/EV-invest";
 
@@ -32,7 +33,6 @@ const GITHUB_ORG = "https://github.com/EV-invest";
 // same as every sibling section.
 export function Partners({ locale }: { locale: Locale }) {
   const t = translate(locale);
-  const items = partners(t);
   return (
     <section
       id="partners"
@@ -51,7 +51,7 @@ export function Partners({ locale }: { locale: Locale }) {
           <p className="mt-4 leading-relaxed font-light text-ink-mid">
             {t(
               "home.partners.intro",
-              "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub."
+              "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger, errors and product analytics through Sentry and PostHog. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub."
             )}
           </p>
           {/* A plain <a>, not Button: this is a reference in running copy, not a
@@ -77,7 +77,7 @@ export function Partners({ locale }: { locale: Locale }) {
         <div className="partners-marquee overflow-hidden">
           <div className="partners-marquee-track flex w-max">
             {Array.from({ length: COPIES }, (_, i) => (
-              <PartnerRow key={i} items={items} clone={i > 0} />
+              <PartnerRow key={i} items={partners} clone={i > 0} />
             ))}
           </div>
         </div>
