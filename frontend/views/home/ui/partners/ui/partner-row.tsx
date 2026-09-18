@@ -22,41 +22,36 @@ function markStyle(src: string): CSSProperties {
   };
 }
 
-function PartnerItem({ partner: { name, role, mark } }: { partner: Partner }) {
+function PartnerItem({ partner: { name, mark } }: { partner: Partner }) {
   // A wordmark spells the vendor itself, so it carries the accessible name and
   // suppresses the text label. Everything else — including an entry with no file
   // at all — shows the name as text, which is what makes the missing-asset case
   // ordinary rather than broken.
   const labelled = mark?.shape !== "wordmark";
   return (
-    // px-6 rather than a flex `gap` on the row: each item owns its own trailing
+    // px-8 rather than a flex `gap` on the row: each item owns its own trailing
     // space, so every copy of the list is a byte-identical box and the slide
     // lands exactly on the seam. A `gap` would leave the loop half a gap short
     // and visibly hitch once per lap.
     //
-    // Two lines per item — the vendor, then what it does for the client — so
-    // the bar answers "who?" and "for what?" in one glance without the intro
-    // having to spell every pairing out.
-    <li className="flex shrink-0 flex-col gap-1 px-6 text-ink-soft">
-      <span className="flex h-6 items-center gap-2.5">
-        {mark && (
-          <span
-            role={labelled ? undefined : "img"}
-            aria-label={labelled ? undefined : name}
-            aria-hidden={labelled || undefined}
-            style={markStyle(mark.src)}
-            className={mark.shape === "glyph" ? "size-6" : "h-6 w-24"}
-          />
-        )}
-        {labelled && (
-          <span className="font-mono-tech text-xs tracking-widest whitespace-nowrap text-ink uppercase">
-            {name}
-          </span>
-        )}
-      </span>
-      <span className="text-xs leading-none font-light whitespace-nowrap">
-        {role}
-      </span>
+    // One line per item — the mark and the name, nothing under them. The marks
+    // are the size of a heading, not an icon: with the caption gone they are
+    // what the bar is made of.
+    <li className="flex h-9 shrink-0 items-center gap-3 px-8 text-ink-soft">
+      {mark && (
+        <span
+          role={labelled ? undefined : "img"}
+          aria-label={labelled ? undefined : name}
+          aria-hidden={labelled || undefined}
+          style={markStyle(mark.src)}
+          className={mark.shape === "glyph" ? "size-9" : "h-9 w-36"}
+        />
+      )}
+      {labelled && (
+        <span className="font-mono-tech text-sm tracking-widest whitespace-nowrap text-ink uppercase">
+          {name}
+        </span>
+      )}
     </li>
   );
 }
@@ -77,7 +72,7 @@ export function PartnerRow({
     <ul
       aria-hidden={clone || undefined}
       className={cn(
-        "flex shrink-0 items-start",
+        "flex shrink-0 items-center",
         clone && "partners-marquee-clone"
       )}
     >

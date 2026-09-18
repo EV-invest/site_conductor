@@ -691,50 +691,6 @@
     "en": "Quy Nhon coastal development",
     "t": "Прибрежная застройка в Куинёне"
   },
-  "home.howItWorks.cta": {
-    "en": "Start investing",
-    "t": "Начать инвестировать"
-  },
-  "home.howItWorks.eyebrow": {
-    "en": "How it works",
-    "t": "Как это работает"
-  },
-  "home.howItWorks.intro": {
-    "en": "Investing with us is a short, fixed sequence: verify who you are, subscribe to units, then follow your position from the cabinet. This is exactly what happens after you click.",
-    "t": "Инвестировать с нами — короткая и фиксированная последовательность: подтвердите личность, подпишитесь на паи, затем следите за позицией из кабинета. Вот что именно происходит после клика."
-  },
-  "home.howItWorks.login": {
-    "en": "Already an investor? Log in",
-    "t": "Уже инвестор? Войти"
-  },
-  "home.howItWorks.step1.body": {
-    "en": "Sign in with Google, then upload an ID document and a selfie. A few minutes to submit; most checks are decided within the hour.",
-    "t": "Войдите через Google, затем загрузите документ, удостоверяющий личность, и селфи. Несколько минут на отправку; большинство проверок решается в течение часа."
-  },
-  "home.howItWorks.step1.title": {
-    "en": "Create your account and pass verification",
-    "t": "Создайте аккаунт и пройдите верификацию"
-  },
-  "home.howItWorks.step2.body": {
-    "en": "Choose an amount and subscribe at the current net asset value per unit — the same price every holder is issued at, whenever they join.",
-    "t": "Выберите сумму и подпишитесь по текущей стоимости чистых активов на пай — по той же цене, по которой паи выпускаются каждому держателю, когда бы он ни присоединился."
-  },
-  "home.howItWorks.step2.title": {
-    "en": "Subscribe to allocation units at the current NAV",
-    "t": "Подпишитесь на аллокационные паи по текущему NAV"
-  },
-  "home.howItWorks.step3.body": {
-    "en": "Your units, the current NAV, every report and every payout land in one place as they happen — nothing to chase over email.",
-    "t": "Ваши паи, текущий NAV, каждый отчёт и каждая выплата появляются в одном месте по мере поступления — ничего не нужно запрашивать по почте."
-  },
-  "home.howItWorks.step3.title": {
-    "en": "Track NAV, reports and payouts in your cabinet",
-    "t": "Следите за NAV, отчётами и выплатами в кабинете"
-  },
-  "home.howItWorks.title": {
-    "en": "From sign-in to *your first report*",
-    "t": "От входа до *первого отчёта*"
-  },
   "home.fieldNotes.eyebrow": {
     "en": "From the ground",
     "t": "С места событий"
@@ -772,40 +728,12 @@
     "t": "Инфраструктура за *цифрами*"
   },
   "home.partners.intro": {
-    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
-    "t": "Хранение — Turnkey, проверка личности — Didit, вход через Google, USDT в сети TRON, каждый баланс — в леджере TigerBeetle. Наши клиентские продукты — кабинет инвестора и этот сайт — разрабатываются открыто на GitHub."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger, errors and product analytics through Sentry and PostHog. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Хранение — Turnkey, проверка личности — Didit, вход через Google, каждый баланс — в леджере TigerBeetle, ошибки и продуктовая аналитика — через Sentry и PostHog. Наши клиентские продукты — кабинет инвестора и этот сайт — разрабатываются открыто на GitHub."
   },
   "home.partners.github": {
     "en": "See the code on GitHub",
     "t": "Посмотреть код на GitHub"
-  },
-  "home.partners.role.custody": {
-    "en": "Custody",
-    "t": "Хранение"
-  },
-  "home.partners.role.identity": {
-    "en": "Identity",
-    "t": "Личность"
-  },
-  "home.partners.role.ledger": {
-    "en": "Ledger",
-    "t": "Леджер"
-  },
-  "home.partners.role.network": {
-    "en": "Network",
-    "t": "Сеть"
-  },
-  "home.partners.role.openSource": {
-    "en": "Open source",
-    "t": "Открытый код"
-  },
-  "home.partners.role.signIn": {
-    "en": "Sign-in",
-    "t": "Вход"
-  },
-  "home.partners.role.stablecoin": {
-    "en": "Stablecoin",
-    "t": "Стейблкоин"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
@@ -854,38 +782,6 @@
   "home.team.placeholder.ir.sub": {
     "en": "Investor Relations (IR)",
     "t": "Отношения с инвесторами (IR)"
-  },
-  "home.closing.eyebrow": {
-    "en": "Get Started",
-    "t": "Начать"
-  },
-  "home.closing.title": {
-    "en": "Ready to *start investing*?",
-    "t": "Готовы *начать инвестировать*?"
-  },
-  "home.closing.intro": {
-    "en": "Open an account online, verify your identity and subscribe to allocation units — all from the investor cabinet.",
-    "t": "Откройте счёт онлайн, пройдите проверку личности и подпишитесь на юниты аллокации — всё из кабинета инвестора."
-  },
-  "home.closing.fact.kyc": {
-    "en": "Sign in with Google; most identity checks are decided within the hour",
-    "t": "Вход через Google; большинство проверок личности решаются в течение часа"
-  },
-  "home.closing.fact.units": {
-    "en": "Subscribe to allocation units at the current NAV",
-    "t": "Подписка на юниты аллокации по текущему NAV"
-  },
-  "home.closing.fact.cabinet": {
-    "en": "NAV, reports and payouts in your cabinet",
-    "t": "NAV, отчёты и выплаты — в вашем кабинете"
-  },
-  "home.closing.cta.start": {
-    "en": "Start investing",
-    "t": "Начать инвестировать"
-  },
-  "home.closing.cta.cabinet": {
-    "en": "Cabinet",
-    "t": "Кабинет"
   },
   "publications.eyebrow": {
     "en": "EV Investment · Publications",
@@ -1384,40 +1280,8 @@
     "t": "Ваша инвестиция *как на ладони*"
   },
   "home.cabinetTour.intro": {
-    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
-    "t": "Кабинет — это место, где фонд отчитывается перед вами: что вы держите, как это оценено, на какой стадии проверка и что в кошельке. Это его настоящие экраны."
-  },
-  "home.cabinetTour.benefit.units.title": {
-    "en": "Holdings in allocation units",
-    "t": "Доля в юнитах аллокации"
-  },
-  "home.cabinetTour.benefit.units.body": {
-    "en": "Your stake is a number of units; its value follows the fund's posted NAV, not a promise.",
-    "t": "Ваша доля — это число юнитов; её стоимость следует за опубликованной NAV фонда, а не за обещанием."
-  },
-  "home.cabinetTour.benefit.nav.title": {
-    "en": "NAV history you can see",
-    "t": "История NAV перед глазами"
-  },
-  "home.cabinetTour.benefit.nav.body": {
-    "en": "Every valuation mark since inception, with your own participation drawn on top of it.",
-    "t": "Каждая оценочная марка с момента запуска — и поверх неё линия вашего участия."
-  },
-  "home.cabinetTour.benefit.status.title": {
-    "en": "Verification status always in view",
-    "t": "Статус проверки всегда на виду"
-  },
-  "home.cabinetTour.benefit.status.body": {
-    "en": "Identity check, account standing and the devices signed in — on your profile, never buried in a menu.",
-    "t": "Проверка личности, состояние счёта и устройства, с которых выполнен вход, — в профиле, а не в глубине меню."
-  },
-  "home.cabinetTour.benefit.wallet.title": {
-    "en": "Wallet in USDT",
-    "t": "Кошелёк в USDT"
-  },
-  "home.cabinetTour.benefit.wallet.body": {
-    "en": "Fund and withdraw in USDT on TRON; every balance is an entry on the ledger, not a spreadsheet.",
-    "t": "Пополнение и вывод в USDT в сети TRON; каждый баланс — запись в леджере, а не в таблице."
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens.",
+    "t": "Кабинет — это место, где фонд отчитывается перед вами: что вы держите, как это оценено, на какой стадии проверка и что в кошельке — сегодня он пополняется криптовалютой, фиатный ввод появится позже. Это его настоящие экраны."
   },
   "home.cabinetTour.cta": {
     "en": "See your cabinet",
@@ -1438,5 +1302,17 @@
   "home.cabinetTour.shot.profile": {
     "en": "Profile: verified identity, account standing and the devices signed in (demo data)",
     "t": "Профиль: подтверждённая личность, состояние счёта и устройства, с которых выполнен вход (демо-данные)"
+  },
+  "home.cabinetTour.step.verify": {
+    "en": "Sign in with Google and verify your identity",
+    "t": "Войдите через Google и подтвердите личность"
+  },
+  "home.cabinetTour.step.subscribe": {
+    "en": "Subscribe to allocation units at the posted NAV",
+    "t": "Подпишитесь на юниты аллокации по опубликованной NAV"
+  },
+  "home.cabinetTour.step.follow": {
+    "en": "Follow NAV, reports and payouts in the cabinet",
+    "t": "Следите за NAV, отчётами и выплатами в кабинете"
   }
 }

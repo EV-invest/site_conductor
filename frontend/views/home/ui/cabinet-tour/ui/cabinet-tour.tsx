@@ -5,7 +5,7 @@ import { accented } from "@/shared/ui/accented";
 import { Reveal, SplitText, Stagger, StaggerItem } from "@/shared/ui/motion";
 import { translate } from "@/shared/config/i18n";
 
-import { benefits } from "../model/benefits";
+import { steps } from "../model/steps";
 import { CabinetShots } from "./cabinet-shots";
 import { CabinetTourCta } from "./cabinet-tour-cta";
 
@@ -15,6 +15,11 @@ import { CabinetTourCta } from "./cabinet-tour-cta";
  * the landing; private funds do not, and the closed door is half of why their
  * portals feel members-only. It sits between Research (the working) and Team
  * (the people) — the tool between the two.
+ *
+ * It is also the page's only "what happens next": the step map and the closer
+ * that used to bracket the page were folded in here as three plain lines and
+ * one quiet link (owner feedback, 2026-09-18) — the reader is meant to reach
+ * the conclusion on their own, so nothing here asks.
  *
  * Server Component: copy and captures never change per client. The only island
  * is the CTA, which needs a click handler for the funnel event.
@@ -42,35 +47,34 @@ export function CabinetTour({ locale }: { locale: Locale }) {
             <p className="mt-4 leading-relaxed font-light text-ink-mid">
               {t(
                 "home.cabinetTour.intro",
-                "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens."
+                "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens."
               )}
             </p>
           </Reveal>
 
-          {/* The motion primitives render divs, so the list semantics ride on roles. */}
-          <Stagger role="list" className="mt-10 space-y-6">
-            {benefits(t).map(({ icon: Icon, title, body }) => (
-              <StaggerItem
-                key={title}
-                role="listitem"
-                className="flex items-start gap-4"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-primary-ink/30 bg-primary-ink/15 text-primary-ink">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <div>
-                  <h3 className="font-display text-lg leading-snug font-light text-ink">
-                    {title}
-                  </h3>
-                  <p className="mt-1 text-sm leading-relaxed font-light text-ink-mid">
-                    {body}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
+          {/* An <ol>: the order is the point, and assistive tech numbers it, so
+              the visible ordinals are decoration. */}
+          <Stagger className="mt-10">
+            <ol className="space-y-3 border-t border-border pt-6">
+              {steps(t).map((step, i) => (
+                <li key={step}>
+                  <StaggerItem className="flex items-baseline gap-4">
+                    <span
+                      aria-hidden
+                      className="font-mono-tech text-xs tracking-widest text-ink-soft"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm leading-relaxed font-light text-ink-mid">
+                      {step}
+                    </span>
+                  </StaggerItem>
+                </li>
+              ))}
+            </ol>
           </Stagger>
 
-          <Reveal delay={0.05} className="mt-10">
+          <Reveal delay={0.05} className="mt-8">
             <CabinetTourCta />
           </Reveal>
         </div>

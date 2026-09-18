@@ -691,50 +691,6 @@
     "en": "Quy Nhon coastal development",
     "t": "Küstenbebauung in Quy Nhon"
   },
-  "home.howItWorks.cta": {
-    "en": "Start investing",
-    "t": "Jetzt investieren"
-  },
-  "home.howItWorks.eyebrow": {
-    "en": "How it works",
-    "t": "So funktioniert es"
-  },
-  "home.howItWorks.intro": {
-    "en": "Investing with us is a short, fixed sequence: verify who you are, subscribe to units, then follow your position from the cabinet. This is exactly what happens after you click.",
-    "t": "Mit uns zu investieren ist eine kurze, feste Abfolge: Identität bestätigen, Anteile zeichnen, dann die Position im Cabinet verfolgen. Genau das passiert nach dem Klick."
-  },
-  "home.howItWorks.login": {
-    "en": "Already an investor? Log in",
-    "t": "Bereits Investor? Anmelden"
-  },
-  "home.howItWorks.step1.body": {
-    "en": "Sign in with Google, then upload an ID document and a selfie. A few minutes to submit; most checks are decided within the hour.",
-    "t": "Melden Sie sich mit Google an und laden Sie dann ein Ausweisdokument und ein Selfie hoch. Wenige Minuten zum Einreichen; die meisten Prüfungen werden innerhalb einer Stunde entschieden."
-  },
-  "home.howItWorks.step1.title": {
-    "en": "Create your account and pass verification",
-    "t": "Konto anlegen und Verifizierung durchlaufen"
-  },
-  "home.howItWorks.step2.body": {
-    "en": "Choose an amount and subscribe at the current net asset value per unit — the same price every holder is issued at, whenever they join.",
-    "t": "Wählen Sie einen Betrag und zeichnen Sie zum aktuellen Nettoinventarwert je Anteil — derselbe Preis, zu dem jeder Inhaber ausgegeben wird, wann immer er einsteigt."
-  },
-  "home.howItWorks.step2.title": {
-    "en": "Subscribe to allocation units at the current NAV",
-    "t": "Allokationsanteile zum aktuellen NAV zeichnen"
-  },
-  "home.howItWorks.step3.body": {
-    "en": "Your units, the current NAV, every report and every payout land in one place as they happen — nothing to chase over email.",
-    "t": "Ihre Anteile, der aktuelle NAV, jeder Bericht und jede Auszahlung landen an einem Ort, sobald sie anfallen — nichts muss per E-Mail nachgefragt werden."
-  },
-  "home.howItWorks.step3.title": {
-    "en": "Track NAV, reports and payouts in your cabinet",
-    "t": "NAV, Berichte und Auszahlungen im Cabinet verfolgen"
-  },
-  "home.howItWorks.title": {
-    "en": "From sign-in to *your first report*",
-    "t": "Von der Anmeldung bis zum *ersten Bericht*"
-  },
   "home.fieldNotes.eyebrow": {
     "en": "From the ground",
     "t": "Direkt vor Ort"
@@ -772,40 +728,12 @@
     "t": "Die Infrastruktur hinter *den Zahlen*"
   },
   "home.partners.intro": {
-    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
-    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, USDT auf TRON, jeder Saldo in einem TigerBeetle-Ledger. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger, errors and product analytics through Sentry and PostHog. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, jeder Saldo in einem TigerBeetle-Ledger, Fehler und Produktanalytik über Sentry und PostHog. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
   },
   "home.partners.github": {
     "en": "See the code on GitHub",
     "t": "Den Code auf GitHub ansehen"
-  },
-  "home.partners.role.custody": {
-    "en": "Custody",
-    "t": "Verwahrung"
-  },
-  "home.partners.role.identity": {
-    "en": "Identity",
-    "t": "Identität"
-  },
-  "home.partners.role.ledger": {
-    "en": "Ledger",
-    "t": "Ledger"
-  },
-  "home.partners.role.network": {
-    "en": "Network",
-    "t": "Netzwerk"
-  },
-  "home.partners.role.openSource": {
-    "en": "Open source",
-    "t": "Open Source"
-  },
-  "home.partners.role.signIn": {
-    "en": "Sign-in",
-    "t": "Anmeldung"
-  },
-  "home.partners.role.stablecoin": {
-    "en": "Stablecoin",
-    "t": "Stablecoin"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
@@ -854,38 +782,6 @@
   "home.team.placeholder.ir.sub": {
     "en": "Investor Relations (IR)",
     "t": "Investor Relations (IR)"
-  },
-  "home.closing.eyebrow": {
-    "en": "Get Started",
-    "t": "Loslegen"
-  },
-  "home.closing.title": {
-    "en": "Ready to *start investing*?",
-    "t": "Bereit, *zu investieren*?"
-  },
-  "home.closing.intro": {
-    "en": "Open an account online, verify your identity and subscribe to allocation units — all from the investor cabinet.",
-    "t": "Eröffnen Sie online ein Konto, bestätigen Sie Ihre Identität und zeichnen Sie Allokationseinheiten — alles im Investoren-Cabinet."
-  },
-  "home.closing.fact.kyc": {
-    "en": "Sign in with Google; most identity checks are decided within the hour",
-    "t": "Anmeldung mit Google; die meisten Identitätsprüfungen sind innerhalb einer Stunde entschieden"
-  },
-  "home.closing.fact.units": {
-    "en": "Subscribe to allocation units at the current NAV",
-    "t": "Zeichnung von Allokationseinheiten zum aktuellen NAV"
-  },
-  "home.closing.fact.cabinet": {
-    "en": "NAV, reports and payouts in your cabinet",
-    "t": "NAV, Berichte und Auszahlungen in Ihrem Cabinet"
-  },
-  "home.closing.cta.start": {
-    "en": "Start investing",
-    "t": "Jetzt investieren"
-  },
-  "home.closing.cta.cabinet": {
-    "en": "Cabinet",
-    "t": "Cabinet"
   },
   "publications.eyebrow": {
     "en": "EV Investment · Publications",
@@ -1384,40 +1280,8 @@
     "t": "Ihre Anlage, *voll im Blick*"
   },
   "home.cabinetTour.intro": {
-    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
-    "t": "Im Cabinet legt der Fonds Ihnen Rechenschaft ab: was Sie halten, wie es bewertet wurde, wo Ihre Verifizierung steht und was in Ihrem Wallet liegt. Das sind seine echten Bildschirme."
-  },
-  "home.cabinetTour.benefit.units.title": {
-    "en": "Holdings in allocation units",
-    "t": "Bestände in Allokationseinheiten"
-  },
-  "home.cabinetTour.benefit.units.body": {
-    "en": "Your stake is a number of units; its value follows the fund's posted NAV, not a promise.",
-    "t": "Ihr Anteil ist eine Anzahl von Einheiten; ihr Wert folgt dem veröffentlichten NAV des Fonds, nicht einem Versprechen."
-  },
-  "home.cabinetTour.benefit.nav.title": {
-    "en": "NAV history you can see",
-    "t": "NAV-Verlauf, den Sie sehen"
-  },
-  "home.cabinetTour.benefit.nav.body": {
-    "en": "Every valuation mark since inception, with your own participation drawn on top of it.",
-    "t": "Jede Bewertungsmarke seit Auflegung, mit Ihrer eigenen Beteiligung darüber gezeichnet."
-  },
-  "home.cabinetTour.benefit.status.title": {
-    "en": "Verification status always in view",
-    "t": "Verifizierungsstatus immer sichtbar"
-  },
-  "home.cabinetTour.benefit.status.body": {
-    "en": "Identity check, account standing and the devices signed in — on your profile, never buried in a menu.",
-    "t": "Identitätsprüfung, Kontostatus und angemeldete Geräte — in Ihrem Profil, nie in einem Menü vergraben."
-  },
-  "home.cabinetTour.benefit.wallet.title": {
-    "en": "Wallet in USDT",
-    "t": "Wallet in USDT"
-  },
-  "home.cabinetTour.benefit.wallet.body": {
-    "en": "Fund and withdraw in USDT on TRON; every balance is an entry on the ledger, not a spreadsheet.",
-    "t": "Ein- und Auszahlungen in USDT auf TRON; jeder Saldo ist ein Eintrag im Ledger, keine Tabellenkalkulation."
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens.",
+    "t": "Im Cabinet legt der Fonds Ihnen Rechenschaft ab: was Sie halten, wie es bewertet wurde, wo Ihre Verifizierung steht und was in Ihrem Wallet liegt — heute in Krypto eingezahlt, eine Fiat-Einzahlung folgt. Das sind seine echten Bildschirme."
   },
   "home.cabinetTour.cta": {
     "en": "See your cabinet",
@@ -1438,5 +1302,17 @@
   "home.cabinetTour.shot.profile": {
     "en": "Profile: verified identity, account standing and the devices signed in (demo data)",
     "t": "Profil: verifizierte Identität, Kontostatus und angemeldete Geräte (Demodaten)"
+  },
+  "home.cabinetTour.step.verify": {
+    "en": "Sign in with Google and verify your identity",
+    "t": "Mit Google anmelden und Identität verifizieren"
+  },
+  "home.cabinetTour.step.subscribe": {
+    "en": "Subscribe to allocation units at the posted NAV",
+    "t": "Allokationseinheiten zum veröffentlichten NAV zeichnen"
+  },
+  "home.cabinetTour.step.follow": {
+    "en": "Follow NAV, reports and payouts in the cabinet",
+    "t": "NAV, Berichte und Auszahlungen im Cabinet verfolgen"
   }
 }

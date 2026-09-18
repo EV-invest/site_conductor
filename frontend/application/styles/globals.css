@@ -133,15 +133,15 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-100% / 6));
+    transform: translateX(calc(-100% / 5));
   }
 }
 
-/* One lap moves one copy of the ~900px row, so the duration is what sets the
-   speed: 24s is ~38px/s, the pace the bar was tuned at when the row was twice
-   as long and the lap 45s. */
+/* One lap moves one copy of the ~1200px row, so the duration is what sets the
+   speed: 32s is ~38px/s, the pace the bar was tuned at when the row was 900px
+   and the lap 24s. */
 .partners-marquee-track {
-  animation: partners-marquee 24s linear infinite;
+  animation: partners-marquee 32s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
