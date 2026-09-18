@@ -47,7 +47,7 @@ export function CabinetTour({ locale }: { locale: Locale }) {
             <p className="mt-4 leading-relaxed font-light text-ink-mid">
               {t(
                 "home.cabinetTour.intro",
-                "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens."
+                "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens."
               )}
             </p>
           </Reveal>

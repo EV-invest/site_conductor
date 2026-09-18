@@ -51,7 +51,7 @@ export function Partners({ locale }: { locale: Locale }) {
           <p className="mt-4 leading-relaxed font-light text-ink-mid">
             {t(
               "home.partners.intro",
-              "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub."
+              "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub."
             )}
           </p>
           {/* A plain <a>, not Button: this is a reference in running copy, not a

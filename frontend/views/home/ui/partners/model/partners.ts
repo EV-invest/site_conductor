@@ -2,20 +2,20 @@ import type { Translate } from "@evinvest/i18n";
 
 // The services a client's money actually touches, in the order the trust bar
 // reads them: custody and identity first (the two external counterparties),
-// then the way in (sign-in), the money itself (the stablecoin and its network),
-// the ledger every balance lives on, and where the client-facing code is
-// developed. Our own infrastructure — runtime, databases, orchestration,
-// observability — is deliberately NOT here: a client relies on it, but never
-// interacts with it, and naming it says nothing a client can verify.
+// then the way in (sign-in), the ledger every balance lives on, and where the
+// client-facing code is developed. Our own infrastructure — runtime,
+// databases, orchestration — is deliberately NOT here: a client relies on it,
+// but never interacts with it, and naming it says nothing a client can verify.
+//
+// No coin and no network: the landing says "crypto today, fiat to follow"
+// and leaves the rails to the cabinet (owner feedback, 2026-09-18).
 //
 // Marks are vendored under `frontend/assets/partners/` and reach
 // `/assets/partners/*.svg` through the flake's `cp -rL assets/. public/assets/`
 // — the same pipeline as every other image on the site, so there is nothing to
 // register and nothing to add to `flake.nix`.
 //
-// Every glyph is a 24x24 single-path mark: Google, Tether and GitHub from
-// simple-icons (CC0-1.0); TRON from spothq/cryptocurrency-icons (CC0-1.0, the
-// same path the cabinet draws beside a TRC20 address — simple-icons dropped it);
+// Every glyph is a 24x24 single-path mark from simple-icons (CC0-1.0);
 // `turnkey.svg` is Turnkey's own wordmark.
 //
 // The list lives here rather than in `shared/config/assets.ts` on purpose:
@@ -71,16 +71,6 @@ export const partners = (t: Translate): readonly Partner[] => [
     name: "Google",
     role: t("home.partners.role.signIn", "Sign-in"),
     mark: glyph("google"),
-  },
-  {
-    name: "Tether",
-    role: t("home.partners.role.stablecoin", "Stablecoin"),
-    mark: glyph("tether"),
-  },
-  {
-    name: "TRON",
-    role: t("home.partners.role.network", "Network"),
-    mark: glyph("tron"),
   },
   {
     name: "TigerBeetle",

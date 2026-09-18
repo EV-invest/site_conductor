@@ -728,8 +728,8 @@
     "t": "Hạ tầng đằng sau *những con số*"
   },
   "home.partners.intro": {
-    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
-    "t": "Lưu ký bởi Turnkey, xác minh danh tính bởi Didit, đăng nhập bằng Google, USDT trên mạng TRON, mọi số dư nằm trong sổ cái TigerBeetle. Các sản phẩm dành cho khách hàng của chúng tôi — khu vực nhà đầu tư và trang web này — được phát triển công khai trên GitHub."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Lưu ký bởi Turnkey, xác minh danh tính bởi Didit, đăng nhập bằng Google, mọi số dư nằm trong sổ cái TigerBeetle. Các sản phẩm dành cho khách hàng của chúng tôi — khu vực nhà đầu tư và trang web này — được phát triển công khai trên GitHub."
   },
   "home.partners.github": {
     "en": "See the code on GitHub",
@@ -747,10 +747,6 @@
     "en": "Ledger",
     "t": "Sổ cái"
   },
-  "home.partners.role.network": {
-    "en": "Network",
-    "t": "Mạng lưới"
-  },
   "home.partners.role.openSource": {
     "en": "Open source",
     "t": "Mã nguồn mở"
@@ -758,10 +754,6 @@
   "home.partners.role.signIn": {
     "en": "Sign-in",
     "t": "Đăng nhập"
-  },
-  "home.partners.role.stablecoin": {
-    "en": "Stablecoin",
-    "t": "Stablecoin"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
@@ -1308,8 +1300,8 @@
     "t": "Khoản đầu tư của bạn, *rõ ràng trước mắt*"
   },
   "home.cabinetTour.intro": {
-    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
-    "t": "Cabinet là nơi quỹ báo cáo với bạn: bạn đang nắm giữ gì, được định giá ra sao, xác minh đến đâu và ví có gì. Đây là những màn hình thật của nó."
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens.",
+    "t": "Cabinet là nơi quỹ báo cáo với bạn: bạn đang nắm giữ gì, được định giá ra sao, xác minh đến đâu và ví có gì — hiện nạp bằng tiền mã hoá, kênh nạp tiền pháp định sẽ có sau. Đây là những màn hình thật của nó."
   },
   "home.cabinetTour.cta": {
     "en": "See your cabinet",

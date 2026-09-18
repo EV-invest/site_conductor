@@ -728,8 +728,8 @@
     "t": "Die Infrastruktur hinter *den Zahlen*"
   },
   "home.partners.intro": {
-    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, USDT on TRON, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
-    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, USDT auf TRON, jeder Saldo in einem TigerBeetle-Ledger. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
+    "en": "Custody by Turnkey, identity verification by Didit, Google sign-in, every balance on a TigerBeetle ledger. Our client-facing products — the investor cabinet and this site — are developed in the open on GitHub.",
+    "t": "Verwahrung durch Turnkey, Identitätsprüfung durch Didit, Anmeldung mit Google, jeder Saldo in einem TigerBeetle-Ledger. Unsere kundenseitigen Produkte — das Anlegerkabinett und diese Website — werden offen auf GitHub entwickelt."
   },
   "home.partners.github": {
     "en": "See the code on GitHub",
@@ -747,10 +747,6 @@
     "en": "Ledger",
     "t": "Ledger"
   },
-  "home.partners.role.network": {
-    "en": "Network",
-    "t": "Netzwerk"
-  },
   "home.partners.role.openSource": {
     "en": "Open source",
     "t": "Open Source"
@@ -758,10 +754,6 @@
   "home.partners.role.signIn": {
     "en": "Sign-in",
     "t": "Anmeldung"
-  },
-  "home.partners.role.stablecoin": {
-    "en": "Stablecoin",
-    "t": "Stablecoin"
   },
   "home.research.eyebrow": {
     "en": "Academic Rigor",
@@ -1308,8 +1300,8 @@
     "t": "Ihre Anlage, *voll im Blick*"
   },
   "home.cabinetTour.intro": {
-    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet. These are its actual screens.",
-    "t": "Im Cabinet legt der Fonds Ihnen Rechenschaft ab: was Sie halten, wie es bewertet wurde, wo Ihre Verifizierung steht und was in Ihrem Wallet liegt. Das sind seine echten Bildschirme."
+    "en": "The cabinet is where the fund reports to you: what you hold, how it has been valued, where you stand on verification and what is in your wallet — funded in crypto today, with a fiat on-ramp to follow. These are its actual screens.",
+    "t": "Im Cabinet legt der Fonds Ihnen Rechenschaft ab: was Sie halten, wie es bewertet wurde, wo Ihre Verifizierung steht und was in Ihrem Wallet liegt — heute in Krypto eingezahlt, eine Fiat-Einzahlung folgt. Das sind seine echten Bildschirme."
   },
   "home.cabinetTour.cta": {
     "en": "See your cabinet",
