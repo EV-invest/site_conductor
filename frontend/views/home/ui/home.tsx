@@ -25,9 +25,9 @@ export function HomeView({ locale }: { locale: Locale }) {
       <Hero locale={locale} />
       <FieldNotes locale={locale} />
       <Portfolio locale={locale} />
-      <Partners locale={locale} />
       <Research locale={locale} />
       <CabinetTour locale={locale} />
+      <Partners locale={locale} />
       <Team locale={locale} />
     </div>
   );

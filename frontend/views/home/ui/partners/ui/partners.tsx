@@ -22,10 +22,10 @@ const COPIES = 5;
 
 const GITHUB_ORG = "https://github.com/EV-invest";
 
-// A trust bar between the portfolio and the research desk: the portfolio claims
-// the returns, this says who holds, verifies and moves the money behind them,
-// and research then shows the working. Named vendors are cheap for us and
-// expensive to fake, which is the whole point of putting them on the page.
+// A trust bar right under the cabinet tour: the tour shows the screens the
+// reader will live in, this says who holds, verifies and moves the money
+// behind them, and the team then puts faces to it. Named vendors are cheap for
+// us and expensive to fake, which is the whole point of putting them on the page.
 //
 // Deliberately a Server Component with zero interactivity: the loop is CSS
 // (see `partners-marquee` in application/styles/globals.css), so the section
