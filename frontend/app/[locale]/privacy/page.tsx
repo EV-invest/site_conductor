@@ -1,23 +1,6 @@
-import type { Locale } from "@evinvest/i18n";
-import { PrivacyView } from "@/views/legal";
-import { localeMetadata } from "@/shared/seo/locale-metadata";
-import { LEGAL_CONTENT_LOCALES } from "@/shared/config/site";
+import { PrivacyView, legalRoute } from "@/views/legal";
 
-// generateMetadata only so the canonical carries the locale prefix — see
-// app/[locale]/team/page.tsx. The body is English-only (views/legal/model), so
-// the other locales canonicalise to the English URL rather than claiming four
-// translations of one English document.
-export const generateMetadata = localeMetadata(
-  "privacy",
-  "/privacy",
-  LEGAL_CONTENT_LOCALES
-);
+const { generateMetadata, Page } = legalRoute("privacy", PrivacyView);
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  return <PrivacyView locale={locale as Locale} />;
-}
+export { generateMetadata };
+export default Page;
