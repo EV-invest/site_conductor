@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE, isLocale } from "@evinvest/i18n";
-import type { Translate } from "@evinvest/i18n";
+import type { Locale, Translate } from "@evinvest/i18n";
 import { translate } from "@/shared/config/i18n";
 import { pageMetadata } from "@/shared/seo/page-metadata";
 
@@ -63,6 +63,27 @@ const META = (t: Translate) => ({
       "EV Investment whitepaper — our institutional thesis on coastal real estate in Quy Nhơn, Vietnam."
     ),
   },
+  terms: {
+    title: t("meta.terms.title", "Terms of Service"),
+    description: t(
+      "meta.terms.description",
+      "The terms on which EV Investment provides its website and investor cabinet."
+    ),
+  },
+  privacy: {
+    title: t("meta.privacy.title", "Privacy Policy"),
+    description: t(
+      "meta.privacy.description",
+      "What personal data EV Investment collects, why, who processes it, and your rights over it."
+    ),
+  },
+  risk: {
+    title: t("meta.risk.title", "Risk Disclosure"),
+    description: t(
+      "meta.risk.description",
+      "The risks of investing through EV Investment — read before subscribing."
+    ),
+  },
 });
 
 export type MetaNamespace = keyof ReturnType<typeof META>;
@@ -73,12 +94,20 @@ export type MetaNamespace = keyof ReturnType<typeof META>;
 /// `locale` is passed through raw, exactly as pageMetadata expects: it does its
 /// own fallback, and handing it the resolved value would be a second, silent
 /// place for the fallback rule to live.
-export function metadataFor(locale: string, ns: MetaNamespace, path: string) {
+///
+/// `contentLocales` narrows the alternates for a page whose BODY this repo does
+/// not translate (the legal documents) — forwarded as-is to pageMetadata.
+export function metadataFor(
+  locale: string,
+  ns: MetaNamespace,
+  path: string,
+  contentLocales?: readonly Locale[]
+) {
   // Titles and descriptions are what a reader sees in the browser tab and in a
   // shared link — the one place the page's language shows before its body does.
   const resolved = isLocale(locale) ? locale : DEFAULT_LOCALE;
   const { title, description } = META(translate(resolved))[ns];
-  return pageMetadata({ title, description, path, locale });
+  return pageMetadata({ title, description, path, locale, contentLocales });
 }
 
 /// Ready to re-export from a route: `export const generateMetadata =
@@ -87,13 +116,17 @@ export function metadataFor(locale: string, ns: MetaNamespace, path: string) {
 /// A factory rather than a plain function so the route's `params` signature —
 /// pure Next.js ceremony, identical on every page — stays here too instead of
 /// being retyped five times.
-export function localeMetadata(ns: MetaNamespace, path: string) {
+export function localeMetadata(
+  ns: MetaNamespace,
+  path: string,
+  contentLocales?: readonly Locale[]
+) {
   return async function generateMetadata({
     params,
   }: {
     params: Promise<{ locale: string }>;
   }) {
     const { locale } = await params;
-    return metadataFor(locale, ns, path);
+    return metadataFor(locale, ns, path, contentLocales);
   };
 }

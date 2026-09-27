@@ -3,13 +3,16 @@
 // image) reads from here, so adding a locale or a subpage is a one-line edit.
 // App-agnostic config → lives in `shared/config` beside const/assets/experiments.
 
+import type { Locale } from "@evinvest/i18n";
 import { config } from "@/config";
 
 // Canonical production origin (https, NO trailing slash, pick www-or-not once).
 // Only the production image build exports NEXT_PUBLIC_SITE_URL; every other
 // launch (the flake dev run, a bare `next dev`) omits it, so fall back to the
 // obvious placeholder rather than failing — going live means setting the var.
-export const SITE_URL = (config.public.siteUrl ?? "https://evinvest.example").replace(/\/+$/, "");
+export const SITE_URL = (
+  config.public.siteUrl ?? "https://evinvest.example"
+).replace(/\/+$/, "");
 
 export const SITE = {
   url: SITE_URL,
@@ -102,7 +105,18 @@ export type Route = {
   path: string;
   changeFrequency: ChangeFrequency;
   priority: number;
+  /// Locales this route's CONTENT exists in; absent ⇒ all five (the catalogue-
+  /// driven pages). The sitemap emits one <url> per listed locale and the
+  /// page's metadata canonicalises the rest to the English URL — the same
+  /// narrowing shared/seo/page-metadata.ts does for an untranslated document.
+  contentLocales?: readonly Locale[];
 };
+
+// The legal documents (#204) are drafted and reviewed in English; only their
+// headings are in the catalogue. Until counsel signs off a translation, the
+// English URL is the one version of each — a localised /ru/terms is a
+// translated shell around English prose, not a Russian document.
+export const LEGAL_CONTENT_LOCALES: readonly Locale[] = ["en"];
 
 export const ROUTES: Route[] = [
   { path: "/", changeFrequency: "monthly", priority: 1 },
@@ -113,6 +127,25 @@ export const ROUTES: Route[] = [
   // text IS in the SSR HTML.
   { path: "/publications", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
+  // Legal documents: low priority, rarely change, English-only for now.
+  {
+    path: "/terms",
+    changeFrequency: "yearly",
+    priority: 0.3,
+    contentLocales: LEGAL_CONTENT_LOCALES,
+  },
+  {
+    path: "/privacy",
+    changeFrequency: "yearly",
+    priority: 0.3,
+    contentLocales: LEGAL_CONTENT_LOCALES,
+  },
+  {
+    path: "/risk",
+    changeFrequency: "yearly",
+    priority: 0.3,
+    contentLocales: LEGAL_CONTENT_LOCALES,
+  },
   // NB: /publications/whitepaper is intentionally NOT listed. Its body mounts in
   // a shadow root (a client-side document microfrontend), so the page text isn't
   // in the SSR HTML and isn't a meaningful indexable target — don't advertise it

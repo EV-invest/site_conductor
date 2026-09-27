@@ -104,6 +104,18 @@ export const FOOTER_NAV: readonly {
   },
 ];
 
+// The footer's legal row (issue #204): the three documents the cabinet's
+// documents config will also point at. Same NavEntry shape so the footer
+// localises them with the sitemap columns and needs no second path builder.
+export const LEGAL_NAV: readonly NavEntry[] = [
+  { label: t => t("footer.legal.terms", "Terms"), href: "/terms" },
+  { label: t => t("footer.legal.privacy", "Privacy"), href: "/privacy" },
+  {
+    label: t => t("footer.legal.risk", "Risk disclosure"),
+    href: "/risk",
+  },
+];
+
 // One place that turns the nav into what a given locale renders: translated
 // label + locale-prefixed href. Without the href half, a reader on /ru/
 // clicking "Команда" would land on the English /team.
