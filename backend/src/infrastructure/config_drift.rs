@@ -34,6 +34,7 @@ pub async fn watch(vars: Vec<String>) -> Infallible {
 	let watcher = Watcher::new(vars, &mut reader(dir.clone()));
 	let mut ticks = tokio::time::interval(INTERVAL);
 	ticks.tick().await; // the first tick is immediate, and we just took the baseline
+	//LOOP: lives as long as the server it is selected against
 	loop {
 		ticks.tick().await;
 		for change in watcher.poll(&mut reader(dir.clone())) {
