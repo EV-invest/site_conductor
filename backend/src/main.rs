@@ -4,7 +4,7 @@
 //! inject them into the use cases, mount the driving (HTTP) adapter, and serve.
 //! The layered modules themselves live in the library crate (`lib.rs`).
 
-use std::sync::Arc;
+use std::{future::IntoFuture, sync::Arc};
 
 use backend::{
 	api::{self, state::AppState},
@@ -70,8 +70,6 @@ fn main() -> Result<()> {
 }
 
 async fn run(config: AppConfig) -> Result<()> {
-	config_drift::spawn(backend::config::settings_var_names());
-
 	let pool = db::connect(&config.database_url).await.context("failed to connect to the database")?;
 	db::migrate(&pool).await.context("failed to run migrations")?;
 
@@ -105,9 +103,10 @@ async fn run(config: AppConfig) -> Result<()> {
 		.await
 		.with_context(|| format!("failed to bind {}", config.bind_addr))?;
 	tracing::info!(addr = %config.bind_addr, "backend listening");
-	axum::serve(listener, router).await.context("server error")?;
-
-	Ok(())
+	tokio::select! {
+		served = axum::serve(listener, router).into_future() => served.context("server error"),
+		never = config_drift::watch(backend::config::settings_var_names()) => match never {},
+	}
 }
 
 /// `--print-required-vars[=PROFILE]` (default `production`). Hand-rolled: this
