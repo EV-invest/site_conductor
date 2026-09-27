@@ -14,7 +14,7 @@ ev_lib::settings! {
 	/// *silent* no-op rather than a crash — mail that only gets logged, error
 	/// reports nobody receives. Optional is right locally; in production it is
 	/// an outage that never pages, so there it fails the boot instead.
-	struct RawSettings {
+	pub struct RawSettings {
 		database_url: String,
 		bind_addr: SocketAddr = "0.0.0.0:58844",
 		/// Unset ⇒ error monitoring is a no-op.
@@ -46,18 +46,6 @@ ev_lib::settings! {
 		posthog_key: Option<String>,
 		posthog_host: Option<String>,
 	}
-}
-
-/// Every variable this service reads — what the drift watch compares, and what
-/// a `.env.example` is generated from. `RawSettings` itself stays private.
-pub fn settings_var_names() -> Vec<String> {
-	RawSettings::var_names()
-}
-
-/// The variables a deploy into `profile` must provide, for the gitops
-/// preflight. Printed by `--print-required-vars`.
-pub fn required_settings_var_names(profile: &str) -> Vec<String> {
-	RawSettings::required_var_names(profile)
 }
 
 /// SMTP transport credentials. Present only when host, username, and password

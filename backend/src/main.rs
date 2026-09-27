@@ -9,9 +9,9 @@ use std::{future::IntoFuture, sync::Arc};
 use backend::{
 	api::{self, state::AppState},
 	application::{application_service::ApplicationService, contact_service::ContactService, newsletter_service::NewsletterService, vacancy_service::VacancyService},
-	config::AppConfig,
+	config::{AppConfig, RawSettings},
 	infrastructure::{
-		config_drift, db,
+		db,
 		email::{
 			notifier::EmailNotifier,
 			transport::{EmailTransport, NoopTransport, SmtpTransport},
@@ -35,7 +35,7 @@ fn main() -> Result<()> {
 	// so a missing variable is caught before the rollout instead of as a
 	// CrashLoopBackOff after it.
 	if let Some(profile) = print_required_vars_for() {
-		for var in backend::config::required_settings_var_names(&profile) {
+		for var in RawSettings::required_var_names(&profile) {
 			println!("{var}");
 		}
 		return Ok(());
@@ -105,7 +105,7 @@ async fn run(config: AppConfig) -> Result<()> {
 	tracing::info!(addr = %config.bind_addr, "backend listening");
 	tokio::select! {
 		served = axum::serve(listener, router).into_future() => served.context("server error"),
-		never = config_drift::watch(backend::config::settings_var_names()) => match never {},
+		never = RawSettings::watch_drift() => match never {},
 	}
 }
 
