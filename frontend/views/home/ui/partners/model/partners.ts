@@ -1,14 +1,21 @@
-// The vendors and infrastructure the fund actually runs on, in the order the
-// trust bar reads them: the two external counterparties first (custody,
-// identity), then our own stack.
+// The services a client's money actually touches, in the order the trust bar
+// reads them: custody and identity first (the two external counterparties),
+// then the way in (sign-in), the ledger every balance lives on, where the
+// client-facing code is developed, and the two services that watch it run —
+// errors and product analytics. Our own infrastructure — runtime, databases,
+// orchestration — is deliberately NOT here: a client relies on it, but never
+// interacts with it, and naming it says nothing a client can verify.
+//
+// No coin and no network: the landing says "crypto today, fiat to follow"
+// and leaves the rails to the cabinet (owner feedback, 2026-09-18).
 //
 // Marks are vendored under `frontend/assets/partners/` and reach
 // `/assets/partners/*.svg` through the flake's `cp -rL assets/. public/assets/`
 // — the same pipeline as every other image on the site, so there is nothing to
 // register and nothing to add to `flake.nix`.
 //
-// Every glyph is a 24x24 mark from simple-icons (CC0-1.0 — public domain, no
-// attribution obligation); `turnkey.svg` is Turnkey's own wordmark.
+// Every glyph is a 24x24 single-path mark from simple-icons (CC0-1.0);
+// `turnkey.svg` is Turnkey's own wordmark.
 //
 // The list lives here rather than in `shared/config/assets.ts` on purpose:
 // `ASSETS` is a flat lookup of individually-addressed section art, whereas the
@@ -35,8 +42,9 @@ export interface Partner {
   /**
    * Absent when there is no mask-safe SVG for the vendor, in which case the item
    * renders its name alone. This is a supported state rather than a fallback:
-   * Didit's official mark embeds a PNG, which a CSS mask cannot use, so it ships
-   * as a name until a flat file exists.
+   * Didit's official mark embeds a PNG, which a CSS mask cannot use, and
+   * TigerBeetle has no flat mark in any CC0 set — both ship as a name until a
+   * flat file exists.
    */
   mark?: Mark;
 }
@@ -46,17 +54,16 @@ const glyph = (file: string): Mark => ({
   shape: "glyph",
 });
 
-export const PARTNERS: readonly Partner[] = [
+// Names only — the caption under each mark ("Custody", "Identity", …) went
+// with the owner's 2026-09-18 pass: the intro already pairs every vendor with
+// its job, and a second, smaller line under the logo made the bar read as a
+// table. With nothing to translate, the list is a constant.
+export const partners: readonly Partner[] = [
   { name: "Turnkey", mark: { src: `${DIR}/turnkey.svg`, shape: "wordmark" } },
   { name: "Didit" },
-  { name: "Rust", mark: glyph("rust") },
-  { name: "Next.js", mark: glyph("nextdotjs") },
-  { name: "PostgreSQL", mark: glyph("postgresql") },
-  { name: "Redis", mark: glyph("redis") },
-  { name: "Kubernetes", mark: glyph("kubernetes") },
-  { name: "NixOS", mark: glyph("nixos") },
-  { name: "Traefik", mark: glyph("traefikproxy") },
-  { name: "Cloudflare", mark: glyph("cloudflare") },
-  { name: "Prometheus", mark: glyph("prometheus") },
-  { name: "Grafana", mark: glyph("grafana") },
+  { name: "Google", mark: glyph("google") },
+  { name: "TigerBeetle" },
+  { name: "GitHub", mark: glyph("github") },
+  { name: "Sentry", mark: glyph("sentry") },
+  { name: "PostHog", mark: glyph("posthog") },
 ];

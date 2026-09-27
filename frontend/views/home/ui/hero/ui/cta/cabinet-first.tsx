@@ -5,7 +5,6 @@ import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@evinvest/uikit";
 import { localePath } from "@evinvest/i18n";
 import { useLocale, useT } from "@evinvest/i18n/react";
-import { Text } from "@/shared/ui/text";
 import { useExperimentEvent } from "@/features/ab-variant";
 import { PRIMARY, SECONDARY, SIZE, TEXT_LINK, type HeroCtaAlign } from "./row";
 
@@ -83,12 +82,15 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
       {/* TODO(#204): sourced figures (minimum subscription, reporting cadence)
           join this line once the owner confirms them. Until then it carries
           only the cabinet's own KYC promise (`kyc.dialog.timeBody`). */}
-      <Text variant="secondary" className="text-xs text-ink-soft max-w-md">
+      {/* A plain <p>, not <Text variant="secondary">: that variant pins
+          text-ink/40, and overriding it to the readable ramp step trips the
+          dev-time cn() conflict panic (and 3.2:1 on the hero fill). */}
+      <p className="max-w-md text-xs leading-relaxed text-ink-soft">
         {t(
           "home.hero.cta.fact",
           "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe."
         )}
-      </Text>
+      </p>
     </div>
   );
 }

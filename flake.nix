@@ -514,10 +514,13 @@
 
         # ── dev refresh from prod ───────────────────────────────────────────
         # `nix run .#pull-prod-db` → replace the local site_conductor database
-        # with prod's (the `evinvest` db on rpi5's host Postgres, reached over
-        # tailscale). Prod is authoritative; dev only pulls. Trust auth on both
-        # ends, so no passwords; local pg_restore (17.10) ≥ remote pg_dump (17.9)
-        # keeps the custom-format stream compatible.
+        # with prod's (the `evinvest` db on the prod host's Postgres, reached over
+        # tailscale — `RPI5_SSH=admin@<tailnet-ip>`, the default alias is the Pi).
+        # Prod is authoritative; dev only pulls. No passwords on either end: the
+        # remote dump goes through the unix socket as the `postgres` OS user
+        # (peer auth; TCP loopback trusts only `banking_backup` since
+        # rpi5.nix#19), the local restore is trust. Local pg_restore (17.10) ≥
+        # remote pg_dump (17.9) keeps the custom-format stream compatible.
         runPullProdDb = pkgs.writeShellApplication {
           name = "pull-prod-db";
           runtimeInputs = with pkgs; [ postgresql openssh ];
@@ -526,7 +529,7 @@
             ${runPostgres}/bin/run-postgres
             rpi5="''${RPI5_SSH:-rpi5-ts}"
             echo "▶ pg_dump on $rpi5 → pg_restore into local site_conductor"
-            ssh "$rpi5" "pg_dump -Fc -h 127.0.0.1 -U evinvest evinvest" \
+            ssh "$rpi5" "sudo -u postgres pg_dump -Fc evinvest" \
               | pg_restore --clean --if-exists --no-owner --no-privileges \
                   -h 127.0.0.1 -p "$POSTGRES_PORT" -U postgres -d site_conductor
             echo "✓ local site_conductor now mirrors prod"
