@@ -1387,6 +1387,14 @@
     "en": "The headings are translated; the binding text of this document is in English.",
     "t": "Die Überschriften sind übersetzt; der verbindliche Text dieses Dokuments ist auf Englisch."
   },
+  "legal.draft.body": {
+    "en": "This document is a working draft and is not yet legally binding. It will be replaced with counsel-reviewed text before it takes effect.",
+    "t": "Dieses Dokument ist ein Arbeitsentwurf und noch nicht rechtsverbindlich. Es wird vor seinem Inkrafttreten durch einen anwaltlich geprüften Text ersetzt."
+  },
+  "legal.draft.title": {
+    "en": "Draft — pending legal review",
+    "t": "Entwurf – juristische Prüfung ausstehend"
+  },
   "legal.effectiveDate": {
     "en": "Effective date",
     "t": "Gültig ab"
@@ -1439,6 +1447,10 @@
     "en": "Questions about this document?",
     "t": "Fragen zu diesem Dokument?"
   },
+  "legal.risk.advice.title": {
+    "en": "This is not advice — get your own",
+    "t": "Dies ist keine Beratung – holen Sie eigene ein"
+  },
   "legal.risk.capital.title": {
     "en": "Your capital is at risk",
     "t": "Ihr Kapital ist gefährdet"
@@ -1462,6 +1474,10 @@
   "legal.risk.market.title": {
     "en": "Concentration, currency and country",
     "t": "Konzentration, Währung und Land"
+  },
+  "legal.risk.regulatory.title": {
+    "en": "Regulatory uncertainty in the EU and Vietnam",
+    "t": "Regulatorische Unsicherheit in der EU und in Vietnam"
   },
   "legal.risk.targets.title": {
     "en": "Targets are not forecasts",

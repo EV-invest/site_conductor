@@ -1387,6 +1387,14 @@
     "en": "The headings are translated; the binding text of this document is in English.",
     "t": "Các tiêu đề đã được dịch; văn bản có giá trị pháp lý của tài liệu này là bản tiếng Anh."
   },
+  "legal.draft.body": {
+    "en": "This document is a working draft and is not yet legally binding. It will be replaced with counsel-reviewed text before it takes effect.",
+    "t": "Tài liệu này là bản nháp và chưa có hiệu lực pháp lý. Nó sẽ được thay thế bằng văn bản đã được luật sư rà soát trước khi có hiệu lực."
+  },
+  "legal.draft.title": {
+    "en": "Draft — pending legal review",
+    "t": "Bản nháp — đang chờ rà soát pháp lý"
+  },
   "legal.effectiveDate": {
     "en": "Effective date",
     "t": "Ngày hiệu lực"
@@ -1439,6 +1447,10 @@
     "en": "Questions about this document?",
     "t": "Có câu hỏi về tài liệu này?"
   },
+  "legal.risk.advice.title": {
+    "en": "This is not advice — get your own",
+    "t": "Đây không phải là tư vấn — hãy tự tìm tư vấn riêng"
+  },
   "legal.risk.capital.title": {
     "en": "Your capital is at risk",
     "t": "Vốn của bạn có rủi ro"
@@ -1462,6 +1474,10 @@
   "legal.risk.market.title": {
     "en": "Concentration, currency and country",
     "t": "Tập trung, tiền tệ và quốc gia"
+  },
+  "legal.risk.regulatory.title": {
+    "en": "Regulatory uncertainty in the EU and Vietnam",
+    "t": "Sự bất định về pháp lý ở EU và Việt Nam"
   },
   "legal.risk.targets.title": {
     "en": "Targets are not forecasts",

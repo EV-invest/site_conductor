@@ -8,6 +8,7 @@ import type { Translate } from "@evinvest/i18n";
 import type { LegalDocument } from "./document";
 
 export const privacyDocument = (t: Translate): LegalDocument => ({
+  status: "draft",
   title: t("legal.privacy.title", "Privacy Policy"),
   lede: t(
     "legal.privacy.lede",
@@ -38,6 +39,7 @@ export const privacyDocument = (t: Translate): LegalDocument => ({
       title: t("legal.privacy.purposes.title", "Why we use it"),
       paragraphs: [
         "To provide the Platform and perform our agreement with you; to meet our legal obligations, including identity verification, anti-money-laundering checks and financial record keeping; for our legitimate interests in securing the Platform, preventing fraud and understanding how the product is used; and, for the newsletter, on your consent, which you can withdraw at any time by unsubscribing.",
+        "For visitors and investors in the European Union or EEA, the legal bases above are, respectively, Article 6(1)(b) (performance of a contract), Article 6(1)(c) (compliance with a legal obligation), Article 6(1)(f) (our legitimate interests) and Article 6(1)(a) (consent) of the General Data Protection Regulation (GDPR). Where identity documents include special-category or official-identifier data, we process them only as anti-money-laundering law requires.",
       ],
     },
     {
@@ -58,13 +60,14 @@ export const privacyDocument = (t: Translate): LegalDocument => ({
         "Where it goes and how long we keep it"
       ),
       paragraphs: [
-        "Some of the providers above process data outside [JURISDICTION]. Where the law requires it, we rely on the transfer safeguards available under applicable law. We keep account and transaction records for as long as your account is open and afterwards for as long as financial and anti-money-laundering law requires; analytics data is kept in the form our analytics provider retains it; newsletter data until you unsubscribe.",
+        "EV Investment operates between the European Union and Vietnam, and several of the providers above process data outside your country — this includes transfers of EU/EEA personal data to Vietnam and to other countries where our providers run their infrastructure. Where we transfer personal data out of the EU or EEA to a country the European Commission has not found to offer adequate protection, we rely on the appropriate safeguards permitted by Chapter V of the GDPR, such as the Commission's Standard Contractual Clauses, and you may ask us for a copy of the safeguard in place. Personal data of investors located in Vietnam is handled in line with Vietnam's Decree on Personal Data Protection (Decree 13/2023/ND-CP).",
+        "We keep account and transaction records for as long as your account is open and afterwards for as long as financial and anti-money-laundering law requires; analytics data is kept in the form our analytics provider retains it; newsletter data until you unsubscribe.",
       ],
     },
     {
       title: t("legal.privacy.rights.title", "Your rights"),
       paragraphs: [
-        "Subject to applicable law, you may ask for access to your personal data, for it to be corrected or erased, for its processing to be restricted, for a copy in a portable form, and you may object to processing based on our legitimate interests. Where processing rests on consent, you may withdraw it. You may also complain to the supervisory authority in your country. To exercise any of these, write to [DPO / CONTACT EMAIL].",
+        "Subject to applicable law, you may ask for access to your personal data, for it to be corrected or erased, for its processing to be restricted, for a copy in a portable form, and you may object to processing based on our legitimate interests. Where processing rests on consent, you may withdraw it. For people in the EU or EEA these are the rights under Articles 15 to 21 of the GDPR, and you may lodge a complaint with the data-protection supervisory authority of your country; people in Vietnam hold the equivalent rights under the Decree on Personal Data Protection. To exercise any of these, write to [DPO / CONTACT EMAIL].",
       ],
     },
     {

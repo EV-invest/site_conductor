@@ -1,4 +1,9 @@
-import { Container } from "@evinvest/uikit";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Container,
+} from "@evinvest/uikit";
 import Link from "next/link";
 import { localePath, type Locale, type Translate } from "@evinvest/i18n";
 
@@ -18,11 +23,28 @@ export function LegalPage({
   document: (t: Translate) => LegalDocument;
 }) {
   const t = translate(locale);
-  const { title, lede, sections } = document(t);
+  const { status, title, lede, sections } = document(t);
   return (
     <main className="min-h-screen bg-background pt-32 pb-24 text-ink">
       <Container>
         <article className="mx-auto max-w-3xl">
+          {/* Non-final documents carry a visible, machine-greppable
+              (status === "draft") banner so a reader never mistakes the
+              placeholder text for binding terms; it drops out on its own once
+              the model sets status: "final". */}
+          {status === "draft" && (
+            <Alert variant="info" className="mb-10">
+              <AlertTitle>
+                {t("legal.draft.title", "Draft — pending legal review")}
+              </AlertTitle>
+              <AlertDescription>
+                {t(
+                  "legal.draft.body",
+                  "This document is a working draft and is not yet legally binding. It will be replaced with counsel-reviewed text before it takes effect."
+                )}
+              </AlertDescription>
+            </Alert>
+          )}
           <header className="space-y-5">
             <span className="block font-mono-tech text-xs uppercase tracking-[0.3em] text-primary-ink">
               {t("legal.eyebrow", "Legal")}

@@ -9,6 +9,7 @@ import type { Translate } from "@evinvest/i18n";
 import type { LegalDocument } from "./document";
 
 export const termsDocument = (t: Translate): LegalDocument => ({
+  status: "draft",
   title: t("legal.terms.title", "Terms of Service"),
   lede: t(
     "legal.terms.lede",
@@ -83,6 +84,7 @@ export const termsDocument = (t: Translate): LegalDocument => ({
       title: t("legal.terms.law.title", "Changes, governing law and disputes"),
       paragraphs: [
         "We may revise these Terms; the revised text is posted here with a new effective date, and continued use of the Platform after that date is acceptance. These Terms are governed by the law of [GOVERNING LAW], and the courts of [JURISDICTION] have exclusive jurisdiction over any dispute arising from them.",
+        "EV Investment offers the Platform to investors in both the European Union and Vietnam, so two sets of mandatory protections apply in addition, whichever law is chosen above. If you are resident in the EU or EEA, you keep the mandatory rights of the consumer- and data-protection law of your country of residence; nothing in these Terms removes a right that that law grants you and does not permit to be waived, and you may bring proceedings in the courts of your country of residence where its law so provides. If you are resident in Vietnam, these Terms are also subject to the mandatory provisions of Vietnamese law, including its rules on foreign investment, foreign exchange and consumer protection.",
       ],
     },
     {

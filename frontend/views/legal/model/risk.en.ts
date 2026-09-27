@@ -8,6 +8,7 @@ import type { Translate } from "@evinvest/i18n";
 import type { LegalDocument } from "./document";
 
 export const riskDocument = (t: Translate): LegalDocument => ({
+  status: "draft",
   title: t("legal.risk.title", "Risk Disclosure"),
   lede: t(
     "legal.risk.lede",
@@ -54,9 +55,24 @@ export const riskDocument = (t: Translate): LegalDocument => ({
       ],
     },
     {
+      title: t(
+        "legal.risk.regulatory.title",
+        "Regulatory uncertainty in the EU and Vietnam"
+      ),
+      paragraphs: [
+        "How an investment of this kind is regulated is still developing and uncertain in both the European Union and Vietnam. In the EU, the treatment of crypto-assets and stablecoins under regulations such as MiCA, and of fund and marketing rules, continues to change; in Vietnam, the rules on foreign investment, foreign exchange and digital assets are evolving. A change on either side — sometimes at short notice — could restrict how the Platform operates, whether you may subscribe or redeem, how your holding is taxed, or whether the service remains available to residents of your country.",
+      ],
+    },
+    {
       title: t("legal.risk.costs.title", "Fees, tax and operations"),
       paragraphs: [
         "The management fee and the performance fee reduce your return; both are settled in units, which reduces your holding. Tax on your investment is your responsibility and depends on your circumstances. The Platform relies on third-party services — Google for sign-in, Didit for verification, Turnkey for custody — and an outage at any of them can delay your access or your transactions.",
+      ],
+    },
+    {
+      title: t("legal.risk.advice.title", "This is not advice — get your own"),
+      paragraphs: [
+        "Nothing on the Platform is investment, legal or tax advice, and no one at EV Investment is acting as your adviser. Whether this investment suits you depends on your own circumstances, which we do not assess. Before you subscribe, consider taking independent financial, legal and tax advice, and do not invest money you cannot afford to lose.",
       ],
     },
   ],
