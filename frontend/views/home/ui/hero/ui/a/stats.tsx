@@ -6,6 +6,8 @@ import { Stagger, StaggerItem } from "@/shared/ui/motion";
 import { cn } from "@/shared/lib/utils";
 import type { Translate } from "@evinvest/i18n";
 import { translate } from "@/shared/config/i18n";
+import { getVariant } from "@/features/ab-variant/get-variant";
+import { ExperimentTracker, match } from "@/features/ab-variant";
 import {
   formatFundFigures,
   type FormattedFundFigures,
@@ -38,6 +40,32 @@ function Stat({
         {value}
       </p>
     </StaggerItem>
+  );
+}
+
+/** The figures' date: a faint footnote in the ribbon's corner (a) or a centred line under the stats (b). */
+async function AsOf({ label }: { label: string }) {
+  const variant = await getVariant("hero_as_of");
+  return (
+    <ExperimentTracker experiment="hero_as_of" variant={variant}>
+      {match(variant, {
+        a: (
+          <p className="absolute bottom-1 right-4 text-[10px] font-mono text-ink/40">
+            {label}
+          </p>
+        ),
+        b: (
+          <StaggerItem distance={12} className="col-span-full">
+            <Text
+              variant="secondary"
+              className="text-xs font-mono-tech uppercase tracking-widest"
+            >
+              {label}
+            </Text>
+          </StaggerItem>
+        ),
+      })}
+    </ExperimentTracker>
   );
 }
 
@@ -91,16 +119,11 @@ export function HeroAStats({ locale }: { locale: Locale }) {
             />
           ))}
           {figures.asOf && (
-            <StaggerItem distance={12} className="col-span-full">
-              <Text
-                variant="secondary"
-                className="text-xs font-mono-tech uppercase tracking-widest"
-              >
-                {t("home.hero.stat.asOf", "Figures as of {date}", {
-                  date: figures.asOf,
-                })}
-              </Text>
-            </StaggerItem>
+            <AsOf
+              label={t("home.hero.stat.asOf", "Figures as of {date}", {
+                date: figures.asOf,
+              })}
+            />
           )}
         </Container>
       </Stagger>

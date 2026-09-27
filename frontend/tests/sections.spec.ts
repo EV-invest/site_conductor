@@ -52,6 +52,7 @@ const BASELINE_VARIANTS: { [K in keyof typeof experiments]: string } = {
   hero: "a",
   hero_headline: "b",
   hero_cta: "a",
+  hero_as_of: "a",
   team_bio_shade: "a",
   team_office: "a",
 };

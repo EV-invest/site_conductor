@@ -22,6 +22,9 @@ export const experiments = {
   // The new row is listed first because production serves variants[0]: the
   // cabinet entry is the deliverable, the old row is the comparison arm.
   hero_cta: { variants: ["a", "b"], weights: [0.5, 0.5] },
+  // a: Hero A's "figures as of" date as a faint corner footnote, styled like
+  // the footer copyright; b: the centred line under the stats.
+  hero_as_of: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: original gradient scrim; b: stacked text-shadow halo.
   team_bio_shade: { variants: ["a", "b"], weights: [0.5, 0.5] },
   // a: text-only leadership band; b: the boardroom photograph above the pillars.
