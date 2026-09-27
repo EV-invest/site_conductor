@@ -23,7 +23,7 @@ const SIGNUP = "/cabinet/login?intent=signup";
 /**
  * Client island — arm `a` of `hero_cta`: "Start investing" into the cabinet as
  * the primary, "Explore Assets" demoted to secondary, the whitepaper a text
- * link, and one line under the row saying what the primary leads into.
+ * link.
  *
  * The cabinet is a routed zone (PATTERNS §9), so the primary is a hard `<a>`
  * — `Button href`, never `next/link`. Nothing in the row is `asChild`, so the
@@ -38,59 +38,42 @@ export function CabinetFirstCta({ align }: { align: HeroCtaAlign }) {
 
   return (
     <div
-      className={`flex flex-col gap-4 ${centred ? "items-center text-center" : "items-start"}`}
+      className={`flex flex-wrap items-center gap-4 ${centred ? "justify-center" : ""}`}
     >
-      <div
-        className={`flex flex-wrap items-center gap-4 ${centred ? "justify-center" : ""}`}
+      <Button
+        href={localePath(locale, SIGNUP)}
+        size={SIZE}
+        className={PRIMARY}
+        onClick={() => track(ACTION, { cta: "open_cabinet", ...common })}
       >
-        <Button
-          href={localePath(locale, SIGNUP)}
-          size={SIZE}
-          className={PRIMARY}
-          onClick={() => track(ACTION, { cta: "open_cabinet", ...common })}
-        >
-          {t("home.hero.cta.start", "Start investing")}
-          <ArrowRight />
-        </Button>
+        {t("home.hero.cta.start", "Start investing")}
+        <ArrowRight />
+      </Button>
 
-        <Button
-          variant="outline"
-          size={SIZE}
-          className={SECONDARY}
-          onClick={() =>
-            track(ACTION, { cta: "explore_assets", ...common }, fire => {
-              fire();
-              document
-                .getElementById("portfolio")
-                ?.scrollIntoView({ behavior: "smooth" });
-            })
-          }
-        >
-          {t("home.hero.cta.explore", "Explore Assets")}
-        </Button>
+      <Button
+        variant="outline"
+        size={SIZE}
+        className={SECONDARY}
+        onClick={() =>
+          track(ACTION, { cta: "explore_assets", ...common }, fire => {
+            fire();
+            document
+              .getElementById("portfolio")
+              ?.scrollIntoView({ behavior: "smooth" });
+          })
+        }
+      >
+        {t("home.hero.cta.explore", "Explore Assets")}
+      </Button>
 
-        <Link
-          href="/publications/whitepaper"
-          className={`${TEXT_LINK} max-sm:hidden`}
-          onClick={() => track(ACTION, { cta: "whitepaper", ...common })}
-        >
-          {t("home.hero.cta.whitepaper", "Whitepaper")}
-          <FileText />
-        </Link>
-      </div>
-
-      {/* TODO(#204): sourced figures (minimum subscription, reporting cadence)
-          join this line once the owner confirms them. Until then it carries
-          only the cabinet's own KYC promise (`kyc.dialog.timeBody`). */}
-      {/* A plain <p>, not <Text variant="secondary">: that variant pins
-          text-ink/40, and overriding it to the readable ramp step trips the
-          dev-time cn() conflict panic (and 3.2:1 on the hero fill). */}
-      <p className="max-w-md text-xs leading-relaxed text-ink-soft">
-        {t(
-          "home.hero.cta.fact",
-          "Google sign-in, an identity check usually decided within the hour, then deposit and subscribe."
-        )}
-      </p>
+      <Link
+        href="/publications/whitepaper"
+        className={`${TEXT_LINK} max-sm:hidden`}
+        onClick={() => track(ACTION, { cta: "whitepaper", ...common })}
+      >
+        {t("home.hero.cta.whitepaper", "Whitepaper")}
+        <FileText />
+      </Link>
     </div>
   );
 }
