@@ -97,6 +97,18 @@ function fragmentFor(locale: Locale): string {
         createElement(HeaderMenuCta, { links }),
         createElement(chip.tag, { class: CHIP_MENU_CLASS, ...CHIP_ATTRIBUTES })
       ),
+      notice: createElement(
+        "div",
+        {
+          "data-slot": "zone-failed",
+          role: "alert",
+          className:
+            "hidden border-b border-ink/10 bg-background px-4 py-2 text-center text-sm text-ink group-data-[zone-failed]/header:block",
+        },
+        t("zone.failed", "This page did not finish loading."),
+        " ",
+        createElement("a", { href: "", className: "text-inherit underline" }, t("zone.reload", "Reload"))
+      ),
     })
   );
 }
@@ -139,6 +151,7 @@ const behaviorJs = stripTs("scripts/header-behavior.ts");
 // bytes via the manifest (`sessionInline`), sparing its critical path a
 // request for a few hundred bytes. One build writes both, so they cannot drift.
 const sessionJs = stripTs("scripts/session-stamp.ts");
+const guardJs = stripTs("scripts/zone-guard.ts");
 // The span-enter decision, emitted as a real file rather than inlined into the
 // head fragment. Zones serve a strict `script-src 'self' 'nonce-…'` CSP, and an
 // inline script without that per-request nonce is simply blocked — which is
@@ -154,10 +167,12 @@ const cssName = `header.${hash(fragmentCss)}.css`;
 const jsName = `header-behavior.${hash(behaviorJs)}.js`;
 const spanName = `span-enter.${hash(spanJs)}.js`;
 const sessionName = `session-stamp.${hash(sessionJs)}.js`;
+const guardName = `zone-guard.${hash(guardJs)}.js`;
 writeFileSync(path.join(outDir, cssName), fragmentCss);
 writeFileSync(path.join(outDir, jsName), behaviorJs);
 writeFileSync(path.join(outDir, spanName), spanJs);
 writeFileSync(path.join(outDir, sessionName), sessionJs);
+writeFileSync(path.join(outDir, guardName), guardJs);
 writeFileSync(path.join(outDir, displayFontName), displayFontFile);
 
 writeFileSync(
@@ -168,6 +183,7 @@ writeFileSync(
       js: `/shell/${jsName}`,
       spanJs: `/shell/${spanName}`,
       sessionJs: `/shell/${sessionName}`,
+      guardJs: `/shell/${guardName}`,
       sessionInline: sessionJs,
       font: `/shell/${displayFontName}`,
       // Keyed by locale; `shared/zone-proxy.ts` picks the one matching the URL it

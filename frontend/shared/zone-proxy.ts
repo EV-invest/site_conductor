@@ -44,6 +44,9 @@ const HOP_BY_HOP = [
 // conductor out of the cabinet's CSP entirely. It is ~200 bytes, immutable-
 // cached, and on a connection already open for the stylesheet beside it.
 //
+// zone-guard is blocking too: it must be listening before the zone's own
+// <script>/<link> tags can fail (scripts/zone-guard.ts).
+//
 // session-stamp follows the same rules for the same reasons: blocking, a
 // file, and tiny. It replays the last confirmed session state onto the header
 // root before the first paint, so a signed-in reader does not see the
@@ -61,6 +64,7 @@ const HEAD_INSERT =
   `<link rel="stylesheet" href="${shell.css}">` +
   `<script src="${shell.spanJs}"></script>` +
   `<script src="${shell.sessionJs}"></script>` +
+  `<script src="${shell.guardJs}"></script>` +
   `<script defer src="${shell.js}"></script>`;
 // One prerendered header per locale (scripts/build-shell.mts). The zone's own
 // pages are localised; its chrome has to be too, or the only links out of the

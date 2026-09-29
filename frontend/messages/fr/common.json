@@ -1510,5 +1510,13 @@
   "whitepaper.title": {
     "en": "EV Investment Whitepaper",
     "t": "Livre blanc EV Investment"
+  },
+  "zone.failed": {
+    "en": "This page did not finish loading.",
+    "t": "Cette page ne s'est pas chargée entièrement."
+  },
+  "zone.reload": {
+    "en": "Reload",
+    "t": "Recharger"
   }
 }

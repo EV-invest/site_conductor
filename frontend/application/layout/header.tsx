@@ -45,6 +45,8 @@ export interface BrandHeaderProps {
   homeHref?: string;
   homeLabel?: string;
   menuLabels?: HeaderMenuLabels;
+  /** Under the bar; the zone fragment's reload notice (scripts/zone-guard.ts). */
+  notice?: ReactNode;
 }
 
 export function BrandHeader({
@@ -55,6 +57,7 @@ export function BrandHeader({
   homeHref = "/",
   homeLabel = "EV Investment — home",
   menuLabels = DEFAULT_MENU_LABELS,
+  notice,
 }: BrandHeaderProps) {
   const L = linkComponent ?? "a";
 
@@ -77,6 +80,7 @@ export function BrandHeader({
         homeLabel={homeLabel}
         menuLabels={menuLabels}
       />
+      {notice}
       <HeaderMobileMenu
         nav={nav}
         cta={cta}

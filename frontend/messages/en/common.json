@@ -376,5 +376,7 @@
   "validation.url.max": "Link must be {portfolioUrl} characters or fewer.",
   "whitepaper.loading": "Loading the whitepaper… if it doesn't appear,",
   "whitepaper.name": "Whitepaper",
-  "whitepaper.title": "EV Investment Whitepaper"
+  "whitepaper.title": "EV Investment Whitepaper",
+  "zone.failed": "This page did not finish loading.",
+  "zone.reload": "Reload"
 }

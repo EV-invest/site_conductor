@@ -1510,5 +1510,13 @@
   "whitepaper.title": {
     "en": "EV Investment Whitepaper",
     "t": "EV Investment Whitepaper"
+  },
+  "zone.failed": {
+    "en": "This page did not finish loading.",
+    "t": "Diese Seite wurde nicht vollständig geladen."
+  },
+  "zone.reload": {
+    "en": "Reload",
+    "t": "Neu laden"
   }
 }
