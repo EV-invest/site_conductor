@@ -37,7 +37,7 @@ const cookies = html.headers.getSetCookie();
 assert.equal(cookies.length, 2, "both Set-Cookie forwarded individually");
 assert.ok(cookies[0].startsWith("__Host-session="), cookies[0]);
 const body = await html.text();
-assert.ok(/<head[^>]*><link rel="stylesheet" href="\/shell\/header\./.test(body), "head insert after split tag");
+assert.ok(/<head[^>]*><link rel="preload" as="font"[^>]*><link rel="stylesheet" href="\/shell\/header\./.test(body), "head insert after split tag");
 assert.ok(/<body[^>]*><header data-slot="header"/.test(body), "body insert after split tag");
 assert.ok(body.endsWith("</html>"), "tail passes through");
 
