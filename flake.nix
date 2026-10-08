@@ -620,6 +620,11 @@
             echo "▶ tailwind class conflicts (every cn() branch)"
             npm run css:check
 
+            # The /en/* collapse + English afterFiles rewrite: a wrong locale list
+            # 404s a locale, a wrong carve-out loops 307 (next.config.ts).
+            echo "▶ redirect/rewrite rules (next.config.ts)"
+            npm run redirects:check
+
             echo "▶ visual regression (playwright)"
             ${portEnv}
             export NEXT_PUBLIC_API_URL="''${NEXT_PUBLIC_API_URL:-http://localhost:$SITE_CONDUCTOR_BACKEND_PORT}"
