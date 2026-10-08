@@ -51,12 +51,11 @@ const nextConfig: NextConfig = {
     // is silently ignored (next-app-loader gates resolving it on the flag) and
     // the built-in page comes back.
     globalNotFound: true,
-    // Lets a Server Component read the root layout's `[locale]` segment.
-    // Load-bearing for the status pages: `not-found.tsx` / `forbidden.tsx` are
-    // handed no props by Next, so without this the only way to learn the locale
-    // is `useParams()` in a Client Component — which would ship all five message
-    // catalogues (~176 KB) to the browser to render a page nobody wants to be on.
-    rootParams: true,
+    // No `rootParams` flag: since Next 16.4 `next/root-params` is on by default
+    // and the option is gone from the config type. The status pages still depend
+    // on it: `not-found.tsx` / `forbidden.tsx` are handed no props by Next, so
+    // without it the only way to learn the locale is `useParams()` in a Client
+    // Component — which would ship all five message catalogues (~176 KB).
   },
   // /blogs and /whitepaper were separate shelves for the same thing: documents
   // the fund publishes. They are now one route, so the old paths keep working
