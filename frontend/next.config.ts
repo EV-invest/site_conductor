@@ -51,12 +51,11 @@ const nextConfig: NextConfig = {
     // is silently ignored (next-app-loader gates resolving it on the flag) and
     // the built-in page comes back.
     globalNotFound: true,
-    // Lets a Server Component read the root layout's `[locale]` segment.
-    // Load-bearing for the status pages: `not-found.tsx` / `forbidden.tsx` are
-    // handed no props by Next, so without this the only way to learn the locale
-    // is `useParams()` in a Client Component — which would ship all five message
-    // catalogues (~176 KB) to the browser to render a page nobody wants to be on.
-    rootParams: true,
+    // No `rootParams` flag: since Next 16.4 `next/root-params` is on by default
+    // and the option is gone from the config type. The status pages still depend
+    // on it: `not-found.tsx` / `forbidden.tsx` are handed no props by Next, so
+    // without it the only way to learn the locale is `useParams()` in a Client
+    // Component — which would ship all five message catalogues (~176 KB).
   },
   // /blogs and /whitepaper were separate shelves for the same thing: documents
   // the fund publishes. They are now one route, so the old paths keep working
@@ -260,9 +259,47 @@ const nextConfig: NextConfig = {
     // ERR_PACKAGE_PATH_NOT_EXPORTED. The helper is still the source of truth for
     // app-side code (localeStaticParams in app/[locale]/layout.tsx); only the
     // config boundary has to restate it.
+    //
+    // The afterFiles rule is how English pages reach app/[locale] in ONE pass,
+    // and since Next 16.4 the fallback alone is not enough. With only the
+    // fallback, `/team` is first matched by the dynamic route as
+    // `/[locale]` with locale "team"; `dynamicParams = false` 404s that, Next
+    // bubbles a NoFallbackError and re-renders the same request as `/en/team`.
+    // The first pass already validated the RSC `_rsc` hash and then deleted
+    // the `Next-URL` request header (base-server `setVaryHeader`, our routes
+    // are not interceptable), so the second pass recomputes the hash without
+    // `Next-URL` and 307s to a hash the first pass will reject again — an
+    // endless 307 loop on every English soft navigation (site_conductor#229).
+    // `experimental.validateRSCRequestHeaders`, on by default since 16.4, is
+    // the CDN cache-poisoning guard and stays on.
+    //
+    // The lookahead is what keeps this from being the broken afterFiles rule
+    // described above: a locale-prefixed path never matches, so `/ru/team`
+    // still reaches [locale] as itself. The other excluded roots are the
+    // dynamic routes outside [locale] (app/cabinet, app/rea), API space and
+    // Next's own — they keep exactly the pre-16.4 path through the fallback,
+    // which stays for them and for `/`. `.+` leaves `/` to the fallback too.
+    // The locale list restates LOCALES from @evinvest/i18n (CJS boundary,
+    // as above): a new locale must be added here or its pages 404.
+    const unprefixed = [
+      "en",
+      "ru",
+      "vi",
+      "fr",
+      "de",
+      "cabinet",
+      "rea",
+      "api",
+      "_next",
+    ].join("|");
     return {
       beforeFiles,
-      afterFiles: [],
+      afterFiles: [
+        {
+          source: `/:path((?!(?:${unprefixed})(?:/|$)).+)`,
+          destination: "/en/:path*",
+        },
+      ],
       fallback: [{ source: "/:path*", destination: "/en/:path*" }],
     };
   },
